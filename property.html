@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html lang="zxx">
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<link rel="shortcut icon" href="images/icon.png">
+		<title>LockChain™ Marketplace</title>
+
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+		
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+	</head>
+
+	<body>
+
+		<nav id='main-nav' class="navbar">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="https://lockchain.co"><img src="images/logo.png" alt='logo' /></a>
+				</div>
+
+				<div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+
+						<li class="first-nav-button">
+							<a href="#"><i class="icon icon-home"></i>List Your Property</a>
+						</li>
+						<li>
+							<a href="#">Login</a>
+						</li>
+						<li>
+							<a href="#">Register</a>
+						</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		
+		<nav id="second-nav">
+			<div class="container">
+				<ul class="nav navbar-nav">
+
+					<li>
+						<a href="#">HOTELS</a>
+					</li>
+					<li class="active">
+						<a href="#">HOMES</a>
+					</li>
+				</ul>
+				
+				<ul class="second-nav-text pull-right">
+					<li class="rate-nav"><span>LOC/EUR</span>  0.25EUR</li>
+					<li class="balance-nav">
+						<div class="balance-box">Balance: <span>0,035,974.23 LOC</span></div>
+						<a href="#" class="a-icon-add-btn"></a>
+					</li>
+					<li class="dropdown ">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">EUR <span class="caret"></span></a>
+						<ul class="navbar-dropdown dropdown-menu">
+							<li><a href="#">LOC</a></li>
+							<li><a href="#">EUR</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<section id="search-bar">
+			<div class="container">
+				<form id="search">
+
+					<div class="form-group has-feedback has-feedback-left" id="location">
+						<i class="icon icon-map form-control-feedback"></i>
+						<input type="text" name="location" class="form-control" placeholder="Location" />
+					</div>
+	
+					
+					<div class="input-daterange">
+						<div class="form-group has-feedback has-feedback-left input-group-date-in">
+							<i class="icon icon-calendar form-control-feedback"></i>
+							<span class="icon-check-in">Check in</span>
+							<input type="text" class="form-control" value="" data-date-format='dd M, D' placeholder="Select date">
+						</div>
+						
+						<div class="input-group-addon">
+							
+						</div>
+						
+						<div class="form-group has-feedback has-feedback-left input-group-date-out">
+							<span class="icon-check-out">Check out</span>
+							<i class="icon icon-calendar form-control-feedback"></i>
+							<input type="text" class="form-control" value="" data-date-format='dd M, D'  placeholder="Select date">
+						</div>
+						
+						
+					</div>
+					<div id="search-nights">
+						<span>6 nights</span>
+					</div>
+					
+					<div class="form-group has-feedback has-feedback-left" id="guests">
+						<i class="icon icon-guest form-control-feedback"></i>
+						<input type="text" name="guests" class="form-control" placeholder="Guests" />
+					</div>
+
+					
+					<button type="submit" class="btn btn-primary">Search</button>
+					
+
+				</form>
+			</div>
+		</section>
+		
+
+		<section class="hotel-gallery">
+			<div class="hotel-gallery-bgr" style="background-image: url(images/hotel-big-img.jpg);">
+				<div class="container">
+					<div class="hotel-gallery-social-button">
+						<a class="btn btn-social btn-dark-blue">
+							<span>Share</span>
+						</a>	
+						<a class="btn btn-save btn-dark-blue">
+							<span>Save</span>
+						</a>	
+					</div>
+					<a class="btn btn-primary btn-gallery">Open Gallery</a>	
+				</div>
+			</div>
+		</section>
+		
+		<nav id="hotel-nav">
+			<div class="container">
+				<ul class="nav navbar-nav">
+
+					<li>
+						<a href="#overview">Overview</a>
+					</li>
+					<li>
+						<a href="#facilities">Facilities</a>
+					</li>
+					<li>
+						<a href="#room-types">Room types</a>
+					</li>
+					<li>
+						<a href="#reviews">User Reviews</a>
+					</li>
+					<li>
+						<a href="#location">Location</a>
+					</li>
+					
+				</ul>
+				
+				
+			</div>
+		</nav>
+		
+		<section id="hotel-info">
+			<div class="container">
+				
+				<div class="hotel-content">
+					<h1>Green Life Beach Resort</h1>
+					<div class="list-hotel-rating">
+						<div class="list-hotel-rating-count">Excellent 4.1/5</div>
+						<div class="list-hotel-rating-stars">
+							<span class="full-star"></span>
+							<span class="full-star"></span>
+							<span class="full-star"></span>
+							<span class="full-star"></span>
+							<span class="empty-star"></span>
+						</div>
+						<div class="list-hotel-rating-review">73 Reviews</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="list-hotel-description">
+						<p>Paradise Aparthotel & SPA, 9 Han Tervel Street, 9101 Sozopol, Bulgaria</p>
+						<p>In the historic quarter of Santo Spirito, on the left bank of the river Arno, studio apartment is perfect for those travelling alone or as a couple. To walk between Santo Spirito, Ponte Vecchio and Boboli Gardens is a magical experience.</p>
+						<h3>The space</h3>
+						<p>In the historic quarter of Santo Spirito, on the left bank of the river Arno, studio apartment is perfect for those travelling alone or as a couple. To walk between Santo Spirito, Ponte Vecchio and Boboli Gardens is a magical experience.</p>
+						<p>On the third floor of a typical Florentine building, the apartment consists of an entrance with wardrobes and loft with double bed, equipped kitchen and bathroom with shower.</p>
+					</div>
+					
+					<div id="facilities">
+						<h2>Facilities</h2>
+						<hr>
+						<h3>Most Popular Facilities</h3>
+						
+						<div class="icon-facilities icon-beach-b">
+							<span class="icon-image"></span>
+							<span class="icon-text">beach</span>
+						</div>
+						<div class="icon-facilities icon-pool-b">
+							<span class="icon-image"></span>
+							<span class="icon-text">pool</span>
+						</div>
+						<div class="icon-facilities icon-spa-b">
+							<span class="icon-image"></span>
+							<span class="icon-text">spa</span>
+						</div>
+						<div class="icon-facilities icon-parking-b">
+							<span class="icon-image"></span>
+							<span class="icon-text">parking</span>
+						</div>
+						<div class="icon-facilities icon-breakfast-b">
+							<span class="icon-image"></span>
+							<span class="icon-text">breakfast</span>
+						</div>
+						<div class="clearfix"></div>
+					</div>	
+					<div class="clearfix"></div>
+					
+					<div class="hotel-extras">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="hotel-extras-title"><span class="icon-extras icon-living-area-s"></span>Living Area</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Dining area</div>
+								<div class="hotel-extras-list">Sofa</div>
+								<div class="hotel-extras-list">Sitting area</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-bedroom-s"></span>Bedroom</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Wardrobe/Closet</div>
+								<div class="hotel-extras-list">Walk-in closet</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-kitchen-s"></span>Kitchen</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Dining table</div>
+								<div class="hotel-extras-list">Coffee machine</div>
+								<div class="hotel-extras-list">Oven</div>
+								<div class="hotel-extras-list">Dryer</div>
+								<div class="hotel-extras-list">Electric kettle</div>
+								<div class="hotel-extras-list">Microwave</div>
+								<div class="hotel-extras-list">Refrigerator</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-bathroom-s"></span>Bathroom</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Linens</div>
+								<div class="hotel-extras-list">Towels</div>
+								<div class="hotel-extras-list">Toilet</div>
+								<div class="hotel-extras-list">Shower</div>
+							</div>
+							<div class="col-md-4">
+									
+								<div class="hotel-extras-title"><span class="icon-extras icon-outdoors-s"></span>Outdoors</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Outdoor furniture</div>
+								<div class="hotel-extras-list">Sun Deck</div>
+								<div class="hotel-extras-list">Balcony</div>
+								<div class="hotel-extras-list">Grounds</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-view-s"></span>Outdoors & View</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Pool view</div>
+								<div class="hotel-extras-list">Garden view</div>
+								<div class="hotel-extras-list">Sea view</div>
+								<div class="hotel-extras-list">View</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-pool-s"></span>Pool & Spa</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Indoor Pool (seasonal)</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-food-s"></span>Food & Drink</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Tea/Coffee maker</div>
+								<div class="hotel-extras-list">Minibar</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-pets-s"></span>Pets</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Pets are not allowed</div>
+							</div>
+							<div class="col-md-4">
+									
+								<div class="hotel-extras-title"><span class="icon-extras icon-miscellaneous-s"></span>Miscellaneous</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Air Conditioning</div>
+								<div class="hotel-extras-list">Heating</div>
+								<div class="hotel-extras-list">Elevator</div>
+								<div class="hotel-extras-list">Family Rooms</div>
+								<div class="hotel-extras-list">Non-Smoking Rooms</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-media-s"></span>Media & Tehnology</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Flat-screen TV</div>
+								<div class="hotel-extras-list">Cable channels</div>
+								<div class="hotel-extras-list">DVD Player</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-activities-s"></span>Activities</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Hiking</div>
+								<div class="hotel-extras-list">Fishing</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-cleaning-services-s"></span>Cleaning Services</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Daily Housekeeping</div>
+								<div class="hotel-extras-list">Laundry</div>
+								<div class="hotel-extras-title"><span class="icon-extras icon-transport-s"></span>Transportation</div>
+								<div class="clearfix"></div>
+								<div class="hotel-extras-list">Car Rental</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						
+						<div id="room-types">
+							<h2>Room Types</h2>
+							<hr>
+							
+							<div class="list-hotel">
+								<div class="list-image">
+									<div id="myCarousel-1" class="carousel slide" data-ride="carousel">
+										<div class="carousel-inner">
+											<div class="item active">
+												<a href="images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="images/img-hotel.jpg" alt=""></a>
+											</div>
+											<div class="item">
+												<a href="images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="images/img-hotel.jpg" alt=""></a>
+											</div>
+											<div class="item">
+												<a href="images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="images/img-hotel.jpg" alt=""></a>
+											</div>
+										</div>
+
+										<a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>
+										<a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>
+									</div>
+								</div>
+								<div class="list-content">
+									<h2>Two Bedroom Apartment</h2>
+									
+									<div class="clearfix"></div>
+									<div class="list-hotel-text">
+										Studios and apartments feature a balcony with sea views, a flat-screen TV with cable channels and a private bathroom with free toiletries, a hairdryer and a bath or shower. ..
+									</div>
+									
+								</div>
+								<div class="list-price">
+									<div class="list-hotel-price-bgr">Price for 1 night</div>
+									<div class="list-hotel-price-curency">$350</div>
+									<div class="list-hotel-price-loc">(LOC 1.2)</div>
+									<a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							
+							<div class="list-hotel">
+								<div class="list-image">
+									<div id="myCarousel-1" class="carousel slide" data-ride="carousel">
+										<div class="carousel-inner">
+											<div class="item active">
+												<a href="images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="images/img-hotel.jpg" alt=""></a>
+											</div>
+											<div class="item">
+												<a href="images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="images/img-hotel.jpg" alt=""></a>
+											</div>
+											<div class="item">
+												<a href="images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="images/img-hotel.jpg" alt=""></a>
+											</div>
+										</div>
+
+										<a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>
+										<a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>
+									</div>
+								</div>
+								<div class="list-content">
+									<h2>Two Bedroom Apartment</h2>
+									
+									<div class="clearfix"></div>
+									<div class="list-hotel-text">
+										Studios and apartments feature a balcony with sea views, a flat-screen TV with cable channels and a private bathroom with free toiletries, a hairdryer and a bath or shower. ..
+									</div>
+									
+								</div>
+								<div class="list-price">
+									<div class="list-hotel-price-bgr">Price for 1 night</div>
+									<div class="list-hotel-price-curency">$350</div>
+									<div class="list-hotel-price-loc">(LOC 1.2)</div>
+									<a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							
+						</div>	
+						<div class="clearfix"></div>
+						
+						<div id="hotel-rules">
+							<h2>Hotel Rules</h2>
+							<hr>
+							
+						</div>	
+						<div class="clearfix"></div>
+						
+						<div id="cancellation">
+							<h2>Cancellation</h2>
+							<hr>
+							
+						</div>	
+						<div class="clearfix"></div>
+						
+						<div id="children">
+							<h2>Children & Extra Beds</h2>
+							<hr>
+							
+						</div>	
+						<div class="clearfix"></div>
+						
+						<div id="reviews">
+							<h2>User Rating & Reviews</h2>
+							<hr>
+							
+						</div>	
+						<div class="clearfix"></div>
+						
+						<div id="location">
+							<h2>Location</h2>
+							<hr>
+							
+						</div>	
+						<div class="clearfix"></div>
+						
+					</div>
+					
+				</div>
+					
+				<div class="hotel-chekin">
+					<div class="hotel-chekin-box">
+
+						<form method="POST" id="user-form">
+
+					
+							
+
+							<div class="hotel-input-daterange-check">
+								<div class="form-group has-feedback has-feedback-left input-group-date-in">
+									<i class="icon icon-calendar form-control-feedback"></i>
+									<span class="icon-check-in">Check in</span>
+									<input type="text" class="form-control" id="field-check-in-check" placeholder="Select date">
+									<input type="hidden" id="hidden-check-in-check" name="hidden-check-in-check" >
+								</div>
+						
+								<div class="input-group-addon">
+							
+								</div>
+						
+								<div class="form-group has-feedback has-feedback-left input-group-date-out">
+									<span class="icon-check-out">Check out</span>
+									<i class="icon icon-calendar form-control-feedback"></i>
+									<input type="text" class="form-control" id="field-check-out-check" placeholder="Select date">
+									<input type="hidden" id="hidden-check-out-check" name="hidden-check-out-check" >
+								</div>
+							
+								<input type="hidden" id="calculated" name="calculated" >
+								<div id="label"></div>
+							</div>
+							<div id="hotel-search-nights">
+								<span><span id="countdate">1</span> nights</span>
+							</div>
+							<div class="clearfix"></div>
+
+							<div class="dropdown select-person">
+								<input type="number" class="form-control" id="number-person" min="1" placeholder="Select Guest Number" required="">
+							</div>
+						
+							<div class="dropdown select-person">
+								<input type="text" class="form-control" name="name" required="" placeholder="Name">
+							</div>
+						
+							<div class="dropdown select-person">
+								<input type="email" class="form-control" name="email" required="" placeholder="E-mail">
+							</div>
+						
+							<div class="dropdown select-person">
+								<input type="text" class="form-control" name="phone" required="" placeholder="Phone">
+							</div>	
+							
+							<div class="g-recaptcha" data-sitekey="6LfNZTYUAAAAAC6EqT3alk6NLY14TcsN1JnnA6Yn"></div>
+							<br>
+	
+
+							<div class="nonev"></div>
+					
+							<button type="submit" class="btn btn-primary">Request Booking in LOC or FIAT</button>
+				
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+
+		</section>
+		
+
+		<footer id="main-footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3">
+						<h3>LockChain</h3>
+						<ul>
+							<li><a href="#">Help</a></li>
+							<li><a href="#">Terms and Conditions</a></li>
+							<li><a href="#">Legal Information</a></li>
+							<li><a href="#">Privacy Policy</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h3>Hosting</h3>
+						<ul>
+							<li><a href="#">Why Host</a></li>
+							<li><a href="#">Hospitality</a></li>
+							<li><a href="#">Responsible Hosting</a></li>
+							<li><a href="#">Community Center</a></li>
+						</ul>
+					</div>
+					<div class="col-md-4">
+					
+					</div>
+					<div class="col-md-2">
+					
+						<div class="dropdown select-language">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">English newest <span class="caret"></span></a>
+							<ul class="navbar-dropdown dropdown-menu">
+								<li><a href="#">English</a></li>
+								<li><a href="#">English</a></li>
+							</ul>
+						</div>
+								
+						<div class="dropdown select-curency">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">US Dollar <span class="caret"></span></a>
+							<ul class="navbar-dropdown dropdown-menu">
+								<li><a href="#">US Dollar</a></li>
+								<li><a href="#">LOC</a></li>
+							</ul>
+						</div>
+									
+					</div>
+					
+					<div class="clearfix"></div>
+				</div>
+				<div class="copyright">Copyright 2017 LockChain | All rights reserved.</div>
+				
+			</div>
+		</footer>
+
+		<link rel="stylesheet" href="css/jquery.fancybox.css">	
+		<link rel="stylesheet" href="css/bootstrap-slider.css">	
+		
+		
+		<script src="js/bootstrap-datepicker.js"></script>
+		<script src="js/bootstrap-slider.js"></script>
+		<script src="js/jquery.fancybox.js"></script>
+		<script>
+			$('.fancybox').fancybox({
+					'padding'		: 0,
+					'transitionIn'	: 'none',
+					'transitionOut'	: 'none',
+					helpers: {
+						overlay: {
+							locked: false
+						}
+					},
+					beforeShow:function(){ 
+						$('html').css('overflowX', 'visible'); 
+						$('body').css('overflowY', 'hidden'); 
+					},
+					afterClose:function(){ 
+						$('html').css('overflowX', 'hidden');
+						$('body').css('overflowY', 'visible'); 
+					}
+				});
+			$('.input-daterange input').each(function() {
+					$(this).datepicker('clearDates');
+				});
+
+			$("#price-slider").slider({});
+			$("#distance-slider").slider({});
+			
+			$('.filter-room-facility-more-href').on('click', function(e){
+					e.preventDefault();
+					$('.filter-room-facility-more').toggle();
+					$('.filter-room-facility-more-href').css('display','none');
+				})
+			
+			$('.filter-room-facility-hide-href').on('click', function(e){
+					e.preventDefault();
+					$('.filter-room-facility-more').toggle();
+					$('.filter-room-facility-more-href').css('display','block');
+				})
+			
+			$('.filter-facility-more-href').on('click', function(e){
+					e.preventDefault();
+					$('.filter-facility-more').toggle();
+					$('.filter-facility-more-href').css('display','none');
+				})
+			
+			$('.filter-facility-hide-href').on('click', function(e){
+					e.preventDefault();
+					$('.filter-facility-more').toggle();
+					$('.filter-facility-more-href').css('display','block');
+				})
+		
+
+			
+		</script>
+		
+
+	</body>
+</html>
