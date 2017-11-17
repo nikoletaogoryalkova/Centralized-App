@@ -16,6 +16,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
+
 *{
 	margin: 0; 
 	padding: 0;}
@@ -25,7 +26,10 @@ body{
 	font-size: 14px;
 	font-weight: 300;
 }
-
+strong, b{
+	font-family: 'FuturaStd-Medium';    
+	font-weight: normal;
+}
 h1{
 	font-family: 'FuturaStd-Medium';
 	font-size: 32px;
@@ -2430,7 +2434,7 @@ tspan{
 
 #myCarousel-city .left-carousel{
 	bottom: 40%;
-	    margin-left: -100px;
+	margin-left: -100px;
 	position: absolute;
 	display: block;
 	background: url(../images/left-arrow-city.png) no-repeat;
@@ -2439,7 +2443,7 @@ tspan{
 }
 #myCarousel-city .right-carousel{
 	bottom: 40%;
-	    margin-right: -100px;
+	margin-right: -100px;
 	position: absolute;
 	background: url(../images/right-arrow-city.png) no-repeat;
 	width: 68px;
@@ -2448,7 +2452,7 @@ tspan{
 }
 .right_carusel{
 	bottom: 40%;
-	    margin-right: -80px;
+	margin-right: -80px;
 	position: absolute;
 	background: url(../images/right-arrow-city.png) no-repeat;
 	width: 68px;
@@ -2458,7 +2462,7 @@ tspan{
 }
 .left_carusel{
 	bottom: 40%;
-	    margin-left: -80px;
+	margin-left: -80px;
 	position: absolute;
 	display: block;
 	background: url(../images/left-arrow-city.png) no-repeat;
@@ -2473,7 +2477,12 @@ tspan{
 	background-position: top center; 
 	background-repeat: no-repeat; 
 	background-size: cover;
-	padding-top: 250px; font-size: 24px; text-transform: uppercase; text-decoration: underline; text-align: center; color: #fff;
+	padding-top: 250px; 
+	font-size: 24px; 
+	text-transform: uppercase; 
+	text-decoration: underline; 
+	text-align: center; 
+	color: #fff;
 	border-radius: 5px;
 }
 
@@ -2482,23 +2491,263 @@ tspan{
 	padding-bottom: 300px;
 }
 #easy-list-box .easy-smal-text{
-	text-transform: uppercase; font-size: 16px;  margin-bottom:30px;
+	text-transform: uppercase; 
+	font-size: 16px;  
+	margin-bottom: 30px;
 }
 #easy-list-box .easy-big-text{
-	font-size:26px;margin-bottom:30px;
+	font-size: 26px;
+	margin-bottom: 30px;
 }
 #easy-list-box .text_part_easy{
 	padding: 50px;
 }
 #easy-list-box .btn{
-padding-left: 50px;padding-right: 50px;
+	padding-left: 50px;
+	padding-right: 50px;
 }
 
 hr.over-easy-list-box {
-    margin-top: 30px;
-    margin-bottom: 40px;
-    border: 0;
-    border-top: 1px solid #ccc;margin-left: 100px;margin-right: 100px;
+	margin-top: 30px;
+	margin-bottom: 40px;
+	border: 0;
+	border-top: 1px solid #ccc;
+	margin-left: 100px;
+	margin-right: 100px;
+}
+
+
+
+.admin_dashboard #search-bar.step-by-step .nav_dash_menu>li>a:hover {
+	border-bottom: 4px solid #223843;
+}
+#search-bar.step-by-step .arrow-3{
+	padding-top: 20px;
+}
+#search-bar.step-by-step .disable a{
+	color: #cccccc!important;
+}
+
+#reservation-content-box{
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+#reservation-content-box .reservation-hotel-info{
+	border: 4px solid #fff; 
+	border-radius: 4px;
+	background: #fff;
+}
+
+#reservation-content-box .list-hotel-rating{
+	color: #898c8d; 
+	font-size: 14px;
+}
+#reservation-content-box  .list-hotel-rating div{
+	float: left; 
+	margin-right: 15px;
+}
+#reservation-content-box  .empty-star{
+	background-image: url(../images/icon-star-filter-g.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: block; 
+	width: 15px; 
+	height: 15px; 
+	float: left; 
+	margin-top: 2px;
+}
+#reservation-content-box .full-star{
+	background-image: url(../images/icon-star-filter.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: block; 
+	width: 15px; 
+	height: 15px; 
+	float: left;
+	margin-top: 2px;
+}
+#reservation-content-box .reservation-hotel-bgr{
+	margin-left: -8px;
+	margin-right: -8px;
+	margin-bottom: -8px;
+}
+#reservation-content-box .reservation-hotel-bgr img{
+	width: 100%
+}
+#reservation-content-box .reservation-hotel-info-content{
+	padding: 0 15px;
+}
+#reservation-content-box .reservation-hotel-grey-box{
+	background: #f7f7f8; 
+	border-radius: 5px; 
+	padding: 10px; 
+	margin-top: 15px; 
+	margin-bottom: 15px;
+}
+#reservation-content-box .reservation-hotel-grey-person{
+	margin-bottom: 15px;
+}
+#reservation-content-box .reservation-hotel-grey-person{
+	margin-bottom: 15px;
+}
+
+#reservation-content-box .reservation-hotel-nights {
+	width: 56px;
+	float: left;
+	border: 1px dashed #cccccc;
+	margin-right: 0;
+	height: 56px;
+	border-radius: 4px;
+	background: url(../images/icon-moon.png) center 5px no-repeat;
+	text-align: center;
+	padding-top: 35px;
+	margin-top: -7px;
+	font-size: 12px;
+}
+#reservation-content-box .reservation-hotel-calendar{
+	width: 32px;
+	float: left;
+	padding-top: 5px;
+}
+#reservation-content-box .reservation-hotel-check{
+	width: 85px;
+	float: left;
+}
+#reservation-content-box .reservation-hotel-check .date-start{
+	color: #a2c5bf;
+}
+#reservation-content-box .reservation-hotel-check .date-end{
+	color: #d87a61;
+}
+
+#reservation-content-box .reservation-hotel-arrow{
+	width: 32px;
+	float: left;
+	padding-top: 5px;
+}
+#reservation-content-box .reservation-hotel-price{
+	padding: 15px 15px 15px 15px; 
+	font-family: 'FuturaStd-Medium'; 
+	font-size: 18px;     
+	border-bottom: 1px solid #f0f1f3; 
+	margin-bottom: 30px;
+}
+#reservation-content-box .reservation-hotel-price span{
+	font-size: 30px; 
+}
+#reservation-content-box .reservation-hotel-price .pull-right{
+	margin-top: -13px;
+}
+
+#reservation-content-box .reservation-hotel-review-room{
+	font-size: 17px; 
+	padding-left: 30px;
+}
+#reservation-content-box .reservation-hotel-review-room h1{
+	font-family: 'FuturaStd-Light'; 
+	font-size: 30px;
+}
+#reservation-content-box .reservation-hotel-review-room h2{
+	margin-top: 30px;
+}
+#reservation-content-box hr {
+	border-top: 1px solid #ccc;
+	margin: 10px 0 30px 0;
+}
+
+#reservation-content-box .reservation-hotel-space-icon{
+	width: 20%; 
+	float: left; 
+	text-align: center; 
+	font-size: 17px;
+}
+#reservation-content-box .reservation-hotel-space-icon img{
+	display: block; 
+	margin: 0 auto 15px auto;
+}
+
+
+#reservation-content-box .reservation-hotel-arrangements{
+	padding: 10px 0;
+}
+#reservation-content-box .reservation-hotel-arrangements img{
+	margin-top: -18px; 
+	margin-left: 15px;
+}
+
+#reservation-content-box .reservation-hotel-date-timeline-in-left{
+	background: #e1e1e1; 
+	float: left; 
+	height: 3px; 
+}
+#reservation-content-box .reservation-hotel-date-timeline-in-right{
+	background: #223843; 
+	float: left; 
+	height: 3px; 
+}
+#reservation-content-box .reservation-hotel-date-timeline-in-message{ 
+	background: #a2c5bf; 
+	padding: 5px 8px; 
+	display: inline-block; 
+	font-size: 12px; 
+	color: #fff; 
+	margin-top: 8px;
+}
+#reservation-content-box .reservation-hotel-date-timeline-in-message:before {
+	margin-top: -13px;
+	content: '';
+	display: block;
+	width: 8px;
+	height: 8px;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 8px solid #a2c5bf;
+	position: absolute;
+	margin-left: 3px;
+}
+#reservation-content-box .reservation-hotel-check-date-line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+#reservation-content-box .reservation-hotel-check-date-line .col-md-2{
+	padding-top: 12px;
+}
+#reservation-content-box .reservation-hotel-date-timeline-out-left{
+	background: #e1e1e1; 
+	float: left; 
+	height: 3px; 
+}
+#reservation-content-box .reservation-hotel-date-timeline-out-right{
+	background: #223843; 
+	float: left; 
+	height: 3px; 
+}
+#reservation-content-box .reservation-hotel-date-timeline-out-message{ 
+	background: #a2c5bf; 
+	padding: 5px 8px; 
+	display: inline-block; 
+	font-size: 12px; 
+	color: #fff; 
+	margin-top: 8px;
+}
+#reservation-content-box .reservation-hotel-date-timeline-out-message:before {
+	margin-top: -13px;
+	content: '';
+	display: block;
+	width: 8px;
+	height: 8px;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 8px solid #a2c5bf;
+	position: absolute;
+	margin-left: 44px;
+}
+
+#reservation-content-box .reservation-hotel-btn{
+	margin-top: 50px; 
+	padding-left: 120px; 
+	padding-right: 120px;
 }
 
 .col-xs-15,
