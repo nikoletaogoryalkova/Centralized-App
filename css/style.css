@@ -2767,6 +2767,148 @@ input#card-number{
 	margin-top: -40px; 
 	cursor: pointer;
 }
+.success-title {
+	color: #fff;
+}
+.success-title h1{
+	color: #fff;
+	font-family: 'FuturaStd-Light'; font-size: 46px; margin-top: 20px;margin-bottom: 10px; margin-left: 150px; 
+}
+.success-title h2{
+	color: #fff;
+	font-family: 'FuturaStd-Light';font-size: 34px;margin-left: 150px;margin-top: 10px; 
+}
+.success-title span{
+	    margin: 20px auto;
+    padding-top: 30px;
+    height: 100px;
+    width: 100px;
+    color: #fff;
+    font-size: 30px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    text-align: center;
+    float: left;
+}
+
+
+#successful-reservation-content-box .reservation-hotel-info-box{
+	width: 30%; margin: 30px auto;
+}
+
+#successful-reservation-content-box .reservation-hotel-bgr-title{
+	background: #d87a61; padding: 50px 0; border-radius: 4px;
+}
+
+#successful-reservation-content-box .reservation-hotel-bgr-title .title-1{
+	font-size: 20px; color: #fff; margin-bottom: 15px; text-align: center;
+}
+
+#successful-reservation-content-box .reservation-hotel-bgr-title .title-2{
+	font-size: 40px; color: #fff; margin-bottom: 2px; text-align: center;
+}
+
+#successful-reservation-content-box .reservation-hotel-bgr-title .title-3{
+	font-size: 30px; color: #fff;  text-align: center;
+}
+
+#successful-reservation-content-box .reservation-hotel-info{
+	border: 4px solid #fff; 
+	border-radius: 4px;
+	background: #fff;
+}
+
+#successful-reservation-content-box .list-hotel-rating{
+	color: #898c8d; 
+	font-size: 14px;
+}
+#successful-reservation-content-box  .list-hotel-rating div{
+	float: left; 
+	margin-right: 15px;
+}
+
+#successful-reservation-content-box .reservation-hotel-bgr{
+	    margin-left: -4px;
+    margin-right: -4px;
+    margin-bottom: -4px;
+}
+#successful-reservation-content-box .reservation-hotel-bgr img{
+	  width: 100%;
+}
+
+#successful-reservation-content-box .reservation-hotel-info-content{
+	padding: 0 15px;
+}
+#successful-reservation-content-box .reservation-hotel-grey-box{
+	background: #f7f7f8;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 15px;
+}
+#successful-reservation-content-box .reservation-hotel-grey-person{
+	margin-bottom: 15px;
+}
+#successful-reservation-content-box .reservation-hotel-grey-person{
+	margin-bottom: 15px;
+}
+
+#successful-reservation-content-box .reservation-hotel-nights {
+	width: 56px;
+	float: left;
+	border: 1px dashed #cccccc;
+	margin-right: 0;
+	height: 56px;
+	border-radius: 4px;
+	background: url(../images/icon-moon.png) center 5px no-repeat;
+	text-align: center;
+	padding-top: 35px;
+	margin-top: -7px;
+	font-size: 12px;
+}
+#successful-reservation-content-box .reservation-hotel-calendar{
+	width: 32px;
+	float: left;
+	padding-top: 5px;
+}
+#successful-reservation-content-box .reservation-hotel-check{
+	width: 85px;
+	float: left;
+}
+#successful-reservation-content-box .reservation-hotel-check .date-start{
+	color: #a2c5bf;
+}
+#successful-reservation-content-box .reservation-hotel-check .date-end{
+	color: #d87a61;
+}
+
+#successful-reservation-content-box .reservation-hotel-arrow{
+	width: 32px;
+	float: left;
+	padding-top: 5px;
+}
+#successful-reservation-content-box .reservation-hotel-data{
+	padding: 15px; 
+	font-size: 20px;     
+	margin-bottom: 30px;
+}
+#successful-reservation-content-box .reservation-hotel-data-price{
+	margin: 15px 15px 45px 15px; 
+	padding-top: 15px;
+	font-size: 30px;     
+
+	border-top: 1px solid #f0f1f3; 
+}
+
+#successful-reservation-content-box .reservation-hotel-price span{
+	font-size: 30px; 
+}
+#successful-reservation-content-box .reservation-hotel-price .pull-right{
+	margin-top: -13px;
+}
+
+
+
+
 
 .col-xs-15,
 .col-sm-15,
