@@ -2750,6 +2750,24 @@ hr.over-easy-list-box {
 	padding-right: 120px;
 }
 
+#reservation-content-box .form-control{
+	border: 1px solid #ccc;
+}
+input#card-number{
+	background: #fff url(../images/icon-review/icon-10.png) right center no-repeat;
+}
+.cardholder-box .tooltip-cvv{
+	right: 44px;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	content: '';
+	background: #fff url(../images/icon-review/icon-9.png) center no-repeat;
+	position: absolute;
+	margin-top: -40px; 
+	cursor: pointer;
+}
+
 .col-xs-15,
 .col-sm-15,
 .col-md-15,
