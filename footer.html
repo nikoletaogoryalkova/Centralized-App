@@ -1,0 +1,148 @@
+<footer id="main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h3>LockChain</h3>
+                <ul>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Legal Information</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h3>Hosting</h3>
+                <ul>
+                    <li><a href="#">Why Host</a></li>
+                    <li><a href="#">Hospitality</a></li>
+                    <li><a href="#">Responsible Hosting</a></li>
+                    <li><a href="#">Community Center</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-2">
+
+                <div class="dropdown select-language">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">English newest <span
+                            class="caret"></span></a>
+                    <ul class="navbar-dropdown dropdown-menu">
+                        <li><a href="#">English</a></li>
+                        <li><a href="#">English</a></li>
+                    </ul>
+                </div>
+
+                <div class="dropdown select-curency">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">US Dollar <span class="caret"></span></a>
+                    <ul class="navbar-dropdown dropdown-menu">
+                        <li><a href="#">US Dollar</a></li>
+                        <li><a href="#">LOC</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="copyright">Copyright 2017 LockChain | All rights reserved.</div>
+
+    </div>
+</footer>
+
+<link rel="stylesheet" href="../css/jquery.fancybox.css">
+<link rel="stylesheet" href="../css/bootstrap-slider.css">
+
+<script src="../js/bootstrap-datepicker.js"></script>
+<script src="../js/bootstrap-slider.js"></script>
+<script src="../js/jquery.fancybox.js"></script>
+<script src="../js/smooth-scroll.min.js"></script>
+
+<script>
+    $(document).keydown(function(event) {
+        if (event.keyCode === 27) {
+            $('.modal .close').click();
+        }
+    });
+</script>
+<script>
+    let scroll = new SmoothScroll('a[href*="#"]');
+</script>
+<script>
+    $('.fancybox').fancybox({
+        'padding': 0,
+        'transitionIn': 'none',
+        'transitionOut': 'none',
+        helpers: {
+            overlay: {
+                locked: false
+            }
+        },
+        beforeShow: function () {
+            $('html').css('overflowX', 'visible');
+            $('body').css('overflowY', 'hidden');
+        },
+        afterClose: function () {
+            $('html').css('overflowX', 'hidden');
+            $('body').css('overflowY', 'visible');
+        }
+    });
+
+    $('.input-daterange input').each(function () {
+        $(this).datepicker("option", "dateFormat", $( this ).val());
+    });
+
+    $("#price-slider").slider({});
+    $("#distance-slider").slider({});
+
+    $('.filter-room-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'none');
+    });
+
+    $('.filter-room-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'block');
+    });
+
+    $('.filter-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'none');
+    });
+
+    $('.filter-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'block');
+    })
+
+</script>
+<script>
+    let inputs = $('#search .input-daterange input');
+    let nights = $('#search-nights span');
+    nights.text(0 + ' nights');
+
+    inputs.change(() => {
+        let checkIn = inputs[0].value;
+        let checkOut = inputs[1].value;
+
+        let checkInDate = new Date(checkIn);
+        let checkOutDate = new Date(checkOut);
+
+        let timeDiff = Math.abs(checkOutDate.getTime() - checkInDate.getTime());
+
+        if(!checkOut || !checkIn){
+            nights.text(0 + ' nights');
+        }
+        else if(checkOutDate < checkInDate){
+            nights.text(0 + ' nights');
+        }
+        else {
+            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            nights.text(diffDays + ' nights');
+        }
+    });
+</script>

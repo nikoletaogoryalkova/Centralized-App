@@ -1,0 +1,299 @@
+<section class="hotel-gallery">
+    <div class="hotel-gallery-bgr" style="background-image: url({{pictures.1.original}});">
+        <div class="container">
+            <div class="hotel-gallery-social-button">
+                <a class="btn btn-social btn-dark-blue">
+                    <span>Share</span>
+                </a>
+                <a class="btn btn-save btn-dark-blue">
+                    <span>Save</span>
+                </a>
+            </div>
+            <a class="btn btn-primary btn-gallery">Open Gallery</a>
+        </div>
+    </div>
+</section>
+
+<nav id="hotel-nav">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="#hotel-nav">Overview</a>
+            </li>
+            <li>
+                <a href="#facilities">Facilities</a>
+            </li>
+            <li>
+                <a href="#room-types">Room types</a>
+            </li>
+            <li>
+                <a href="#reviews">User Reviews</a>
+            </li>
+            <li>
+                <a href="#locationMap">Location</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section id="hotel-info">
+    <div class="container">
+        <div class="hotel-content">
+            <h1>{{name}}</h1>
+            <div class="list-hotel-rating">
+                <div class="list-hotel-rating-count">{{rating}}</div>
+                <div class="list-hotel-rating-stars">
+                    <span class="full-star"></span>
+                    <span class="full-star"></span>
+                    <span class="full-star"></span>
+                    <span class="full-star"></span>
+                    <span class="empty-star"></span>
+                </div>
+                <div class="list-hotel-rating-review">{{reviews}}</div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="list-hotel-description">
+                {{property_descriptions.description}}
+        </div>
+            <div id="facilities">
+                <h2>Facilities</h2>
+                <hr>
+                <h3>Most Popular Facilities</h3>
+
+                <div class="icon-facilities icon-beach-b">
+                    <span class="icon-image"></span>
+                    <span class="icon-text">beach</span>
+                </div>
+                <div class="icon-facilities icon-pool-b">
+                    <span class="icon-image"></span>
+                    <span class="icon-text">pool</span>
+                </div>
+                <div class="icon-facilities icon-spa-b">
+                    <span class="icon-image"></span>
+                    <span class="icon-text">spa</span>
+                </div>
+                <div class="icon-facilities icon-parking-b">
+                    <span class="icon-image"></span>
+                    <span class="icon-text">parking</span>
+                </div>
+                <div class="icon-facilities icon-breakfast-b">
+                    <span class="icon-image"></span>
+                    <span class="icon-text">breakfast</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="hotel-extras">
+                <div class="row">
+                    {{#amme amenities}}
+                        {{name}}
+                    {{/amme}}
+                </div>
+                <div class="clearfix"></div>
+
+                <div id="room-types">
+                    <h2>Room Types</h2>
+                    <hr>
+
+                    <div class="list-hotel">
+                        <div class="list-image">
+                            <div id="myCarousel-1" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                    </div>
+                                    <div class="item">
+                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                    </div>
+                                    <div class="item">
+                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                    </div>
+                                </div>
+
+                                <a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>
+                                <a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>
+                            </div>
+                        </div>
+                        <div class="list-content">
+                            <h2>Two Bedroom Apartment</h2>
+
+                            <div class="clearfix"></div>
+                            <div class="list-hotel-text">
+                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable channels and a private bathroom with free toiletries, a hairdryer and a bath or shower. ..
+                            </div>
+
+                        </div>
+                        <div class="list-price">
+                            <div class="list-hotel-price-bgr">Price for 1 night</div>
+                            <div class="list-hotel-price-curency">$350</div>
+                            <div class="list-hotel-price-loc">(LOC 1.2)</div>
+                            <a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="list-hotel">
+                        <div class="list-image">
+                            <div id="myCarousel-2" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                    </div>
+                                    <div class="item">
+                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                    </div>
+                                    <div class="item">
+                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                    </div>
+                                </div>
+
+                                <a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>
+                                <a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>
+                            </div>
+                        </div>
+                        <div class="list-content">
+                            <h2>Two Bedroom Apartment</h2>
+
+                            <div class="clearfix"></div>
+                            <div class="list-hotel-text">
+                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable channels and a private bathroom with free toiletries, a hairdryer and a bath or shower. ..
+                            </div>
+
+                        </div>
+                        <div class="list-price">
+                            <div class="list-hotel-price-bgr">Price for 1 night</div>
+                            <div class="list-hotel-price-curency">$350</div>
+                            <div class="list-hotel-price-loc">(LOC 1.2)</div>
+                            <a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div id="hotel-rules">
+                    <h2>Hotel Rules</h2>
+                    <p>
+                        {{property_descriptions.house_rules}}
+                    </p>
+                    <hr>
+                </div>
+                <div class="clearfix"></div>
+
+                <div id="cancellation">
+                    <h2>Cancellation</h2>
+                    <hr>
+
+                </div>
+                <div class="clearfix"></div>
+
+                <div id="children">
+                    <h2>Children & Extra Beds</h2>
+                    <hr>
+
+                </div>
+                <div class="clearfix"></div>
+
+                <div id="reviews">
+                    <h2>User Rating & Reviews</h2>
+                    <hr>
+
+                </div>
+                <div class="clearfix"></div>
+
+                <div id="locationMap">
+                    <h2>Location</h2>
+                    <hr>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="hotel-chekin">
+        <div class="hotel-chekin-box">
+
+            <form method="POST" id="user-form">
+                <div class="input-daterange">
+                    <div class="form-group has-feedback has-feedback-left input-group-date-in">
+                        <i class="icon icon-calendar form-control-feedback"></i>
+                        <span class="icon-check-in">Check in</span>
+                        <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                               placeholder="Select date">
+                    </div>
+
+                    <div class="input-group-addon">
+
+                    </div>
+
+                    <div class="form-group has-feedback has-feedback-left input-group-date-out">
+                        <span class="icon-check-out">Check out</span>
+                        <i class="icon icon-calendar form-control-feedback"></i>
+                        <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                               placeholder="Select date">
+                    </div>
+                </div>
+                <div id="hotel-search-nights">
+                    <span><span id="countdate">1</span> nights</span>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="dropdown select-person">
+                    <input type="number" class="form-control" id="number-person" min="1" placeholder="Select Guest Number" required="">
+                </div>
+
+                <div class="dropdown select-person">
+                    <input type="text" class="form-control" name="name" required="" placeholder="Name">
+                </div>
+
+                <div class="dropdown select-person">
+                    <input type="email" class="form-control" name="email" required="" placeholder="E-mail">
+                </div>
+
+                <div class="dropdown select-person">
+                    <input type="text" class="form-control" name="phone" required="" placeholder="Phone">
+                </div>
+
+                <div class="g-recaptcha" data-sitekey="6LfNZTYUAAAAAC6EqT3alk6NLY14TcsN1JnnA6Yn"></div>
+                <br>
+
+
+                <div class="nonev"></div>
+
+                <button type="submit" class="btn btn-primary">Request Booking in LOC or FIAT</button>
+
+            </form>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+</section>
+
+<script>
+    let hotelInputs = $('.hotel-chekin-box .input-daterange input');
+    let hotelNights = $('#hotel-search-nights span');
+    hotelNights.text(0 + ' nights');
+
+    hotelInputs.change(() => {
+        let checkIn = hotelInputs[0].value;
+        let checkOut = hotelInputs[1].value;
+
+        let checkInDate = new Date(checkIn);
+        let checkOutDate = new Date(checkOut);
+
+        let timeDiff = Math.abs(checkOutDate.getTime() - checkInDate.getTime());
+
+        if(!checkOut || !checkIn){
+            hotelNights.text(0 + ' nights');
+        }
+        else if(checkOutDate < checkInDate){
+            hotelNights.text(0 + ' nights');
+        }
+        else {
+            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            hotelNights.text(diffDays + ' nights');
+        }
+    });
+</script>

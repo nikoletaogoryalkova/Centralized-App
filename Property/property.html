@@ -1,0 +1,561 @@
+<script src="../js/handlebars-v4.0.11.js"></script>
+<script type="text/javascript">
+    function loadPage(href) {
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", href, false);
+        xmlhttp.send();
+        return xmlhttp.responseText;
+    }
+</script>
+<script>
+    Handlebars.registerHelper('amme', function(items){
+        let itemsPerColumn = parseInt(items.length / 3);
+        let inSymmetricItems = parseInt(items.length % 3);
+
+        let out = '<div class="col-md-4">';
+
+        let firstColumnCount = itemsPerColumn + inSymmetricItems;
+        for(let i = 0; i < firstColumnCount; i++){
+            out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
+        }
+        out = out + '</div>';
+        out = out + '<div class="col-md-4">';
+
+
+        for(let i = firstColumnCount; i < firstColumnCount + itemsPerColumn; i++){
+            out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
+        }
+        out = out + '</div>';
+        out = out + '<div class="col-md-4">';
+        for(let i = firstColumnCount + itemsPerColumn; i < itemsPerColumn + firstColumnCount + itemsPerColumn; i++){
+            out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
+        }
+
+        return out;
+    });
+</script>
+<script>
+    let headSource = loadPage('../head.html');
+    let headTemplate = Handlebars.compile(headSource);
+    let headContext = {title: "LockChain&trade; Marketplace"};
+    document.write(headTemplate(headContext));
+
+    let headerSource = loadPage('../header.html');
+    let headerTemplate = Handlebars.compile(headerSource);
+    document.write('<body>');
+    document.write(headerTemplate());
+
+    // Add more templates for property
+    let hotelDetailsSource = loadPage('details.html');
+    let hotelDetailsTemplate = Handlebars.compile(hotelDetailsSource);
+    let hotelDetailsContext = {
+        "id": 18,
+        "property_id": 19,
+        "channel_account_id": 1,
+        "currency_id": 2,
+        "currency": "GBP",
+        "channel_listing_id": "19166290",
+        "room_type": 1,
+        "listing_type": 1,
+        "instant_booking": 0,
+        "can_overbook": 0,
+        "is_cohost": 0,
+        "name": "-20%! Fantastic masionette SOHO 4 ppl",
+        "nickname": "Ganton #5(stopped)",
+        "security_deposit": "300.00",
+        "cleaning_fee": "65.00",
+        "extra_person": "20.00",
+        "channel_commission": null,
+        "guests_included": 2,
+        "price_markup": 0,
+        "default_daily_price": "155.00",
+        "default_daily_price_markup": 155,
+        "weekend_price": null,
+        "weekend_price_markup": 0,
+        "weekend_min_nights": null,
+        "weekly_price_factor": null,
+        "monthly_price_factor": null,
+        "min_nights": 1,
+        "max_nights": 1125,
+        "checkin_start": "15:00:00",
+        "checkin_end": null,
+        "checkout": "11:00:00",
+        "cancel_policy": 1,
+        "smart_pricing": 0,
+        "price_tip": "110.00",
+        "weekly_tip": 0.78617,
+        "monthly_tip": 0.52271,
+        "max_notice_days": 365,
+        "min_notice_hours": 2,
+        "turnover_days": 0,
+        "property_type": "Apartment",
+        "property_details": {
+            "property_id": 19,
+            "is_business": 0,
+            "payment_type": 1,
+            "person_capacity": 4,
+            "bathrooms": 1,
+            "bedrooms": 1,
+            "beds": 1,
+            "floor": null,
+            "area": null,
+            "lat": "51.513493",
+            "lng": "-0.138467",
+            "zipcode": "W1F 7RE",
+            "timezone_offset": null,
+            "timezone": null,
+            "contact_days_before": null,
+            "wireless_type": null,
+            "wireless_ssid": null,
+            "wireless_password": null
+        },
+        "property_descriptions": {
+            "access": null,
+            "arrival_info": null,
+            "checkin_place": null,
+            "description": "*** FANTASTIC STAY GUARANTEED ***\n\nThis is a truly unique newly refurbished maisonette with one bedroom (total surface of 60m2) in the heart of Soho and very close to the famous Carnaby Street. The maisonette is self contained with its own front door and is arranged over two floors. It has fantastic original features and is meters away from Oxford Circus and Piccadilly Circus. An incredible place to feel the spirit of London!\n\nFirst floor: Living room / Kitchen\nThe living room is spacious and very nicely decorated with design furniture. There is an almost separated kitchen next to it with a table which sits 3-4 people and has all the necessary comfort to help you cook your homemade meals.\n\nSecond floor: Bedroom: The bedroom is very spacious and has a queen size bed with a brand new mattress and its own fireplace.\n\nBathroom: The property offers a very spacious bathroom with a larger than average shower room with its own feature fireplace. \n\nWalk-in wardrobe\nFor additional convenience the bedroom is serviced with a separate walk-in wardrobe.\n\nSleeping arrangements\nThe apartment sleeps very comfortably 3 adults or a couple with 2 children. Two persons can sleep in the bedroom (queen size bed) and an adult or two children in the living room which has a convertible sofa bed. I also had guests sleeping 2 adults on the convertible sofa.\n\nEquipment: \n- Free internet/wi-fi, \n- Hairdryer,\n- Kettle and toaster, \n- Stove top, washing & drying machine, dishwasher, refrigerator with a freezer section \n- Iron & ironing board \n- Amazon Fire TV with free Prime movies, Netflix, HBO GO and many more\n- Linens and towels are provided - they can be changed weekly for long stays\n- Cosmetics - shampoo, body soap & conditioner\n- Nespresso coffee\n\nWELCOME!\nPlease contact me with any questions you may have! And let me know if you have suggestions or special needs to better the apartment even more!\n\nAll guests are welcome, whatever their nationalities, status (singles, couples, friends, families, travelers...) & so on.\n\nWhen you arrive you will be hosted by me or a friend of mine. You will have the maisonette for yourselves thereafter but if you need any assistance, we will do our best to accommodate your needs.\n\nNumerous bars and internationally varied cuisines within 2 mins walk from the flat. Everything you may ever need is within a short distance or a quick train journey. \nThe prestigious shops of London on Bond, Regent and Oxford Street are a short 4-5 minutes walk away. Covent Garden with it's famous restaurants and bars, Trafalgar Sq and the National Gallery are equally the same distance. Why would you want to look elsewhere?\n\nYou can walk to many attractions such as Piccadilly Circus, Leicester Square, China Town, Oxford Street, St James's Park, Trafalgar Square, The National Gallery, The British Museum and many more. Very close to Underground stations. The apartment is a 2 minute walk to Oxford Circus underground station.",
+            "directions": "",
+            "host_interaction": null,
+            "house_manual": null,
+            "house_rules": "- - Quiet hours are after 8pm. Please, no noise. - We wish to provide 24/7 check-ins. In order to do that we apply a £50 charge for arrival after 7:00 p.m. - For safety reasons and due to past party problems with previous guests we require a photocopy of government issued ID on the check-in; It is used only in the event of damages or party problems when we need to involve local authorities. All photocopies are deleted after check-out. - Guest agrees to pay for the replacement of any missing, damaged and/or broken items. For example: cushions, artwork, kitchenware, linens, towels, new lock if keys lost. - Internet is offered free of charge. In the unlikely event it is not working, or slow connection, we can't offer a refund. Internet speed and availability are out of our control.",
+            "interaction": "When you arrive you will be hosted by me or a friend of mine. You will have the maisonette for yourselves thereafter but if you need any assistance, we will do our best to accommodate your needs.",
+            "landlord_email": null,
+            "landlord_name": null,
+            "landlord_phone": null,
+            "lang": "en",
+            "name": "-20%! Fantastic masionette SOHO 4 ppl",
+            "neighborhood_overview": "Numerous bars and internationally varied cuisines within 2 mins walk from the flat. Everything you may ever need is within a short distance or a quick train journey. \nThe prestigious shops of London on Bond, Regent and Oxford Street are a short 4-5 minutes walk away. Covent Garden with it's famous restaurants and bars, Trafalgar Sq and the National Gallery are equally the same distance. Why would you want to look elsewhere?",
+            "notes": null,
+            "payment_details": null,
+            "pickup_service": null,
+            "space": "First floor: Living room / Kitchen\nThe living room is spacious and very nicely decorated with design furniture. There is an almost separated kitchen next to it with a table which sits 3-4 people and has all the necessary comfort to help you cook your homemade meals.\n\nSecond floor: Bedroom: The bedroom is very spacious and has a queen size bed with a brand new mattress and its own fireplace.\n\nBathroom: The property offers a very spacious bathroom with a larger than average shower room with its own feature fireplace. \n\nWalk-in wardrobe\nFor additional convenience the bedroom is serviced with a separate walk-in wardrobe.\n\nSleeping arrangements\nThe apartment sleeps very comfortably 3 adults or a couple with 2 children. Two persons can sleep in the bedroom (queen size bed) and an adult or two children in the living room which has a convertible sofa bed. I also had guests sleeping 2 adults on the convertible sofa.\n\nEquipment: \n- Free internet/wi-fi, \n- Hairdryer,\n- Kettle and toaster, \n- Stove top, washing & drying machine, dishwasher, refrigerator with a freezer section \n- Iron & ironing board \n- Amazon Fire TV with free Prime movies, Netflix, HBO GO and many more\n- Linens and towels are provided - they can be changed weekly for long stays\n- Cosmetics - shampoo, body soap & conditioner\n- Nespresso coffee\n\nWELCOME!\nPlease contact me with any questions you may have! And let me know if you have suggestions or special needs to better the apartment even more!\n\nAll guests are welcome, whatever their nationalities, status (singles, couples, friends, families, travelers...) & so on.",
+            "state": "England",
+            "street": "3 Newburgh Street",
+            "summary": "*** FANTASTIC STAY GUARANTEED ***\n\nThis is a truly unique newly refurbished maisonette with one bedroom (total surface of 60m2) in the heart of Soho and very close to the famous Carnaby Street. The maisonette is self contained with its own front door and is arranged over two floors. It has fantastic original features and is meters away from Oxford Circus and Piccadilly Circus. An incredible place to feel the spirit of London!",
+            "transit": "You can walk to many attractions such as Piccadilly Circus, Leicester Square, China Town, Oxford Street, St James's Park, Trafalgar Square, The National Gallery, The British Museum and many more. Very close to Underground stations. The apartment is a 2 minute walk to Oxford Circus underground station."
+        },
+        "city": "Greater London",
+        "city_id": 3,
+        "country_code": "GB",
+        "country_id": 235,
+        "country": "United Kingdom",
+        "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_280.jpg",
+        "pictures": [
+            {
+                "id": 245,
+                "property_photo_id": 280,
+                "channel_photo_id": "19166290_322201014",
+                "sort_order": 1,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_280.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_280.jpg"
+            },
+            {
+                "id": 246,
+                "property_photo_id": 281,
+                "channel_photo_id": "19166290_322199433",
+                "sort_order": 2,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_281.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_281.jpg"
+            },
+            {
+                "id": 247,
+                "property_photo_id": 282,
+                "channel_photo_id": "19166290_322200230",
+                "sort_order": 3,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_282.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_282.jpg"
+            },
+            {
+                "id": 248,
+                "property_photo_id": 283,
+                "channel_photo_id": "19166290_322200796",
+                "sort_order": 4,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_283.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_283.jpg"
+            },
+            {
+                "id": 249,
+                "property_photo_id": 284,
+                "channel_photo_id": "19166290_322198619",
+                "sort_order": 5,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_284.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_284.jpg"
+            },
+            {
+                "id": 250,
+                "property_photo_id": 285,
+                "channel_photo_id": "19166290_322199081",
+                "sort_order": 6,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_285.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_285.jpg"
+            },
+            {
+                "id": 251,
+                "property_photo_id": 286,
+                "channel_photo_id": "19166290_322198646",
+                "sort_order": 7,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_286.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_286.jpg"
+            },
+            {
+                "id": 252,
+                "property_photo_id": 287,
+                "channel_photo_id": "19166290_322201386",
+                "sort_order": 8,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_287.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_287.jpg"
+            },
+            {
+                "id": 253,
+                "property_photo_id": 288,
+                "channel_photo_id": "19166290_322202372",
+                "sort_order": 9,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_288.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_288.jpg"
+            },
+            {
+                "id": 254,
+                "property_photo_id": 289,
+                "channel_photo_id": "19166290_322202524",
+                "sort_order": 10,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_289.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_289.jpg"
+            },
+            {
+                "id": 255,
+                "property_photo_id": 290,
+                "channel_photo_id": "19166290_322200666",
+                "sort_order": 11,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_290.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_290.jpg"
+            },
+            {
+                "id": 256,
+                "property_photo_id": 291,
+                "channel_photo_id": "19166290_322201262",
+                "sort_order": 12,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_291.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_291.jpg"
+            },
+            {
+                "id": 257,
+                "property_photo_id": 292,
+                "channel_photo_id": "19166290_322201924",
+                "sort_order": 14,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_292.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_292.jpg"
+            },
+            {
+                "id": 258,
+                "property_photo_id": 293,
+                "channel_photo_id": "19166290_322202182",
+                "sort_order": 15,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_293.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_293.jpg"
+            },
+            {
+                "id": 259,
+                "property_photo_id": 294,
+                "channel_photo_id": "19166290_322202260",
+                "sort_order": 16,
+                "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/property_19_thumb_294.jpg",
+                "original": "http://api.borisn.fantastichost.netreact.com/image/property_19_src_294.jpg"
+            }
+        ],
+        "amenities": [
+            {
+                "channel_amenity_id": "fireplace",
+                "description": "",
+                "id": 51,
+                "listing_id": 18,
+                "name": "Indoor fireplace",
+                "property_amenity_id": 98
+            },
+            {
+                "channel_amenity_id": "tv",
+                "description": "",
+                "id": 133,
+                "listing_id": 18,
+                "name": "TV",
+                "property_amenity_id": 180
+            },
+            {
+                "channel_amenity_id": "wireless_internet",
+                "description": "Continuous access in the listing",
+                "id": 134,
+                "listing_id": 18,
+                "name": "Wireless Internet",
+                "property_amenity_id": 181
+            },
+            {
+                "channel_amenity_id": "kitchen",
+                "description": "Space where guests can cook their own meals",
+                "id": 135,
+                "listing_id": 18,
+                "name": "Kitchen",
+                "property_amenity_id": 182
+            },
+            {
+                "channel_amenity_id": "heating",
+                "description": "Central heating or a heater in the listing",
+                "id": 136,
+                "listing_id": 18,
+                "name": "Heating",
+                "property_amenity_id": 183
+            },
+            {
+                "channel_amenity_id": "washer",
+                "description": "In the building, free or for a fee",
+                "id": 137,
+                "listing_id": 18,
+                "name": "Washer",
+                "property_amenity_id": 184
+            },
+            {
+                "channel_amenity_id": "dryer",
+                "description": "In the building, free or for a fee",
+                "id": 138,
+                "listing_id": 18,
+                "name": "Dryer",
+                "property_amenity_id": 185
+            },
+            {
+                "channel_amenity_id": "smoke_detector",
+                "description": "",
+                "id": 139,
+                "listing_id": 18,
+                "name": "Smoke detector",
+                "property_amenity_id": 186
+            },
+            {
+                "channel_amenity_id": "carbon_monoxide_detector",
+                "description": "",
+                "id": 140,
+                "listing_id": 18,
+                "name": "Carbon monoxide detector",
+                "property_amenity_id": 187
+            },
+            {
+                "channel_amenity_id": "fire_extinguisher",
+                "description": "",
+                "id": 141,
+                "listing_id": 18,
+                "name": "Fire extinguisher",
+                "property_amenity_id": 188
+            },
+            {
+                "channel_amenity_id": "essentials",
+                "description": "Towels, bed sheets, soap, and toilet paper",
+                "id": 142,
+                "listing_id": 18,
+                "name": "Essentials",
+                "property_amenity_id": 189
+            },
+            {
+                "channel_amenity_id": "shampoo",
+                "description": "",
+                "id": 143,
+                "listing_id": 18,
+                "name": "Shampoo",
+                "property_amenity_id": 190
+            },
+            {
+                "channel_amenity_id": "hangers",
+                "description": "",
+                "id": 144,
+                "listing_id": 18,
+                "name": "Hangers",
+                "property_amenity_id": 191
+            },
+            {
+                "channel_amenity_id": "hair-dryer",
+                "description": "",
+                "id": 145,
+                "listing_id": 18,
+                "name": "Hair dryer",
+                "property_amenity_id": 192
+            },
+            {
+                "channel_amenity_id": "iron",
+                "description": "",
+                "id": 146,
+                "listing_id": 18,
+                "name": "Iron",
+                "property_amenity_id": 193
+            },
+            {
+                "channel_amenity_id": "laptop-friendly",
+                "description": "A table or desk with space for a laptop and a chair that’s comfortable to work in",
+                "id": 147,
+                "listing_id": 18,
+                "name": "Laptop friendly workspace",
+                "property_amenity_id": 194
+            },
+            {
+                "channel_amenity_id": "high_chair",
+                "description": "",
+                "id": 148,
+                "listing_id": 18,
+                "name": "High chair",
+                "property_amenity_id": 195
+            },
+            {
+                "channel_amenity_id": "crib",
+                "description": "",
+                "id": 149,
+                "listing_id": 18,
+                "name": "Crib",
+                "property_amenity_id": 196
+            },
+            {
+                "channel_amenity_id": "microwave",
+                "description": "",
+                "id": 150,
+                "listing_id": 18,
+                "name": "Microwave",
+                "property_amenity_id": 197
+            },
+            {
+                "channel_amenity_id": "coffee_maker",
+                "description": "",
+                "id": 151,
+                "listing_id": 18,
+                "name": "Coffee maker",
+                "property_amenity_id": 198
+            },
+            {
+                "channel_amenity_id": "refrigerator",
+                "description": "",
+                "id": 152,
+                "listing_id": 18,
+                "name": "Refrigerator",
+                "property_amenity_id": 199
+            },
+            {
+                "channel_amenity_id": "dishwasher",
+                "description": "",
+                "id": 153,
+                "listing_id": 18,
+                "name": "Dishwasher",
+                "property_amenity_id": 200
+            },
+            {
+                "channel_amenity_id": "dishes_and_silverware",
+                "description": "",
+                "id": 154,
+                "listing_id": 18,
+                "name": "Dishes and silverware",
+                "property_amenity_id": 201
+            },
+            {
+                "channel_amenity_id": "cooking_basics",
+                "description": "Pots and pans, oil, salt and pepper",
+                "id": 155,
+                "listing_id": 18,
+                "name": "Cooking basics",
+                "property_amenity_id": 202
+            },
+            {
+                "channel_amenity_id": "oven",
+                "description": "",
+                "id": 156,
+                "listing_id": 18,
+                "name": "Oven",
+                "property_amenity_id": 203
+            },
+            {
+                "channel_amenity_id": "stove",
+                "description": "",
+                "id": 157,
+                "listing_id": 18,
+                "name": "Stove",
+                "property_amenity_id": 204
+            }
+        ],
+        "rooms": [
+            {
+                "area": null,
+                "channel_room_id": "7874205",
+                "couch": 0,
+                "double_bed": 1,
+                "floor_mattress": 0,
+                "id": 8,
+                "listing_id": 18,
+                "name": "Room 1",
+                "person_capacity": null,
+                "property_rooms_id": 297,
+                "queen_bed": 0,
+                "single_bed": 0,
+                "sofa_bed": 0
+            },
+            {
+                "area": null,
+                "channel_room_id": "7874203",
+                "couch": 0,
+                "double_bed": 0,
+                "floor_mattress": 0,
+                "id": 9,
+                "listing_id": 18,
+                "name": "Room 0",
+                "person_capacity": null,
+                "property_rooms_id": 298,
+                "queen_bed": 0,
+                "single_bed": 0,
+                "sofa_bed": 1
+            }
+        ],
+        "channel_account_uid": 51305689,
+        "channel_account": {
+            "airlock_url": null,
+            "channel_id": 1,
+            "channel_key": "d306zoyjsyarp7ifhu67rjxn52tv0t20",
+            "channel_token": "27q58xacpj69civsmy8ie2w2w",
+            "channel_uid": 51305689,
+            "credentials_password": "b4w1p4r0l4t4!!asdasd11",
+            "credentials_user": "fantasticstay@fantasticstay.com",
+            "customer_id": 1,
+            "first_name": "FantasticStay",
+            "has_img": 1,
+            "id": 1,
+            "is_airlock": 0,
+            "last_name": "Com",
+            "listings_last_update": "2017-11-19 15:33:53",
+            "location": "London, United Kingdom",
+            "name": "FantasticStay",
+            "original": "http://api.borisn.fantastichost.netreact.com/image/account_src_1.jpg",
+            "out_ip": "31.13.245.45",
+            "phone": "+44 7796 554992",
+            "reservations_last_update": "2017-11-19 15:35:19",
+            "reviews_last_update": "2017-11-19 14:03:34",
+            "status": 1,
+            "status_message": "",
+            "thumbnail": "http://api.borisn.fantastichost.netreact.com/image/account_thumb_1.jpg",
+            "transactions_last_update": "2017-11-19 14:40:42"
+        },
+        "custom_stay": [
+            {
+                "id": 2559,
+                "listing_id": 18,
+                "name": null,
+                "min_nights": 5,
+                "currency_id": 2,
+                "currency": "GBP",
+                "daily_price": null,
+                "start_date": "2017-12-29",
+                "end_date": "2018-01-03",
+                "checkin_day": null
+            }
+        ],
+        "tags": null,
+        "is_active": 1,
+        "is_channel_active": 0,
+        "calendar_updated_at": "2017-11-18 01:39:11",
+        "updated_at": "2017-11-19 15:34:14"
+    };
+    document.write(hotelDetailsTemplate(hotelDetailsContext));
+
+    let footerSource = loadPage('../footer.html');
+    let footerTemplate = Handlebars.compile(footerSource);
+    document.write(footerTemplate());
+    document.write('</body>');
+</script>
