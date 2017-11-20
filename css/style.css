@@ -889,13 +889,13 @@ a:focus {
     font-size: 8px;
     margin-right: 1px;
 }
-<<<<<<< HEAD
 
 .filter-box .filter-beds-counter .form-control {
     min-height: 20px;
     padding: 4px 8px;
     text-align: center;
-=======
+}
+
 .dashboard-count-box .total-spend{
 	background: #fff;
 	border-radius: 5px;
@@ -911,7 +911,6 @@ a:focus {
 	color: #54585b; 
 	background: #fff; 
 	margin: 15px 0 50px 0;
->>>>>>> 63bfe3816f88faba76b26edb923c6b026187041a
 }
 
 .filter-box .filter-fun-icon div {
@@ -3169,7 +3168,6 @@ input#card-number {
 .success-title {
     color: #fff;
 }
-<<<<<<< HEAD
 
 .success-title h1 {
     color: #fff;
@@ -3230,7 +3228,7 @@ input#card-number {
     font-size: 30px;
     color: #fff;
     text-align: center;
-=======
+}
 .success-title h1{
 	color: #fff;
 	font-family: 'FuturaStd-Light'; 
@@ -3289,7 +3287,6 @@ input#card-number {
 	font-size: 30px; 
 	color: #fff;  
 	text-align: center;
->>>>>>> 63bfe3816f88faba76b26edb923c6b026187041a
 }
 
 #successful-reservation-content-box .reservation-hotel-info {
@@ -3308,7 +3305,6 @@ input#card-number {
     margin-right: 15px;
 }
 
-<<<<<<< HEAD
 #successful-reservation-content-box .reservation-hotel-bgr {
     margin-left: -4px;
     margin-right: -4px;
@@ -3317,7 +3313,8 @@ input#card-number {
 
 #successful-reservation-content-box .reservation-hotel-bgr img {
     width: 100%;
-=======
+}
+
 #successful-reservation-content-box .reservation-hotel-bgr{
 	margin-left: -4px;
 	margin-right: -4px;
@@ -3325,26 +3322,23 @@ input#card-number {
 }
 #successful-reservation-content-box .reservation-hotel-bgr img{
 	width: 100%;
->>>>>>> 63bfe3816f88faba76b26edb923c6b026187041a
 }
 
 #successful-reservation-content-box .reservation-hotel-info-content {
     padding: 0 15px;
 }
-<<<<<<< HEAD
 
 #successful-reservation-content-box .reservation-hotel-grey-box {
     background: #f7f7f8;
     border-radius: 5px;
     padding: 10px;
     margin: 15px;
-=======
+}
 #successful-reservation-content-box .reservation-hotel-grey-box{
 	background: #f7f7f8;
 	border-radius: 5px;
 	padding: 10px;
 	margin: 15px;
->>>>>>> 63bfe3816f88faba76b26edb923c6b026187041a
 }
 
 #successful-reservation-content-box .reservation-hotel-grey-person {
@@ -3412,14 +3406,13 @@ input#card-number {
     font-size: 30px;
 }
 
-<<<<<<< HEAD
+
 #successful-reservation-content-box .reservation-hotel-price .pull-right {
     margin-top: -13px;
-=======
+}
 .admin_dashboard .user_table_img{
 	float: left; 
 	margin-right: 10px;
-
 }
 .admin_dashboard .user_table_img img{
 	border-radius: 50%; 
@@ -3495,7 +3488,6 @@ input#card-number {
 }
 .dashboard-monts-box.user-admin .dash-title-2{
 	display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #d87a61;
->>>>>>> 63bfe3816f88faba76b26edb923c6b026187041a
 }
 
 .hotel-chekin-box .input-daterange  {
