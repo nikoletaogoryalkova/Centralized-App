@@ -113,7 +113,8 @@ a:hover {
 
 a:focus {
     outline: none;
-    background-color: transparent; !important;
+    background-color: transparent;
+!important;
 }
 
 .caret {
@@ -197,7 +198,7 @@ a:focus {
 }
 
 /* Override bootstrap */
-.nav>li>a:focus, .nav>li>a:hover {
+.nav > li > a:focus, .nav > li > a:hover {
     background-color: transparent;
     color: inherit;
 }
@@ -243,9 +244,9 @@ a:focus {
 }
 
 /*.btn-primary-revers:focus {*/
-    /*background-color: #c26048 !important;*/
-    /*border: 1px solid #c26048 !important;*/
-    /*color: #fff !important;*/
+/*background-color: #c26048 !important;*/
+/*border: 1px solid #c26048 !important;*/
+/*color: #fff !important;*/
 /*}*/
 
 .btn-white {
@@ -259,8 +260,8 @@ a:focus {
 }
 
 /*.btn-white:focus{*/
-    /*background-color: #fff;*/
-    /*color: #54575a;*/
+/*background-color: #fff;*/
+/*color: #54575a;*/
 /*}*/
 
 .btn-dark-blue {
@@ -274,8 +275,8 @@ a:focus {
 }
 
 /*.btn-dark-blue:focus {*/
-    /*background-color: #223843;*/
-    /*color: #fff;*/
+/*background-color: #223843;*/
+/*color: #fff;*/
 /*}*/
 
 .checkbox label {
@@ -896,21 +897,23 @@ a:focus {
     text-align: center;
 }
 
-.dashboard-count-box .total-spend{
-	background: #fff;
-	border-radius: 5px;
+.dashboard-count-box .total-spend {
+    background: #fff;
+    border-radius: 5px;
 }
-.dashboard-count-box .average-daily-rate{
-	background: #fff;
-	border-radius: 5px;
+
+.dashboard-count-box .average-daily-rate {
+    background: #fff;
+    border-radius: 5px;
 }
-.dashboard-monts-box{
-	border: 1px solid #ccc; 
-	border-radius: 5px; 
-	padding: 20px; 
-	color: #54585b; 
-	background: #fff; 
-	margin: 15px 0 50px 0;
+
+.dashboard-monts-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    color: #54585b;
+    background: #fff;
+    margin: 15px 0 50px 0;
 }
 
 .filter-box .filter-fun-icon div {
@@ -3229,64 +3232,66 @@ input#card-number {
     color: #fff;
     text-align: center;
 }
-.success-title h1{
-	color: #fff;
-	font-family: 'FuturaStd-Light'; 
-	font-size: 46px; 
-	margin-top: 20px;
-	margin-bottom: 10px; 
-	margin-left: 150px; 
-}
-.success-title h2{
-	color: #fff;
-	font-family: 'FuturaStd-Light';
-	font-size: 34px;
-	margin-left: 150px;
-	margin-top: 10px; 
-}
-.success-title span{
-	margin: 20px auto;
-	padding-top: 30px;
-	height: 100px;
-	width: 100px;
-	color: #fff;
-	font-size: 30px;
-	border-radius: 50%;
-	border: 6px solid #fff;
-	text-align: center;
-	float: left;
+
+.success-title h1 {
+    color: #fff;
+    font-family: 'FuturaStd-Light';
+    font-size: 46px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 150px;
 }
 
-
-#successful-reservation-content-box .reservation-hotel-info-box{
-	width: 30%; 
-	margin: 30px auto;
+.success-title h2 {
+    color: #fff;
+    font-family: 'FuturaStd-Light';
+    font-size: 34px;
+    margin-left: 150px;
+    margin-top: 10px;
 }
 
-#successful-reservation-content-box .reservation-hotel-bgr-title{
-	background: #d87a61; 
-	padding: 50px 0; 
-	border-radius: 4px;
+.success-title span {
+    margin: 20px auto;
+    padding-top: 30px;
+    height: 100px;
+    width: 100px;
+    color: #fff;
+    font-size: 30px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    text-align: center;
+    float: left;
 }
 
-#successful-reservation-content-box .reservation-hotel-bgr-title .title-1{
-	font-size: 20px; 
-	color: #fff; 
-	margin-bottom: 15px; 
-	text-align: center;
+#successful-reservation-content-box .reservation-hotel-info-box {
+    width: 30%;
+    margin: 30px auto;
 }
 
-#successful-reservation-content-box .reservation-hotel-bgr-title .title-2{
-	font-size: 40px; 
-	color: #fff; 
-	margin-bottom: 2px; 
-	text-align: center;
+#successful-reservation-content-box .reservation-hotel-bgr-title {
+    background: #d87a61;
+    padding: 50px 0;
+    border-radius: 4px;
 }
 
-#successful-reservation-content-box .reservation-hotel-bgr-title .title-3{
-	font-size: 30px; 
-	color: #fff;  
-	text-align: center;
+#successful-reservation-content-box .reservation-hotel-bgr-title .title-1 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#successful-reservation-content-box .reservation-hotel-bgr-title .title-2 {
+    font-size: 40px;
+    color: #fff;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+#successful-reservation-content-box .reservation-hotel-bgr-title .title-3 {
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
 }
 
 #successful-reservation-content-box .reservation-hotel-info {
@@ -3315,13 +3320,14 @@ input#card-number {
     width: 100%;
 }
 
-#successful-reservation-content-box .reservation-hotel-bgr{
-	margin-left: -4px;
-	margin-right: -4px;
-	margin-bottom: -4px;
+#successful-reservation-content-box .reservation-hotel-bgr {
+    margin-left: -4px;
+    margin-right: -4px;
+    margin-bottom: -4px;
 }
-#successful-reservation-content-box .reservation-hotel-bgr img{
-	width: 100%;
+
+#successful-reservation-content-box .reservation-hotel-bgr img {
+    width: 100%;
 }
 
 #successful-reservation-content-box .reservation-hotel-info-content {
@@ -3334,11 +3340,12 @@ input#card-number {
     padding: 10px;
     margin: 15px;
 }
-#successful-reservation-content-box .reservation-hotel-grey-box{
-	background: #f7f7f8;
-	border-radius: 5px;
-	padding: 10px;
-	margin: 15px;
+
+#successful-reservation-content-box .reservation-hotel-grey-box {
+    background: #f7f7f8;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 15px;
 }
 
 #successful-reservation-content-box .reservation-hotel-grey-person {
@@ -3406,91 +3413,110 @@ input#card-number {
     font-size: 30px;
 }
 
-
 #successful-reservation-content-box .reservation-hotel-price .pull-right {
     margin-top: -13px;
 }
-.admin_dashboard .user_table_img{
-	float: left; 
-	margin-right: 10px;
+
+.admin_dashboard .user_table_img {
+    float: left;
+    margin-right: 10px;
 }
-.admin_dashboard .user_table_img img{
-	border-radius: 50%; 
-	max-width: 50px; 
+
+.admin_dashboard .user_table_img img {
+    border-radius: 50%;
+    max-width: 50px;
 
 }
 
-.table-bookings tr.table_info td{
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
+.table-bookings tr.table_info td {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
+
 .table-bookings tr.table_info td:first-child {
-	border-left: 1px solid #ccc;
+    border-left: 1px solid #ccc;
 }
+
 .table-bookings tr.table_info td:last-child {
-	border-right: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
-.dashboard-reviews-item{
-	border: 1px solid #ccc;
-	border-radius: 5px; 
-	padding: 25px;
-	background: #fff; 
-	font-size: 18px; 
-	margin-bottom: 15px;
+
+.dashboard-reviews-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 25px;
+    background: #fff;
+    font-size: 18px;
+    margin-bottom: 15px;
 }
+
 .dashboard-reviews-item a {
-	color: #d87a61;
-	text-decoration: underline;
+    color: #d87a61;
+    text-decoration: underline;
 }
+
 .dashboard-reviews-item a.close-button {
-	color: #55575b;
-	text-decoration: none;
-	border: 2px solid #55575b;
-	border-radius: 50%;
-	width: 30px; 
-	height: 30px; 
-	text-align: center; 
-	font-size: 12px; 
-	padding-top: 5px;
+    color: #55575b;
+    text-decoration: none;
+    border: 2px solid #55575b;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 12px;
+    padding-top: 5px;
 }
 
 .dashboard-reviews-item a.close-button:hover {
-	color: #d87a61;
-	text-decoration: none;
-	border: 2px solid #d87a61;
-	border-radius: 50%; 
-	display: inline-block; 
-	width: 30px; 
-	height: 30px; 
-	text-align: center;
-	font-size: 12px;
-	padding-top: 5px;
+    color: #d87a61;
+    text-decoration: none;
+    border: 2px solid #d87a61;
+    border-radius: 50%;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 12px;
+    padding-top: 5px;
 }
 
-.dashboard-monts-box.user-admin{
-	background: transparent;
+.dashboard-monts-box.user-admin {
+    background: transparent;
 }
+
 .dashboard-monts-box.user-admin .morris-hover.morris-default-style {
-    background: #fff; border-radius: 4px;
+    background: #fff;
+    border-radius: 4px;
 }
+
 .dashboard-monts-box.user-admin .morris-hover.morris-default-style:after {
     margin-top: 3px;
     border-top: 15px solid #fff;
 }
+
 .dashboard-monts-box.user-admin .btn-primary-revers:hover, .dashboard-monts-box.user-admin .btn-primary-revers:active:hover, .dashboard-monts-box.user-admin .btn-primary-revers:active, .dashboard-monts-box.user-admin .active .btn-primary-revers {
-    background-color: #223843!important;
-    border: 1px solid #223843!important;
-    color: #fff!important;
+    background-color: #223843 !important;
+    border: 1px solid #223843 !important;
+    color: #fff !important;
 }
 
-.dashboard-monts-box.user-admin .dash-title-1{
-	display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #223843;
-}
-.dashboard-monts-box.user-admin .dash-title-2{
-	display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #d87a61;
+.dashboard-monts-box.user-admin .dash-title-1 {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #223843;
 }
 
-.hotel-chekin-box .input-daterange  {
+.dashboard-monts-box.user-admin .dash-title-2 {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d87a61;
+}
+
+.hotel-chekin-box .input-daterange {
     width: 80%;
 }
 
@@ -3722,4 +3748,37 @@ input::-webkit-inner-spin-button {
     .filter-box-hover-close {
         max-width: 380px;
     }
+}
+
+/* Checkbox input style */
+input[type=checkbox].checkbox {
+    position: absolute;
+    opacity: 0;
+}
+
+input[type=checkbox].checkbox + label {
+    position: relative;
+    cursor: pointer;
+    margin-left: 1.5em;
+    margin-right: 1em;
+}
+
+input[type=checkbox].checkbox + label:after {
+    position: absolute;
+    content: "";
+    display: block;
+    margin-top: 4px;
+    border: 1px solid #cccccc;
+    width: 15px;
+    height: 15px;
+    top: 0;
+    left: -1.5em;
+    transition: all .5s ease-in-out;
+}
+
+input[type=checkbox].checkbox:checked + label:after,
+input[type=checkbox].checkbox:hover + label:after {
+    background: #cccccc;
+    transition: all .5s ease-in-out;
+    text-align: center;
 }
