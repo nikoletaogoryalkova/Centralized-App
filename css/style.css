@@ -207,6 +207,11 @@ a:focus {
     padding-right: 25px;
 }
 
+.input-group-addon {
+    /*padding: 6px 20px;*/
+    font-size: 18px;
+}
+
 /* END */
 
 .form-control:focus {
@@ -3235,7 +3240,7 @@ input#card-number {
 
 .success-title h1 {
     color: #fff;
-    font-family: 'FuturaStd-Light';
+    font-family: 'FuturaStd-Light', sans-serif;
     font-size: 46px;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -3244,7 +3249,7 @@ input#card-number {
 
 .success-title h2 {
     color: #fff;
-    font-family: 'FuturaStd-Light';
+    font-family: 'FuturaStd-Light', sans-serif;
     font-size: 34px;
     margin-left: 150px;
     margin-top: 10px;
@@ -3782,3 +3787,47 @@ input[type=checkbox].checkbox:hover + label:after {
     transition: all .5s ease-in-out;
     text-align: center;
 }
+
+/* END */
+
+.host-step {
+    padding: 10px 10px 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.host-step.active {
+    background-color: #A2C5BF;
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+/* Custom radio input style*/
+
+.host-step-radio {
+     position: relative;
+     cursor: pointer;
+     width: 120px;
+     height: 100px;
+     opacity: 0;
+     z-index: 5;
+ }
+
+.host-step-radio + .radio-input-group {
+    position: absolute;
+    content: "";
+    padding: 10px;
+    width: 120px;
+    height: 100px;
+    top: 0;
+    text-align: center;
+    background-color: #FFFFFF;
+}
+
+.host-step-radio:checked + .radio-input-group,
+.host-step-radio:hover + .radio-input-group {
+    background-color: #FF0000;
+}
+
+/* END */
