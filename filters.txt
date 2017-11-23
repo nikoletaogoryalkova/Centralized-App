@@ -1,0 +1,214 @@
+
+                        <div class="form-group" id="filter-fun">
+                            <label>Fun Things To Do</label>
+
+                            <div class="filter-fun-icon">
+                                <div>
+                                    <a href="#" class="icon-beach"></a>
+                                    <span>beach</span>
+                                </div>
+
+                                <div>
+                                    <a href="#" class="icon-pool active"></a>
+                                    <span>pool</span>
+                                </div>
+
+                                <div>
+                                    <a href="#" class="icon-spa"></a>
+                                    <span>spa</span>
+                                </div>
+
+                                <div>
+                                    <a href="#" class="icon-playground"></a>
+                                    <span>playground</span>
+                                </div>
+
+                                <div>
+                                    <a href="#" class="icon-sailing"></a>
+                                    <span>sailing</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="form-group" id="filter-room-facility">
+                            <label>Room Facility</label>
+
+                            <div class="filter-check-box">
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Air conditioning</span>
+                                    <span class="filter-check-count">153</span>
+                                </label>
+                                <label class="filter-check-label ">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Balcony</span>
+                                    <span class="filter-check-count">76</span>
+                                </label>
+                                <label class="filter-check-label ">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Flat-screen TV</span>
+                                    <span class="filter-check-count">35</span>
+                                </label>
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Kitchen/Kitchenette</span>
+                                    <span class="filter-check-count">2</span>
+                                </label>
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Terrace</span>
+                                    <span class="filter-check-count">1</span>
+                                </label>
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">View</span>
+                                    <span class="filter-check-count">1</span>
+                                </label>
+                                <a href="#" class="filter-room-facility-more-href">more</a>
+                                <div class="filter-room-facility-more">
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <a href="#" class="filter-room-facility-hide-href">hide</a>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="form-group" id="filter-facility">
+                            <label>Facility</label>
+
+                            <div class="filter-check-box">
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Parking</span>
+                                    <span class="filter-check-count">153</span>
+                                </label>
+                                <label class="filter-check-label ">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Free WiFi</span>
+                                    <span class="filter-check-count">76</span>
+                                </label>
+                                <label class="filter-check-label ">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Restaurant</span>
+                                    <span class="filter-check-count">35</span>
+                                </label>
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Pet Friendly</span>
+                                    <span class="filter-check-count">2</span>
+                                </label>
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Non-Smoking Rooms</span>
+                                    <span class="filter-check-count">1</span>
+                                </label>
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Fitness Center</span>
+                                    <span class="filter-check-count">1</span>
+                                </label>
+                                <a href="#" class="filter-facility-more-href">more</a>
+                                <div class="filter-facility-more">
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <label class="filter-check-label">
+                                        <span class="filter-check"></span>
+                                        <span class="filter-check-text">Terrace</span>
+                                        <span class="filter-check-count">1</span>
+                                    </label>
+                                    <a href="#" class="filter-facility-hide-href">hide</a>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="form-group" id="filter-facility">
+                            <label>Meals</label>
+
+                            <div class="filter-check-box">
+                                <label class="filter-check-label">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Breakfast included</span>
+                                    <span class="filter-check-count">153</span>
+                                </label>
+                                <label class="filter-check-label ">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">Breakfast+Dinner included</span>
+                                    <span class="filter-check-count">76</span>
+                                </label>
+                                <label class="filter-check-label ">
+                                    <span class="filter-check"></span>
+                                    <span class="filter-check-text">I want to cook</span>
+                                    <span class="filter-check-count">35</span>
+                                </label>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="form-group" id="filter-distance">
+                            <label>Distance to</label>
+
+                            <div class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">the beach
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="navbar-dropdown dropdown-menu">
+                                    <li>
+                                        <a href="#">the beach</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">the beach</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="filter-distance-box">
+
+                                <input id="distance-slider" type="text" class="span2" value="" data-slider-min="0.5" data-slider-max="5" data-slider-step="0.5" data-slider-value="[0.5,5]" />
+                                <span class="pull-left">0.5 km</span>
+                                <span class="pull-right">5 km</span>
+                                <div class="clearfix"></div>
+                            </div>
+
+
+
+                        </div>
