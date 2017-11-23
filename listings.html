@@ -367,7 +367,7 @@
                             <label>Star Rating</label>
 
                             <div class="filter-stars">
-                                <span class="active">1</span>
+                                <span>1</span>
                                 <span>2</span>
                                 <span>3</span>
                                 <span>4</span>
@@ -693,15 +693,26 @@
         })
     </script>
     <script>
-        let ratings = new Set();
+        let propertyStars = new Set();
         let propertyTypes = new Set();
         let propertyTypeQueryString = '';
+        let propertyStarsQueryString = '';
         let minPrice, maxPrice;
         $('#filter-button').click(search);
         $('#filter-type .filter-check').click(propertyTypeClickHandler);
-        $('')
+        $('.filter-stars span').click(propertyStarsClickHandler);
         let priceSliderElement = $('#price-slider');
 
+        function propertyStarsClickHandler(eventData) {
+            let clickedSpanElement = $(eventData.target);
+            clickedSpanElement.toggleClass('active');
+            let spanText = clickedSpanElement.text();
+            if (propertyStars.has(spanText)) {
+                propertyStars.delete(spanText);
+            } else {
+                propertyStars.add(spanText);
+            }
+        }
 
         function propertyTypeClickHandler(eventData) {
             let clickedFilterGroupElement = $(eventData.target).parent()
@@ -712,6 +723,16 @@
             } else {
                 propertyTypes.add(filterCheckText);
             }
+        }
+
+        function getPropertyStarsQueryString() {
+            let queryString = '';
+
+            propertyStars.forEach(element => {
+                queryString += element + ';';
+            });
+
+            return queryString;
         }
 
         function getPropertyTypeQueryString() {
@@ -734,6 +755,7 @@
             parameters += `&priceMax=${maxPrice}`;
 
             propertyTypeQueryString = getPropertyTypeQueryString();
+            propertyStarsQueryString = getPropertyStarsQueryString();
             console.log(propertyTypeQueryString);
             const endPoint = host + path + parameters;
 
