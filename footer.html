@@ -50,15 +50,14 @@
     </div>
 </footer>
 
-<link rel="stylesheet" href="../css/jquery.fancybox.css">
-<link rel="stylesheet" href="../css/bootstrap-slider.css">
-
 <script src="../js/bootstrap-datepicker.js"></script>
 <script src="../js/bootstrap-slider.js"></script>
 <script src="../js/jquery.fancybox.js"></script>
 <script src="../js/smooth-scroll.min.js"></script>
 
 <script>
+    // ESC Key close modals
+
     $(document).keydown(function(event) {
         if (event.keyCode === 27) {
             $('.modal .close').click();
@@ -66,6 +65,8 @@
     });
 </script>
 <script>
+    // Activate smooth scroll
+
     let scroll = new SmoothScroll('a[href*="#"]');
 </script>
 <script>
@@ -143,6 +144,32 @@
         else {
             let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
             nights.text(diffDays + ' nights');
+        }
+    });
+</script>
+<script>
+    let hotelInputs = $('.hotel-chekin-box .input-daterange input');
+    let hotelNights = $('#hotel-search-nights span');
+    hotelNights.text(0 + ' nights');
+
+    hotelInputs.change(() => {
+        let checkIn = hotelInputs[0].value;
+        let checkOut = hotelInputs[1].value;
+
+        let checkInDate = new Date(checkIn);
+        let checkOutDate = new Date(checkOut);
+
+        let timeDiff = Math.abs(checkOutDate.getTime() - checkInDate.getTime());
+
+        if(!checkOut || !checkIn){
+            hotelNights.text(0 + ' nights');
+        }
+        else if(checkOutDate < checkInDate){
+            hotelNights.text(0 + ' nights');
+        }
+        else {
+            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            hotelNights.text(diffDays + ' nights');
         }
     });
 </script>
