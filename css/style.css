@@ -744,6 +744,7 @@ a:focus {
     padding: 3px 0 30px 0;
     border-radius: 2px;
     background: #fff url(../images/icon-star-filter.png) center 31px no-repeat;
+    cursor: pointer;
 }
 
 .filter-box .filter-stars span:hover,
