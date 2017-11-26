@@ -1,0 +1,223 @@
+<head>
+
+</head>
+
+<body>
+
+</body>
+<script src="../js/listings.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/handlebars-v4.0.11.js"></script>
+<!--<script src="../js/bootstrap-datepicker.js"></script>-->
+<!--<script src="../js/jquery.fancybox.js"></script>-->
+
+<script type="text/javascript">
+    function loadPage(href) {
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", href, false);
+        xmlhttp.send();
+        return xmlhttp.responseText;
+    }
+</script>
+<script>
+    let headSource = loadPage('../head.html');
+    let headTemplate = Handlebars.compile(headSource);
+    let headContext = {title: "LockChain Marketplace"};
+
+    let headerSource = loadPage('../header.html');
+    let headerTemplate = Handlebars.compile(headerSource);
+
+    let breadcrumbSource = loadPage('breadcrumb.html');
+    let breadcrumbTemplate = Handlebars.compile(breadcrumbSource);
+
+    let filtersSource = loadPage('filters.html');
+    let filtersTemplate = Handlebars.compile(filtersSource);
+
+    let footerSource = loadPage('../footer.html');
+    let footerTemplate = Handlebars.compile(footerSource);
+
+
+    let compiledTemplate = headerTemplate() + breadcrumbTemplate() + filtersTemplate() + footerTemplate();
+
+    $('head').html(headTemplate(headContext));
+
+    $('body')
+        .append(headerTemplate())
+        .append(breadcrumbTemplate())
+        .append(
+            $('<section>')
+                .attr('id', 'hotel-box')
+                .append(
+                    $('<div>').addClass('container')
+                        .append(
+                            $('<div>').addClass('row')
+                        )
+                ))
+        .append(footerTemplate());
+
+    $('#hotel-box .row').append(filtersTemplate());
+</script>
+<script>
+    $('.fancybox').fancybox({
+        'padding': 0,
+        'transitionIn': 'none',
+        'transitionOut': 'none',
+        helpers: {
+            overlay: {
+                locked: false
+            }
+        },
+        beforeShow: function () {
+            $('html').css('overflowX', 'visible');
+            $('body').css('overflowY', 'hidden');
+        },
+        afterClose: function () {
+            $('html').css('overflowX', 'hidden');
+            $('body').css('overflowY', 'visible');
+        }
+    });
+    $('.input-daterange input').each(function () {
+        $(this).datepicker('clearDates');
+    });
+
+    $("#price-slider").slider({});
+    $("#distance-slider").slider({});
+
+    $('.filter-room-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'none');
+    });
+
+    $('.filter-room-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'block');
+    });
+
+    $('.filter-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'none');
+    });
+
+    $('.filter-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'block');
+    })
+</script>
+<script>
+    let propertyStars = new Set();
+    let propertyTypes = new Set();
+    let propertyAmenities = new Set();
+
+    let propertyTypeQueryString = '';
+    let propertyStarsQueryString = '';
+    let propertyAmenitiesQueryString = '';
+
+    let minPrice, maxPrice;
+
+    $('#filter-button').click(search);
+    $('#filter-type .filter-check').click(propertyTypeClickHandler);
+    $('.filter-stars span').click(propertyStarsClickHandler);
+    $('#filter-amenities .filter-check').click(propertyAmenitiesClickHandler);
+
+    let priceSliderElement = $('#price-slider');
+
+    function propertyStarsClickHandler(eventData) {
+        let clickedSpanElement = $(eventData.target);
+        clickedSpanElement.toggleClass('active');
+        let spanText = clickedSpanElement.text();
+        if (propertyStars.has(spanText)) {
+            propertyStars.delete(spanText);
+        } else {
+            propertyStars.add(spanText);
+        }
+    }
+
+    function propertyTypeClickHandler(eventData) {
+        let clickedFilterGroupElement = $(eventData.target).parent();
+        clickedFilterGroupElement.toggleClass('active');
+        let filterCheckText = clickedFilterGroupElement.children('.filter-check-text').text();
+        if (propertyTypes.has(filterCheckText)) {
+            propertyTypes.delete(filterCheckText);
+        } else {
+            propertyTypes.add(filterCheckText);
+        }
+    }
+
+
+    function propertyAmenitiesClickHandler(eventData) {
+        let clickedFilterGroupElement = $(eventData.target).parent();
+        clickedFilterGroupElement.toggleClass('active');
+        let filterCheckText = clickedFilterGroupElement.children('.filter-check-text').text();
+        if (propertyAmenities.has(filterCheckText)) {
+            propertyAmenities.delete(filterCheckText);
+        } else {
+            propertyAmenities.add(filterCheckText);
+        }
+    }
+
+    function getPropertyStarsQueryString() {
+        let queryString = '';
+
+        propertyStars.forEach(element => {
+            queryString += element + ';';
+        });
+
+        return queryString.substr(0, queryString.length - 1);
+    }
+
+    function getPropertyTypeQueryString() {
+        let queryString = '';
+
+        propertyTypes.forEach(element => {
+            queryString += element + ';';
+        });
+
+        return queryString.substr(0, queryString.length - 1);
+    }
+
+    function getPropertyAmenitiesQueryString() {
+        let queryString = '';
+
+        propertyAmenities.forEach(element => {
+            queryString += element + ';';
+        });
+
+        return queryString.substr(0, queryString.length - 1);
+    }
+
+    function search() {
+        [minPrice, maxPrice] = priceSliderElement.val().split(',').map(Number);
+        const host = 'http://localhost:8080/';
+        const path = 'api/listings/';
+        let parameters = '?';
+
+        propertyTypeQueryString = getPropertyTypeQueryString();
+        propertyStarsQueryString = getPropertyStarsQueryString();
+        propertyAmenitiesQueryString = getPropertyAmenitiesQueryString();
+
+        parameters += `priceMin=${minPrice}`;
+        parameters += `&priceMax=${maxPrice}`;
+        parameters += `&propertyTypes=${propertyTypeQueryString}`;
+        parameters += `&propertyStars=${propertyStarsQueryString}`;
+        parameters += `&propertyAmenities=${propertyAmenitiesQueryString}`;
+
+        const endPoint = host + path + parameters;
+
+
+        console.log(endPoint);
+        $.getJSON(endPoint, (data, status, xhr) => {
+            $('.list-hotel').remove();
+            if (status === 'success') {
+                let insertionRow = $('#hotel-box .list-hotel-box .row');
+                data.forEach(listing => {
+                    let listingTemplate = generateListingTemplate(listing);
+                    listingTemplate.insertAfter(insertionRow);
+                });
+            }
+        })
+    }
+</script>

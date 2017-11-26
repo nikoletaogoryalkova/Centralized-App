@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="zxx">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,5 +24,52 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
 
+        $(document).ready(function () {
+            $('.input-daterange input').each(function () {
+                $(this).datepicker("option", "dateFormat", $(this).val());
+            });
+        });
+    </script>
+
+    <script>
+        function checkLoggedInUser() {
+            if (localStorage["token"]) {
+                $('#top-nav').empty().append(
+                    $('<li>').addClass('dropdown profil_menu').append(
+                        $('<a>').addClass('dropdown-toggle').attr('data-toggle', 'dropdown').text(localStorage["name"]).append(
+                        ).append(
+                            $('<span>').addClass('caret')
+                        )
+                    ).append(
+                        $('<ul>').addClass('navbar-dropdown dropdown-menu').append(
+                            $('<li>').append(
+                                $('<a>').attr('onclick', 'logout()').text('Logout')
+                            )
+                        )
+                    )
+                )
+            }
+            else {
+                $('#top-nav').empty().append(
+                    $('<li>').append(
+                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_login').text('Login')
+                    )
+                ).append(
+                    $('<li>').append(
+                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_signup').text('Register')
+                    )
+                )
+            }
+        }
+
+        $(document).ready(function (){
+            checkLoggedInUser();
+        })
+    </script>
+    <script src="../js/bootstrap-datepicker.js"></script>
+    <script src="../js/bootstrap-slider.js"></script>
+    <script src="../js/jquery.fancybox.js"></script>
+    <script src="../js/smooth-scroll.min.js"></script>
 </head>

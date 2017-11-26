@@ -63,28 +63,29 @@
             </div>
             <div class="modal-body">
                 <form method="post">
+                    <div id="login_errorMessage" class="error"></div>
                     <div class="form-group">
-                        <input type="email" class="form-control" tabindex="1" id="login-mail" placeholder="Email address">
+                        <input required type="email" class="form-control" tabindex="1" id="login-mail" placeholder="Email address">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" tabindex="2" id="login-password" placeholder="Password">
+                        <input required type="password" class="form-control" tabindex="2" id="login-password" placeholder="Password">
                     </div>
                     <div class="checkbox login-checkbox pull-left">
                         <label><input type="checkbox" value="" tabindex="3" id="login-remember">Remember me</label>
                     </div>
-                    <div class="login-forgot pull-right">
-                        <a href="#" data-toggle="modal" data-dismiss="modal" data-target="#myModal_forgotten">Forgot
-                            password?</a>
-                    </div>
+                    <!--<div class="login-forgot pull-right">-->
+                        <!--<a href="#" data-toggle="modal" data-dismiss="modal" data-target="#myModal_forgotten">Forgot-->
+                            <!--password?</a>-->
+                    <!--</div>-->
                     <div class="clearfix"></div>
                     <button type="submit" tabindex="4" class="btn btn-primary">Login</button>
                     <div class="clearfix"></div>
                 </form>
 
-                <div class="login-with">or login with</div>
+                <!--<div class="login-with">or login with</div>-->
 
-                <a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"
-                                                                            aria-hidden="true"></i> Facebook</a>
+                <!--<a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"-->
+                                                                            <!--aria-hidden="true"></i> Facebook</a>-->
                 <hr>
                 <div class="login-sign">Don’t have an account? <a href="#" data-toggle="modal" data-dismiss="modal"
                                                                   data-target="#myModal_signup">Sign up</a></div>
@@ -102,20 +103,21 @@
             </div>
             <div class="modal-body">
                 <form>
+                    <div id="signup_errorMessage" class="error"></div>
                     <div class="form-group">
-                        <input type="email" class="form-control" id="signup-mail" placeholder="Email address">
+                        <input required type="email" class="form-control" name="email" id="signup-mail" placeholder="Email address">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="signup-name" placeholder="Name">
+                        <input required type="text" class="form-control" id="signup-firstname" placeholder="First Name">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="signup-lastname" placeholder="Last Name">
+                        <input required type="text" class="form-control" id="signup-lastname" placeholder="Last Name">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="signup-password" placeholder="Password">
+                        <input required type="password" class="form-control" name="password" id="signup-password" placeholder="Password">
                     </div>
 
-                    <button type="button" class="btn btn-primary">Sign up</button>
+                    <button type="submit" class="btn btn-primary">Sign up</button>
                     <div class="clearfix"></div>
                 </form>
 
@@ -124,10 +126,10 @@
                     Terms and Conditions and Privacy Statement.
                 </div>
 
-                <div class="signup-with">or sign up with</div>
+                <!--<div class="signup-with">or sign up with</div>-->
 
-                <a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"
-                                                                            aria-hidden="true"></i> Facebook</a>
+                <!--<a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"-->
+                                                                            <!--aria-hidden="true"></i> Facebook</a>-->
                 <hr>
                 <div class="signup-sign">Already have a LockChain account? <a href="#" data-toggle="modal"
                                                                               data-dismiss="modal"
@@ -187,22 +189,7 @@
         </div>
 
         <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-
-                <li class="first-nav-button">
-                    <a href="#"><i class="icon icon-home"></i>List Your Property</a>
-                </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#myModal_login">Login</a>
-                </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#myModal_signup">Register</a>
-                </li>
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#myModal_wishlist">Wish list</a>
-                </li>
-
-
+            <ul class="nav navbar-nav" id="top-nav">
             </ul>
         </div>
     </div>
@@ -216,9 +203,9 @@
             <li class="active">
                 <a href="#">HOTELS</a>
             </li>
-            <li >
-                <a href="#">HOMES</a>
-            </li>
+            <!--<li >-->
+                <!--<a href="#">HOMES</a>-->
+            <!--</li>-->
         </ul>
 
         <ul class="second-nav-text pull-right">
@@ -240,11 +227,11 @@
 
 <section id="search-bar">
     <div class="container">
-        <form id="search">
+        <form id="search" method="get">
 
             <div class="form-group has-feedback has-feedback-left" id="location">
                 <i class="icon icon-map form-control-feedback"></i>
-                <input type="text" name="location" class="form-control" placeholder="Location"/>
+                <input type="text" name="location" class="form-control" placeholder="Location" required/>
             </div>
 
 
@@ -252,7 +239,7 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-in">
                     <i class="icon icon-calendar form-control-feedback"></i>
                     <span class="icon-check-in">Check in</span>
-                    <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                    <input name="start-date" type="text" class="form-control" value="" data-date-format='mm-dd-yyyy' required
                            placeholder="Select date">
                 </div>
 
@@ -263,18 +250,18 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-out">
                     <span class="icon-check-out">Check out</span>
                     <i class="icon icon-calendar form-control-feedback"></i>
-                    <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                    <input name="end-date" type="text" class="form-control" value="" data-date-format='mm-dd-yyyy' required
                            placeholder="Select date">
                 </div>
             </div>
 
             <div id="search-nights">
-                <span>6 nights</span>
+                <span>0 nights</span>
             </div>
 
             <div class="form-group has-feedback has-feedback-left" id="guests">
                 <i class="icon icon-guest form-control-feedback"></i>
-                <input type="number" min="1" name="guests" class="form-control" placeholder="Guests"/>
+                <input type="number" min="1" name="guests" class="form-control" placeholder="Guests" required/>
             </div>
 
 

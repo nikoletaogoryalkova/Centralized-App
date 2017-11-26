@@ -1,3 +1,11 @@
+<head>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+</body>
+
 <script src="../js/jquery.min.js"></script>
 <script src="../js/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
@@ -9,26 +17,26 @@
     }
 </script>
 <script>
-    Handlebars.registerHelper('amme', function(items){
+    Handlebars.registerHelper('amme', function (items) {
         let itemsPerColumn = parseInt(items.length / 3);
         let inSymmetricItems = parseInt(items.length % 3);
 
         let out = '<div class="col-md-4">';
 
         let firstColumnCount = itemsPerColumn + inSymmetricItems;
-        for(let i = 0; i < firstColumnCount; i++){
+        for (let i = 0; i < firstColumnCount; i++) {
             out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
         }
         out = out + '</div>';
         out = out + '<div class="col-md-4">';
 
 
-        for(let i = firstColumnCount; i < firstColumnCount + itemsPerColumn; i++){
+        for (let i = firstColumnCount; i < firstColumnCount + itemsPerColumn; i++) {
             out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
         }
         out = out + '</div>';
         out = out + '<div class="col-md-4">';
-        for(let i = firstColumnCount + itemsPerColumn; i < itemsPerColumn + firstColumnCount + itemsPerColumn; i++){
+        for (let i = firstColumnCount + itemsPerColumn; i < itemsPerColumn + firstColumnCount + itemsPerColumn; i++) {
             out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
         }
 
@@ -38,43 +46,126 @@
 <script>
     let headSource = loadPage('../head.html');
     let headTemplate = Handlebars.compile(headSource);
-    let headContext = {title: "LockChain&trade; Marketplace"};
-    document.write(headTemplate(headContext));
+    let headContext = {title: "LockChain Marketplace"};
 
     let headerSource = loadPage('../header.html');
     let headerTemplate = Handlebars.compile(headerSource);
-    document.write('<body>');
-    document.write(headerTemplate());
 
-    // Add more templates for property
     let hotelDetailsSource = loadPage('details.html');
     let hotelDetailsTemplate = Handlebars.compile(hotelDetailsSource);
 
-    function GetURLParameter(sParam)
-    {
+    let footerSource = loadPage('../footer.html');
+    let footerTemplate = Handlebars.compile(footerSource);
+
+    $('head').html(headTemplate(headContext));
+
+    $('body')
+        .append(headerTemplate())
+        .append(footerTemplate());
+
+    let queryId = GetURLParameter("id");
+    if (!queryId) {
+        location.href = "http://localhost:63342/Lockchain-FrontEnd/Listings/listings.html";
+    }
+    else {
+        let property = "";
+        $.get("http://localhost:8080/api/listings/" + queryId + "?projection=singleListing", function (data) {
+            $('#search-bar').after(jQuery.parseHTML(hotelDetailsTemplate(data)));
+            property = data;
+
+
+            $('.input-daterange input').each(function () {
+                $(this).datepicker("option", "dateFormat", $(this).val());
+            });
+        }).then(() => {
+            let hotelInputs = $('.hotel-chekin-box .input-daterange input');
+            let hotelNights = $('#hotel-search-nights span');
+
+            calculateNights(hotelInputs, hotelNights);
+            let pricePerNight = $('#hotel-top-price span');
+
+            let cleaningFee = parseInt(property["cleaningFee"]);
+            calculatePrice(pricePerNight, hotelNights, cleaningFee);
+        }).catch((error) => {
+            //location.href = "http://localhost:63342/Lockchain-FrontEnd/Listings/listings.html";
+        });
+    }
+
+    function GetURLParameter(sParam) {
         let sPageURL = window.location.search.substring(1);
         let sURLVariables = sPageURL.split('&');
-        for (let i = 0; i < sURLVariables.length; i++)
-        {
+        for (let i = 0; i < sURLVariables.length; i++) {
             let sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] === sParam)
-            {
+            if (sParameterName[0] === sParam) {
                 return sParameterName[1];
             }
         }
     }
+</script>
 
-    let queryId = GetURLParameter("id");
-    if(!queryId) {
-        location.href = "http://localhost:63342/Lockchain-FrontEnd/Listings/listings.html";
-    }
-    let hotelDetailsContext = $.get( "http://localhost:8080/api/listings/1" + queryId + "?projection=singleListing", function( data ) {
-            document.write(hotelDetailsTemplate(data));
+<script>
+    $('.fancybox').fancybox({
+        'padding': 0,
+        'transitionIn': 'none',
+        'transitionOut': 'none',
+        helpers: {
+            overlay: {
+                locked: false
+            }
+        },
+        beforeShow: function () {
+            $('html').css('overflowX', 'visible');
+            $('body').css('overflowY', 'hidden');
+        },
+        afterClose: function () {
+            $('html').css('overflowX', 'hidden');
+            $('body').css('overflowY', 'visible');
+        }
+    });
+</script>
+
+
+<script>
+    $('.filter-room-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'none');
     });
 
+    $('.filter-room-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'block');
+    });
 
-    let footerSource = loadPage('../footer.html');
-    let footerTemplate = Handlebars.compile(footerSource);
-    document.write(footerTemplate());
-    document.write('</body>');
+    $('.filter-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'none');
+    });
+
+    $('.filter-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'block');
+    })
+
+</script>
+<script>
+    function calculatePrice(pricePerNight, hotelNights, cleaningFee) {
+        hotelNights.on('change', () => {
+            let nights = parseInt(hotelNights.text().split(" ")[0]);
+            let price = parseInt(pricePerNight.text().substr(1));
+
+            $('.hotel-search-nights span').text(nights + ' nights').promise().then(() => {
+                if (nights !== 0) {
+                    let totalPrice = (nights * price) + cleaningFee;
+                    $('#total-price').text('$' + totalPrice);
+                }
+                else {
+                    $('#total-price').text('$0')
+                }
+            });
+        })
+    }
 </script>

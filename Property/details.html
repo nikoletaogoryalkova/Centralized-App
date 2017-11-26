@@ -2,14 +2,18 @@
     <div class="hotel-gallery-bgr" style="background-image: url({{pictures.1.original}});">
         <div class="container">
             <div class="hotel-gallery-social-button">
-                <a class="btn btn-social btn-dark-blue">
-                    <span>Share</span>
-                </a>
-                <a class="btn btn-save btn-dark-blue">
-                    <span>Save</span>
-                </a>
+                <!--<a class="btn btn-social btn-dark-blue">-->
+                <!--<span>Share</span>-->
+                <!--</a>-->
+                <!--<a class="btn btn-save btn-dark-blue">-->
+                <!--<span>Save</span>-->
+                <!--</a>-->
             </div>
-            <a class="btn btn-primary btn-gallery">Open Gallery</a>
+            <a class="btn btn-primary btn-gallery fancybox" data-fancybox-group="group-1"
+               href="{{pictures.1.original}}">Open Gallery</a>
+            {{#each pictures}}
+            <a href="{{original}}" class="fancybox" data-fancybox-group="group-1"></a>
+            {{/each}}
         </div>
     </div>
 </section>
@@ -54,7 +58,7 @@
             <div class="clearfix"></div>
             <div class="list-hotel-description">
                 {{descriptionText}}
-        </div>
+            </div>
             <div id="facilities">
                 <h2>Facilities</h2>
                 <hr>
@@ -87,7 +91,7 @@
             <div class="hotel-extras">
                 <div class="row">
                     {{#amme amenities}}
-                        {{name}}
+                    {{name}}
                     {{/amme}}
                 </div>
                 <div class="clearfix"></div>
@@ -101,13 +105,16 @@
                             <div id="myCarousel-1" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     <div class="item active">
-                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                        <a href="../images/img-hotel.jpg" class="fancybox"
+                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
                                     </div>
                                     <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                        <a href="../images/img-hotel.jpg" class="fancybox"
+                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
                                     </div>
                                     <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                        <a href="../images/img-hotel.jpg" class="fancybox"
+                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
                                     </div>
                                 </div>
 
@@ -120,7 +127,9 @@
 
                             <div class="clearfix"></div>
                             <div class="list-hotel-text">
-                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable channels and a private bathroom with free toiletries, a hairdryer and a bath or shower. ..
+                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable
+                                channels and a private bathroom with free toiletries, a hairdryer and a bath or shower.
+                                ..
                             </div>
 
                         </div>
@@ -138,13 +147,16 @@
                             <div id="myCarousel-2" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     <div class="item active">
-                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                        <a href="../images/img-hotel.jpg" class="fancybox"
+                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
                                     </div>
                                     <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                        <a href="../images/img-hotel.jpg" class="fancybox"
+                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
                                     </div>
                                     <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox" data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
+                                        <a href="../images/img-hotel.jpg" class="fancybox"
+                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
                                     </div>
                                 </div>
 
@@ -157,7 +169,9 @@
 
                             <div class="clearfix"></div>
                             <div class="list-hotel-text">
-                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable channels and a private bathroom with free toiletries, a hairdryer and a bath or shower. ..
+                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable
+                                channels and a private bathroom with free toiletries, a hairdryer and a bath or shower.
+                                ..
                             </div>
 
                         </div>
@@ -173,7 +187,7 @@
                 <div class="clearfix"></div>
 
                 <div id="hotel-rules">
-                    <h2>Hotel Rules</h2>
+                    <h2>Access Info</h2>
                     <p>
                         {{descriptionsAccessInfo}}
                     </p>
@@ -190,10 +204,10 @@
                 <div id="locationMap">
                     <h2>Location</h2>
                     <hr>
-                    <iframe src="https://maps.google.com/maps?q={{longitude}},{{latitude}}&amp;z=15&amp;output=embed" width="100%" height="400" frameborder="0" style="border:0"></iframe>
+                    <iframe src="https://maps.google.com/maps?q={{longitude}},{{latitude}}&amp;z=15&amp;output=embed"
+                            width="100%" height="400" frameborder="0" style="border:0"></iframe>
                 </div>
-                <div class="clearfix"></div>
-
+                <br>
             </div>
 
         </div>
@@ -201,55 +215,60 @@
     <div class="hotel-chekin">
         <div class="hotel-chekin-box">
 
-            <form method="POST" id="user-form">
-                <div class="input-daterange">
-                    <div class="form-group has-feedback has-feedback-left input-group-date-in">
-                        <i class="icon icon-calendar form-control-feedback"></i>
-                        <span class="icon-check-in">Check in</span>
-                        <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
-                               placeholder="Select date">
-                    </div>
-
-                    <div class="input-group-addon">
-
-                    </div>
-
-                    <div class="form-group has-feedback has-feedback-left input-group-date-out">
-                        <span class="icon-check-out">Check out</span>
-                        <i class="icon icon-calendar form-control-feedback"></i>
-                        <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
-                               placeholder="Select date">
-                    </div>
-                </div>
-                <div id="hotel-search-nights">
-                    <span><span id="countdate">1</span> nights</span>
-                </div>
-                <div class="clearfix"></div>
-
-                <div class="dropdown select-person">
-                    <input type="number" class="form-control" id="number-person" min="1" placeholder="Select Guest Number" required="">
+            <p method="POST" id="user-form">
+            <p id="hotel-top-price" class="hotel-top-price"><span>${{defaultDailyPrice}}</span> /per night</p>
+            <div class="input-daterange">
+                <div class="form-group has-feedback has-feedback-left input-group-date-in">
+                    <i class="icon icon-calendar form-control-feedback"></i>
+                    <span class="icon-check-in">Check in</span>
+                    <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                           placeholder="Select date">
                 </div>
 
-                <div class="dropdown select-person">
-                    <input type="text" class="form-control" name="name" required="" placeholder="Name">
+                <div class="input-group-addon">
+
                 </div>
 
-                <div class="dropdown select-person">
-                    <input type="email" class="form-control" name="email" required="" placeholder="E-mail">
+                <div class="form-group has-feedback has-feedback-left input-group-date-out">
+                    <span class="icon-check-out">Check out</span>
+                    <i class="icon icon-calendar form-control-feedback"></i>
+                    <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                           placeholder="Select date">
                 </div>
+            </div>
+            <div id="hotel-search-nights" class="hotel-search-nights">
+                <span>0 nights</span>
+            </div>
+            <div class="clearfix"></div>
 
-                <div class="dropdown select-person">
-                    <input type="text" class="form-control" name="phone" required="" placeholder="Phone">
-                </div>
+            <div class="dropdown select-person">
+                <input type="number" class="form-control" id="number-person" min="1"
+                       placeholder="Select Guest Number" required="">
+            </div>
 
-                <div class="g-recaptcha" data-sitekey="6LfNZTYUAAAAAC6EqT3alk6NLY14TcsN1JnnA6Yn"></div>
-                <br>
+            <div class="dropdown select-person">
+                <input type="text" class="form-control" name="name" required="" placeholder="Name">
+            </div>
 
+            <div class="dropdown select-person">
+                <input type="email" class="form-control" name="email" required="" placeholder="E-mail">
+            </div>
 
-                <div class="nonev"></div>
+            <div class="dropdown select-person">
+                <input type="text" class="form-control" name="phone" required="" placeholder="Phone">
+            </div>
+            <br>
 
-                <button type="submit" class="btn btn-primary">Request Booking in LOC or FIAT</button>
+            <div class="hotel-second-price">total <span id="total-price">$0</span> / for
+                <div class="hotel-search-nights"><span>0 nights</span></div>
+            </div>
 
+            <div class="nonev"></div>
+
+            <button type="submit" class="btn btn-primary">Request Booking in LOC or FIAT</button>
+            <input type="checkbox" name="agree-terms" id="agree-terms"
+                   class="checkbox tick"/>
+            <label for="agree-terms" class="text-ffffff" style="margin-top: 10px;">I agree to the <a href="#">Terms & Conditions</a></label>
             </form>
         </div>
     </div>

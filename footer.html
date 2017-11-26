@@ -50,15 +50,11 @@
     </div>
 </footer>
 
-<script src="../js/bootstrap-datepicker.js"></script>
-<script src="../js/bootstrap-slider.js"></script>
-<script src="../js/jquery.fancybox.js"></script>
-<script src="../js/smooth-scroll.min.js"></script>
 
 <script>
     // ESC Key close modals
 
-    $(document).keydown(function(event) {
+    $(document).keydown(function (event) {
         if (event.keyCode === 27) {
             $('.modal .close').click();
         }
@@ -88,88 +84,115 @@
             $('body').css('overflowY', 'visible');
         }
     });
-
-    $('.input-daterange input').each(function () {
-        $(this).datepicker("option", "dateFormat", $( this ).val());
-    });
-
-    $("#price-slider").slider({});
-    $("#distance-slider").slider({});
-
-    $('.filter-room-facility-more-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-room-facility-more').toggle();
-        $('.filter-room-facility-more-href').css('display', 'none');
-    });
-
-    $('.filter-room-facility-hide-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-room-facility-more').toggle();
-        $('.filter-room-facility-more-href').css('display', 'block');
-    });
-
-    $('.filter-facility-more-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-facility-more').toggle();
-        $('.filter-facility-more-href').css('display', 'none');
-    });
-
-    $('.filter-facility-hide-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-facility-more').toggle();
-        $('.filter-facility-more-href').css('display', 'block');
-    })
-
 </script>
 <script>
-    let inputs = $('#search .input-daterange input');
-    let nights = $('#search-nights span');
-    nights.text(0 + ' nights');
 
-    inputs.change(() => {
-        let checkIn = inputs[0].value;
-        let checkOut = inputs[1].value;
+    $('#mymodal_signup form').on('submit', (event) => {
+        event.preventDefault();
 
-        let checkInDate = new Date(checkIn);
-        let checkOutDate = new Date(checkOut);
+        let userEmail = $('#signup-mail').val();
+        let userFirstName = $('#signup-firstname').val();
+        let userLastName = $('#signup-lastname').val();
+        let userPassword = $('#signup-password').val();
 
-        let timeDiff = Math.abs(checkOutDate.getTime() - checkInDate.getTime());
+        let user = {};
 
-        if(!checkOut || !checkIn){
-            nights.text(0 + ' nights');
-        }
-        else if(checkOutDate < checkInDate){
-            nights.text(0 + ' nights');
-        }
-        else {
-            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            nights.text(diffDays + ' nights');
-        }
+        user.email = userEmail;
+        user.firstName = userFirstName;
+        user.lastName = userLastName;
+        user.password = userPassword;
+
+        let userJson = JSON.stringify(user);
+
+        $.ajax({
+            "async": true,
+            "crossDomain": true,
+            "url": "http://localhost:8080/users/signup",
+            "method": "POST",
+            "headers": {
+                "content-type": "application/json"
+            },
+            "processData": false,
+            "data": userJson
+        }).done(function (response) {
+            $('.close').click();
+            $('#myModal_login').modal('show');
+        }).catch(function (httpObj) {
+            if (httpObj.status === 401) {
+                $('#signup_errorMessage').text(httpObj.responseJSON.message);
+            }
+        });
     });
+
+    $('#mymodal_login form').on('submit', (event) => {
+        event.preventDefault();
+
+        let userEmail = $('#login-mail').val();
+        let userPassword = $('#login-password').val();
+
+        let user = {};
+
+        user.email = userEmail;
+        user.password = userPassword;
+
+        let userJson = JSON.stringify(user);
+
+        $.ajax({
+            "async": true,
+            "crossDomain": true,
+            "url": "http://localhost:8080/login",
+            "method": "POST",
+            "data": userJson
+        }).done(function (data) {
+            $('.close').click();
+            localStorage["token"] = data.Authorization;
+            localStorage["name"] = userEmail;
+            checkLoggedInUser();
+        }).catch(function (httpObj) {
+            if (httpObj.status === 401) {
+                $('#login_errorMessage').text(httpObj.responseJSON.message);
+            }
+        });
+    });
+
+    function logout() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("name");
+
+        checkLoggedInUser();
+    }
 </script>
 <script>
-    let hotelInputs = $('.hotel-chekin-box .input-daterange input');
-    let hotelNights = $('#hotel-search-nights span');
-    hotelNights.text(0 + ' nights');
+    $(document).ready(function () {
+        let inputs = $('#search .input-daterange input');
+        let nights = $('#search-nights').find('span');
 
-    hotelInputs.change(() => {
-        let checkIn = hotelInputs[0].value;
-        let checkOut = hotelInputs[1].value;
-
-        let checkInDate = new Date(checkIn);
-        let checkOutDate = new Date(checkOut);
-
-        let timeDiff = Math.abs(checkOutDate.getTime() - checkInDate.getTime());
-
-        if(!checkOut || !checkIn){
-            hotelNights.text(0 + ' nights');
-        }
-        else if(checkOutDate < checkInDate){
-            hotelNights.text(0 + ' nights');
-        }
-        else {
-            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            hotelNights.text(diffDays + ' nights');
-        }
+        calculateNights(inputs, nights);
     });
+
+    function calculateNights(inputs, nights) {
+        nights.text(0 + ' nights');
+
+        inputs.change(() => {
+            let checkIn = inputs[0].value;
+            let checkOut = inputs[1].value;
+
+            let checkInDate = new Date(checkIn);
+            let checkOutDate = new Date(checkOut);
+
+            let timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+
+            console.log(checkOut);
+            console.log(checkIn);
+            if ((checkOut && checkIn) && checkOutDate > checkInDate) {
+                let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                nights.text(diffDays + ' nights');
+                nights.trigger('change');
+            }
+            else if (!checkOut || !checkIn || timeDiff < 0) {
+                nights.text(0 + ' nights');
+                nights.trigger('change');
+            }
+        });
+    }
 </script>
