@@ -32,7 +32,7 @@ function generateListingContentSubTemplate(listing) {
     let listingContent = $('<div>').addClass('list-content')
         .append(
             $('<h2>')
-                .text(listing.property_descriptions.name)
+                .text(listing.name)
         )
         .append(
             $('<div>')
@@ -79,7 +79,7 @@ function generateListingContentSubTemplate(listing) {
         .append(
             $('<div>')
                 .addClass('list-hotel-text')
-                .text(listing.property_descriptions.description.substr(0, 200))
+                .text(listing.description.substr(0, 200))
         )
         .append(
             $('<div>')
@@ -115,7 +115,7 @@ function generateListingPriceSubTemplate(listing) {
         .append(
             $('<div>')
                 .addClass('list-hotel-price-curency')
-                .text(listing.default_daily_price)
+                .text(listing.defaultDailyPrice)
         )
         .append(
             $('<div>')

@@ -177,10 +177,10 @@
             let checkIn = inputs[0].value;
             let checkOut = inputs[1].value;
 
-            let checkInDate = new Date(checkIn);
-            let checkOutDate = new Date(checkOut);
+            let checkInDate = moment(checkIn, "DD/MM/YYYY");
+            let checkOutDate = moment(checkOut, "DD/MM/YYYY");
 
-            let timeDiff = checkOutDate.getTime() - checkInDate.getTime();
+            let timeDiff = checkOutDate.diff(checkInDate);
 
             console.log(checkOut);
             console.log(checkIn);

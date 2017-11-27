@@ -225,6 +225,14 @@ a.dropdown-toggle {
     padding: 10px 0;
 }
 
+#location-select {
+    padding-left: 40px;
+}
+
+#location-select option {
+    padding-left: 5px;
+}
+
 /* END */
 
 .form-control:focus {
@@ -1714,7 +1722,7 @@ a.dropdown-toggle {
     font-family: 'FuturaStd-Medium', sans-serif;
 }
 
-.hotel-second-price .hotel-search-nights{
+.hotel-second-price .hotel-search-nights {
     display: inline-block;
 }
 
@@ -3803,13 +3811,12 @@ input[type=checkbox].tick + label:after {
 }
 
 input[type=checkbox].tick:hover + label:after,
-input[type=checkbox].tick:checked + label:after{
+input[type=checkbox].tick:checked + label:after {
     background: transparent;
     transition: none;
 }
 
-
-input[type="checkbox"].tick:checked + label:after{
+input[type="checkbox"].tick:checked + label:after {
     content: "\2713";
     color: white;
     text-align: center;

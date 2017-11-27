@@ -42,6 +42,10 @@
 
         return out;
     });
+
+    Handlebars.registerHelper('formatNumber', function (item) {
+        return Math.round(item * 100) / 100;
+    })
 </script>
 <script>
     let headSource = loadPage('../head.html');
@@ -70,7 +74,16 @@
     else {
         let property = "";
         $.get("http://localhost:8080/api/listings/" + queryId + "?projection=singleListing", function (data) {
-            $('#search-bar').after(jQuery.parseHTML(hotelDetailsTemplate(data)));
+            $('#search-bar').after(jQuery.parseHTML(hotelDetailsTemplate(data))).promise().then(
+                $('.fancybox').fancybox({
+                    'speedIn': 600,
+                    'speedOut': 200,
+                    'onComplete': function () {
+                        $("#fancybox-wrap").css({'top': '100px!important', 'left': '0'});
+                    }
+                })
+            );
+
             property = data;
 
 
@@ -104,24 +117,10 @@
 </script>
 
 <script>
-    $('.fancybox').fancybox({
-        'padding': 0,
-        'transitionIn': 'none',
-        'transitionOut': 'none',
-        helpers: {
-            overlay: {
-                locked: false
-            }
-        },
-        beforeShow: function () {
-            $('html').css('overflowX', 'visible');
-            $('body').css('overflowY', 'hidden');
-        },
-        afterClose: function () {
-            $('html').css('overflowX', 'hidden');
-            $('body').css('overflowY', 'visible');
-        }
+    $(document).ready(function () {
+
     });
+
 </script>
 
 

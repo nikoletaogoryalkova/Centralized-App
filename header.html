@@ -152,7 +152,6 @@
                 <div class="forgotten-rights">
                     Enter the email address associated with your account, and we’ll email you a link to reset your
                     password.
-
                 </div>
 
                 <form>
@@ -228,10 +227,11 @@
 <section id="search-bar">
     <div class="container">
         <form id="search" method="get">
-
             <div class="form-group has-feedback has-feedback-left" id="location">
                 <i class="icon icon-map form-control-feedback"></i>
-                <input type="text" name="location" class="form-control" placeholder="Location" required/>
+                <select class="form-control" id="location-select" name="location" required="required">
+                    <option disabled selected>Location</option>
+                </select>
             </div>
 
 
@@ -239,7 +239,7 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-in">
                     <i class="icon icon-calendar form-control-feedback"></i>
                     <span class="icon-check-in">Check in</span>
-                    <input name="start-date" type="text" class="form-control" value="" data-date-format='mm-dd-yyyy' required
+                    <input name="start-date" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required
                            placeholder="Select date">
                 </div>
 
@@ -250,7 +250,7 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-out">
                     <span class="icon-check-out">Check out</span>
                     <i class="icon icon-calendar form-control-feedback"></i>
-                    <input name="end-date" type="text" class="form-control" value="" data-date-format='mm-dd-yyyy' required
+                    <input name="end-date" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required
                            placeholder="Select date">
                 </div>
             </div>

@@ -45,15 +45,15 @@
         <div class="hotel-content">
             <h1>{{name}}</h1>
             <div class="list-hotel-rating">
-                <div class="list-hotel-rating-count">{{rating}}</div>
+                <div class="list-hotel-rating-count">Good {{formatNumber averageRating}}</div>
                 <div class="list-hotel-rating-stars">
                     <span class="full-star"></span>
                     <span class="full-star"></span>
                     <span class="full-star"></span>
                     <span class="full-star"></span>
-                    <span class="empty-star"></span>
+                    <span class="full-star"></span>
                 </div>
-                <div class="list-hotel-rating-review">{{reviews}}</div>
+                <div class="list-hotel-rating-review">55 Reviews</div>
             </div>
             <div class="clearfix"></div>
             <div class="list-hotel-description">
@@ -221,7 +221,7 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-in">
                     <i class="icon icon-calendar form-control-feedback"></i>
                     <span class="icon-check-in">Check in</span>
-                    <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                    <input type="text" class="form-control" value="" data-date-format='dd/mm/yyyy'
                            placeholder="Select date">
                 </div>
 
@@ -232,7 +232,7 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-out">
                     <span class="icon-check-out">Check out</span>
                     <i class="icon icon-calendar form-control-feedback"></i>
-                    <input type="text" class="form-control" value="" data-date-format='mm-dd-yyyy'
+                    <input type="text" class="form-control" value="" data-date-format='dd/mm/yyyy'
                            placeholder="Select date">
                 </div>
             </div>
@@ -273,5 +273,9 @@
         </div>
     </div>
     <div class="clearfix"></div>
-
+    <script>
+        $(document).ready(function() {
+            $(".fancybox").fancybox();
+        });
+    </script>
 </section>
