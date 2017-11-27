@@ -45,15 +45,10 @@
         <div class="hotel-content">
             <h1>{{name}}</h1>
             <div class="list-hotel-rating">
-                <div class="list-hotel-rating-count">Good {{formatNumber averageRating}}</div>
-                <div class="list-hotel-rating-stars">
-                    <span class="full-star"></span>
-                    <span class="full-star"></span>
-                    <span class="full-star"></span>
-                    <span class="full-star"></span>
-                    <span class="full-star"></span>
+                <div class="list-hotel-rating-count" id="rtng">{{formatNumber averageRating}}</div>
+                <div class="list-hotel-rating-stars" id="rtng-stars">
                 </div>
-                <div class="list-hotel-rating-review">55 Reviews</div>
+                <div class="list-hotel-rating-review">{{reviews.length}} Reviews</div>
             </div>
             <div class="clearfix"></div>
             <div class="list-hotel-description">
@@ -64,128 +59,128 @@
                 <hr>
                 <h3>Most Popular Facilities</h3>
 
-                <div class="icon-facilities icon-beach-b">
-                    <span class="icon-image"></span>
-                    <span class="icon-text">beach</span>
-                </div>
-                <div class="icon-facilities icon-pool-b">
-                    <span class="icon-image"></span>
-                    <span class="icon-text">pool</span>
-                </div>
-                <div class="icon-facilities icon-spa-b">
-                    <span class="icon-image"></span>
-                    <span class="icon-text">spa</span>
-                </div>
-                <div class="icon-facilities icon-parking-b">
-                    <span class="icon-image"></span>
-                    <span class="icon-text">parking</span>
-                </div>
-                <div class="icon-facilities icon-breakfast-b">
-                    <span class="icon-image"></span>
-                    <span class="icon-text">breakfast</span>
-                </div>
+                <!--<div class="icon-facilities icon-hotel-3">-->
+                    <!--<span class="icon-image" style="text-align: center;"><br><br><b>asd</b></span>-->
+                <!--</div>-->
+                <!--<div class="icon-facilities icon-pool-b">-->
+                    <!--<span class="icon-image"></span>-->
+                    <!--<span class="icon-text">pool</span>-->
+                <!--</div>-->
+                <!--<div class="icon-facilities icon-spa-b">-->
+                    <!--<span class="icon-image"></span>-->
+                    <!--<span class="icon-text">spa</span>-->
+                <!--</div>-->
+                <!--<div class="icon-facilities icon-parking-b">-->
+                    <!--<span class="icon-image"></span>-->
+                    <!--<span class="icon-text">parking</span>-->
+                <!--</div>-->
+                <!--<div class="icon-facilities icon-breakfast-b">-->
+                    <!--<span class="icon-image"></span>-->
+                    <!--<span class="icon-text">breakfast</span>-->
+                <!--</div>-->
                 <div class="clearfix"></div>
             </div>
             <div class="clearfix"></div>
 
             <div class="hotel-extras">
-                <div class="row">
-                    {{#amme amenities}}
-                    {{name}}
-                    {{/amme}}
+                <div class="row" id="fac-row">
+                    <!--{{#amme amenities}}-->
+                    <!--{{name}}-->
+                    <!--{{/amme}}-->
                 </div>
                 <div class="clearfix"></div>
 
-                <div id="room-types">
-                    <h2>Room Types</h2>
-                    <hr>
+                <!--<div id="room-types">-->
+                    <!--<h2>Room Types</h2>-->
+                    <!--<hr>-->
 
-                    <div class="list-hotel">
-                        <div class="list-image">
-                            <div id="myCarousel-1" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="item active">
-                                        <a href="../images/img-hotel.jpg" class="fancybox"
-                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
-                                    </div>
-                                    <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox"
-                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
-                                    </div>
-                                    <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox"
-                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
-                                    </div>
-                                </div>
+                    <!--<div class="list-hotel">-->
+                        <!--<div class="list-image">-->
+                            <!--<div id="myCarousel-1" class="carousel slide" data-ride="carousel">-->
+                                <!--<div class="carousel-inner">-->
+                                    <!--<div class="item active">-->
+                                        <!--<a href="../images/img-hotel.jpg" class="fancybox"-->
+                                           <!--data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>-->
+                                    <!--</div>-->
+                                    <!--<div class="item">-->
+                                        <!--<a href="../images/img-hotel.jpg" class="fancybox"-->
+                                           <!--data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>-->
+                                    <!--</div>-->
+                                    <!--<div class="item">-->
+                                        <!--<a href="../images/img-hotel.jpg" class="fancybox"-->
+                                           <!--data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>-->
+                                    <!--</div>-->
+                                <!--</div>-->
 
-                                <a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>
-                                <a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>
-                            </div>
-                        </div>
-                        <div class="list-content">
-                            <h2>Two Bedroom Apartment</h2>
+                                <!--<a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>-->
+                                <!--<a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="list-content">-->
+                            <!--<h2>Two Bedroom Apartment</h2>-->
 
-                            <div class="clearfix"></div>
-                            <div class="list-hotel-text">
-                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable
-                                channels and a private bathroom with free toiletries, a hairdryer and a bath or shower.
-                                ..
-                            </div>
+                            <!--<div class="clearfix"></div>-->
+                            <!--<div class="list-hotel-text">-->
+                                <!--Studios and apartments feature a balcony with sea views, a flat-screen TV with cable-->
+                                <!--channels and a private bathroom with free toiletries, a hairdryer and a bath or shower.-->
+                                <!--..-->
+                            <!--</div>-->
 
-                        </div>
-                        <div class="list-price">
-                            <div class="list-hotel-price-bgr">Price for 1 night</div>
-                            <div class="list-hotel-price-curency">$350</div>
-                            <div class="list-hotel-price-loc">(LOC 1.2)</div>
-                            <a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
+                        <!--</div>-->
+                        <!--<div class="list-price">-->
+                            <!--<div class="list-hotel-price-bgr">Price for 1 night</div>-->
+                            <!--<div class="list-hotel-price-curency">$350</div>-->
+                            <!--<div class="list-hotel-price-loc">(LOC 1.2)</div>-->
+                            <!--<a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>-->
+                        <!--</div>-->
+                        <!--<div class="clearfix"></div>-->
+                    <!--</div>-->
 
-                    <div class="list-hotel">
-                        <div class="list-image">
-                            <div id="myCarousel-2" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="item active">
-                                        <a href="../images/img-hotel.jpg" class="fancybox"
-                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
-                                    </div>
-                                    <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox"
-                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
-                                    </div>
-                                    <div class="item">
-                                        <a href="../images/img-hotel.jpg" class="fancybox"
-                                           data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>
-                                    </div>
-                                </div>
+                    <!--<div class="list-hotel">-->
+                        <!--<div class="list-image">-->
+                            <!--<div id="myCarousel-2" class="carousel slide" data-ride="carousel">-->
+                                <!--<div class="carousel-inner">-->
+                                    <!--<div class="item active">-->
+                                        <!--<a href="../images/img-hotel.jpg" class="fancybox"-->
+                                           <!--data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>-->
+                                    <!--</div>-->
+                                    <!--<div class="item">-->
+                                        <!--<a href="../images/img-hotel.jpg" class="fancybox"-->
+                                           <!--data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>-->
+                                    <!--</div>-->
+                                    <!--<div class="item">-->
+                                        <!--<a href="../images/img-hotel.jpg" class="fancybox"-->
+                                           <!--data-fancybox-group="group-1"><img src="../images/img-hotel.jpg" alt=""></a>-->
+                                    <!--</div>-->
+                                <!--</div>-->
 
-                                <a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>
-                                <a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>
-                            </div>
-                        </div>
-                        <div class="list-content">
-                            <h2>Two Bedroom Apartment</h2>
+                                <!--<a class="left-carousel" href="#myCarousel-1" data-slide="prev"></a>-->
+                                <!--<a class="right-carousel" href="#myCarousel-1" data-slide="next"></a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="list-content">-->
+                            <!--<h2>Two Bedroom Apartment</h2>-->
 
-                            <div class="clearfix"></div>
-                            <div class="list-hotel-text">
-                                Studios and apartments feature a balcony with sea views, a flat-screen TV with cable
-                                channels and a private bathroom with free toiletries, a hairdryer and a bath or shower.
-                                ..
-                            </div>
+                            <!--<div class="clearfix"></div>-->
+                            <!--<div class="list-hotel-text">-->
+                                <!--Studios and apartments feature a balcony with sea views, a flat-screen TV with cable-->
+                                <!--channels and a private bathroom with free toiletries, a hairdryer and a bath or shower.-->
+                                <!--..-->
+                            <!--</div>-->
 
-                        </div>
-                        <div class="list-price">
-                            <div class="list-hotel-price-bgr">Price for 1 night</div>
-                            <div class="list-hotel-price-curency">$350</div>
-                            <div class="list-hotel-price-loc">(LOC 1.2)</div>
-                            <a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+                        <!--</div>-->
+                        <!--<div class="list-price">-->
+                            <!--<div class="list-hotel-price-bgr">Price for 1 night</div>-->
+                            <!--<div class="list-hotel-price-curency">$350</div>-->
+                            <!--<div class="list-hotel-price-loc">(LOC 1.2)</div>-->
+                            <!--<a href="#" class="list-hotel-price-button btn btn-primary">Book now</a>-->
+                        <!--</div>-->
+                        <!--<div class="clearfix"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="clearfix"></div>
 
+                {{#if descriptionsAccessInfo}}
                 <div id="hotel-rules">
                     <h2>Access Info</h2>
                     <p>
@@ -194,7 +189,7 @@
                     <hr>
                 </div>
                 <div class="clearfix"></div>
-
+                {{/if}}
                 <div id="reviews">
                     <h2>User Rating & Reviews</h2>
                     <hr>
