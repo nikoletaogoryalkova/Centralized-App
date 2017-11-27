@@ -67,7 +67,7 @@
         }
 
         function generateCountryTemplate(country) {
-            return $('<option>').attr('value', country.name).text(country.name);
+            return $('<option>').attr('value', country.id).text(country.name);
         }
 
         $(document).ready(function (){
@@ -75,7 +75,7 @@
 
             let locationSelect = $('#location-select');
 
-            $.get(apiHost + 'api/countries?projection=countries', function(data) {
+            $.get(apiHost + 'api/countries?projection=singleCountry', function(data) {
                 data.content.forEach(country => {
                     let countryTemplate = generateCountryTemplate(country);
                     locationSelect.append(countryTemplate);

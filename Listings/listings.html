@@ -244,7 +244,7 @@
 
     function search() {
         [minPrice, maxPrice] = priceSliderElement.val().split(',').map(Number);
-        const path = 'api/listings/search/getAllByFilter';
+        const path = 'api/listings/search/getAllByFilter?';
         const projection = 'listings';
         let parameters = '';
 
@@ -265,7 +265,13 @@
             parameters += `&propertyAmenities=${propertyAmenitiesQueryString}`;
         }
 
-        const endPoint = apiHost + path + parameters + '&projection=listings' + '&page=1';
+        let endPoint = apiHost + path + parameters + '&projection=listings';
+        let page = 1;
+        if (window.location.search.includes('page=')) {
+            let positionOfPageQuery = window.location.search.indexOf('page=');
+            page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
+        }
+        endPoint += "&page=" + page;
 
         getListings(endPoint);
     }
@@ -304,8 +310,13 @@
             )
         });
     }
-
-    getListings(apiHost + 'api/listings/search/getAllAvailableByDate' + localStorage["filtration"] + "&projection=listings" + '&page=1');
+    let page = 1;
+    if (window.location.search.includes('page=')) {
+        let positionOfPageQuery = window.location.search.indexOf('page=');
+        page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
+    }
+    console.log(page);
+    getListings(apiHost + 'api/listings/search/getAllAvailableByDate' + localStorage["filtration"] + "&projection=listings" + '&page=' + page);
 </script>
 <script>
     function generateListingImageSubTemplate(listing) {
