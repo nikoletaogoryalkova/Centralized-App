@@ -100,6 +100,7 @@
             $('#search-bar').after(jQuery.parseHTML(hotelDetailsTemplate(data))).promise().then(() => {
 
                     $('#user-form').on('submit', (event) => {
+                        event.preventDefault();
 
                         let reservationCheckIn = $('#reservation-checkin').val();
                         let reservationCheckOut = $('#reservation-checkout').val();
@@ -132,7 +133,7 @@
                             "processData": false,
                             "data": reservationJson
                         }).done(function (response) {
-
+                            window.location.href = frontEndHost + '/home.html';
                         }).catch(function (httpObj) {
                             if (httpObj.status === 401) {
                                 $('#reservation_errorMessage').text(httpObj.responseJSON.message);
