@@ -202,6 +202,10 @@ a:focus {
     color: inherit;
 }
 
+form button#btn-home {
+    width: 13%;
+}
+
 .has-feedback .form-control {
     padding-right: 25px;
 }

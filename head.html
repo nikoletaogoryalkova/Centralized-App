@@ -25,6 +25,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="../js/config.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -74,7 +75,7 @@
 
             let locationSelect = $('#location-select');
 
-            $.get('http://localhost:8080/api/countries?projection=countries', function(data) {
+            $.get(apiHost + 'api/countries?projection=countries', function(data) {
                 data.content.forEach(country => {
                     let countryTemplate = generateCountryTemplate(country);
                     locationSelect.append(countryTemplate);

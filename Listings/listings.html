@@ -6,11 +6,8 @@
 
 </body>
 <script src="../js/moment.js"></script>
-<!--<script src="../js/listings.js"></script>-->
 <script src="../js/jquery.min.js"></script>
 <script src="../js/handlebars-v4.0.11.js"></script>
-<!--<script src="../js/bootstrap-datepicker.js"></script>-->
-<!--<script src="../js/jquery.fancybox.js"></script>-->
 
 <script type="text/javascript">
     function loadPage(href) {
@@ -19,6 +16,22 @@
         xmlhttp.send();
         return xmlhttp.responseText;
     }
+</script>
+<script>
+    let requestedUrl = window.location.search;
+
+    function saveUrlInLocalStorage(url) {
+        if (url.includes('page=')) {
+            let positionOfPageQuery = url.indexOf('page=');
+            localStorage["filtration"] = url.substr(0, positionOfPageQuery - 1);
+        }
+        else {
+            localStorage["filtration"] = url;
+        }
+    }
+
+    saveUrlInLocalStorage(requestedUrl);
+
 </script>
 <script>
     let headSource = loadPage('../head.html');
@@ -85,7 +98,7 @@
 
         let locationPropertyTypes = $('#filter-propertyType');
 
-        $.get('http://localhost:8080/api/property_types?projection=property_type', function (data) {
+        $.get(apiHost + 'api/property_types?projection=property_type', function (data) {
             data.content.forEach(propertyType => {
                 let propertyTypeTemplate = generatePropertyTypeOrAmenityTemplate(propertyType);
                 locationPropertyTypes.append(propertyTypeTemplate);
@@ -97,7 +110,7 @@
 
         let locationAmenities = $('#filter-amenity');
 
-        $.get('http://localhost:8080/api/amenities?projection=amenity_aggregation', function (data) {
+        $.get(apiHost + 'api/amenities?projection=amenity_aggregation', function (data) {
             data.content.forEach(amenity => {
                 let amenityTemplate = generatePropertyTypeOrAmenityTemplate(amenity);
                 locationAmenities.append(amenityTemplate);
@@ -106,7 +119,6 @@
             $('#filter-amenities .filter-check').click(propertyAmenitiesClickHandler);
             locationAmenities.append($('<div>').addClass('clearfix'));
         });
-        getListings();
     });
 </script>
 <script>
@@ -116,7 +128,7 @@
         'onComplete': function () {
             $("#fancybox-wrap").css({'top': '100px!important', 'left': '0'});
         }
-    })
+    });
     $('.input-daterange input').each(function () {
         $(this).datepicker('clearDates');
     });
@@ -204,7 +216,7 @@
         let queryString = '';
 
         propertyStars.forEach(element => {
-            queryString += element + ';';
+            queryString += element + ',';
         });
 
         return queryString.substr(0, queryString.length - 1);
@@ -214,7 +226,7 @@
         let queryString = '';
 
         propertyTypes.forEach(element => {
-            queryString += element + ';';
+            queryString += element + ',';
         });
 
         return queryString.substr(0, queryString.length - 1);
@@ -224,7 +236,7 @@
         let queryString = '';
 
         propertyAmenities.forEach(element => {
-            queryString += element + ';';
+            queryString += element + ',';
         });
 
         return queryString.substr(0, queryString.length - 1);
@@ -232,41 +244,68 @@
 
     function search() {
         [minPrice, maxPrice] = priceSliderElement.val().split(',').map(Number);
-        const host = 'http://localhost:8080/';
-        const path = 'api/listings/';
+        const path = 'api/listings/search/getAllByFilter';
         const projection = 'listings';
-        let parameters = '?';
+        let parameters = '';
 
         propertyTypeQueryString = getPropertyTypeQueryString();
         propertyStarsQueryString = getPropertyStarsQueryString();
         propertyAmenitiesQueryString = getPropertyAmenitiesQueryString();
-
+        parameters += localStorage["filtration"];
         parameters += `projection=${projection}`;
         parameters += `&priceMin=${minPrice}`;
         parameters += `&priceMax=${maxPrice}`;
-        parameters += `&propertyTypes=${propertyTypeQueryString}`;
-        parameters += `&propertyStars=${propertyStarsQueryString}`;
-        parameters += `&propertyAmenities=${propertyAmenitiesQueryString}`;
+        if (propertyTypes.length > 0) {
+            parameters += `&propertyTypes=${propertyTypeQueryString}`;
+        }
+        if (propertyStars.length > 0) {
+            parameters += `&propertyStars=${propertyStarsQueryString}`;
+        }
+        if (propertyAmenities.length > 0) {
+            parameters += `&propertyAmenities=${propertyAmenitiesQueryString}`;
+        }
 
-        const endPoint = host + path + parameters;
+        const endPoint = apiHost + path + parameters + '&projection=listings' + '&page=1';
 
-
-
-        getListings();
+        getListings(endPoint);
     }
+    function generatePaginationTemplate(data) {
+        let out = "";
 
-    function getListings() {
-        $.getJSON('http://localhost:8080/api/listings?projection=listings&page=3', (data, status, xhr) => {
+        for (let i = 1; i <= data.page.totalPages; i++) {
+            if (i === localStorage["currentPageNumber"]) {
+                out += "<li><a class='active' href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+            } else {
+                out += "<li><a href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+            }
+        }
+
+        return out;
+    }
+    function getListings(endPoint) {
+        $.getJSON(endPoint, (data, status, xhr) => {
             if (status === 'success') {
                 let insertionRow = $('#list-hotel-box');
-                console.log(data.content);
+
                 data.content.forEach(listing => {
                     let listingTemplate = generateListingTemplate(listing);
                     insertionRow.append(listingTemplate);
                 });
             }
-        })
+        }).then((data) => {
+            $('#list-hotel-box').append(
+                $('<div>').addClass('pagination-box')
+                    .append(
+                        $('<ul>').addClass('pagination')
+                            .append(
+                                generatePaginationTemplate(data)
+                            )
+                    )
+            )
+        });
     }
+
+    getListings(apiHost + 'api/listings/search/getAllAvailableByDate' + localStorage["filtration"] + "&projection=listings" + '&page=1');
 </script>
 <script>
     function generateListingImageSubTemplate(listing) {
@@ -311,7 +350,7 @@
                     .append(
                         $('<div>')
                             .addClass('list-hotel-rating-count')
-                            .text(Math.round(listing["averageRating"]*100)/100)
+                            .text(Math.round(listing["averageRating"] * 100) / 100)
                     )
                     .append(
                         $('<div>')
@@ -396,7 +435,7 @@
             .append(
                 $('<a>')
                     .addClass('list-hotel-price-button btn btn-primary')
-                    .attr('href', 'http://localhost:63342/Lockchain-FrontEnd/Property/property.html?id=' + listing.id)
+                    .attr('href', frontEndHost + 'Lockchain-FrontEnd/Property/property.html?id=' + listing.id)
                     .text('Book now')
             );
         return listingPrice;

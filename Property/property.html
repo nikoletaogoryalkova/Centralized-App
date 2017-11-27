@@ -5,7 +5,6 @@
 <body>
 
 </body>
-
 <script src="../js/jquery.min.js"></script>
 <script src="../js/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
@@ -44,7 +43,30 @@
     });
 
     Handlebars.registerHelper('formatNumber', function (item) {
-        return Math.round(item * 100) / 100;
+        let out = "";
+
+        let ratingRoundedNumber = Math.round(item);
+        if (ratingRoundedNumber === 5) {
+            out += "Excellent";
+        }
+        else if (ratingRoundedNumber === 4) {
+            out += "Very good";
+        }
+        else if (ratingRoundedNumber === 3) {
+            out += "Good";
+        }
+        else if (ratingRoundedNumber === 2) {
+            out += "Sufficient";
+        }
+        else if (ratingRoundedNumber === 1) {
+            out += "Weak";
+        }
+        else if (ratingRoundedNumber === 0) {
+            out += "Poor"
+        }
+        out += ' ';
+        out += ratingRoundedNumber;
+        return out;
     })
 </script>
 <script>
@@ -65,26 +87,80 @@
 
     $('body')
         .append(headerTemplate())
-        .append(footerTemplate())
+        .append(footerTemplate());
 
 
     let queryId = GetURLParameter("id");
     if (!queryId) {
-        location.href = "http://localhost:63342/Lockchain-FrontEnd/Listings/listings.html";
+        location.href = frontEndHost + "Listings/listings.html";
     }
     else {
         let property = "";
-        $.get("http://localhost:8080/api/listings/" + queryId + "?projection=singleListing", function (data) {
+        $.get(apiHost + "api/listings/" + queryId + "?projection=singleListing", function (data) {
             $('#search-bar').after(jQuery.parseHTML(hotelDetailsTemplate(data))).promise().then(() => {
+
+                    $('#user-form').on('submit', (event) => {
+
+                        let reservationCheckIn = $('#reservation-checkin').val();
+                        let reservationCheckOut = $('#reservation-checkout').val();
+                        let reservationGuests = $('#reservation-guests').val();
+                        let reservationPersonName = $('#reservation-name').val();
+                        let reservationPersonEmail = $('#reservation-email').val();
+                        let reservationPersonPhone = $('#reservation-phone').val();
+
+
+                        let reservation = {};
+
+                        reservation.checkIn = reservationCheckIn;
+                        reservation.checkout = reservationCheckOut;
+                        reservation.guests = reservationGuests;
+                        reservation.name = reservationPersonName;
+                        reservation.listingId = queryId;
+                        reservation.email = reservationPersonEmail;
+                        reservation.phone = reservationPersonPhone;
+
+                        let reservationJson = JSON.stringify(reservation);
+
+                        $.ajax({
+                            "async": true,
+                            "crossDomain": true,
+                            "url": apiHost + "reservation/request",
+                            "method": "POST",
+                            "headers": {
+                                "content-type": "application/json"
+                            },
+                            "processData": false,
+                            "data": reservationJson
+                        }).done(function (response) {
+
+                        }).catch(function (httpObj) {
+                            if (httpObj.status === 401) {
+                                $('#reservation_errorMessage').text(httpObj.responseJSON.message);
+                            }
+                        });
+                    });
+
                     $('.fancybox').fancybox({
                         'speedIn': 600,
                         'speedOut': 200,
                         'onComplete': function () {
                             $("#fancybox-wrap").css({'top': '100px!important', 'left': '0'});
                         }
-                    })
+                    });
 
-                    let rating = $('#rtng').text();
+                    let reviewsCount = data.reviews.length;
+                    if (reviewsCount === 0) {
+                        // empty Poor 0 in top of listing details
+                        $('#rtng').empty();
+
+                        // empty Reviews section
+                        $('#reviews').next('.clearfix').remove().promise().then(() => {
+                            $('#reviews').remove();
+                        });
+
+                        $('a[href$="#reviews"]').remove();
+                    }
+                    let rating = Math.round(data["averageRating"]);
                     for (let i = 0; i < parseInt(rating); i++) {
                         $("#rtng-stars").append("<span class=\"full-star\"></span>");
                     }
@@ -96,7 +172,7 @@
                     for (let i = 0; i < Math.min(5, data.amenities.length); i++) {
                         let breaks = "<br/>";
                         if (data.amenities[i].name.length < 20) breaks += "<br/>";
-                        $("#facilities").append('                <div class="icon-facilities icon-hotel-3">' +
+                        $("#facilities").append('<div class="icon-facilities icon-hotel-3">' +
                             '<span class="icon-image" style="text-align: center;">' + breaks + '<b>' + data.amenities[i].name + '</b></span>' +
                             '</div>');
                         amenityCnt = i;
@@ -107,7 +183,7 @@
                     let out = '<div class="col-md-4">';
                     let x = 0;
                     let y = 0;
-                    for (let i = amenityCnt+1; i < items.length; i++) {
+                    for (let i = amenityCnt + 1; i < items.length; i++) {
                         out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
                         x++;
                         y++;
@@ -122,15 +198,15 @@
 
                     }
                     out = out + '</div>';
-                    $("#fac-row").append(out)
+                    $("#fac-row").append(out);
 
                     let reviews = data.reviews.sort((r1, r2) => r2.rating - r1.rating).map(r => {
                         return {"text": r.comments, "rating": r.rating}
                     });
                     for (let review of reviews) {
                         let reviewHtml = ' <div class="list-hotel-rating"> ' +
-                        '<div class="list-hotel-rating-count">'+review.rating+'</div>'+
-                        '<div class="list-hotel-rating-stars">';
+                            '<div class="list-hotel-rating-count">' + review.rating + '</div>' +
+                            '<div class="list-hotel-rating-stars">';
 
                         for (let i = 0; i < parseInt(review.rating); i++) {
                             reviewHtml += "<span class=\"full-star\"></span>";
@@ -144,7 +220,6 @@
                         reviewHtml += "</div>";
                         $("#reviews").append(reviewHtml);
                     }
-                    console.log(reviews);
                 }
             );
 
@@ -181,14 +256,6 @@
 </script>
 
 <script>
-    $(document).ready(function () {
-
-    });
-
-</script>
-
-
-<script>
     $('.filter-room-facility-more-href').on('click', function (e) {
         e.preventDefault();
         $('.filter-room-facility-more').toggle();
@@ -212,7 +279,6 @@
         $('.filter-facility-more').toggle();
         $('.filter-facility-more-href').css('display', 'block');
     })
-
 </script>
 <script>
     function calculatePrice(pricePerNight, hotelNights, cleaningFee) {

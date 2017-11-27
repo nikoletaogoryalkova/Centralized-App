@@ -107,7 +107,7 @@
         $.ajax({
             "async": true,
             "crossDomain": true,
-            "url": "http://localhost:8080/users/signup",
+            "url": apiHost + "users/signup",
             "method": "POST",
             "headers": {
                 "content-type": "application/json"
@@ -140,7 +140,7 @@
         $.ajax({
             "async": true,
             "crossDomain": true,
-            "url": "http://localhost:8080/login",
+            "url": apiHost + "login",
             "method": "POST",
             "data": userJson
         }).done(function (data) {

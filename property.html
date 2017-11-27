@@ -183,7 +183,6 @@
 		
 		<section id="hotel-info">
 			<div class="container">
-				
 				<div class="hotel-content">
 					<h1>Green Life Beach Resort</h1>
 					<div class="list-hotel-rating">
@@ -436,68 +435,63 @@
 					</div>
 					
 				</div>
-					
-				<div class="hotel-chekin">
-					<div class="hotel-chekin-box">
+			</div>
+			<div class="hotel-chekin">
+				<div class="hotel-chekin-box">
 
-						<form method="POST" id="user-form">
+					<form method="POST" id="user-form">
+						<div class="hotel-input-daterange-check">
+							<div class="form-group has-feedback has-feedback-left input-group-date-in">
+								<i class="icon icon-calendar form-control-feedback"></i>
+								<span class="icon-check-in">Check in</span>
+								<input type="text" class="form-control" id="field-check-in-check" placeholder="Select date">
+								<input type="hidden" id="hidden-check-in-check" name="hidden-check-in-check" >
+							</div>
 
-					
-							
+							<div class="input-group-addon">
 
-							<div class="hotel-input-daterange-check">
-								<div class="form-group has-feedback has-feedback-left input-group-date-in">
-									<i class="icon icon-calendar form-control-feedback"></i>
-									<span class="icon-check-in">Check in</span>
-									<input type="text" class="form-control" id="field-check-in-check" placeholder="Select date">
-									<input type="hidden" id="hidden-check-in-check" name="hidden-check-in-check" >
-								</div>
-						
-								<div class="input-group-addon">
-							
-								</div>
-						
-								<div class="form-group has-feedback has-feedback-left input-group-date-out">
-									<span class="icon-check-out">Check out</span>
-									<i class="icon icon-calendar form-control-feedback"></i>
-									<input type="text" class="form-control" id="field-check-out-check" placeholder="Select date">
-									<input type="hidden" id="hidden-check-out-check" name="hidden-check-out-check" >
-								</div>
-							
-								<input type="hidden" id="calculated" name="calculated" >
-								<div id="label"></div>
 							</div>
-							<div id="hotel-search-nights">
-								<span><span id="countdate">1</span> nights</span>
-							</div>
-							<div class="clearfix"></div>
 
-							<div class="dropdown select-person">
-								<input type="number" class="form-control" id="number-person" min="1" placeholder="Select Guest Number" required="">
+							<div class="form-group has-feedback has-feedback-left input-group-date-out">
+								<span class="icon-check-out">Check out</span>
+								<i class="icon icon-calendar form-control-feedback"></i>
+								<input type="text" class="form-control" id="field-check-out-check" placeholder="Select date">
+								<input type="hidden" id="hidden-check-out-check" name="hidden-check-out-check" >
 							</div>
-						
-							<div class="dropdown select-person">
-								<input type="text" class="form-control" name="name" required="" placeholder="Name">
-							</div>
-						
-							<div class="dropdown select-person">
-								<input type="email" class="form-control" name="email" required="" placeholder="E-mail">
-							</div>
-						
-							<div class="dropdown select-person">
-								<input type="text" class="form-control" name="phone" required="" placeholder="Phone">
-							</div>	
-							
-							<div class="g-recaptcha" data-sitekey="6LfNZTYUAAAAAC6EqT3alk6NLY14TcsN1JnnA6Yn"></div>
-							<br>
-	
 
-							<div class="nonev"></div>
-					
-							<button type="submit" class="btn btn-primary">Request Booking in LOC or FIAT</button>
-				
-						</form>
-					</div>
+							<input type="hidden" id="calculated" name="calculated" >
+							<div id="label"></div>
+						</div>
+						<div id="hotel-search-nights">
+							<span><span id="countdate">1</span> nights</span>
+						</div>
+						<div class="clearfix"></div>
+
+						<div class="dropdown select-person">
+							<input type="number" class="form-control" id="number-person" min="1" placeholder="Select Guest Number" required="">
+						</div>
+
+						<div class="dropdown select-person">
+							<input type="text" class="form-control" name="name" required="" placeholder="Name">
+						</div>
+
+						<div class="dropdown select-person">
+							<input type="email" class="form-control" name="email" required="" placeholder="E-mail">
+						</div>
+
+						<div class="dropdown select-person">
+							<input type="text" class="form-control" name="phone" required="" placeholder="Phone">
+						</div>
+
+						<div class="g-recaptcha" data-sitekey="6LfNZTYUAAAAAC6EqT3alk6NLY14TcsN1JnnA6Yn"></div>
+						<br>
+
+
+						<div class="nonev"></div>
+
+						<button type="submit" class="btn btn-primary">Request Booking in LOC or FIAT</button>
+
+					</form>
 				</div>
 			</div>
 			<div class="clearfix"></div>

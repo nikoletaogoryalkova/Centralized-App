@@ -208,18 +208,18 @@
         </ul>
 
         <ul class="second-nav-text pull-right">
-            <li class="rate-nav"><span>LOC/EUR</span> 0.25EUR</li>
-            <li class="balance-nav">
-                <div class="balance-box">Balance: <span>0,035,974.23 LOC</span></div>
-                <a href="#" class="a-icon-add-btn"></a>
-            </li>
-            <li class="dropdown ">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">EUR <span class="caret"></span></a>
-                <ul class="navbar-dropdown dropdown-menu">
-                    <li><a href="#">LOC</a></li>
-                    <li><a href="#">EUR</a></li>
-                </ul>
-            </li>
+            <!--<li class="rate-nav"><span>LOC/EUR</span> 0.25EUR</li>-->
+            <!--<li class="balance-nav">-->
+                <!--<div class="balance-box">Balance: <span>0,035,974.23 LOC</span></div>-->
+                <!--<a href="#" class="a-icon-add-btn"></a>-->
+            <!--</li>-->
+            <!--<li class="dropdown ">-->
+                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">EUR <span class="caret"></span></a>-->
+                <!--<ul class="navbar-dropdown dropdown-menu">-->
+                    <!--<li><a href="#">LOC</a></li>-->
+                    <!--<li><a href="#">EUR</a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
         </ul>
     </div>
 </nav>
@@ -239,7 +239,7 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-in">
                     <i class="icon icon-calendar form-control-feedback"></i>
                     <span class="icon-check-in">Check in</span>
-                    <input name="start-date" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required
+                    <input name="start-date" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required autocomplete="off"
                            placeholder="Select date">
                 </div>
 
@@ -250,7 +250,7 @@
                 <div class="form-group has-feedback has-feedback-left input-group-date-out">
                     <span class="icon-check-out">Check out</span>
                     <i class="icon icon-calendar form-control-feedback"></i>
-                    <input name="end-date" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required
+                    <input name="end-date" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required autocomplete="off"
                            placeholder="Select date">
                 </div>
             </div>
@@ -261,7 +261,7 @@
 
             <div class="form-group has-feedback has-feedback-left" id="guests">
                 <i class="icon icon-guest form-control-feedback"></i>
-                <input type="number" min="1" name="guests" class="form-control" placeholder="Guests" required/>
+                <input type="number" min="1" name="guests" class="form-control" placeholder="Guests" required autocomplete="off"/>
             </div>
 
 
