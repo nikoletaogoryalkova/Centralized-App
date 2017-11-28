@@ -1,0 +1,496 @@
+<head>
+
+</head>
+
+<body>
+
+</body>
+<script src="../js/moment.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/handlebars-v4.0.11.js"></script>
+
+<script type="text/javascript">
+    function loadPage(href) {
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", href, false);
+        xmlhttp.send();
+        return xmlhttp.responseText;
+    }
+</script>
+<script>
+    let requestedUrl = window.location.search;
+
+    function saveUrlInLocalStorage(url) {
+        if (url.includes('page=')) {
+            let positionOfPageQuery = url.indexOf('page=');
+            localStorage["filtration"] = url.substr(0, positionOfPageQuery - 1);
+        }
+        else {
+            localStorage["filtration"] = url;
+        }
+    }
+
+    saveUrlInLocalStorage(requestedUrl);
+
+</script>
+<script>
+    let headSource = loadPage('../head.html');
+    let headTemplate = Handlebars.compile(headSource);
+    let headContext = {title: "LockChain Marketplace"};
+
+    let headerSource = loadPage('../header.html');
+    let headerTemplate = Handlebars.compile(headerSource);
+
+    let breadcrumbSource = loadPage('breadcrumb.html');
+    let breadcrumbTemplate = Handlebars.compile(breadcrumbSource);
+
+    let filtersSource = loadPage('filters.html');
+    let filtersTemplate = Handlebars.compile(filtersSource);
+
+    let footerSource = loadPage('../footer.html');
+    let footerTemplate = Handlebars.compile(footerSource);
+
+
+    let compiledTemplate = headerTemplate() + breadcrumbTemplate() + filtersTemplate() + footerTemplate();
+
+    $('head').html(headTemplate(headContext));
+
+    $('body')
+        .append(headerTemplate())
+        .append(breadcrumbTemplate())
+        .append(
+            $('<section>')
+                .attr('id', 'hotel-box')
+                .append(
+                    $('<div>').addClass('container')
+                        .append(
+                            $('<div>').addClass('row')
+                                .append(
+                                    $('<div>').addClass('col-md-3')
+                                )
+                                .append(
+                                    $('<div>').addClass('col-md-9')
+                                        .append(
+                                            $('<div>').addClass('list-hotel-box').attr('id', 'list-hotel-box')
+                                        )
+                                )
+                        )
+                ))
+        .append(footerTemplate());
+
+    $('#hotel-box .col-md-3').append(filtersTemplate()).promise().then(() => {
+        $('#filter-button').click(() => {
+
+        });
+
+        function generatePropertyTypeOrAmenityTemplate(item) {
+            let template = $('<label>').addClass('filter-check-label')
+                .append(
+                    $('<span>').addClass('filter-check')
+                )
+                .append(
+                    $('<span>').addClass('filter-check-text').text(item.name)
+                )
+                .append(
+                    $('<span>').addClass('filter-check-count').text(item.count)
+                );
+
+            return template;
+        }
+
+        let locationPropertyTypes = $('#filter-propertyType');
+        if (typeof apiHost == 'undefined') {
+            var apiHost = "//api.lockchain.co:8080/lockchain/";
+
+            var frontEndHost = "//localhost:63342/marketplace/local-28-11/";
+        }
+        $.get(apiHost + 'api/property_types?projection=property_type', function (data) {
+            data.content.forEach(propertyType => {
+                let propertyTypeTemplate = generatePropertyTypeOrAmenityTemplate(propertyType);
+                locationPropertyTypes.append(propertyTypeTemplate);
+            });
+        }).then(() => {
+            locationPropertyTypes.append($('<div>').addClass('clearfix'));
+            $('#filter-type .filter-check').click(propertyTypeClickHandler);
+        });
+
+        let locationAmenities = $('#filter-amenity');
+
+        $.get(apiHost + 'api/amenities?projection=amenity_aggregation', function (data) {
+            data.content.forEach(amenity => {
+                let amenityTemplate = generatePropertyTypeOrAmenityTemplate(amenity);
+                locationAmenities.append(amenityTemplate);
+            })
+        }).then(() => {
+            $('#filter-amenities .filter-check').click(propertyAmenitiesClickHandler);
+            locationAmenities.append($('<div>').addClass('clearfix'));
+        });
+    });
+</script>
+<script>
+    $('.fancybox').fancybox({
+        'speedIn': 600,
+        'speedOut': 200,
+        'onComplete': function () {
+            $("#fancybox-wrap").css({'top': '100px!important', 'left': '0'});
+        }
+    });
+    $('.input-daterange input').each(function () {
+        $(this).datepicker('clearDates');
+    });
+
+    $("#price-slider").slider({});
+    $("#distance-slider").slider({});
+
+    $('.filter-room-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'none');
+    });
+
+    $('.filter-room-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-room-facility-more').toggle();
+        $('.filter-room-facility-more-href').css('display', 'block');
+    });
+
+    $('.filter-facility-more-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'none');
+    });
+
+    $('.filter-facility-hide-href').on('click', function (e) {
+        e.preventDefault();
+        $('.filter-facility-more').toggle();
+        $('.filter-facility-more-href').css('display', 'block');
+    })
+</script>
+<script>
+    let propertyStars = new Set();
+    let propertyTypes = new Set();
+    let propertyAmenities = new Set();
+
+    let propertyTypeQueryString = '';
+    let propertyStarsQueryString = '';
+    let propertyAmenitiesQueryString = '';
+
+    let minPrice, maxPrice;
+
+    $(document).ready(function () {
+        $('.filter-stars span').click(propertyStarsClickHandler);
+    });
+
+
+    let priceSliderElement = $('#price-slider');
+
+    function propertyStarsClickHandler(eventData) {
+        let clickedSpanElement = $(eventData.target);
+        clickedSpanElement.toggleClass('active');
+        let spanText = clickedSpanElement.text();
+        if (propertyStars.has(spanText)) {
+            propertyStars.delete(spanText);
+        } else {
+            propertyStars.add(spanText);
+        }
+    }
+
+    function propertyTypeClickHandler(eventData) {
+        let clickedFilterGroupElement = $(eventData.target).parent();
+        clickedFilterGroupElement.toggleClass('active');
+        let filterCheckText = clickedFilterGroupElement.children('.filter-check-text').text();
+        if (propertyTypes.has(filterCheckText)) {
+            propertyTypes.delete(filterCheckText);
+        } else {
+            propertyTypes.add(filterCheckText);
+        }
+    }
+
+
+    function propertyAmenitiesClickHandler(eventData) {
+        let clickedFilterGroupElement = $(eventData.target).parent();
+        clickedFilterGroupElement.toggleClass('active');
+        let filterCheckText = clickedFilterGroupElement.children('.filter-check-text').text();
+        if (propertyAmenities.has(filterCheckText)) {
+            propertyAmenities.delete(filterCheckText);
+        } else {
+            propertyAmenities.add(filterCheckText);
+        }
+    }
+
+    function getPropertyStarsQueryString() {
+        let queryString = '';
+
+        propertyStars.forEach(element => {
+            queryString += element + ',';
+        });
+
+        return queryString.substr(0, queryString.length - 1);
+    }
+
+    function getPropertyTypeQueryString() {
+        let queryString = '';
+
+        propertyTypes.forEach(element => {
+            queryString += element + ',';
+        });
+
+        return queryString.substr(0, queryString.length - 1);
+    }
+
+    function getPropertyAmenitiesQueryString() {
+        let queryString = '';
+
+        propertyAmenities.forEach(element => {
+            queryString += element + ',';
+        });
+
+        return queryString.substr(0, queryString.length - 1);
+    }
+
+    function generateEndPoint() {
+        [minPrice, maxPrice] = priceSliderElement.val().split(',').map(Number);
+        var path = 'api/listings/search/getAllByFilter?';
+        var projection = 'listings';
+        let parameters = '';
+
+        propertyTypeQueryString = getPropertyTypeQueryString();
+        propertyStarsQueryString = getPropertyStarsQueryString();
+        propertyAmenitiesQueryString = getPropertyAmenitiesQueryString();
+        parameters += localStorage["filtration"].indexOf("?") === 0 ? localStorage["filtration"].replace("?", "") : localStorage["filtration"];
+        // parameters += `projection=${projection}`;
+        parameters += `&priceMin=${minPrice}`;
+        parameters += `&priceMax=${maxPrice}`;
+        if (propertyTypes.length > 0) {
+            parameters += `&propertyTypes=${propertyTypeQueryString}`;
+        }
+        if (propertyStars.length > 0) {
+            parameters += `&propertyStars=${propertyStarsQueryString}`;
+        }
+        if (propertyAmenities.length > 0) {
+            parameters += `&propertyAmenities=${propertyAmenitiesQueryString}`;
+        }
+        if (typeof apiHost == 'undefined') {
+            var apiHost = "//api.lockchain.co:8080/lockchain/";
+
+            var frontEndHost = "//localhost:63342/marketplace/local-28-11/";
+        }
+        let endPoint = apiHost + path + parameters + '&projection=listings';
+        let page = 1;
+        if (window.location.search.includes('page=')) {
+            let positionOfPageQuery = window.location.search.indexOf('page=');
+            page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
+        }
+
+        endPoint += "&page=" + page;
+        return endPoint;
+    }
+
+    function search() {
+        let endPoints = generateEndPoint();
+        getListings(endPoint);
+    }
+    function generatePaginationTemplate(data) {
+        let out = "";
+
+        for (let i = 1; i <= data.page.totalPages; i++) {
+            if (i === localStorage["currentPageNumber"]) {
+                out += "<li><a class='active' href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+            } else {
+                out += "<li><a href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+            }
+        }
+
+        return out;
+    }
+    function getListings(endPoint) {
+        console.log("---");
+        console.log(endPoint);
+        $.getJSON(endPoint, (data, status, xhr) => {
+
+            if (status === 'success') {
+                let insertionRow = $('#list-hotel-box');
+
+                data.content.forEach(listing => {
+                    let listingTemplate = generateListingTemplate(listing);
+                    insertionRow.append(listingTemplate);
+                });
+            }
+        }).then((data) => {
+            $('#list-hotel-box').append(
+                $('<div>').addClass('pagination-box')
+                    .append(
+                        $('<ul>').addClass('pagination')
+                            .append(
+                                generatePaginationTemplate(data)
+                            )
+                    )
+            )
+        });
+    }
+    let page = 1;
+    if (window.location.search.includes('page=')) {
+        let positionOfPageQuery = window.location.search.indexOf('page=');
+        page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
+    }
+    console.log(page);
+    if (typeof apiHost == 'undefined') {
+        var apiHost = "//api.lockchain.co:8080/lockchain/";
+
+        var frontEndHost = "//localhost:63342/marketplace/local-28-11/";
+    }
+    getListings(apiHost + 'api/listings/search/getAllAvailableByDate' + localStorage["filtration"] + "&projection=listings" + '&page=' + page);
+</script>
+<script>
+    function generateListingImageSubTemplate(listing) {
+        let htmlItems = "";
+
+        $.each(listing.pictures, function (i, item) {
+            if (i === 0) {
+                htmlItems += "<div class='item active'><a class='fancybox' data-fancybox-group='group-" + listing.id + "' href='" + item.original + "'><img src='" + item.thumbnail + "' /></a></div>";
+            } else {
+                htmlItems += "<div class='item'><a class='fancybox' data-fancybox-group='group-'" + listing.id + "href='" + item.original + "'><img src='" + item.thumbnail + "' /></a></div>";
+            }
+        });
+
+        let listingPictures = $('<div>')
+            .addClass('list-image')
+            .append(
+                $('<div>')
+                    .addClass('carousel slide')
+                    .attr('data-ride', 'carousel')
+                    .attr('id', 'myCarousel-' + listing.id)
+                    .append(
+                        $('<div>').addClass('carousel-inner').append(
+                            htmlItems +
+                            '<a class="left-carousel" href="#myCarousel-' + listing.id + '" data-slide="prev"></a>' +
+                            '<a class="right-carousel" href="#myCarousel-' + listing.id + '" data-slide="next"></a>'
+                        )
+                    )
+            );
+
+        return listingPictures;
+    }
+
+    function generateListingContentSubTemplate(listing) {
+        let listingContent = $('<div>').addClass('list-content')
+            .append(
+                $('<h2>')
+                    .text(listing.name)
+            )
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-rating')
+                    .append(
+                        $('<div>')
+                            .addClass('list-hotel-rating-count')
+                            .text(Math.round(listing["averageRating"] * 100) / 100)
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('list-hotel-rating-stars')
+                            .append(
+                                $('<span>')
+                                    .addClass('full-star')
+                            )
+                            .append(
+                                $('<span>')
+                                    .addClass('full-star')
+                            )
+                            .append(
+                                $('<span>')
+                                    .addClass('full-star')
+                            )
+                            .append(
+                                $('<span>')
+                                    .addClass('full-star')
+                            )
+                            .append(
+                                $('<span>')
+                                    .addClass('empty-star')
+                            )
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('list-hotel-rating-review')
+                            .text(listing["reviewsCount"] + ' Reviews')
+                    )
+            )
+            .append(
+                $('<div>')
+                    .addClass('clearfix')
+            )
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-text')
+                    .text(listing.description ? listing.description.substr(0, 300) : "")
+            )
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-comfort')
+                    .append(
+                        $('<div>')
+                            .addClass('icon-hotel-4')
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('icon-hotel-4')
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('icon-hotel-4')
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('icon-hotel-4')
+                    )
+            );
+
+        return listingContent;
+    }
+
+    function generateListingPriceSubTemplate(listing) {
+        let listingPrice = $('<div>').addClass('list-price')
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-price-bgr')
+                    .text('Price for 1 night')
+            )
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-price-curency')
+                    .text(`$${listing.defaultDailyPrice}`)
+            )
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-price-loc')
+                    .text('(LOC ' + listing.defaultDailyPrice * 0.25 + ')')
+            )
+            .append(
+                $('<a>')
+                    .addClass('list-hotel-price-button btn btn-primary')
+                    .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
+                    .text('Book now')
+            );
+        return listingPrice;
+    }
+
+    function generateListingTemplate(listing) {
+        let listingTemplate = $('<div>').addClass('list-hotel')
+            .append(
+                generateListingImageSubTemplate(listing)
+            )
+            .append(
+                generateListingContentSubTemplate(listing)
+            )
+            .append(
+                generateListingPriceSubTemplate(listing)
+            )
+            .append(
+                $('<div>')
+                    .addClass('clearfix')
+            );
+
+        return listingTemplate;
+    }
+</script>

@@ -1,0 +1,95 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="shortcut icon" href="images/icon.png">
+    <title>{{title}}</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/jquery.fancybox.css">
+    <link rel="stylesheet" href="../css/bootstrap-slider.css">
+
+    <script src="../js/moment.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../js/config1.js?v=1.1"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('.input-daterange input').each(function () {
+                $(this).datepicker("option", "dateFormat", $(this).val());
+            });
+        });
+    </script>
+
+    <script>
+        function checkLoggedInUser() {
+            if (localStorage["token"]) {
+                $('#top-nav').empty().append(
+                    $('<li>').addClass('dropdown profil_menu').append(
+                        $('<a>').addClass('dropdown-toggle').attr('data-toggle', 'dropdown').text(localStorage["name"]).append(
+                        ).append(
+                            $('<span>').addClass('caret')
+                        )
+                    ).append(
+                        $('<ul>').addClass('navbar-dropdown dropdown-menu').append(
+                            $('<li>').append(
+                                $('<a>').attr('onclick', 'logout()').text('Logout')
+                            )
+                        )
+                    )
+                )
+            }
+            else {
+                $('#top-nav').empty().append(
+                    $('<li>').append(
+                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_login').text('Login')
+                    )
+                ).append(
+                    $('<li>').append(
+                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_signup').text('Register')
+                    )
+                )
+            }
+        }
+
+        function generateCountryTemplate(country) {
+            return $('<option>').attr('value', country.id).text(country.name);
+        }
+
+        $(document).ready(function (){
+            if (typeof apiHost == 'undefined') {
+                var apiHost = "//api.lockchain.co:8080/lockchain/";
+
+                var frontEndHost = "//localhost:63342/marketplace/local-28-11/";
+            }
+            checkLoggedInUser();
+
+            let locationSelect = $('#location-select');
+
+            $.get(apiHost + 'api/countries?projection=singleCountry', function(data) {
+                data.content.forEach(country => {
+                    let countryTemplate = generateCountryTemplate(country);
+                    locationSelect.append(countryTemplate);
+                });
+            });
+        })
+    </script>
+    <script src="../js/bootstrap-datepicker.js"></script>
+    <script src="../js/bootstrap-slider.js"></script>
+    <script src="../js/jquery.fancybox.js"></script>
+    <script src="../js/smooth-scroll.min.js"></script>
+</head>

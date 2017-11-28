@@ -1,0 +1,162 @@
+<section class="hotel-gallery">
+    <div class="hotel-gallery-bgr" style="background-image: url({{pictures.1.original}});">
+        <div class="container">
+            <div class="hotel-gallery-social-button">
+                <!--<a class="btn btn-social btn-dark-blue">-->
+                <!--<span>Share</span>-->
+                <!--</a>-->
+                <!--<a class="btn btn-save btn-dark-blue">-->
+                <!--<span>Save</span>-->
+                <!--</a>-->
+            </div>
+            <a class="btn btn-primary btn-gallery fancybox" data-fancybox-group="group-1"
+               href="{{pictures.1.original}}">Open Gallery</a>
+            {{#each pictures}}
+            <a href="{{original}}" class="fancybox" data-fancybox-group="group-1"></a>
+            {{/each}}
+        </div>
+    </div>
+</section>
+
+<nav id="hotel-nav">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="#hotel-nav">Overview</a>
+            </li>
+            <li>
+                <a href="#facilities">Facilities</a>
+            </li>
+            <li>
+                <a href="#hotel-rules">Access info</a>
+            </li>
+            <li>
+                <a href="#reviews">User Reviews</a>
+            </li>
+            <li>
+                <a href="#locationMap">Location</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section id="hotel-info">
+    <div class="container">
+        <div class="hotel-content">
+            <h1>{{name}}</h1>
+            <div class="list-hotel-rating">
+                <div class="list-hotel-rating-count" id="rtng">{{formatNumber averageRating}}</div>
+                <div class="list-hotel-rating-stars" id="rtng-stars">
+                </div>
+                <div class="list-hotel-rating-review">{{reviews.length}} Reviews</div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="list-hotel-description">
+                {{descriptionText}}
+            </div>
+            <div id="facilities">
+                <h2>Facilities</h2>
+                <hr>
+                <h3>Most Popular Facilities</h3>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="hotel-extras">
+                <div class="row" id="fac-row">
+                </div>
+                <div class="clearfix"></div>
+
+                {{#if descriptionsAccessInfo}}
+                <div id="hotel-rules">
+                    <h2>Access Info</h2>
+                    <p>
+                        {{descriptionsAccessInfo}}
+                    </p>
+                    <hr>
+                </div>
+                <div class="clearfix"></div>
+                {{/if}}
+                <div id="reviews">
+                    <h2>User Rating & Reviews</h2>
+                    <hr>
+                </div>
+
+                <div id="locationMap">
+                    <h2>Location</h2>
+                    <hr>
+                    <iframe src="https://maps.google.com/maps?q={{longitude}},{{latitude}}&amp;z=15&amp;output=embed"
+                            width="100%" height="400" frameborder="0" style="border:0"></iframe>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="hotel-chekin">
+            <div class="hotel-chekin-box">
+                <form id="user-form">
+                    <p id="hotel-top-price" class="hotel-top-price"><span>${{defaultDailyPrice}}</span> /per night</p>
+                    <div class="input-daterange">
+                        <div class="form-group has-feedback has-feedback-left input-group-date-in">
+                            <i class="icon icon-calendar form-control-feedback"></i>
+                            <span class="icon-check-in">Check in</span>
+                            <input id="reservation-checkin" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy'
+                                   placeholder="Select date">
+                        </div>
+
+                        <div class="input-group-addon">
+
+                        </div>
+
+                        <div class="form-group has-feedback has-feedback-left input-group-date-out">
+                            <span class="icon-check-out">Check out</span>
+                            <i class="icon icon-calendar form-control-feedback"></i>
+                            <input id="reservation-checkout" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy'
+                                   placeholder="Select date">
+                        </div>
+                    </div>
+
+                    <div id="hotel-search-nights" class="hotel-search-nights">
+                        <span>0 nights</span>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="dropdown select-person">
+                        <input type="number" class="form-control" id="reservation-guests" min="1"
+                               placeholder="Select Guest Number" required="">
+                    </div>
+
+                    <div class="dropdown select-person">
+                        <input id="reservation-name" type="text" class="form-control" name="name" required="" placeholder="Name">
+                    </div>
+
+                    <div class="dropdown select-person">
+                        <input id="reservation-email" type="email" class="form-control" name="email" required="" placeholder="E-mail">
+                    </div>
+
+                    <div class="dropdown select-person">
+                        <input id="reservation-phone" type="tel" class="form-control" name="phone" required="" placeholder="Phone">
+                    </div>
+                    <br>
+                    <div id="reservation_errorMessage"></div>
+
+                    <div class="hotel-second-price">total <span id="total-price">$0</span> / for
+                        <div class="hotel-search-nights"><span>0 nights</span></div>
+                    </div>
+
+                    <div class="nonev"></div>
+
+                    <button type="submit" class="btn btn-primary">Request Booking in LOC or FIAT</button>
+                    <input type="checkbox" name="agree-terms" id="agree-terms"
+                           class="checkbox tick"/>
+                    <label for="agree-terms" class="text-ffffff" style="margin-top: 10px;">I agree to the <a href="#">Terms
+                        & Conditions</a></label>
+                </form>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".fancybox").fancybox();
+        });
+    </script>
+</section>

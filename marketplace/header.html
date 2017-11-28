@@ -1,0 +1,274 @@
+<div id="myModal_wishlist" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="col-md-4">
+                <img class="wishlist-img-small" src="../images/wish-hotel-img.jpg"/>
+                <div class="wishlist-data">
+                    <h2>Heaven - Junior Suite with view</h2>
+                    <div class="list-hotel-rating">
+                        <div class="list-hotel-rating-count">Excellent 4.1/5</div>
+                        <div class="list-hotel-rating-stars">
+                            <span class="full-star"></span>
+                            <span class="full-star"></span>
+                            <span class="full-star"></span>
+                            <span class="full-star"></span>
+                            <span class="empty-star"></span>
+                        </div>
+                        <div class="list-hotel-rating-review">73</div>
+                    </div>
+                    <div class="list-hotel-location">Sozopol, Bulgaria</div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="modal-header">
+                    <h1>Save to Wish List</h1>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h2 class="bordered">Choose Wish List</h2>
+                    <div class="clearfix"></div>
+                    <div class="wishlist-select-box">
+                        <div class="select-check-label">Summer Days <span class="select-check active"></span></div>
+                        <div class="clearfix"></div>
+                        <div class="select-check-label">Christmas <span class="select-check"></span></div>
+                        <div class="clearfix"></div>
+                        <div class="select-check-label">Spring Vacation <span class="select-check"></span></div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form>
+                        <label>Name your wish list
+                            <input type="text" class="form-control" id="wishlist-name" placeholder="Enter name">
+                        </label>
+                        <div class="clearfix"></div>
+                        <button type="button" class="btn btn-primary-revers" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModal_login" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Login</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div id="login_errorMessage" class="error"></div>
+                    <div class="form-group">
+                        <input required type="email" class="form-control" tabindex="1" id="login-mail" placeholder="Email address">
+                    </div>
+                    <div class="form-group">
+                        <input required type="password" class="form-control" tabindex="2" id="login-password" placeholder="Password">
+                    </div>
+                    <div class="checkbox login-checkbox pull-left">
+                        <label><input type="checkbox" value="" tabindex="3" id="login-remember">Remember me</label>
+                    </div>
+                    <!--<div class="login-forgot pull-right">-->
+                        <!--<a href="#" data-toggle="modal" data-dismiss="modal" data-target="#myModal_forgotten">Forgot-->
+                            <!--password?</a>-->
+                    <!--</div>-->
+                    <div class="clearfix"></div>
+                    <button type="submit" tabindex="4" class="btn btn-primary">Login</button>
+                    <div class="clearfix"></div>
+                </form>
+
+                <!--<div class="login-with">or login with</div>-->
+
+                <!--<a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"-->
+                                                                            <!--aria-hidden="true"></i> Facebook</a>-->
+                <hr>
+                <div class="login-sign">Don’t have an account? <a href="#" data-toggle="modal" data-dismiss="modal"
+                                                                  data-target="#myModal_signup">Sign up</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal_signup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Sign up</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div id="signup_errorMessage" class="error"></div>
+                    <div class="form-group">
+                        <input required type="email" class="form-control" name="email" id="signup-mail" placeholder="Email address">
+                    </div>
+                    <div class="form-group">
+                        <input required type="text" class="form-control" id="signup-firstname" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <input required type="text" class="form-control" id="signup-lastname" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <input required type="password" class="form-control" name="password" id="signup-password" placeholder="Password">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Sign up</button>
+                    <div class="clearfix"></div>
+                </form>
+
+                <div class="signup-rights">
+                    By creating an account, you're agreeing with our
+                    Terms and Conditions and Privacy Statement.
+                </div>
+
+                <!--<div class="signup-with">or sign up with</div>-->
+
+                <!--<a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"-->
+                                                                            <!--aria-hidden="true"></i> Facebook</a>-->
+                <hr>
+                <div class="signup-sign">Already have a LockChain account? <a href="#" data-toggle="modal"
+                                                                              data-dismiss="modal"
+                                                                              data-target="#myModal_login">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModal_forgotten" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Reset Password</h1>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="forgotten-rights">
+                    Enter the email address associated with your account, and we’ll email you a link to reset your
+                    password.
+                </div>
+
+                <form method="post">
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="forgotten-mail" placeholder="Email address">
+                    </div>
+
+
+                    <button type="button" class="btn btn-primary">Send Reset Link</button>
+                    <div class="clearfix"></div>
+                </form>
+
+
+                <div class="forgotten-sign"><a href="#" data-toggle="modal" data-dismiss="modal"
+                                               data-target="#myModal_login"><img src="../images/forgoten-arrow.png"/> Back
+                    to Login</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nav id='main-nav' class="navbar">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://lockchain.co/marketplace"><img src="../images/logo.png" alt='logo'/></a>
+        </div>
+
+        <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav" id="top-nav">
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<nav id="second-nav">
+    <div class="container">
+        <ul class="nav navbar-nav">
+
+            <li class="active">
+                <a href="#">HOMES</a>
+            </li>
+            <!--<li >-->
+                <!--<a href="#">HOMES</a>-->
+            <!--</li>-->
+        </ul>
+
+        <ul class="second-nav-text pull-right">
+            <!--<li class="rate-nav"><span>LOC/EUR</span> 0.25EUR</li>-->
+            <!--<li class="balance-nav">-->
+                <!--<div class="balance-box">Balance: <span>0,035,974.23 LOC</span></div>-->
+                <!--<a href="#" class="a-icon-add-btn"></a>-->
+            <!--</li>-->
+            <!--<li class="dropdown ">-->
+                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">EUR <span class="caret"></span></a>-->
+                <!--<ul class="navbar-dropdown dropdown-menu">-->
+                    <!--<li><a href="#">LOC</a></li>-->
+                    <!--<li><a href="#">EUR</a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
+        </ul>
+    </div>
+</nav>
+
+<section id="search-bar">
+    <div class="container">
+        <form id="search" method="get">
+            <div class="form-group has-feedback has-feedback-left" id="location">
+                <i class="icon icon-map form-control-feedback"></i>
+                <select class="form-control" id="location-select" name="countryId" required="required">
+                    <option disabled selected>Location</option>
+                </select>
+            </div>
+
+
+            <div class="input-daterange">
+                <div class="form-group has-feedback has-feedback-left input-group-date-in">
+                    <i class="icon icon-calendar form-control-feedback"></i>
+                    <span class="icon-check-in">Check in</span>
+                    <input name="startDate" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required autocomplete="off"
+                           placeholder="Select date">
+                </div>
+
+                <div class="input-group-addon">
+
+                </div>
+
+                <div class="form-group has-feedback has-feedback-left input-group-date-out">
+                    <span class="icon-check-out">Check out</span>
+                    <i class="icon icon-calendar form-control-feedback"></i>
+                    <input name="endDate" type="text" class="form-control" value="" data-date-format='dd/mm/yyyy' required autocomplete="off"
+                           placeholder="Select date">
+                </div>
+            </div>
+
+            <div id="search-nights">
+                <span>0 nights</span>
+            </div>
+
+            <div class="form-group has-feedback has-feedback-left" id="guests">
+                <i class="icon icon-guest form-control-feedback"></i>
+                <input type="number" min="1" name="guestsIncluded" class="form-control" placeholder="Guests" required autocomplete="off"/>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Search</button>
+
+
+        </form>
+    </div>
+</section>
+

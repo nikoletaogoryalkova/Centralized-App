@@ -1,0 +1,61 @@
+<div class="filter-box">
+
+    <div class="form-group" id="filter-star">
+        <label>Star Rating</label>
+
+        <div class="filter-stars">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group" id="filter-price">
+        <label>Pricing</label>
+
+        <div class="filter-price-box">
+
+            <input id="price-slider" type="text" class="span2" value="" data-slider-min="100"
+                   data-slider-max="10000" data-slider-step="5" data-slider-value="[100,10000]"/>
+            <span class="pull-left">$ 10</span>
+            <span class="pull-right">$ 10000</span>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="form-group" id="filter-type">
+        <label>Property Type</label>
+
+        <div class="filter-check-box" id="filter-propertyType">
+        </div>
+    </div>
+
+    <div class="form-group" id="filter-amenities">
+        <label>Facility</label>
+
+        <div class="filter-check-box" id="filter-amenity">
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="clearfix"></div>
+    <div class="form-group" id="filter-button">
+        <button type="submit" class="btn btn-primary">See Hotels</button>
+    </div>
+
+</div>
+
+<!--<div class="filter-box" id="map-bgr">-->
+
+    <!--<a href="#" class="btn btn-white">See Results on Map</a>-->
+<!--</div>-->
+
+<script>
+    $(document).ready(function () {
+        $("#price-slider").slider();
+    });
+</script>
