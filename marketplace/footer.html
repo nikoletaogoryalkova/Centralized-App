@@ -36,20 +36,22 @@
                 <div class="dropdown select-curency">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="currency_currency">US Dollar</span> <span class="caret"></span></a>
                     <ul class="navbar-dropdown dropdown-menu">
-                        <li><a href="#" class="currency_selector">USD</a></li>
-                        <li><a href="#" class="currency_selector">EUR</a></li>
-                        <li><a href="#" class="currency_selector">GBP</a></li>
+                        <li><a href="#" class="currency_selector" data-sign="$">USD</a></li>
+                        <li><a href="#" class="currency_selector" data-sign="€">EUR</a></li>
+                        <li><a href="#" class="currency_selector" data-sign="£">GBP</a></li>
                     </ul>
                 </div>
                 <script>
                     $(document).ready(() => {
                         if (!localStorage.getItem("fromCurrency")) {
                             localStorage.setItem("fromCurrency", "USD");
+                            localStorage.setItem("sign", "$");
                         }
                         $("#currency_currency").text(localStorage.getItem("fromCurrency"));
 
                         $(".currency_selector").click((e) => {
                             localStorage.setItem("fromCurrency", $(e.target).text());
+                            localStorage.setItem("sign", $(e.target).data("sign"));
                             $("#currency_currency").text(localStorage.getItem("fromCurrency"));
                             window.location.reload();
                         })

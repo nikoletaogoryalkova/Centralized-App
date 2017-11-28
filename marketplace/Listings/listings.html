@@ -49,6 +49,7 @@
 
     let footerSource = loadPage('../footer.html');
     let footerTemplate = Handlebars.compile(footerSource);
+    var locRate = parseFloat($("#loc-rate").text())
 
 
     let compiledTemplate = headerTemplate() + breadcrumbTemplate() + filtersTemplate() + footerTemplate();
@@ -457,42 +458,41 @@
         var fromCurrency = localStorage.getItem("fromCurrency");
         var toCurrency = listing.currencyCode;
         var price = listing.defaultDailyPrice;
-        var converterUrl = "https://lockchain.co/marketplace/internal_api/currency_converter.php?";
-        converterUrl += "from_currency=" + fromCurrency;
-        converterUrl += "&to_currency=" + toCurrency;
-        converterUrl += "&price=" + price;
-        var listingPrice = "";
         var sign = localStorage.getItem("sign");
-        $.ajax({
-            url: converterUrl,
-            async: false,
-            success: function(data) {
-                let currencyPrice = data.currencyPrice;
-                let tokenPrice = data.tokenPrice;
-                listingPrice = $('<div>').addClass('list-price')
-                    .append(
-                        $('<div>')
-                            .addClass('list-hotel-price-bgr')
-                            .text('Price for 1 night')
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('list-hotel-price-curency')
-                            .text(sign + "" + currencyPrice)
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('list-hotel-price-loc')
-                            .text('(LOC ' + tokenPrice + ')')
-                    )
-                    .append(
-                        $('<a>')
-                            .addClass('list-hotel-price-button btn btn-primary')
-                            .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
-                            .text('Book now')
-                    );
-            }
-        });
+        if (locRate == null || isNaN(locRate)) {
+            $.ajax({
+                async: false,
+                url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
+                success: function (data) {
+                    $("#loc-rate").text(data.loc);
+                    console.log(data);
+                    locRate = parseFloat(data.loc);
+                }
+            });
+        }
+
+        listingPrice = $('<div>').addClass('list-price')
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-price-bgr')
+                    .text('Price for 1 night')
+            )
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-price-curency')
+                    .text(sign + "" + Math.round(listing.prices[fromCurrency], 0))
+            )
+            .append(
+                $('<div>')
+                    .addClass('list-hotel-price-loc')
+                    .text('(LOC ' + (listing.prices["EUR"] / locRate).toFixed(3) + ')')
+            )
+            .append(
+                $('<a>')
+                    .addClass('list-hotel-price-button btn btn-primary')
+                    .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
+                    .text('Book now')
+            );
 
         return listingPrice;
     }
