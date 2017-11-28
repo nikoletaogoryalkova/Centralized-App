@@ -275,7 +275,7 @@
 
             var frontEndHost = "//localhost:63342/marketplace/local-28-11/";
         }
-        let endPoint = apiHost + path + parameters + '&projection=listings';
+        let endPoint = apiHost + path + parameters + '&projection=listings&sort=defailyDailyPrice,asc';
         let page = 1;
         if (window.location.search.includes('page=')) {
             let positionOfPageQuery = window.location.search.indexOf('page=');
@@ -312,6 +312,10 @@
                 let insertionRow = $('#list-hotel-box');
 
                 data.content.forEach(listing => {
+                    if (!localStorage.getItem("fromCurrency")) {
+                        localStorage.setItem("fromCurrency", "USD");
+                        localStorage.setItem("sign", "$");
+                    }
                     let listingTemplate = generateListingTemplate(listing);
                     insertionRow.append(listingTemplate);
                 });
@@ -450,28 +454,46 @@
     }
 
     function generateListingPriceSubTemplate(listing) {
-        let listingPrice = $('<div>').addClass('list-price')
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-price-bgr')
-                    .text('Price for 1 night')
-            )
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-price-curency')
-                    .text(`$${listing.defaultDailyPrice}`)
-            )
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-price-loc')
-                    .text('(LOC ' + listing.defaultDailyPrice * 0.25 + ')')
-            )
-            .append(
-                $('<a>')
-                    .addClass('list-hotel-price-button btn btn-primary')
-                    .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
-                    .text('Book now')
-            );
+        var fromCurrency = localStorage.getItem("fromCurrency");
+        var toCurrency = listing.currencyCode;
+        var price = listing.defaultDailyPrice;
+        var converterUrl = "https://lockchain.co/marketplace/internal_api/currency_converter.php?";
+        converterUrl += "from_currency=" + fromCurrency;
+        converterUrl += "&to_currency=" + toCurrency;
+        converterUrl += "&price=" + price;
+        var listingPrice = "";
+        var sign = localStorage.getItem("sign");
+        $.ajax({
+            url: converterUrl,
+            async: false,
+            success: function(data) {
+                let currencyPrice = data.currencyPrice;
+                let tokenPrice = data.tokenPrice;
+                listingPrice = $('<div>').addClass('list-price')
+                    .append(
+                        $('<div>')
+                            .addClass('list-hotel-price-bgr')
+                            .text('Price for 1 night')
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('list-hotel-price-curency')
+                            .text(sign + "" + currencyPrice)
+                    )
+                    .append(
+                        $('<div>')
+                            .addClass('list-hotel-price-loc')
+                            .text('(LOC ' + tokenPrice + ')')
+                    )
+                    .append(
+                        $('<a>')
+                            .addClass('list-hotel-price-button btn btn-primary')
+                            .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
+                            .text('Book now')
+                    );
+            }
+        });
+
         return listingPrice;
     }
 
