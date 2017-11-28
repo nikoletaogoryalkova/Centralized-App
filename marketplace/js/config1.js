@@ -1,3 +1,3 @@
-var apiHost = "//api.lockchain.co:8080/lockchain/";
+var apiHost = "//localhost:8080/";
 
-var frontEndHost = "//localhost:63342/marketplace/marketplace/";
+var frontEndHost = "//localhost:63342/marketplace/";
