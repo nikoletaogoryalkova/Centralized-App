@@ -107,6 +107,10 @@
 
                     $('#user-form').on('submit', (event) => {
                         event.preventDefault();
+                        let captchaResponse = grecaptcha.getResponse();
+                        if (!captchaResponse || captchaResponse.trim() === "" ) {
+                            return;
+                        }
                         let reservationCheckIn = $('#reservation-checkin').val();
                         let reservationCheckOut = $('#reservation-checkout').val();
                         let reservationGuests = $('#reservation-guests').val();
@@ -124,6 +128,7 @@
                         reservation.listingId = queryId;
                         reservation.email = reservationPersonEmail;
                         reservation.phone = reservationPersonPhone;
+                        reservation.captchaToken = captchaResponse;
 
                         let reservationJson = JSON.stringify(reservation);
 
@@ -235,6 +240,8 @@
             $('.input-daterange input').each(function () {
                 $(this).datepicker("option", "dateFormat", $(this).val());
             });
+
+
         }).then(() => {
             let hotelInputs = $('.hotel-chekin-box .input-daterange input');
             let hotelNights = $('#hotel-search-nights span');
@@ -244,6 +251,8 @@
 
             let cleaningFee = parseInt(property["cleaningFee"]);
             calculatePrice(pricePerNight, hotelNights, cleaningFee);
+
+
         }).catch((error) => {
             //location.href = "http://localhost:63342/Lockchain-FrontEnd/Listings/listings.html";
         });

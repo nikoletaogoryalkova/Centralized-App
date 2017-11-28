@@ -70,9 +70,9 @@
             return $('<option>').attr('value', country.id).text(country.name);
         }
 
-        $(document).ready(function (){
+        $(document).ready(function () {
             if (typeof apiHost == 'undefined') {
-                var apiHost = "//api.lockchain.co:8080/lockchain/";
+                var apiHost = "//localhost:8080/";
 
                 var frontEndHost = "//localhost:63342/marketplace/local-28-11/";
             }
@@ -80,7 +80,7 @@
 
             let locationSelect = $('#location-select');
 
-            $.get(apiHost + 'api/countries?projection=singleCountry', function(data) {
+            $.get(apiHost + 'api/countries?projection=singleCountry', function (data) {
                 data.content.forEach(country => {
                     let countryTemplate = generateCountryTemplate(country);
                     locationSelect.append(countryTemplate);
@@ -92,4 +92,13 @@
     <script src="../js/bootstrap-slider.js"></script>
     <script src="../js/jquery.fancybox.js"></script>
     <script src="../js/smooth-scroll.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        $(document).ready(() =>
+            $.get("https://lockchain.co/marketplace/internal_api/loc_price.php", (data) => {
+                $("#loc-rate").text(data.loc);
+            })
+        )
+    </script>
 </head>
+<div id="loc-rate" style="visibility: hidden"></div>

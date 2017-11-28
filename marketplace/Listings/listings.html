@@ -49,6 +49,7 @@
 
     let footerSource = loadPage('../footer.html');
     let footerTemplate = Handlebars.compile(footerSource);
+    var locRate = parseFloat($("#loc-rate").text())
 
 
     let compiledTemplate = headerTemplate() + breadcrumbTemplate() + filtersTemplate() + footerTemplate();
@@ -261,7 +262,7 @@
         // parameters += `projection=${projection}`;
         parameters += `&priceMin=${minPrice}`;
         parameters += `&priceMax=${maxPrice}`;
-        let paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+        let paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
 
         let types = "";
         for (let span of $("#filter-type").find(".active")) {
@@ -335,7 +336,7 @@
 
             var frontEndHost = "//localhost:63342/Web-Design/marketplace/";
         }
-        let endPoint = apiHost + path + parameters + '&projection=listings';
+        let endPoint = apiHost + path + parameters + '&projection=listings&sort=defailyDailyPrice,asc';
         let page = 1;
         if (window.location.search.includes('page=')) {
             let positionOfPageQuery = window.location.search.indexOf('page=');
@@ -373,15 +374,21 @@
             if (status === 'success') {
                 let insertionRow = $('#list-hotel-box');
 
-               if (!data.page.totalElements || data.page.totalElements == 0) {
-                   insertionRow.append($('<div>').addClass('list-hotel')
-                       .html("<h1 style='text-align: center; vertical-align: middle'>No results found</h1>"));
-               } else {
-                   data.content.forEach(listing => {
-                       let listingTemplate = generateListingTemplate(listing);
-                       insertionRow.append(listingTemplate);
-                   });
-               }
+                if (!data.page.totalElements || data.page.totalElements == 0) {
+                    insertionRow.append($('<div>').addClass('list-hotel')
+                        .html("<h1 style='text-align: center; vertical-align: middle'>No results found</h1>"));
+                } else {
+                    data.content.forEach(listing => {
+
+                        if (!localStorage.getItem("fromCurrency")) {
+                            localStorage.setItem("fromCurrency", "USD");
+                            localStorage.setItem("sign", "$");
+                        }
+
+                        let listingTemplate = generateListingTemplate(listing);
+                        insertionRow.append(listingTemplate);
+                    });
+                }
             }
         }).then((data) => {
             $('#list-hotel-box').append(
@@ -407,7 +414,14 @@
 
         var frontEndHost = "//localhost:63342/Web-Design/marketplace/";
     }
-    getListings(apiHost + 'api/listings/search/getAllByFilter' + localStorage["filtration"] + "&projection=listings" + '&page=' + page);
+    getListings(
+        apiHost +
+        'api/listings/search/getAllByFilter' +
+        localStorage["filtration"] +
+        "&projection=listings" +
+        '&page=' +
+        page
+    );
 </script>
 <script>
     function generateListingImageSubTemplate(listing) {
@@ -518,7 +532,23 @@
     }
 
     function generateListingPriceSubTemplate(listing) {
-        let listingPrice = $('<div>').addClass('list-price')
+        var fromCurrency = localStorage.getItem("fromCurrency");
+        var toCurrency = listing.currencyCode;
+        var price = listing.defaultDailyPrice;
+        var sign = localStorage.getItem("sign");
+        if (locRate == null || isNaN(locRate)) {
+            $.ajax({
+                async: false,
+                url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
+                success: function (data) {
+                    $("#loc-rate").text(data.loc);
+                    console.log(data);
+                    locRate = parseFloat(data.loc);
+                }
+            });
+        }
+
+        listingPrice = $('<div>').addClass('list-price')
             .append(
                 $('<div>')
                     .addClass('list-hotel-price-bgr')
@@ -527,12 +557,12 @@
             .append(
                 $('<div>')
                     .addClass('list-hotel-price-curency')
-                    .text(`$${listing.defaultDailyPrice}`)
+                    .text(sign + "" + Math.round(listing.prices[fromCurrency], 0))
             )
             .append(
                 $('<div>')
                     .addClass('list-hotel-price-loc')
-                    .text('(LOC ' + listing.defaultDailyPrice * 0.25 + ')')
+                    .text('(LOC ' + (listing.prices["EUR"] / locRate).toFixed(3) + ')')
             )
             .append(
                 $('<a>')
@@ -540,6 +570,7 @@
                     .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
                     .text('Book now')
             );
+
         return listingPrice;
     }
 
