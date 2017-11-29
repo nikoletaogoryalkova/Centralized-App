@@ -237,6 +237,10 @@ a.dropdown-toggle {
     padding-left: 5px;
 }
 
+.navbar {
+    min-height: 70px;
+}
+
 /* END */
 
 .form-control:focus {
@@ -3869,3 +3873,8 @@ input[type="checkbox"].tick:checked + label:after {
 }
 
 /* END */
+
+/* Override daterangepicker */
+.daterangepicker .input-mini.active {
+    min-height: auto;
+}

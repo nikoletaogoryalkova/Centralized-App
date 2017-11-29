@@ -17,10 +17,13 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 
     <script src="js/jquery.min.js"></script>
+    <script src="js/moment.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
+    <script src="js/daterangepicker/daterangepicker.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -29,16 +32,34 @@
     <![endif]-->
 
     <script src="js/config1.js"></script>
-    <script src="js/bootstrap-datepicker.js"></script>
     <script src="js/jquery.fancybox.js"></script>
     <script src="js/smooth-scroll.min.js"></script>
     <script src="js/moment.js"></script>
     <script>
 
         $(document).ready(function () {
-            $('.input-daterange input').each(function () {
-                $(this).datepicker("option", "dateFormat", $(this).val());
-            });
+            function setDatesInputs() {
+                let todayDate = new Date();
+                let dd = todayDate.getDate();
+                let mm = todayDate.getMonth() + 1; //January is 0!
+                let yyyy = todayDate.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd
+                }
+                if (mm < 10) {
+                    mm = '0' + mm
+                }
+                let today = dd + '/' + mm + '/' + yyyy;
+
+                $('input[name="daterange"]').daterangepicker({
+                    "autoApply": true,
+                    "minDate": today,
+                    "locale": {
+                        format: 'DD/MM/YYYY'
+                    }
+                });
+            }
+            setDatesInputs();
         });
     </script>
 
@@ -224,23 +245,10 @@
 
 
                     <div class="input-daterange">
-                        <div class="form-group has-feedback has-feedback-left input-group-date-in">
+                        <div class="form-group has-feedback has-feedback-left">
                             <i class="icon icon-calendar form-control-feedback"></i>
-                            <span class="icon-check-in">Check in</span>
-                            <input name="startDate" type="text" class="form-control" value=""
-                                   data-date-format='dd/mm/yyyy' required
-                                   placeholder="Select date">
-                        </div>
-
-                        <div class="input-group-addon">
-
-                        </div>
-
-                        <div class="form-group has-feedback has-feedback-left input-group-date-out">
-                            <span class="icon-check-out">Check out</span>
-                            <i class="icon icon-calendar form-control-feedback"></i>
-                            <input name="endDate" type="text" class="form-control" value=""
-                                   data-date-format='dd/mm/yyyy' required
+                            <span class="icon-check-in">Check in & Check out</span>
+                            <input id="search-daterange" type="text" class="form-control" name="daterange" value="" required autocomplete="off"
                                    placeholder="Select date">
                         </div>
                     </div>
@@ -263,22 +271,6 @@
         </div>
     </div>
 </header>
-
-
-<!--<section id="discover-box">-->
-    <!--<div class="container">-->
-        <!--<h2>Discover</h2>-->
-        <!--<div class="row">-->
-            <!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="#" class="discover_hotels">Hotels</a>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--<div class="col-md-12">-->
-                <!--<a href="#" class="discover_homes">Properties</a>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</section>-->
-
 
 <section id="popular-hotels-box" style="margin-top: 100px;">
 
@@ -346,7 +338,6 @@
 <link rel="stylesheet" href="css/owl.carousel.css">
 
 <script src="js/owl.carousel.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-slider.js"></script>
 <script src="js/jquery.fancybox.js"></script>
 <script>
@@ -471,26 +462,26 @@
 </script>
 <script>
     $(document).ready(function () {
-        let inputs = $('#search .input-daterange input');
+        let input = $('#search-daterange');
         let nights = $('#search-nights').find('span');
 
-        calculateNights(inputs, nights);
+        calculateNights(input, nights);
     });
 
-    function calculateNights(inputs, nights) {
+    function calculateNights(input, nights) {
         nights.text(0 + ' nights');
 
-        inputs.change(() => {
-            let checkIn = inputs[0].value;
-            let checkOut = inputs[1].value;
+        input.change(() => {
+            let inputs = input.val().split('-');
+
+            let checkIn = inputs[0].trim();
+            let checkOut = inputs[1].trim();
 
             let checkInDate = moment(checkIn, "DD/MM/YYYY");
             let checkOutDate = moment(checkOut, "DD/MM/YYYY");
 
             let timeDiff = checkOutDate.diff(checkInDate);
 
-            console.log(checkOut);
-            console.log(checkIn);
             if ((checkOut && checkIn) && checkOutDate > checkInDate) {
                 let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
                 nights.text(diffDays + ' nights');
@@ -597,7 +588,6 @@
                             )
                     )
             );
-        console.log(smallListingTemplate);
         return smallListingTemplate;
     }
 </script>

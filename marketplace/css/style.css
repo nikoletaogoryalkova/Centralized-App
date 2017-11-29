@@ -3869,3 +3869,9 @@ input[type="checkbox"].tick:checked + label:after {
 }
 
 /* END */
+
+
+/* Override daterangepicker */
+.daterangepicker .input-mini {
+    min-height: auto;
+}
