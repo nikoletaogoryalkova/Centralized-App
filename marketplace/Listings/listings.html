@@ -296,7 +296,7 @@
         if (!("propertyStars" in paramsObj) && stars.length > 0) {
             paramsObj["propertyStars"] = stars;
         } else if ("propertyStars" in paramsObj && stars.length > 0) {
-            paramsObj["propertyStars"] += "," + stars;
+            paramsObj["propertyStars"] = stars;
         }
 
         let testParams = "";
