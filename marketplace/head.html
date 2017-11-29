@@ -31,28 +31,29 @@
     <![endif]-->
     <script src="../js/config1.js?v=1.1"></script>
     <script>
-        $(document).ready(function () {
-            function setDatesInputs() {
-                let todayDate = new Date();
-                let dd = todayDate.getDate();
-                let mm = todayDate.getMonth() + 1; //January is 0!
-                let yyyy = todayDate.getFullYear();
-                if (dd < 10) {
-                    dd = '0' + dd
-                }
-                if (mm < 10) {
-                    mm = '0' + mm
-                }
-                let today = dd + '/' + mm + '/' + yyyy;
-
-                $('input[name="daterange"]').daterangepicker({
-                    "autoApply": true,
-                    "minDate": today,
-                    locale: {
-                        format: 'DD/MM/YYYY'
-                    }, autoclose: true
-                });
+        function setDatesInputs() {
+            let todayDate = new Date();
+            let dd = todayDate.getDate();
+            let mm = todayDate.getMonth() + 1; //January is 0!
+            let yyyy = todayDate.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd
             }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+            let today = dd + '/' + mm + '/' + yyyy;
+
+            $('input[name="daterange"]').daterangepicker({
+                "autoApply": true,
+                "minDate": today,
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }, autoclose: true
+            });
+        }
+        $(document).ready(function () {
+
             setDatesInputs();
         });
     </script>
@@ -121,6 +122,8 @@
             $.get("https://lockchain.co/marketplace/internal_api/loc_price.php", (data) => {
                 $("#loc-rate").text(data.loc);
             })
+
+
         )
     </script>
 </head>

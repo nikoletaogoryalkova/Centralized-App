@@ -28,9 +28,11 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        .odd a.ui-state-default {color:white;
+        .odd a.ui-state-default {
+            color: white;
             background-color: red;
-            background: red;}
+            background: red;
+        }
     </style>
 
     <script src="js/config1.js"></script>
@@ -527,7 +529,7 @@
     }
 </script>
 <script>
-    //    $(document).ready(() => {
+    //        $(document).ready(() => {
     var [apiHost, frontEndHost] = config();
     let pageRand = parseInt(Math.random() * 30);
     $.getJSON(apiHost + 'api/listings?projection=listings&page=' + pageRand + '&size=10', (data, status, xhr) => {
@@ -566,6 +568,7 @@
                 }
             }
         })
+//    });
     });
 
     function generateSmallListingPicturesTemplate(listing) {
@@ -640,6 +643,7 @@
             );
         console.log(smallListingTemplate);
         return smallListingTemplate;
+
     }
     //    })
 

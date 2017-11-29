@@ -99,6 +99,7 @@
         }
 
         $(document).ready(function () {
+            var [apiHost, frontEndHost] = config();
             checkLoggedInUser();
 
             let locationSelect = $('#location-select');
@@ -259,11 +260,11 @@
 
                     <div class="form-group has-feedback has-feedback-left" id="guests">
                         <i class="icon icon-guest form-control-feedback"></i>
-                        <input type="text" name="guests" class="form-control" placeholder="Guests"/>
+                        <input type="text" id="guests-input" name="guests" class="form-control" placeholder="Guests"/>
                     </div>
 
 
-                    <button type="submit" class="btn btn-primary" id="btn-home">Search</button>
+                    <button class="btn btn-primary" id="btn-home">Search</button>
 
 
                 </form>
@@ -386,6 +387,7 @@
 </script>
 <script>
     $('#mymodal_signup form').on('submit', (event) => {
+        var [apiHost, frontEndHost] = config();
         event.preventDefault();
 
         let userEmail = $('#signup-mail').val();
@@ -423,6 +425,7 @@
     });
 
     $('#myModal_login form').on('submit', (event) => {
+        var [apiHost, frontEndHost] = config();
         event.preventDefault();
 
         let userEmail = $('#login-mail').val();
@@ -466,16 +469,33 @@
         let nights = $('#search-nights').find('span');
 
         calculateNights(input, nights);
+
+        $("#btn-home").click((e) => {
+            e.preventDefault();
+
+            let queryStr = "";
+            queryStr += "countryId=" + ($("#location-select").val());
+            queryStr += "&guests=" +  ($("#guests-input").val());
+            let range = $("#search-daterange").val();
+            let rangeParts = range.split(" - ");
+            let startDate = rangeParts[0];
+            let endDate = rangeParts[1];
+            queryStr += "&startDate=" + startDate;
+            queryStr += "&endDate=" + endDate;
+
+            window.location.href = frontEndHost + "/Listings/listings.html?" + queryStr;
+        })
     });
 
     function calculateNights(input, nights) {
         nights.text(0 + ' nights');
 
         input.change(() => {
-            let inputs = input.val().split('-');
+            let range = input.val();
+            let rangeParts = range.split(" - ");
+            let checkIn = rangeParts[0].trim();
+            let checkOut = rangeParts[1].trim();
 
-            let checkIn = inputs[0].trim();
-            let checkOut = inputs[1].trim();
 
             let checkInDate = moment(checkIn, "DD/MM/YYYY");
             let checkOutDate = moment(checkOut, "DD/MM/YYYY");
@@ -495,6 +515,7 @@
     }
 </script>
 <script>
+    var [apiHost, frontEndHost] = config();
     $.getJSON(apiHost + 'api/listings?projection=listings&page=2&size=10', (data, status, xhr) => {
         if (status === 'success') {
             let insertionRow = $('#popular_hotels_carusel');
