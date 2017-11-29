@@ -91,6 +91,7 @@
     $('#hotel-box .col-md-3').append(filtersTemplate()).promise().then(() => {
         $('#filter-button').click(() => {
             let params = getParameters();
+        });
         $('.submit-search-button').click(() => {
             var params = getParameters();
             localStorage.filtration = '?' + params;
@@ -98,7 +99,7 @@
         });
 
         function generatePropertyTypeOrAmenityTemplate(item) {
-            let template = $('<label>').addClass('filter-check-label')
+            return template = $('<label>').addClass('filter-check-label')
                 .append(
                     $('<span>').addClass('filter-check')
                 )
@@ -285,7 +286,7 @@
         // parameters += `projection=${projection}`;
         parameters += `&priceMin=${minPrice}`;
         parameters += `&priceMax=${maxPrice}`;
-        let paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+        let paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
 
         let types = "";
         for (let span of $("#filter-type").find(".active")) {
