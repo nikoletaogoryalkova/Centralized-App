@@ -101,11 +101,7 @@
         }
 
         let locationPropertyTypes = $('#filter-propertyType');
-        if (typeof apiHost == 'undefined') {
-            var apiHost = "//localhost:8080/";
-
-            var frontEndHost = "//localhost:63342/Web-Design/marketplace/";
-        }
+        var [apiHost, frontEndHost] = config();
         $.get(apiHost + 'api/property_types?projection=property_type', function (data) {
             data.content.forEach(propertyType => {
                 let propertyTypeTemplate = generatePropertyTypeOrAmenityTemplate(propertyType);
@@ -331,11 +327,7 @@
         var projection = 'listings';
         var parameters = getParameters();
 
-        if (typeof apiHost == 'undefined') {
-            var apiHost = "//localhost:8080/";
-
-            var frontEndHost = "//localhost:63342/Web-Design/marketplace/";
-        }
+        var [apiHost, frontEndHost] = config();
         let endPoint = apiHost + path + parameters + '&projection=listings&sort=defailyDailyPrice,asc';
         let page = 1;
         if (window.location.search.includes('page=')) {
@@ -409,11 +401,7 @@
         page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
     }
     console.log(page);
-    if (typeof apiHost == 'undefined') {
-        var apiHost = "//localhost:8080/";
-
-        var frontEndHost = "//localhost:63342/Web-Design/marketplace/";
-    }
+    var [apiHost, frontEndHost] = config();
     getListings(
         apiHost +
         'api/listings/search/getAllByFilter' +

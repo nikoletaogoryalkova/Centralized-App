@@ -91,11 +91,7 @@
 
 
     let queryId = GetURLParameter("id");
-    if (typeof apiHost == 'undefined') {
-        var apiHost = "//localhost:8080/";
-
-        var frontEndHost = "//localhost:63342/Web-Design/marketplace/";
-    }
+    var [apiHost, frontEndHost] = config();
     if (!queryId) {
         location.href = frontEndHost + "Listings/listings.html";
     }
@@ -121,7 +117,7 @@
 
                         let reservation = {};
 
-                        reservation.checkIn = reservationCheckIn;
+                        reservation.checkin = reservationCheckIn;
                         reservation.checkout = reservationCheckOut;
                         reservation.guests = reservationGuests;
                         reservation.name = reservationPersonName;
