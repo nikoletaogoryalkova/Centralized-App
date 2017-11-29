@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d64459b3-b27f-45a9-be8f-0dcbedbb0ec1" name="Default" comment="Added DateRangePicker js library and integrated it with main search">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/Web-Design.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+    <list default="true" id="d64459b3-b27f-45a9-be8f-0dcbedbb0ec1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/Listings/listings.html" afterPath="$PROJECT_DIR$/marketplace/Listings/listings.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/Property/property.html" afterPath="$PROJECT_DIR$/marketplace/Property/property.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/css/style.css" afterPath="$PROJECT_DIR$/marketplace/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/footer.html" afterPath="$PROJECT_DIR$/marketplace/footer.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/head.html" afterPath="$PROJECT_DIR$/marketplace/head.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/header.html" afterPath="$PROJECT_DIR$/marketplace/header.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/home.html" afterPath="$PROJECT_DIR$/marketplace/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/marketplace/js/config1.js" afterPath="$PROJECT_DIR$/marketplace/js/config1.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -31,25 +19,36 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="listings.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="listings.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2515">
-              <caret line="403" column="28" lean-forward="false" selection-start-line="403" selection-start-column="28" selection-end-line="403" selection-end-column="28" />
+            <state relative-caret-position="406">
+              <caret line="391" column="23" lean-forward="false" selection-start-line="391" selection-start-column="23" selection-end-line="391" selection-end-column="23" />
               <folding>
-                <marker date="1511975662010" expanded="true" signature="3018:3046" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="3060:3102" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="3972:4068" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="4176:4211" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="4532:4618" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="4716:4765" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="8531:8556" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="8773:8798" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="9024:9049" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="13628:13653" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="13925:13967" ph="..." />
-                <marker date="1511975662010" expanded="true" signature="14072:14103" ph="{...}" />
-                <marker date="1511975662010" expanded="true" signature="14531:14564" ph="{...}" />
+                <element signature="e#5013#5565#0" expanded="false" />
+                <element signature="e#6983#7299#0" expanded="false" />
+                <element signature="e#7349#7754#0" expanded="false" />
+                <element signature="e#7809#8226#0" expanded="false" />
+                <element signature="e#8271#8469#0" expanded="false" />
+                <element signature="e#8512#8710#0" expanded="false" />
+                <element signature="e#8758#8960#0" expanded="false" />
+                <element signature="e#15422#22358#0" expanded="false" />
+                <element signature="e#15915#17251#0" expanded="false" />
+                <element signature="e#17313#20655#0" expanded="false" />
+                <element signature="e#20715#22352#0" expanded="false" />
+                <marker date="1511983391086" expanded="true" signature="2911:2939" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="2953:2995" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="3827:3923" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="4031:4066" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="4387:4473" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="4571:4620" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="8345:8370" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="8586:8611" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="8836:8861" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="12941:12966" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="13239:13281" ph="..." />
+                <marker date="1511983391086" expanded="true" signature="13386:13417" ph="{...}" />
+                <marker date="1511983391086" expanded="true" signature="13845:13878" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -58,8 +57,8 @@
       <file leaf-file-name="property.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7976">
-              <caret line="18" column="4" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="27" selection-end-column="5" />
+            <state relative-caret-position="4678">
+              <caret line="246" column="24" lean-forward="false" selection-start-line="246" selection-start-column="24" selection-end-line="246" selection-end-column="24" />
               <folding>
                 <marker date="1511975327529" expanded="true" signature="7679:7698" ph="..." />
               </folding>
@@ -84,18 +83,18 @@
       <file leaf-file-name="head.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/marketplace/head.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1258">
-              <caret line="55" column="29" lean-forward="true" selection-start-line="34" selection-start-column="12" selection-end-line="55" selection-end-column="29" />
+            <state relative-caret-position="259">
+              <caret line="7" column="42" lean-forward="false" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="home.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/marketplace/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1202">
-              <caret line="56" column="21" lean-forward="false" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
+            <state relative-caret-position="555">
+              <caret line="33" column="23" lean-forward="true" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -127,7 +126,10 @@
       <find>search</find>
       <find>calculate</find>
       <find>date</find>
+      <find>book</find>
       <find>input</find>
+      <find>page =</find>
+      <find>generatepagi</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -138,10 +140,10 @@
       <list>
         <option value="$PROJECT_DIR$/marketplace/Property/property.html" />
         <option value="$PROJECT_DIR$/marketplace/footer.html" />
-        <option value="$PROJECT_DIR$/marketplace/Listings/listings.html" />
         <option value="$PROJECT_DIR$/marketplace/header.html" />
-        <option value="$PROJECT_DIR$/marketplace/head.html" />
         <option value="$PROJECT_DIR$/marketplace/home.html" />
+        <option value="$PROJECT_DIR$/marketplace/head.html" />
+        <option value="$PROJECT_DIR$/marketplace/Listings/listings.html" />
       </list>
     </option>
   </component>
@@ -317,12 +319,20 @@
       <option name="presentableId" value="Default" />
       <updated>1511970692634</updated>
       <workItem from="1511970695222" duration="651000" />
-      <workItem from="1511973767992" duration="3008000" />
+      <workItem from="1511973767992" duration="7147000" />
     </task>
+    <task id="LOCAL-00001" summary="Added DateRangePicker js library and integrated it with main search">
+      <created>1511976812307</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1511976812307</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3659000" />
+    <option name="totallyTimeSpent" value="7798000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-13" y="0" width="3854" height="2082" extended-state="0" />
@@ -352,9 +362,13 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added DateRangePicker js library and integrated it with main search" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added DateRangePicker js library and integrated it with main search" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -364,19 +378,30 @@
         <state relative-caret-position="6364">
           <caret line="172" column="6" lean-forward="false" selection-start-line="172" selection-start-column="6" selection-end-line="172" selection-end-column="6" />
           <folding>
-            <marker date="1511975662010" expanded="true" signature="3018:3046" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="3060:3102" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="3972:4068" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="4176:4211" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="4532:4618" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="4716:4765" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="8531:8556" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="8773:8798" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="9024:9049" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="13628:13653" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="13925:13967" ph="..." />
-            <marker date="1511975662010" expanded="true" signature="14072:14103" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="14531:14564" ph="{...}" />
+            <element signature="e#5013#5565#0" expanded="false" />
+            <element signature="e#6983#7299#0" expanded="false" />
+            <element signature="e#7349#7754#0" expanded="false" />
+            <element signature="e#7809#8226#0" expanded="false" />
+            <element signature="e#8271#8469#0" expanded="false" />
+            <element signature="e#8512#8710#0" expanded="false" />
+            <element signature="e#8758#8960#0" expanded="false" />
+            <element signature="e#15422#22358#0" expanded="false" />
+            <element signature="e#15915#17251#0" expanded="false" />
+            <element signature="e#17313#20655#0" expanded="false" />
+            <element signature="e#20715#22352#0" expanded="false" />
+            <marker date="1511983391086" expanded="true" signature="2911:2939" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="2953:2995" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="3827:3923" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="4031:4066" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="4387:4473" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="4571:4620" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="8345:8370" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="8586:8611" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="8836:8861" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="12941:12966" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="13239:13281" ph="..." />
+            <marker date="1511983391086" expanded="true" signature="13386:13417" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="13845:13878" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -407,38 +432,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7976">
-          <caret line="18" column="4" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="27" selection-end-column="5" />
-          <folding>
-            <marker date="1511975327529" expanded="true" signature="7679:7698" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2515">
-          <caret line="403" column="28" lean-forward="false" selection-start-line="403" selection-start-column="28" selection-end-line="403" selection-end-column="28" />
-          <folding>
-            <marker date="1511975662010" expanded="true" signature="3018:3046" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="3060:3102" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="3972:4068" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="4176:4211" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="4532:4618" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="4716:4765" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="8531:8556" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="8773:8798" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="9024:9049" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="13628:13653" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="13925:13967" ph="..." />
-            <marker date="1511975662010" expanded="true" signature="14072:14103" ph="{...}" />
-            <marker date="1511975662010" expanded="true" signature="14531:14564" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/marketplace/footer.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1274">
@@ -451,19 +444,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4678">
+          <caret line="246" column="24" lean-forward="false" selection-start-line="246" selection-start-column="24" selection-end-line="246" selection-end-column="24" />
+          <folding>
+            <marker date="1511975327529" expanded="true" signature="7679:7698" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/marketplace/head.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="55" column="29" lean-forward="true" selection-start-line="34" selection-start-column="12" selection-end-line="55" selection-end-column="29" />
+        <state relative-caret-position="259">
+          <caret line="7" column="42" lean-forward="false" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/marketplace/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1202">
-          <caret line="56" column="21" lean-forward="false" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
+        <state relative-caret-position="555">
+          <caret line="33" column="23" lean-forward="true" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="391" column="23" lean-forward="false" selection-start-line="391" selection-start-column="23" selection-end-line="391" selection-end-column="23" />
+          <folding>
+            <element signature="e#5013#5565#0" expanded="false" />
+            <element signature="e#6983#7299#0" expanded="false" />
+            <element signature="e#7349#7754#0" expanded="false" />
+            <element signature="e#7809#8226#0" expanded="false" />
+            <element signature="e#8271#8469#0" expanded="false" />
+            <element signature="e#8512#8710#0" expanded="false" />
+            <element signature="e#8758#8960#0" expanded="false" />
+            <element signature="e#15422#22358#0" expanded="false" />
+            <element signature="e#15915#17251#0" expanded="false" />
+            <element signature="e#17313#20655#0" expanded="false" />
+            <element signature="e#20715#22352#0" expanded="false" />
+            <marker date="1511983391086" expanded="true" signature="2911:2939" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="2953:2995" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="3827:3923" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="4031:4066" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="4387:4473" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="4571:4620" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="8345:8370" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="8586:8611" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="8836:8861" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="12941:12966" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="13239:13281" ph="..." />
+            <marker date="1511983391086" expanded="true" signature="13386:13417" ph="{...}" />
+            <marker date="1511983391086" expanded="true" signature="13845:13878" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
