@@ -80,7 +80,7 @@
         .append(footerTemplate());
 
     $('#hotel-box .col-md-3').append(filtersTemplate()).promise().then(() => {
-        $('#filter-button').click(() => {
+        $('.submit-search-button').click(() => {
             var params = getParameters();
             localStorage.filtration = '?' + params;
             window.location.href = frontEndHost + "Listings/listings.html?" + params;
@@ -181,7 +181,7 @@
     });
 
 
-    let priceSliderElement = $('#price-slider');
+    var priceSliderElement = $('#price-slider');
 
     function propertyStarsClickHandler(eventData) {
         let clickedSpanElement = $(eventData.target);
@@ -248,6 +248,7 @@
     }
 
     function getParameters() {
+        priceSliderElement = $('#price-slider');
         [minPrice, maxPrice] = priceSliderElement.val().split(',').map(Number);
 
         var parameters = '';
@@ -576,4 +577,10 @@
 
         return listingTemplate;
     }
+
+    $('#clear-filter-button').click(function() {
+        priceSliderElement.slider('refresh');
+        $('.filter-stars span.active').removeClass('active');
+        $('.filter-check-label').removeClass('active');
+    });
 </script>

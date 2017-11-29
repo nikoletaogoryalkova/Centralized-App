@@ -1089,6 +1089,11 @@ a.dropdown-toggle {
     width: 100%;
 }
 
+#clear-filter-button button {
+    display: block;
+    width: 100%;
+}
+
 #map-bgr {
     padding: 40px 0;
     text-align: center;
