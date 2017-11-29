@@ -82,6 +82,7 @@
     $('#hotel-box .col-md-3').append(filtersTemplate()).promise().then(() => {
         $('#filter-button').click(() => {
             var params = getParameters();
+            localStorage.filtration = '?' + params;
             window.location.href = frontEndHost + "Listings/listings.html?" + params;
         });
 
@@ -343,13 +344,8 @@
             page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
         }
 
-        endPoint += "&page=" + page;
+        endPoint += "&page=" + (page - 1);
         return endPoint;
-    }
-
-    function search() {
-        let endPoints = generateEndPoint();
-        getListings(endPoint);
     }
 
     function generatePaginationTemplate(data) {
@@ -357,9 +353,9 @@
 
         for (let i = 1; i <= data.page.totalPages; i++) {
             if (i === localStorage["currentPageNumber"]) {
-                out += "<li><a class='active' href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+                out += "<li><a class='active' href='" + localStorage["filtration"] + '&page=' + (i-1) + "'>" + i + "</a></li>";
             } else {
-                out += "<li><a href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+                out += "<li><a href='" + localStorage["filtration"] + '&page=' + (i-1) + "'>" + i + "</a></li>";
             }
         }
 
@@ -420,7 +416,7 @@
         localStorage["filtration"] +
         "&projection=listings" +
         '&page=' +
-        page
+        (page-1)
     );
 </script>
 <script>
