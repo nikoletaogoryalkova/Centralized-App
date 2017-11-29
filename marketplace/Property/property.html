@@ -5,6 +5,7 @@
 <body>
 
 </body>
+
 <script src="../js/jquery.min.js"></script>
 <script src="../js/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
@@ -14,34 +15,36 @@
         xmlhttp.send();
         return xmlhttp.responseText;
     }
+
+    function GetURLParameter(sParam) {
+        let sPageURL = window.location.search.substring(1);
+        let sURLVariables = sPageURL.split('&');
+        for (let i = 0; i < sURLVariables.length; i++) {
+            let sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1];
+            }
+        }
+    }
+
+    function calculatePrice(pricePerNight, hotelNights, cleaningFee) {
+        hotelNights.on('change', () => {
+            let nights = parseInt(hotelNights.text().split(" ")[0]);
+            let price = parseInt(pricePerNight.text().substr(1));
+
+            $('.hotel-search-nights span').text(nights + ' nights').promise().then(() => {
+                if (nights !== 0) {
+                    let totalPrice = (nights * price) + cleaningFee;
+                    $('#total-price').text('$' + totalPrice);
+                }
+                else {
+                    $('#total-price').text('$0')
+                }
+            });
+        })
+    }
 </script>
 <script>
-    Handlebars.registerHelper('amme', function (items) {
-        let itemsPerColumn = parseInt(items.length / 3);
-        let inSymmetricItems = parseInt(items.length % 3);
-
-        let out = '<div class="col-md-4">';
-
-        let firstColumnCount = itemsPerColumn + inSymmetricItems;
-        for (let i = 0; i < firstColumnCount; i++) {
-            out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
-        }
-        out = out + '</div>';
-        out = out + '<div class="col-md-4">';
-
-
-        for (let i = firstColumnCount; i < firstColumnCount + itemsPerColumn; i++) {
-            out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
-        }
-        out = out + '</div>';
-        out = out + '<div class="col-md-4">';
-        for (let i = firstColumnCount + itemsPerColumn; i < itemsPerColumn + firstColumnCount + itemsPerColumn; i++) {
-            out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
-        }
-
-        return out;
-    });
-
     Handlebars.registerHelper('formatNumber', function (item) {
         let out = "";
 
@@ -99,145 +102,166 @@
         let property = "";
 
         $.get(apiHost + "api/listings/" + queryId + "?projection=singleListing", function (data) {
+
             $('#search-bar').after(jQuery.parseHTML(hotelDetailsTemplate(data))).promise().then(() => {
 
-                    $('#user-form').on('submit', (event) => {
-                        event.preventDefault();
-                        let captchaResponse = grecaptcha.getResponse();
-                        if (!captchaResponse || captchaResponse.trim() === "" ) {
-                            return;
-                        }
-                        let reservationCheckIn = $('#reservation-checkin').val();
-                        let reservationCheckOut = $('#reservation-checkout').val();
-                        let reservationGuests = $('#reservation-guests').val();
-                        let reservationPersonName = $('#reservation-name').val();
-                        let reservationPersonEmail = $('#reservation-email').val();
-                        let reservationPersonPhone = $('#reservation-phone').val();
+                    function setReservationEventHandler() {
+                        $('#user-form').on('submit', (event) => {
+                            event.preventDefault();
+
+                            let captchaResponse = grecaptcha.getResponse();
+                            if (!captchaResponse || captchaResponse.trim() === "") {
+                                return;
+                            }
+
+                            let reservationCheckIn = $('#reservation-checkin').val();
+                            let reservationCheckOut = $('#reservation-checkout').val();
+                            let reservationGuests = $('#reservation-guests').val();
+                            let reservationPersonName = $('#reservation-name').val();
+                            let reservationPersonEmail = $('#reservation-email').val();
+                            let reservationPersonPhone = $('#reservation-phone').val();
 
 
-                        let reservation = {};
+                            let reservation = {};
 
-                        reservation.checkin = reservationCheckIn;
-                        reservation.checkout = reservationCheckOut;
-                        reservation.guests = reservationGuests;
-                        reservation.name = reservationPersonName;
-                        reservation.listingId = queryId;
-                        reservation.email = reservationPersonEmail;
-                        reservation.phone = reservationPersonPhone;
-                        reservation.captchaToken = captchaResponse;
+                            reservation.checkin = reservationCheckIn;
+                            reservation.checkout = reservationCheckOut;
+                            reservation.guests = reservationGuests;
+                            reservation.name = reservationPersonName;
+                            reservation.listingId = queryId;
+                            reservation.email = reservationPersonEmail;
+                            reservation.phone = reservationPersonPhone;
+                            reservation.captchaToken = captchaResponse;
 
-                        let reservationJson = JSON.stringify(reservation);
+                            let reservationJson = JSON.stringify(reservation);
 
-                        $.ajax({
-                            "async": true,
-                            "crossDomain": true,
-                            "url": apiHost + "reservation/request",
-                            "method": "POST",
-                            "headers": {
-                                "content-type": "application/json"
-                            },
-                            "processData": false,
-                            "data": reservationJson
-                        }).done(function (response) {
-                            window.location.href = frontEndHost + '/home.html';
-                        }).catch(function (httpObj) {
-                            if (httpObj.status === 401) {
-                                $('#reservation_errorMessage').text(httpObj.responseJSON.message);
+                            $.ajax({
+                                "async": true,
+                                "crossDomain": true,
+                                "url": apiHost + "reservation/request",
+                                "method": "POST",
+                                "headers": {
+                                    "content-type": "application/json"
+                                },
+                                "processData": false,
+                                "data": reservationJson
+                            }).done(function (response) {
+                                window.location.href = frontEndHost + 'home.html';
+                            }).catch(function (httpObj) {
+                                if (httpObj.status === 401) {
+                                    $('#reservation_errorMessage').text(httpObj.responseJSON.message);
+                                }
+                            });
+                        });
+                    }
+
+                    function configFancyBox() {
+                        $('.fancybox').fancybox({
+                            'speedIn': 600,
+                            'speedOut': 200,
+                            'onComplete': function () {
+                                $("#fancybox-wrap").css({'top': '100px!important', 'left': '0'});
                             }
                         });
-                    });
+                    }
 
-                    $('.fancybox').fancybox({
-                        'speedIn': 600,
-                        'speedOut': 200,
-                        'onComplete': function () {
-                            $("#fancybox-wrap").css({'top': '100px!important', 'left': '0'});
+                    function createRatingStarsContainer() {
+                        let reviewsCount = data.reviews.length;
+                        if (reviewsCount === 0) {
+                            $('#rtng').empty();
+
+                            $('#reviews').next('.clearfix').remove().promise().then(() => {
+                                $('#reviews').remove();
+                            });
+
+                            $('a[href$="#reviews"]').remove();
                         }
-                    });
+                        let rating = Math.round(data["averageRating"]);
+                        for (let i = 0; i < parseInt(rating); i++) {
+                            $("#rtng-stars").append("<span class=\"full-star\"></span>");
+                        }
+                        for (let i = 0; i < 5 - parseInt(rating); i++) {
+                            $("#rtng-stars").append("<span class=\"empty-star\"></span>");
+                        }
 
-                    let reviewsCount = data.reviews.length;
-                    if (reviewsCount === 0) {
-                        // empty Poor 0 in top of listing details
-                        $('#rtng').empty();
+                        let amenityCnt = 0;
+                        for (let i = 0; i < Math.min(5, data.amenities.length); i++) {
+                            let breaks = "<br/>";
+                            if (data.amenities[i].name.length < 20) breaks += "<br/>";
+                            $("#facilities").append('<div class="icon-facilities icon-hotel-3">' +
+                                '<span class="icon-image" style="text-align: center;">' + breaks + '<b>' + data.amenities[i].name + '</b></span>' +
+                                '</div>');
+                            amenityCnt = i;
+                        }
+                        let items = data.amenities;
+                        let itemsPerColumn = parseInt((items.length - amenityCnt) / 3);
 
-                        // empty Reviews section
-                        $('#reviews').next('.clearfix').remove().promise().then(() => {
-                            $('#reviews').remove();
+                        let out = '<div class="col-md-4">';
+                        let x = 0;
+                        let y = 0;
+                        for (let i = amenityCnt + 1; i < items.length; i++) {
+                            out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
+                            x++;
+                            y++;
+                            if (y >= 3 * itemsPerColumn) {
+                                break;
+                            }
+                            if (x === itemsPerColumn) {
+                                x = 0;
+                                out = out + '</div>';
+                                out = out + '<div class="col-md-4">';
+                            }
+
+                        }
+                        out = out + '</div>';
+                        $("#fac-row").append(out);
+
+                        let reviews = data.reviews.sort((r1, r2) => r2.rating - r1.rating).map(r => {
+                            return {"text": r.comments, "rating": r.rating}
                         });
+                        for (let review of reviews) {
+                            let reviewHtml = ' <div class="list-hotel-rating"> ' +
+                                '<div class="list-hotel-rating-count">' + review.rating + '</div>' +
+                                '<div class="list-hotel-rating-stars">';
 
-                        $('a[href$="#reviews"]').remove();
-                    }
-                    let rating = Math.round(data["averageRating"]);
-                    for (let i = 0; i < parseInt(rating); i++) {
-                        $("#rtng-stars").append("<span class=\"full-star\"></span>");
-                    }
-                    for (let i = 0; i < 5 - parseInt(rating); i++) {
-                        $("#rtng-stars").append("<span class=\"empty-star\"></span>");
-                    }
+                            for (let i = 0; i < parseInt(review.rating); i++) {
+                                reviewHtml += "<span class=\"full-star\"></span>";
+                            }
+                            for (let i = 0; i < 5 - parseInt(review.rating); i++) {
+                                reviewHtml += "<span class=\"empty-star\"></span>";
+                            }
 
-                    let amenityCnt = 0;
-                    for (let i = 0; i < Math.min(5, data.amenities.length); i++) {
-                        let breaks = "<br/>";
-                        if (data.amenities[i].name.length < 20) breaks += "<br/>";
-                        $("#facilities").append('<div class="icon-facilities icon-hotel-3">' +
-                            '<span class="icon-image" style="text-align: center;">' + breaks + '<b>' + data.amenities[i].name + '</b></span>' +
-                            '</div>');
-                        amenityCnt = i;
-                    }
-                    let items = data.amenities;
-                    let itemsPerColumn = parseInt((items.length - amenityCnt) / 3);
-
-                    let out = '<div class="col-md-4">';
-                    let x = 0;
-                    let y = 0;
-                    for (let i = amenityCnt + 1; i < items.length; i++) {
-                        out = out + '<div class="hotel-extras-list">' + items[i].name + '</div>';
-                        x++;
-                        y++;
-                        if (y >= 3 * itemsPerColumn) {
-                            break;
+                            reviewHtml += '</div>';
+                            reviewHtml += "<p>" + review.text + "</p>";
+                            reviewHtml += "</div>";
+                            $("#reviews").append(reviewHtml);
                         }
-                        if (x === itemsPerColumn) {
-                            x = 0;
-                            out = out + '</div>';
-                            out = out + '<div class="col-md-4">';
+                    }
+
+                    function autoSetDatesInReservation() {
+
+                        let searchStartDate = GetURLParameter('startDate');
+                        let searchEndDate = GetURLParameter('endDate');
+
+                        if (searchStartDate) {
+                            $('#reservation-checkin').val(decodeURIComponent(searchStartDate));
                         }
 
-                    }
-                    out = out + '</div>';
-                    $("#fac-row").append(out);
-
-                    let reviews = data.reviews.sort((r1, r2) => r2.rating - r1.rating).map(r => {
-                        return {"text": r.comments, "rating": r.rating}
-                    });
-                    for (let review of reviews) {
-                        let reviewHtml = ' <div class="list-hotel-rating"> ' +
-                            '<div class="list-hotel-rating-count">' + review.rating + '</div>' +
-                            '<div class="list-hotel-rating-stars">';
-
-                        for (let i = 0; i < parseInt(review.rating); i++) {
-                            reviewHtml += "<span class=\"full-star\"></span>";
-                        }
-                        for (let i = 0; i < 5 - parseInt(review.rating); i++) {
-                            reviewHtml += "<span class=\"empty-star\"></span>";
+                        if (searchEndDate) {
+                            $('#reservation-checkout').val(decodeURIComponent(searchEndDate));
                         }
 
-                        reviewHtml += '</div>';
-                        reviewHtml += "<p>" + review.text + "</p>";
-                        reviewHtml += "</div>";
-                        $("#reviews").append(reviewHtml);
+                        $('#search .input-daterange input').trigger('change');
                     }
+
+                    configFancyBox();
+                    createRatingStarsContainer();
+                    autoSetDatesInReservation();
+                    setReservationEventHandler();
                 }
             );
 
             property = data;
-
-
-            $('.input-daterange input').each(function () {
-                $(this).datepicker("option", "dateFormat", $(this).val());
-            });
-
-
         }).then(() => {
             let hotelInputs = $('.hotel-chekin-box .input-daterange input');
             let hotelNights = $('#hotel-search-nights span');
@@ -247,65 +271,6 @@
 
             let cleaningFee = parseInt(property["cleaningFee"]);
             calculatePrice(pricePerNight, hotelNights, cleaningFee);
-
-
-        }).catch((error) => {
-            //location.href = "http://localhost:63342/Lockchain-FrontEnd/Listings/listings.html";
         });
-    }
-
-    function GetURLParameter(sParam) {
-        let sPageURL = window.location.search.substring(1);
-        let sURLVariables = sPageURL.split('&');
-        for (let i = 0; i < sURLVariables.length; i++) {
-            let sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] === sParam) {
-                return sParameterName[1];
-            }
-        }
-    }
-</script>
-
-<script>
-    $('.filter-room-facility-more-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-room-facility-more').toggle();
-        $('.filter-room-facility-more-href').css('display', 'none');
-    });
-
-    $('.filter-room-facility-hide-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-room-facility-more').toggle();
-        $('.filter-room-facility-more-href').css('display', 'block');
-    });
-
-    $('.filter-facility-more-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-facility-more').toggle();
-        $('.filter-facility-more-href').css('display', 'none');
-    });
-
-    $('.filter-facility-hide-href').on('click', function (e) {
-        e.preventDefault();
-        $('.filter-facility-more').toggle();
-        $('.filter-facility-more-href').css('display', 'block');
-    })
-</script>
-<script>
-    function calculatePrice(pricePerNight, hotelNights, cleaningFee) {
-        hotelNights.on('change', () => {
-            let nights = parseInt(hotelNights.text().split(" ")[0]);
-            let price = parseInt(pricePerNight.text().substr(1));
-
-            $('.hotel-search-nights span').text(nights + ' nights').promise().then(() => {
-                if (nights !== 0) {
-                    let totalPrice = (nights * price) + cleaningFee;
-                    $('#total-price').text('$' + totalPrice);
-                }
-                else {
-                    $('#total-price').text('$0')
-                }
-            });
-        })
     }
 </script>

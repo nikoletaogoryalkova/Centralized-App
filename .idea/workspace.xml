@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a9fbad18-2a5a-41ca-b593-4b1bc62cb7f9" name="Default" comment="">
+    <list default="true" id="d64459b3-b27f-45a9-be8f-0dcbedbb0ec1" name="Default" comment="Added DateRangePicker js library and integrated it with main search">
+      <change beforePath="$PROJECT_DIR$/.idea/Web-Design.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change beforePath="$PROJECT_DIR$/marketplace/Listings/listings.html" afterPath="$PROJECT_DIR$/marketplace/Listings/listings.html" />
-      <change beforePath="$PROJECT_DIR$/marketplace/Property/details.html" afterPath="$PROJECT_DIR$/marketplace/Property/details.html" />
       <change beforePath="$PROJECT_DIR$/marketplace/Property/property.html" afterPath="$PROJECT_DIR$/marketplace/Property/property.html" />
+      <change beforePath="$PROJECT_DIR$/marketplace/css/style.css" afterPath="$PROJECT_DIR$/marketplace/css/style.css" />
       <change beforePath="$PROJECT_DIR$/marketplace/footer.html" afterPath="$PROJECT_DIR$/marketplace/footer.html" />
       <change beforePath="$PROJECT_DIR$/marketplace/head.html" afterPath="$PROJECT_DIR$/marketplace/head.html" />
+      <change beforePath="$PROJECT_DIR$/marketplace/header.html" afterPath="$PROJECT_DIR$/marketplace/header.html" />
+      <change beforePath="$PROJECT_DIR$/marketplace/home.html" afterPath="$PROJECT_DIR$/marketplace/home.html" />
       <change beforePath="$PROJECT_DIR$/marketplace/js/config1.js" afterPath="$PROJECT_DIR$/marketplace/js/config1.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -21,29 +28,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="listings.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/listings.js">
+      <file leaf-file-name="filters.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/marketplace/Listings/filters.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <marker date="1511884369787" expanded="true" signature="50:1260" ph="{...}" />
-                <marker date="1511884369787" expanded="true" signature="124:565" ph="{...}" />
-                <marker date="1511884369787" expanded="true" signature="147:354" ph="{...}" />
-                <marker date="1511884369787" expanded="true" signature="360:559" ph="{...}" />
-                <marker date="1511884369787" expanded="true" signature="1314:3694" ph="{...}" />
-                <marker date="1511884369787" expanded="true" signature="3746:4449" ph="{...}" />
-                <marker date="1511884369787" expanded="true" signature="4493:4916" ph="{...}" />
-              </folding>
+            <state relative-caret-position="666">
+              <caret line="63" column="36" lean-forward="false" selection-start-line="63" selection-start-column="36" selection-end-line="63" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config1.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="config1.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/marketplace/js/config1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="2" column="50" lean-forward="false" selection-start-line="2" selection-start-column="50" selection-end-line="2" selection-end-column="50" />
+            <state relative-caret-position="150">
+              <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -52,31 +51,31 @@
       <file leaf-file-name="head.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/marketplace/head.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="74" column="23" lean-forward="false" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="23" />
+            <state relative-caret-position="2400">
+              <caret line="96" column="23" lean-forward="false" selection-start-line="96" selection-start-column="23" selection-end-line="96" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="listings.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Listings/listings.html">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/marketplace/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="214" column="14" lean-forward="false" selection-start-line="214" selection-start-column="14" selection-end-line="214" selection-end-column="14" />
+            <state relative-caret-position="-187">
+              <caret line="1091" column="7" lean-forward="false" selection-start-line="1091" selection-start-column="7" selection-end-line="1091" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="header.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/marketplace/header.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="782">
+              <caret line="256" column="77" lean-forward="false" selection-start-line="256" selection-start-column="77" selection-end-line="256" selection-end-column="77" />
               <folding>
-                <marker date="1511884369488" expanded="true" signature="2578:2606" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="3346:3442" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="3550:3585" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="3906:3992" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="4090:4139" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="4317:4497" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="7398:7423" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="7640:7665" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="7891:7916" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="10042:10066" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="10190:10266" ph="{...}" />
-                <marker date="1511884369488" expanded="true" signature="10386:10419" ph="{...}" />
+                <marker date="1511982208129" expanded="true" signature="12166:12310" ph="..." />
+                <marker date="1511982208129" expanded="true" signature="12234:12287" ph="..." />
               </folding>
             </state>
           </provider>
@@ -85,30 +84,8 @@
       <file leaf-file-name="listings.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="588">
-              <caret line="416" column="10" lean-forward="false" selection-start-line="416" selection-start-column="10" selection-end-line="416" selection-end-column="10" />
-              <folding>
-                <marker date="1511903083388" expanded="true" signature="13358:13400" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="footer.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/marketplace/footer.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="46" column="49" lean-forward="false" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="property.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="94" column="15" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="15" />
+            <state relative-caret-position="1077">
+              <caret line="617" column="61" lean-forward="false" selection-start-line="617" selection-start-column="61" selection-end-line="617" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -118,32 +95,20 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>a href</find>
-      <find>href=</find>
+      <find>console.</find>
+      <find>datera</find>
+      <find>url</find>
+      <find>geturlpara</find>
+      <find>geturl</find>
+      <find>$('#search-daterange').val('');</find>
+      <find>console.lo</find>
+      <find>console.log</find>
+      <find>datepicker</find>
       <find>search</find>
-      <find>address</find>
-      <find>end</find>
-      <find>undef</find>
-      <find>click</find>
-      <find>//localhost:63342/Web-Design/marketplace/marketplace/</find>
-      <find>guestsIn</find>
-      <find>bydate</find>
-      <find>guests_inc</find>
-      <find>data.page</find>
-      <find>generateEnd</find>
-      <find>&gt;&gt;</find>
-      <find>var apiHost</find>
-      <find>apiHost</find>
-      <find>var api</find>
-      <find>+ page</find>
+      <find>calculate</find>
+      <find>date</find>
+      <find>input</find>
     </findStrings>
-    <replaceStrings>
-      <replace>//localhost:63342/Web-Design/marketplace/</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>D:\Projects\lockchain\Web-Design</dir>
-      <dir>D:\Projects\lockchain\Web-Design\marketplace</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -151,31 +116,26 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/js/config.js" />
         <option value="$PROJECT_DIR$/marketplace/Property/property.html" />
-        <option value="$PROJECT_DIR$/marketplace/js/config1.js" />
-        <option value="$PROJECT_DIR$/marketplace/head.html" />
+        <option value="$PROJECT_DIR$/marketplace/footer.html" />
         <option value="$PROJECT_DIR$/marketplace/Listings/listings.html" />
+        <option value="$PROJECT_DIR$/marketplace/header.html" />
+        <option value="$PROJECT_DIR$/marketplace/head.html" />
+        <option value="$PROJECT_DIR$/marketplace/home.html" />
+        <option value="$PROJECT_DIR$/marketplace/js/config1.js" />
       </list>
     </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsFlowSettings">
-    <service-enabled>true</service-enabled>
-    <exe-path />
-    <other-services-enabled>true</other-services-enabled>
-    <auto-save>true</auto-save>
-  </component>
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="260" />
-    <option name="y" value="20" />
-    <option name="width" value="1400" />
-    <option name="height" value="1000" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-13" />
+    <option name="width" value="3854" />
+    <option name="height" value="2082" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -208,6 +168,12 @@
               <item name="Web-Design" type="b2602c69:ProjectViewProjectNode" />
               <item name="Web-Design" type="462c0819:PsiDirectoryNode" />
               <item name="marketplace" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Web-Design" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Web-Design" type="462c0819:PsiDirectoryNode" />
+              <item name="marketplace" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -234,8 +200,6 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
-    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -249,6 +213,73 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+    </configuration>
+  </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
@@ -257,19 +288,18 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a9fbad18-2a5a-41ca-b593-4b1bc62cb7f9" name="Default" comment="" />
-      <created>1511885928860</created>
+      <changelist id="d64459b3-b27f-45a9-be8f-0dcbedbb0ec1" name="Default" comment="" />
+      <created>1511970692634</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1511885928860</updated>
-      <workItem from="1511885931377" duration="27000" />
-      <workItem from="1511886009628" duration="6102000" />
-      <workItem from="1511892855700" duration="9069000" />
+      <updated>1511970692634</updated>
+      <workItem from="1511970695222" duration="651000" />
+      <workItem from="1511973767992" duration="3008000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15792000" />
+    <option name="totallyTimeSpent" value="3742000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -296,27 +326,57 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18020834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24986932" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <option name="time" value="1" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="94" column="15" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/footer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1123">
+          <caret line="77" column="9" lean-forward="false" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="214" column="16" lean-forward="false" selection-start-line="214" selection-start-column="13" selection-end-line="214" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="87" column="35" lean-forward="false" selection-start-line="87" selection-start-column="35" selection-end-line="87" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/listings.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -335,22 +395,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Listings/listings.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="214" column="14" lean-forward="false" selection-start-line="214" selection-start-column="14" selection-end-line="214" selection-end-column="14" />
-          <folding>
-            <marker date="1511884369488" expanded="true" signature="2578:2606" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="3346:3442" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="3550:3585" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="3906:3992" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="4090:4139" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="4317:4497" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="7398:7423" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="7640:7665" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="7891:7916" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="10042:10066" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="10190:10266" ph="{...}" />
-            <marker date="1511884369488" expanded="true" signature="10386:10419" ph="{...}" />
-          </folding>
+        <state relative-caret-position="288">
+          <caret line="214" column="16" lean-forward="false" selection-start-line="214" selection-start-column="13" selection-end-line="214" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -358,9 +405,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="332">
           <caret line="483" column="13" lean-forward="true" selection-start-line="483" selection-start-column="13" selection-end-line="483" selection-end-column="13" />
-          <folding>
-            <marker date="1511903083388" expanded="true" signature="13358:13400" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -368,14 +413,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="16" column="56" lean-forward="true" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="56" />
-          <folding>
-            <marker date="1511884369848" expanded="true" signature="3288:3364" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="15292:15307" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="16436:16451" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="18650:18670" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="18794:18871" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="18971:19008" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -391,9 +429,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7250">
           <caret line="290" column="25" lean-forward="false" selection-start-line="290" selection-start-column="25" selection-end-line="290" selection-end-column="25" />
-          <folding>
-            <marker date="1511903083388" expanded="true" signature="13358:13400" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -437,14 +473,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="25">
           <caret line="16" column="56" lean-forward="false" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="56" />
-          <folding>
-            <marker date="1511884369848" expanded="true" signature="3288:3364" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="15292:15307" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="16436:16451" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="18650:18670" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="18794:18871" ph="{...}" />
-            <marker date="1511884369848" expanded="true" signature="18971:19008" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -452,7 +481,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-750">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1511982208129" expanded="true" signature="12166:12310" ph="..." />
+            <marker date="1511982208129" expanded="true" signature="12234:12287" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -476,17 +508,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="94" column="15" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="416" column="10" lean-forward="false" selection-start-line="416" selection-start-column="10" selection-end-line="416" selection-end-column="10" />
-          <folding>
-            <marker date="1511903083388" expanded="true" signature="13358:13400" ph="..." />
-          </folding>
+        <state relative-caret-position="288">
+          <caret line="537" column="39" lean-forward="false" selection-start-line="537" selection-start-column="27" selection-end-line="537" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -498,20 +527,244 @@
         </state>
       </provider>
     </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+    <entry file="file://$PROJECT_DIR$/js/listings.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1511884369787" expanded="true" signature="50:1260" ph="{...}" />
+            <marker date="1511884369787" expanded="true" signature="124:565" ph="{...}" />
+            <marker date="1511884369787" expanded="true" signature="147:354" ph="{...}" />
+            <marker date="1511884369787" expanded="true" signature="360:559" ph="{...}" />
+            <marker date="1511884369787" expanded="true" signature="1314:3694" ph="{...}" />
+            <marker date="1511884369787" expanded="true" signature="3746:4449" ph="{...}" />
+            <marker date="1511884369787" expanded="true" signature="4493:4916" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="214" column="16" lean-forward="false" selection-start-line="214" selection-start-column="13" selection-end-line="214" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="483" column="13" lean-forward="true" selection-start-line="483" selection-start-column="13" selection-end-line="483" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="16" column="56" lean-forward="true" selection-start-line="16" selection-start-column="56" selection-end-line="16" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/js/config1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7250">
+          <caret line="290" column="25" lean-forward="false" selection-start-line="290" selection-start-column="25" selection-end-line="290" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/head.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Property/details.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="20" column="20" lean-forward="true" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="94" column="15" lean-forward="false" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/footer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="46" column="49" lean-forward="false" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="386" column="36" lean-forward="false" selection-start-line="386" selection-start-column="30" selection-end-line="386" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="59" column="34" lean-forward="true" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calendar/jquery-ui.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="10" column="18689" lean-forward="false" selection-start-line="10" selection-start-column="18685" selection-end-line="10" selection-end-column="18689" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="267" column="77" lean-forward="false" selection-start-line="267" selection-start-column="77" selection-end-line="267" selection-end-column="77" />
+          <folding>
+            <marker date="1511982208129" expanded="true" signature="12166:12310" ph="..." />
+            <marker date="1511982208129" expanded="true" signature="12234:12287" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-187">
+          <caret line="1091" column="7" lean-forward="false" selection-start-line="1091" selection-start-column="7" selection-end-line="1091" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/head.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1850">
+          <caret line="74" column="23" lean-forward="false" selection-start-line="74" selection-start-column="23" selection-end-line="74" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/filters.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="666">
+          <caret line="63" column="36" lean-forward="false" selection-start-line="63" selection-start-column="36" selection-end-line="63" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1077">
+          <caret line="582" column="61" lean-forward="false" selection-start-line="582" selection-start-column="61" selection-end-line="582" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/js/config1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6364">
+          <caret line="172" column="6" lean-forward="false" selection-start-line="172" selection-start-column="6" selection-end-line="172" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/head.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1961">
+          <caret line="53" column="36" lean-forward="true" selection-start-line="53" selection-start-column="36" selection-end-line="53" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="256" column="77" lean-forward="false" selection-start-line="256" selection-start-column="77" selection-end-line="256" selection-end-column="77" />
+          <folding>
+            <marker date="1511982208129" expanded="true" signature="12166:12310" ph="..." />
+            <marker date="1511982208129" expanded="true" signature="12234:12287" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Property/property.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7976">
+          <caret line="18" column="4" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="27" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/Listings/listings.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1077">
+          <caret line="617" column="61" lean-forward="false" selection-start-line="617" selection-start-column="61" selection-end-line="617" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/footer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1274">
+          <caret line="190" column="9" lean-forward="true" selection-start-line="166" selection-start-column="8" selection-end-line="190" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/head.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2400">
+          <caret line="96" column="23" lean-forward="false" selection-start-line="96" selection-start-column="23" selection-end-line="96" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/marketplace/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1202">
+          <caret line="56" column="21" lean-forward="false" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

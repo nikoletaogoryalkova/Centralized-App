@@ -34,7 +34,8 @@
                 </div>
 
                 <div class="dropdown select-curency">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="currency_currency">US Dollar</span> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                            id="currency_currency">US Dollar</span> <span class="caret"></span></a>
                     <ul class="navbar-dropdown dropdown-menu">
                         <li><a href="#" class="currency_selector" data-sign="$">USD</a></li>
                         <li><a href="#" class="currency_selector" data-sign="€">EUR</a></li>
@@ -77,138 +78,123 @@
     });
 </script>
 <script>
-    // Activate smooth scroll
+    //Activate smooth scroll
 
-    //let scroll = new SmoothScroll('a[href*="#"]');
-</script>
-<script>
-    $('.fancybox').fancybox({
-        'padding': 0,
-        'transitionIn': 'none',
-        'transitionOut': 'none',
-        helpers: {
-            overlay: {
-                locked: false
-            }
-        },
-        beforeShow: function () {
-            $('html').css('overflowX', 'visible');
-            $('body').css('overflowY', 'hidden');
-        },
-        afterClose: function () {
-            $('html').css('overflowX', 'hidden');
-            $('body').css('overflowY', 'visible');
-        }
-    });
-</script>
-<script>
-
-    $('#mymodal_signup form').on('submit', (event) => {
-        event.preventDefault();
-
-        let userEmail = $('#signup-mail').val();
-        let userFirstName = $('#signup-firstname').val();
-        let userLastName = $('#signup-lastname').val();
-        let userPassword = $('#signup-password').val();
-
-        let user = {};
-
-        user.email = userEmail;
-        user.firstName = userFirstName;
-        user.lastName = userLastName;
-        user.password = userPassword;
-
-        let userJson = JSON.stringify(user);
-
-        $.ajax({
-            "async": true,
-            "crossDomain": true,
-            "url": apiHost + "users/signup",
-            "method": "POST",
-            "headers": {
-                "content-type": "application/json"
-            },
-            "processData": false,
-            "data": userJson
-        }).done(function (response) {
-            $('.close').click();
-            $('#myModal_login').modal('show');
-        }).catch(function (httpObj) {
-            if (httpObj.status === 401) {
-                $('#signup_errorMessage').text(httpObj.responseJSON.message);
-            }
-        });
-    });
-
-    $('#mymodal_login form').on('submit', (event) => {
-        event.preventDefault();
-
-        let userEmail = $('#login-mail').val();
-        let userPassword = $('#login-password').val();
-
-        let user = {};
-
-        user.email = userEmail;
-        user.password = userPassword;
-
-        let userJson = JSON.stringify(user);
-
-        $.ajax({
-            "async": true,
-            "crossDomain": true,
-            "url": apiHost + "login",
-            "method": "POST",
-            "data": userJson
-        }).done(function (data) {
-            $('.close').click();
-            localStorage["token"] = data.Authorization;
-            localStorage["name"] = userEmail;
-            checkLoggedInUser();
-        }).catch(function (httpObj) {
-            if (httpObj.status === 401) {
-                $('#login_errorMessage').text(httpObj.responseJSON.message);
-            }
-        });
-    });
-
-    function logout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("name");
-
-        checkLoggedInUser();
-    }
+    let scroll = new SmoothScroll('a[href*="#"]:not([href="#"])');
 </script>
 <script>
     $(document).ready(function () {
-        let inputs = $('#search .input-daterange input');
+        function setSignUpEventHandler() {
+            $('#mymodal_signup form').on('submit', (event) => {
+                event.preventDefault();
+
+                let userEmail = $('#signup-mail').val();
+                let userFirstName = $('#signup-firstname').val();
+                let userLastName = $('#signup-lastname').val();
+                let userPassword = $('#signup-password').val();
+
+                let user = {};
+
+                user.email = userEmail;
+                user.firstName = userFirstName;
+                user.lastName = userLastName;
+                user.password = userPassword;
+
+                let userJson = JSON.stringify(user);
+
+                $.ajax({
+                    "async": true,
+                    "crossDomain": true,
+                    "url": apiHost + "users/signup",
+                    "method": "POST",
+                    "headers": {
+                        "content-type": "application/json"
+                    },
+                    "processData": false,
+                    "data": userJson
+                }).done(function (response) {
+                    $('.close').click();
+                    $('#myModal_login').modal('show');
+                }).catch(function (httpObj) {
+                    if (httpObj.status === 401) {
+                        $('#signup_errorMessage').text(httpObj.responseJSON.message);
+                    }
+                });
+            });
+        }
+
+        function setSignInEventHandler() {
+
+            $('#mymodal_login form').on('submit', (event) => {
+                event.preventDefault();
+
+                let userEmail = $('#login-mail').val();
+                let userPassword = $('#login-password').val();
+
+                let user = {};
+
+                user.email = userEmail;
+                user.password = userPassword;
+
+                let userJson = JSON.stringify(user);
+
+                $.ajax({
+                    "async": true,
+                    "crossDomain": true,
+                    "url": apiHost + "login",
+                    "method": "POST",
+                    "data": userJson
+                }).done(function (data) {
+                    $('.close').click();
+                    localStorage["token"] = data.Authorization;
+                    localStorage["name"] = userEmail;
+                    checkLoggedInUser();
+                }).catch(function (httpObj) {
+                    if (httpObj.status === 401) {
+                        $('#login_errorMessage').text(httpObj.responseJSON.message);
+                    }
+                });
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("name");
+
+            checkLoggedInUser();
+        }
+
+        function calculateNights(input, nights) {
+            nights.text(0 + ' nights');
+
+            input.change(() => {
+                let inputs = input.val().split('-');
+
+                let checkIn = inputs[0].trim();
+                let checkOut = inputs[1].trim();
+
+                let checkInDate = moment(checkIn, "DD/MM/YYYY");
+                let checkOutDate = moment(checkOut, "DD/MM/YYYY");
+
+                let timeDiff = checkOutDate.diff(checkInDate);
+
+                if ((checkOut && checkIn) && checkOutDate > checkInDate) {
+                    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    nights.text(diffDays + ' nights');
+                    nights.trigger('change');
+                }
+                else if (!checkOut || !checkIn || timeDiff < 0) {
+                    nights.text(0 + ' nights');
+                    nights.trigger('change');
+                }
+            });
+        }
+
+        let input = $('#search-daterange');
         let nights = $('#search-nights').find('span');
 
-        calculateNights(inputs, nights);
+        calculateNights(input, nights);
+        setSignUpEventHandler();
+        setSignInEventHandler();
     });
-
-    function calculateNights(inputs, nights) {
-        nights.text(0 + ' nights');
-
-        inputs.change(() => {
-            let checkIn = inputs[0].value;
-            let checkOut = inputs[1].value;
-
-            let checkInDate = moment(checkIn, "DD/MM/YYYY");
-            let checkOutDate = moment(checkOut, "DD/MM/YYYY");
-
-            let timeDiff = checkOutDate.diff(checkInDate);
-
-            console.log(checkOut);
-            console.log(checkIn);
-            if ((checkOut && checkIn) && checkOutDate > checkInDate) {
-                let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                nights.text(diffDays + ' nights');
-                nights.trigger('change');
-            }
-            else if (!checkOut || !checkIn || timeDiff < 0) {
-                nights.text(0 + ' nights');
-                nights.trigger('change');
-            }
-        });
-    }
 </script>

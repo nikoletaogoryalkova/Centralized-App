@@ -8,17 +8,21 @@
     <link rel="shortcut icon" href="images/icon.png">
     <title>{{title}}</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">-->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
+
     <link href="../css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/jquery.fancybox.css">
     <link rel="stylesheet" href="../css/bootstrap-slider.css">
 
-    <script src="../js/moment.js"></script>
+
     <script src="../js/jquery.min.js"></script>
+    <script src="../js/moment.js"></script>
     <script src="../js/bootstrap.min.js"></script>
 
+    <script src="../js/daterangepicker/daterangepicker.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,11 +31,29 @@
     <![endif]-->
     <script src="../js/config1.js?v=1.1"></script>
     <script>
-
         $(document).ready(function () {
-            $('.input-daterange input').each(function () {
-                $(this).datepicker("option", "dateFormat", $(this).val());
-            });
+            function setDatesInputs() {
+                let todayDate = new Date();
+                let dd = todayDate.getDate();
+                let mm = todayDate.getMonth() + 1; //January is 0!
+                let yyyy = todayDate.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd
+                }
+                if (mm < 10) {
+                    mm = '0' + mm
+                }
+                let today = dd + '/' + mm + '/' + yyyy;
+
+                $('input[name="daterange"]').daterangepicker({
+                    "autoApply": true,
+                    "minDate": today,
+                    locale: {
+                        format: 'DD/MM/YYYY'
+                    }, autoclose: true
+                });
+            }
+            setDatesInputs();
         });
     </script>
 
@@ -71,11 +93,11 @@
         }
 
         $(document).ready(function () {
-            if (typeof apiHost == 'undefined') {
-                var apiHost = "//api.lockchain.co:8443/lockchain/";
-
-                var frontEndHost = "//lockchain.co/marketplace/";
-            }
+//            if (typeof apiHost == 'undefined') {
+//                var apiHost = "//api.lockchain.co:8443/lockchain/";
+//
+//                var frontEndHost = "//lockchain.co/marketplace/";
+//            }
             checkLoggedInUser();
 
             let locationSelect = $('#location-select');
@@ -88,6 +110,7 @@
             });
         })
     </script>
+
     <script src="../js/bootstrap-datepicker.js"></script>
     <script src="../js/bootstrap-slider.js"></script>
     <script src="../js/jquery.fancybox.js"></script>
