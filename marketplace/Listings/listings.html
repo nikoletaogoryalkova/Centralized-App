@@ -60,10 +60,8 @@
 
     let footerSource = loadPage('../footer.html');
     let footerTemplate = Handlebars.compile(footerSource);
-    var locRate = parseFloat($("#loc-rate").text())
 
-
-    let compiledTemplate = headerTemplate() + breadcrumbTemplate() + filtersTemplate() + footerTemplate();
+    let locRate = parseFloat($("#loc-rate").text());
 
     $('head').html(headTemplate(headContext));
 
@@ -91,6 +89,8 @@
         .append(footerTemplate());
 
     $('#hotel-box .col-md-3').append(filtersTemplate()).promise().then(() => {
+        $('#filter-button').click(() => {
+            let params = getParameters();
         $('.submit-search-button').click(() => {
             var params = getParameters();
             localStorage.filtration = '?' + params;
@@ -108,8 +108,6 @@
                 .append(
                     $('<span>').addClass('filter-check-count').text(item.count)
                 );
-
-            return template;
         }
 
         let locationPropertyTypes = $('#filter-propertyType');
@@ -172,7 +170,6 @@
     setDatesInputs();
 
     $("#price-slider").slider({});
-    $("#distance-slider").slider({});
 
     $('.filter-room-facility-more-href').on('click', function (e) {
         e.preventDefault();
@@ -214,7 +211,7 @@
     });
 
 
-    var priceSliderElement = $('#price-slider');
+    let priceSliderElement = $('#price-slider');
 
     function propertyStarsClickHandler(eventData) {
         let clickedSpanElement = $(eventData.target);
@@ -226,7 +223,6 @@
             propertyStars.add(spanText);
         }
     }
-
     function propertyTypeClickHandler(eventData) {
         let clickedFilterGroupElement = $(eventData.target).parent();
         clickedFilterGroupElement.toggleClass('active');
@@ -237,8 +233,6 @@
             propertyTypes.add(filterCheckText);
         }
     }
-
-
     function propertyAmenitiesClickHandler(eventData) {
         let clickedFilterGroupElement = $(eventData.target).parent();
         clickedFilterGroupElement.toggleClass('active');
@@ -259,7 +253,6 @@
 
         return queryString.substr(0, queryString.length - 1);
     }
-
     function getPropertyTypeQueryString() {
         let queryString = '';
 
@@ -269,7 +262,6 @@
 
         return queryString.substr(0, queryString.length - 1);
     }
-
     function getPropertyAmenitiesQueryString() {
         let queryString = '';
 
@@ -284,7 +276,7 @@
         priceSliderElement = $('#price-slider');
         [minPrice, maxPrice] = priceSliderElement.val().split(',').map(Number);
 
-        var parameters = '';
+        let parameters = '';
 
         propertyTypeQueryString = getPropertyTypeQueryString();
         propertyStarsQueryString = getPropertyStarsQueryString();
@@ -374,6 +366,11 @@
         return endPoint;
     }
 
+    function search() {
+        let endPoints = generateEndPoint();
+        getListings(endPoint);
+    }
+
     function generatePaginationTemplate(data) {
         let out = "";
 
@@ -389,12 +386,12 @@
     }
 
     function getListings(endPoint) {
-        $.getJSON(endPoint, (data, status, xhr) => {
+        $.getJSON(endPoint, (data, status) => {
 
             if (status === 'success') {
                 let insertionRow = $('#list-hotel-box');
 
-                if (!data.page.totalElements || data.page.totalElements == 0) {
+                if (!data.page.totalElements || data.page.totalElements === 0) {
                     insertionRow.append($('<div>').addClass('list-hotel')
                         .html("<h1 style='text-align: center; vertical-align: middle'>No results found</h1>"));
                 } else {
@@ -419,7 +416,21 @@
                                 generatePaginationTemplate(data)
                             )
                     )
-            )
+            );
+
+            function generatePaginationTemplate(data) {
+                let out = "";
+
+                for (let i = 1; i <= data.page.totalPages; i++) {
+                    if (i === parseInt(localStorage["currentPageNumber"])) {
+                        out += "<li class='active'><a href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+                    } else {
+                        out += "<li><a href='" + localStorage["filtration"] + '&page=' + i + "'>" + i + "</a></li>";
+                    }
+                }
+
+                return out;
+            }
         });
     }
 
@@ -427,6 +438,7 @@
     if (window.location.search.includes('page=')) {
         let positionOfPageQuery = window.location.search.indexOf('page=');
         page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
+        localStorage["currentPageNumber"] = page;
     }
 
     let [apiHost, frontEndHost] = config();
@@ -440,162 +452,8 @@
     );
 </script>
 <script>
-    function generateListingImageSubTemplate(listing) {
-        let htmlItems = "";
-
-        $.each(listing.pictures, function (i, item) {
-            if (i === 0) {
-                htmlItems += "<div class='item active'><a href='" + frontEndHost + 'Property/property.html?id=' + listing.id + "'><img src='" + item.thumbnail + "' /></a></div>";
-            } else {
-                htmlItems += "<div class='item'><a href='" + frontEndHost + 'Property/property.html?id=' + listing.id + "'><img src='" + item.thumbnail + "' /></a></div>";
-            }
-        });
-
-        let listingPictures = $('<div>')
-            .addClass('list-image')
-            .append(
-                $('<div>')
-                    .addClass('carousel slide')
-                    .attr('data-ride', 'carousel')
-                    .attr('id', 'myCarousel-' + listing.id)
-                    .append(
-                        $('<div>').addClass('carousel-inner').append(
-                            htmlItems +
-                            '<a class="left-carousel" href="#myCarousel-' + listing.id + '" data-slide="prev"></a>' +
-                            '<a class="right-carousel" href="#myCarousel-' + listing.id + '" data-slide="next"></a>'
-                        )
-                    )
-            );
-
-        return listingPictures;
-    }
-
-    function generateListingContentSubTemplate(listing) {
-        let searchStartDate = GetURLParameter('startDate');
-        let searchEndDate = GetURLParameter('endDate');
-
-        let listingContent = $('<div>').addClass('list-content')
-            .append(
-                $('<h2>')
-                    .append(
-                        $('<a>').attr('href', `${frontEndHost}Property/property.html?id=${listing.id}&startDate=${searchStartDate}&endDate=${searchEndDate}`).text(listing.name)
-                    )
-            )
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-rating')
-                    .append(
-                        $('<div>')
-                            .addClass('list-hotel-rating-count')
-                            .text(Math.round(listing["averageRating"] * 100) / 100)
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('list-hotel-rating-stars')
-                            .append(
-                                $('<span>')
-                                    .addClass('full-star')
-                            )
-                            .append(
-                                $('<span>')
-                                    .addClass('full-star')
-                            )
-                            .append(
-                                $('<span>')
-                                    .addClass('full-star')
-                            )
-                            .append(
-                                $('<span>')
-                                    .addClass('full-star')
-                            )
-                            .append(
-                                $('<span>')
-                                    .addClass('empty-star')
-                            )
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('list-hotel-rating-review')
-                            .text(listing["reviewsCount"] + ' Reviews')
-                    )
-            )
-            .append(
-                $('<div>')
-                    .addClass('clearfix')
-            )
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-text')
-                    .text(listing.description ? listing.description.substr(0, 300) : "")
-            )
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-comfort')
-                    .append(
-                        $('<div>')
-                            .addClass('icon-hotel-4')
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('icon-hotel-4')
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('icon-hotel-4')
-                    )
-                    .append(
-                        $('<div>')
-                            .addClass('icon-hotel-4')
-                    )
-            );
-
-        return listingContent;
-    }
-
-    function generateListingPriceSubTemplate(listing) {
-        var fromCurrency = localStorage.getItem("fromCurrency");
-        var toCurrency = listing.currencyCode;
-        var price = listing.defaultDailyPrice;
-        var sign = localStorage.getItem("sign");
-        if (locRate == null || isNaN(locRate)) {
-            $.ajax({
-                async: false,
-                url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
-                success: function (data) {
-                    $("#loc-rate").text(data.loc);
-                    locRate = parseFloat(data.loc);
-                }
-            });
-        }
-
-        listingPrice = $('<div>').addClass('list-price')
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-price-bgr')
-                    .text('Price for 1 night')
-            )
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-price-curency')
-                    .text(sign + "" + Math.round(listing.prices[fromCurrency], 0))
-            )
-            .append(
-                $('<div>')
-                    .addClass('list-hotel-price-loc')
-                    .text('(LOC ' + (listing.prices["EUR"] / locRate).toFixed(3) + ')')
-            )
-            .append(
-                $('<a>')
-                    .addClass('list-hotel-price-button btn btn-primary')
-                    .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
-                    .text('Book now')
-            );
-
-        return listingPrice;
-    }
-
     function generateListingTemplate(listing) {
-        let listingTemplate = $('<div>').addClass('list-hotel')
+        return $('<div>').addClass('list-hotel')
             .append(
                 generateListingImageSubTemplate(listing)
             )
@@ -610,7 +468,153 @@
                     .addClass('clearfix')
             );
 
-        return listingTemplate;
+        function generateListingImageSubTemplate(listing) {
+            let htmlItems = "";
+
+            $.each(listing.pictures, function (i, item) {
+                if (i === 0) {
+                    htmlItems += "<div class='item active'><a href='" + frontEndHost + 'Property/property.html?id=' + listing.id + "'><img src='" + item.thumbnail + "' /></a></div>";
+                } else {
+                    htmlItems += "<div class='item'><a href='" + frontEndHost + 'Property/property.html?id=' + listing.id + "'><img src='" + item.thumbnail + "' /></a></div>";
+                }
+            });
+
+            return listingPictures = $('<div>')
+                .addClass('list-image')
+                .append(
+                    $('<div>')
+                        .addClass('carousel slide')
+                        .attr('data-ride', 'carousel')
+                        .attr('id', 'myCarousel-' + listing.id)
+                        .append(
+                            $('<div>').addClass('carousel-inner').append(
+                                htmlItems +
+                                '<a class="left-carousel" href="#myCarousel-' + listing.id + '" data-slide="prev"></a>' +
+                                '<a class="right-carousel" href="#myCarousel-' + listing.id + '" data-slide="next"></a>'
+                            )
+                        )
+                );
+        }
+
+        function generateListingContentSubTemplate(listing) {
+            let searchStartDate = GetURLParameter('startDate');
+            let searchEndDate = GetURLParameter('endDate');
+
+            return listingContent = $('<div>').addClass('list-content')
+                .append(
+                    $('<h2>')
+                        .append(
+                            $('<a>').attr('href', `${frontEndHost}Property/property.html?id=${listing.id}&startDate=${searchStartDate}&endDate=${searchEndDate}`).text(listing.name)
+                        )
+                )
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-rating')
+                        .append(
+                            $('<div>')
+                                .addClass('list-hotel-rating-count')
+                                .text(Math.round(listing["averageRating"] * 100) / 100)
+                        )
+                        .append(
+                            $('<div>')
+                                .addClass('list-hotel-rating-stars')
+                                .append(
+                                    $('<span>')
+                                        .addClass('full-star')
+                                )
+                                .append(
+                                    $('<span>')
+                                        .addClass('full-star')
+                                )
+                                .append(
+                                    $('<span>')
+                                        .addClass('full-star')
+                                )
+                                .append(
+                                    $('<span>')
+                                        .addClass('full-star')
+                                )
+                                .append(
+                                    $('<span>')
+                                        .addClass('empty-star')
+                                )
+                        )
+                        .append(
+                            $('<div>')
+                                .addClass('list-hotel-rating-review')
+                                .text(listing["reviewsCount"] + ' Reviews')
+                        )
+                )
+                .append(
+                    $('<div>')
+                        .addClass('clearfix')
+                )
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-text')
+                        .text(listing.description ? listing.description.substr(0, 300) : "")
+                )
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-comfort')
+                        .append(
+                            $('<div>')
+                                .addClass('icon-hotel-4')
+                        )
+                        .append(
+                            $('<div>')
+                                .addClass('icon-hotel-4')
+                        )
+                        .append(
+                            $('<div>')
+                                .addClass('icon-hotel-4')
+                        )
+                        .append(
+                            $('<div>')
+                                .addClass('icon-hotel-4')
+                        )
+                );
+        }
+
+        function generateListingPriceSubTemplate(listing) {
+            let fromCurrency = localStorage.getItem("fromCurrency");
+            let toCurrency = listing.currencyCode;
+            let price = listing.defaultDailyPrice;
+            let sign = localStorage.getItem("sign");
+            if (locRate === null || isNaN(locRate)) {
+                $.ajax({
+                    async: false,
+                    url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
+                    success: function (data) {
+                        $("#loc-rate").text(data.loc);
+                        locRate = parseFloat(data.loc);
+                    }
+                });
+            }
+
+            return listingPrice = $('<div>').addClass('list-price')
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-price-bgr')
+                        .text('Price for 1 night')
+                )
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-price-curency')
+                        .text(sign + "" + Math.round(listing.prices[fromCurrency], 0))
+                )
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-price-loc')
+                        .text('(LOC ' + (listing.prices["EUR"] / locRate).toFixed(3) + ')')
+                )
+                .append(
+                    $('<a>')
+                        .addClass('list-hotel-price-button btn btn-primary')
+                        .attr('href', frontEndHost + 'Property/property.html?id=' + listing.id)
+                        .text('Book now')
+                );
+        }
     }
 
     $('#clear-filter-button').click(function() {
