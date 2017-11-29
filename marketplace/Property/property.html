@@ -238,39 +238,58 @@
                         }
                     }
 
-                    function autoSetDatesInReservation() {
-
-                        let searchStartDate = GetURLParameter('startDate');
-                        let searchEndDate = GetURLParameter('endDate');
-
-                        if (searchStartDate) {
-                            $('#reservation-checkin').val(decodeURIComponent(searchStartDate));
-                        }
-
-                        if (searchEndDate) {
-                            $('#reservation-checkout').val(decodeURIComponent(searchEndDate));
-                        }
-
-                        $('#search .input-daterange input').trigger('change');
-                    }
-
                     configFancyBox();
                     createRatingStarsContainer();
-                    autoSetDatesInReservation();
                     setReservationEventHandler();
                 }
             );
 
             property = data;
         }).then(() => {
-            let hotelInputs = $('.hotel-chekin-box .input-daterange input');
+            function autoSetDatesInReservation() {
+
+                let searchStartDate = GetURLParameter('startDate');
+                let searchEndDate = GetURLParameter('endDate');
+
+                function setDatesInputsReservation() {
+                    let todayDate = new Date();
+                    let dd = todayDate.getDate();
+                    let mm = todayDate.getMonth() + 1; //January is 0!
+                    let yyyy = todayDate.getFullYear();
+                    if (dd < 10) {
+                        dd = '0' + dd
+                    }
+                    if (mm < 10) {
+                        mm = '0' + mm
+                    }
+                    let today = dd + '/' + mm + '/' + yyyy;
+
+                    $('input#reservation-check').daterangepicker({
+                        "autoApply": true,
+                        "minDate": today,
+                        "startDate": searchStartDate,
+                        "endDate": searchEndDate,
+                        locale: {
+                            format: 'DD/MM/YYYY'
+                        }, autoclose: true
+                    });
+                }
+
+                if (searchStartDate && searchEndDate) {
+                    setDatesInputsReservation();
+                }
+            }
+
+            let hotelInput = $('#reservation-check');
             let hotelNights = $('#hotel-search-nights span');
 
-            calculateNights(hotelInputs, hotelNights);
+            calculateNights(hotelInput, hotelNights);
             let pricePerNight = $('#hotel-top-price span');
 
             let cleaningFee = parseInt(property["cleaningFee"]);
             calculatePrice(pricePerNight, hotelNights, cleaningFee);
+
+            autoSetDatesInReservation();
         });
     }
 </script>
