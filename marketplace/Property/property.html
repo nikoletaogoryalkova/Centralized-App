@@ -45,7 +45,7 @@
     }
 </script>
 <script>
-    Handlebars.registerHelper('formatNumber', function (item) {
+    function getAverageRatingString(item){
         let out = "";
 
         let ratingRoundedNumber = Math.round(item);
@@ -70,7 +70,7 @@
         out += ' ';
         out += ratingRoundedNumber;
         return out;
-    })
+    }
 </script>
 <script>
     let headSource = loadPage('../head.html');
@@ -179,6 +179,8 @@
                                 $('a[href$="#reviews"]').remove();
                             }
                             let rating = Math.round(data["averageRating"]);
+                            $('#rtng').text(getAverageRatingString(rating));
+
                             for (let i = 0; i < parseInt(rating); i++) {
                                 $("#rtng-stars").append("<span class=\"full-star\"></span>");
                             }
@@ -223,7 +225,7 @@
                             });
                             for (let review of reviews) {
                                 let reviewHtml = ' <div class="list-hotel-rating"> ' +
-                                    '<div class="list-hotel-rating-count">' + review.rating + '</div>' +
+                                    '<div class="list-hotel-rating-count">' + getAverageRatingString(review.rating) + '</div>' +
                                     '<div class="list-hotel-rating-stars">';
 
                                 for (let i = 0; i < parseInt(review.rating); i++) {
@@ -279,6 +281,15 @@
 
                     if (searchStartDate && searchEndDate) {
                         setDatesInputsReservation();
+
+                        let searchGuests = GetURLParameter('guests');
+                        if(searchGuests){
+                            $('#reservation-guests').val(searchGuests);
+                        }
+                    }
+
+                    if(!property.descriptionsAccessInfo) {
+                        $('a[href$="#hotel-rules"]').remove();
                     }
                 }
 
