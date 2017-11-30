@@ -30,15 +30,14 @@
     function calculatePrice(pricePerNight, hotelNights, cleaningFee) {
         hotelNights.on('change', () => {
             let nights = parseInt(hotelNights.text().split(" ")[0]);
-            let price = parseInt(pricePerNight.text().substr(1));
-
+            let price = pricePerNight;
             $('.hotel-search-nights span').text(nights + ' nights').promise().then(() => {
                 if (nights !== 0) {
-                    let totalPrice = (nights * price) + cleaningFee;
-                    $('#total-price').text('$' + totalPrice);
+                    let totalPrice = ((nights * price) + cleaningFee).toFixed(2);
+                    $('#total-price').text(localStorage.getItem("sign") + ' ' + totalPrice);
                 }
                 else {
-                    $('#total-price').text('$0')
+                    $('#total-price').text(localStorage.getItem("sign") + ' 0');
                 }
             });
         })
@@ -104,7 +103,8 @@
             var [apiHost, frontEndHost] = config();
 
             $.get(apiHost + "api/listings/" + queryId + "?projection=singleListing", function (data) {
-
+                data.currentPrice = data.prices[localStorage.getItem("fromCurrency")];
+                data.sign = localStorage.getItem("sign");
                 $('#search-bar').after(jQuery.parseHTML(hotelDetailsTemplate(data))).promise().then(() => {
 
                         function setReservationEventHandler() {
@@ -252,7 +252,7 @@
                 );
 
                 property = data;
-            }).then(() => {
+            }).then((data) => {
                 function autoSetDatesInReservation() {
 
                     let searchStartDate = GetURLParameter('startDate');
@@ -318,8 +318,12 @@
                 let pricePerNight = $('#hotel-top-price span');
 
                 let cleaningFee = parseInt(property["cleaningFee"]);
-                calculatePrice(pricePerNight, hotelNights, cleaningFee);
+                let currency = localStorage.getItem("fromCurrency");
+                console.log(data);
+                console.log(data.prices[currency]);
 
+                calculatePrice(data.prices[currency], hotelNights, cleaningFee);
+                hotelNights.trigger("change");
                 autoSetDatesInReservation();
             });
         }
