@@ -98,7 +98,7 @@
                         <div class="form-group has-feedback has-feedback-left">
                             <i class="icon icon-calendar form-control-feedback"></i>
                             <span class="icon-check-in">Check in & Check out</span>
-                            <input id="reservation-check" type="text" name="daterange" class="form-control" value="" data-date-format='dd/mm/yyyy'
+                            <input required id="reservation-check" type="text" name="daterange" class="form-control" value="" data-date-format='dd/mm/yyyy'
                                    placeholder="Select date">
                         </div>
                     </div>
@@ -110,19 +110,19 @@
 
                     <div class="dropdown select-person">
                         <input type="number" class="form-control" id="reservation-guests" min="1"
-                               placeholder="Select Guest Number" required="">
+                               placeholder="Select Guest Number" required>
                     </div>
 
                     <div class="dropdown select-person">
-                        <input id="reservation-name" type="text" class="form-control" name="name" required="" placeholder="Name">
+                        <input id="reservation-name" type="text" class="form-control" name="name" required placeholder="Name">
                     </div>
 
                     <div class="dropdown select-person">
-                        <input id="reservation-email" type="email" class="form-control" name="email" required="" placeholder="E-mail">
+                        <input id="reservation-email" type="email" class="form-control" name="email" required placeholder="E-mail">
                     </div>
 
                     <div class="dropdown select-person">
-                        <input id="reservation-phone" type="tel" class="form-control" name="phone" required="" placeholder="Phone">
+                        <input id="reservation-phone" type="tel" class="form-control" name="phone" required placeholder="Phone">
                     </div>
                     <br>
                     <div id="reservation_errorMessage"></div>
@@ -134,7 +134,7 @@
                     <div class="nonev"></div>
 
                     <button type="submit" class="btn btn-primary" id="reservation-btn">Request Booking in LOC or FIAT</button>
-                    <input type="checkbox" name="agree-terms" id="agree-terms"
+                    <input required type="checkbox" name="agree-terms" id="agree-terms"
                            class="checkbox tick"/>
                     <label for="agree-terms" class="text-ffffff" style="margin-top: 10px;">I agree to the <a href="#">Terms
                         & Conditions</a></label>
