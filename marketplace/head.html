@@ -31,7 +31,31 @@
     <![endif]-->
     <script src="../js/config1.js?v=1.1"></script>
     <script>
-        function setDatesInputs() {
+        let searchStartDate = GetURLParameter('startDate');
+        let searchEndDate = GetURLParameter('endDate');
+
+        $(document).ready(function () {
+            if (searchStartDate && searchEndDate) {
+                setDatesInputs(moment(searchStartDate, "DD/MM/YYYY"), moment(searchEndDate, "DD/MM/YYYY"));
+            }
+            else {
+                let todayDate = new Date();
+                let dd = todayDate.getDate();
+                let mm = todayDate.getMonth() + 1; //January is 0!
+                let yyyy = todayDate.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd
+                }
+                if (mm < 10) {
+                    mm = '0' + mm
+                }
+                let today = dd + '/' + mm + '/' + yyyy;
+
+                setDatesInputs(today, today);
+            }
+        });
+
+        function setDatesInputs(startDate, endDate) {
             let todayDate = new Date();
             let dd = todayDate.getDate();
             let mm = todayDate.getMonth() + 1; //January is 0!
@@ -47,15 +71,13 @@
             $('input[name="daterange"]').daterangepicker({
                 "autoApply": true,
                 "minDate": today,
+                "startDate": startDate,
+                "endDate": endDate,
                 locale: {
                     format: 'DD/MM/YYYY'
                 }, autoclose: true
             });
         }
-        $(document).ready(function () {
-
-            setDatesInputs();
-        });
     </script>
 
     <script>
@@ -114,13 +136,36 @@
     <script src="../js/smooth-scroll.min.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script>
-        $(document).ready(() =>
+        $(document).ready(() => {
             $.get("https://lockchain.co/marketplace/internal_api/loc_price.php", (data) => {
                 $("#loc-rate").text(data.loc);
-            })
+            });
+
+            let parameters =
+                window.location.search.substr(1, window.location.search.length);
+            let paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+
+            if ("countryId" in paramsObj) {
+                $("#location-select").val(paramsObj.countryId);
+            }
+            if ("startDate" in paramsObj) {
+                let dateRangeURL = paramsObj.startDate;
+                dateRangeURL += " - ";
+                if ("endDate" in paramsObj) {
+                    dateRangeURL += paramsObj.endDate;
+                } else {
+                    dateRangeURL += paramsObj.startDate;
+                }
+                $("#search-daterange").val(dateRangeURL).promise().then(() => {
+                    $('#search-daterange').trigger('change')
+                });
 
 
-        )
+            }
+            if ("guests" in paramsObj) {
+                $("#guests-input").val(paramsObj.guests);
+            }
+        });
     </script>
 </head>
 <div id="loc-rate" style="visibility: hidden"></div>

@@ -310,7 +310,7 @@
             </div>
             <div class="col-md-2">
 
-                <div class="dropdown select-curency">
+                <div class="dropdown select-language">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                             id="currency_currency">US Dollar</span> <span class="caret"></span></a>
                     <ul class="navbar-dropdown dropdown-menu">
@@ -393,7 +393,7 @@
 <script>
     // Activate smooth scroll
 
-    let scroll = new SmoothScroll('a[href*="#"]');
+    let scroll = new SmoothScroll('a[href*="#"]:not([href="#"])');
 </script>
 <script>
     $('#mymodal_signup form').on('submit', (event) => {
@@ -493,7 +493,7 @@
             queryStr += "&startDate=" + startDate;
             queryStr += "&endDate=" + endDate;
 
-            window.location.href = frontEndHost + "/Listings/listings.html?" + queryStr;
+            window.location.href = frontEndHost + "Listings/listings.html?" + queryStr;
         })
     });
 
@@ -589,7 +589,6 @@
                 url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
                 success: function (data) {
                     $("#loc-rate").text(data.loc);
-                    console.log(data);
                     locRate = parseFloat(data.loc);
                 }
             });

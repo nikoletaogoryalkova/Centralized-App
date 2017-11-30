@@ -27,6 +27,33 @@
             }
         }
     }
+
+    function getAverageRatingString(item){
+        let out = "";
+
+        let ratingRoundedNumber = Math.round(item);
+        if (ratingRoundedNumber === 5) {
+            out += "Excellent";
+        }
+        else if (ratingRoundedNumber === 4) {
+            out += "Very good";
+        }
+        else if (ratingRoundedNumber === 3) {
+            out += "Good";
+        }
+        else if (ratingRoundedNumber === 2) {
+            out += "Sufficient";
+        }
+        else if (ratingRoundedNumber === 1) {
+            out += "Weak";
+        }
+        else if (ratingRoundedNumber === 0) {
+            out += "Poor"
+        }
+        out += ' ';
+        out += ratingRoundedNumber;
+        return out;
+    }
 </script>
 <script>
     let requestedUrl = window.location.search;
@@ -128,7 +155,7 @@
             if ("propertyTypes" in paramsObj) {
                 let types = paramsObj.propertyTypes.split(",");
                 for (let type of types) {
-                    $("#filter-propertyType").find(".filter-check-label").find(".filter-check-text:contains("+type+")")
+                    $("#filter-propertyType").find(".filter-check-label").find(".filter-check-text:contains(" + type + ")")
                         .parent()
                         .addClass("active");
                 }
@@ -172,10 +199,10 @@
         }).then(() => {
             $('#filter-amenities .filter-check').click(propertyAmenitiesClickHandler);
             locationAmenities.append($('<div>').addClass('clearfix'));
-           if ("amenities" in paramsObj) {
+            if ("amenities" in paramsObj) {
                 let selectedAmenities = paramsObj.amenities.split(",");
                 for (let amenity of selectedAmenities) {
-                    $("#filter-amenity").find(".filter-check-label").find(".filter-check-text:contains("+amenity+")")
+                    $("#filter-amenity").find(".filter-check-label").find(".filter-check-text:contains(" + amenity + ")")
                         .parent()
                         .addClass("active");
                 }
@@ -185,28 +212,18 @@
         if ("countryId" in paramsObj) {
             $("#location-select").val(paramsObj.countryId);
         }
-        if ("startDate" in paramsObj) {
-            let dateRangeURL = paramsObj.startDate;
-            dateRangeURL += " - ";
-            if ("endDate" in paramsObj) {
-                dateRangeURL += paramsObj.endDate;
-            } else {
-                dateRangeURL += paramsObj.startDate;
-            }
-            $("#search-daterange").val(dateRangeURL);
-        }
         if ("guests" in paramsObj) {
             $("#guests-input").val(paramsObj.guests);
         }
         if ("propertyStars" in paramsObj) {
             let stars = paramsObj.propertyStars.split(",");
             for (let star of stars) {
-                $(".filter-stars").find("span:contains("+star+")").addClass("active")
+                $(".filter-stars").find("span:contains(" + star + ")").addClass("active")
             }
         }
         let priceMin = "priceMin" in paramsObj ? paramsObj.priceMin : 0;
         let priceMax = "priceMax" in paramsObj ? paramsObj.priceMax : 10000;
-        $('#price-slider').slider('setValue',[priceMin,priceMax]);
+        $('#price-slider').slider('setValue', [priceMin, priceMax]);
 
     })
 </script>
@@ -218,31 +235,6 @@
             $("#fancybox-wrap").css({'top': '100px!important', 'left': '0'});
         }
     });
-
-
-    function setDatesInputs() {
-        let todayDate = new Date();
-        let dd = todayDate.getDate();
-        let mm = todayDate.getMonth() + 1; //January is 0!
-        let yyyy = todayDate.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        let today = mm + '/' + dd + '/' + yyyy;
-
-        $('input[name="daterange"]').daterangepicker({
-            "autoApply": true,
-            "minDate": today,
-            locale: {
-                format: 'DD/MM/YYYY'
-            }
-        });
-    }
-
-    setDatesInputs();
 
     $("#price-slider").slider({});
 
@@ -407,6 +399,8 @@
             paramsObj["propertyStars"] = stars;
         }
 
+        paramsObj["toCurrency"] = localStorage.getItem("fromCurrency");
+
         let testParams = "";
         for (var key in paramsObj) {
             testParams += key + "=" + paramsObj[key] + "&"
@@ -436,20 +430,20 @@
         var parameters = getParameters();
 
         var [apiHost, frontEndHost] = config();
-        let endPoint = apiHost + path + parameters + '&projection=listings&sort=defailyDailyPrice,asc';
+        let endPoint = apiHost + path + parameters + '&toCurrency=' + localStorage["fromCurrency"] + '&projection=listings&sort=defaultDailyPrice,asc';
         let page = 1;
         if (window.location.search.includes('page=')) {
             let positionOfPageQuery = window.location.search.indexOf('page=');
             page = parseInt(window.location.search.substr(positionOfPageQuery + 5, window.location.search.length));
         }
 
+        localStorage["filtration"] = endPoint;
         endPoint += "&page=" + (page - 1);
         return endPoint;
     }
 
     function search() {
-        let endPoints = generateEndPoint();
-        getListings(endPoint);
+        generateEndPoint();
     }
 
     function generatePaginationTemplate(data) {
@@ -457,9 +451,9 @@
 
         for (let i = 1; i <= data.page.totalPages; i++) {
             if (i === localStorage["currentPageNumber"]) {
-                out += "<li><a class='active' href='" + localStorage["filtration"] + '&page=' + (i-1) + "'>" + i + "</a></li>";
+                out += "<li><a class='active' href='" + localStorage["filtration"] + '&page=' + (i - 1) + "'>" + i + "</a></li>";
             } else {
-                out += "<li><a href='" + localStorage["filtration"] + '&page=' + (i-1) + "'>" + i + "</a></li>";
+                out += "<li><a href='" + localStorage["filtration"] + '&page=' + (i - 1) + "'>" + i + "</a></li>";
             }
         }
 
@@ -530,40 +524,89 @@
             localStorage["filtration"] +
             "&projection=listings" +
             '&page=' +
-            (page-1)
+            (page - 1)
         );
     });
 
 </script>
 <script>
     function generateListingTemplate(listing) {
-        return $('<div>').addClass('list-hotel')
+        let dateUrl = "";
+        let parameters =
+            window.location.search.substr(1, window.location.search.length);
+        let paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+        if ("startDate" in paramsObj) {
+            dateUrl += "startDate=" + paramsObj.startDate + "&";
+        }
+        if ("endDate" in paramsObj) {
+            dateUrl += "endDate=" + paramsObj.endDate + "&";
+        }
+        if ("countryId" in paramsObj) {
+            dateUrl += "countryId=" + paramsObj.countryId + "&";
+        }
+        if ("guests" in paramsObj) {
+            dateUrl += "guests=" + paramsObj.guests + "&";
+        }
+
+
+        let result = $('<div>').addClass('list-hotel')
             .append(
-                generateListingImageSubTemplate(listing)
+                generateListingImageSubTemplate(listing, dateUrl)
             )
             .append(
-                generateListingContentSubTemplate(listing)
+                generateListingContentSubTemplate(listing, dateUrl)
             )
             .append(
-                generateListingPriceSubTemplate(listing)
+                generateListingPriceSubTemplate(listing, dateUrl)
             )
             .append(
                 $('<div>')
                     .addClass('clearfix')
             );
 
-        function generateListingImageSubTemplate(listing) {
-            let dateUrl = "";
-            var parameters =
-                window.location.search.substr(1, window.location.search.length);
-            var paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
-            if ("startDate" in paramsObj) {
-                dateUrl+="startDate="+paramsObj.startDate+"&";
-            }
-            if ("endDate" in paramsObj) {
-                dateUrl+="endDate="+paramsObj.endDate+"&";
+        function generateListingPriceSubTemplate(listing, dateUrl) {
+            let fromCurrency = localStorage.getItem("fromCurrency");
+            let toCurrency = listing.currencyCode;
+            let price = listing.defaultDailyPrice;
+            let sign = localStorage.getItem("sign");
+
+            let [apiHost, frontEndHost] = config();
+            if (typeof locRate == 'undefined' || isNaN(locRate)) {
+                $.ajax({
+                    async: false,
+                    url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
+                    success: function (data) {
+                        $("#loc-rate").text(data.loc);
+                        locRate = parseFloat(data.loc);
+                    }
+                });
             }
 
+            return listingPrice = $('<div>').addClass('list-price')
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-price-bgr')
+                        .text('Price for 1 night')
+                )
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-price-curency')
+                        .text(sign + "" + Math.round(listing.prices[fromCurrency], 0))
+                )
+                .append(
+                    $('<div>')
+                        .addClass('list-hotel-price-loc')
+                        .text('(LOC ' + (listing.prices["EUR"] / locRate).toFixed(3) + ')')
+                )
+                .append(
+                    $('<a>')
+                        .addClass('list-hotel-price-button btn btn-primary')
+                        .attr('href', `${frontEndHost}Property/property.html?id=${listing.id}&${dateUrl.substr(0, dateUrl.length - 1)}`)
+                        .text('Book now')
+                );
+        }
+
+        function generateListingImageSubTemplate(listing, dateUrl) {
             let htmlItems = "";
             let [apiHost, frontEndHost] = config();
             $.each(listing.pictures, function (i, item) {
@@ -591,20 +634,18 @@
                 );
         }
 
-        function generateListingContentSubTemplate(listing) {
-            let searchStartDate = GetURLParameter('startDate');
-            let searchEndDate = GetURLParameter('endDate');
-            let dateUrl = "";
-            var parameters =
-                window.location.search.substr(1, window.location.search.length);
-            var paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
-            if ("startDate" in paramsObj) {
-                dateUrl+="startDate="+paramsObj.startDate+"&";
-            }
-            if ("endDate" in paramsObj) {
-                dateUrl+="endDate="+paramsObj.endDate+"&";
-            }
+        function generateListingContentSubTemplate(listing, dateUrl) {
             let [apiHost, frontEndHost] = config();
+
+            let starsElements = '';
+            let rating = Math.round(listing["averageRating"]);
+            for (let i = 0; i < parseInt(rating); i++) {
+                starsElements += ("<span class=\"full-star\"></span>");
+            }
+            for (let i = 0; i < 5 - parseInt(rating); i++) {
+                starsElements += ("<span class=\"empty-star\"></span>");
+            }
+
             return listingContent = $('<div>').addClass('list-content')
                 .append(
                     $('<h2>')
@@ -618,31 +659,12 @@
                         .append(
                             $('<div>')
                                 .addClass('list-hotel-rating-count')
-                                .text(Math.round(listing["averageRating"] * 100) / 100)
+                                .text(listing["reviewsCount"] === 0 ? '' : getAverageRatingString(Math.round(listing["averageRating"])))
                         )
                         .append(
                             $('<div>')
                                 .addClass('list-hotel-rating-stars')
-                                .append(
-                                    $('<span>')
-                                        .addClass('full-star')
-                                )
-                                .append(
-                                    $('<span>')
-                                        .addClass('full-star')
-                                )
-                                .append(
-                                    $('<span>')
-                                        .addClass('full-star')
-                                )
-                                .append(
-                                    $('<span>')
-                                        .addClass('full-star')
-                                )
-                                .append(
-                                    $('<span>')
-                                        .addClass('empty-star')
-                                )
+                                .append(starsElements)
                         )
                         .append(
                             $('<div>')
@@ -681,59 +703,10 @@
                 );
         }
 
-        function generateListingPriceSubTemplate(listing) {
-            let fromCurrency = localStorage.getItem("fromCurrency");
-            let toCurrency = listing.currencyCode;
-            let price = listing.defaultDailyPrice;
-            let sign = localStorage.getItem("sign");
-            let dateUrl = "";
-            var parameters =
-                window.location.search.substr(1, window.location.search.length);
-            var paramsObj = JSON.parse('{"' + decodeURI(parameters).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
-            if ("startDate" in paramsObj) {
-                dateUrl+="startDate="+paramsObj.startDate+"&";
-            }
-            if ("endDate" in paramsObj) {
-                dateUrl+="endDate="+paramsObj.endDate+"&";
-            }
-            let [apiHost, frontEndHost] = config();
-            if (typeof locRate == 'undefined' || isNaN(locRate)) {
-                $.ajax({
-                    async: false,
-                    url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
-                    success: function (data) {
-                        $("#loc-rate").text(data.loc);
-                        locRate = parseFloat(data.loc);
-                    }
-                });
-            }
-
-            return listingPrice = $('<div>').addClass('list-price')
-                .append(
-                    $('<div>')
-                        .addClass('list-hotel-price-bgr')
-                        .text('Price for 1 night')
-                )
-                .append(
-                    $('<div>')
-                        .addClass('list-hotel-price-curency')
-                        .text(sign + "" + Math.round(listing.prices[fromCurrency], 0))
-                )
-                .append(
-                    $('<div>')
-                        .addClass('list-hotel-price-loc')
-                        .text('(LOC ' + (listing.prices["EUR"] / locRate).toFixed(3) + ')')
-                )
-                .append(
-                    $('<a>')
-                        .addClass('list-hotel-price-button btn btn-primary')
-                        .attr('href',  `${frontEndHost}Property/property.html?id=${listing.id}&${dateUrl.substr(0, dateUrl.length - 1)}`)
-                        .text('Book now')
-                );
-        }
+        return result;
     }
 
-    $('#clear-filter-button').click(function() {
+    $('#clear-filter-button').click(function () {
         priceSliderElement.slider('refresh');
         $('.filter-stars span.active').removeClass('active');
         $('.filter-check-label').removeClass('active');

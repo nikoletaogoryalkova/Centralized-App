@@ -25,15 +25,6 @@
             <div class="col-md-2">
 
                 <div class="dropdown select-language">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">English newest <span
-                            class="caret"></span></a>
-                    <ul class="navbar-dropdown dropdown-menu">
-                        <li><a href="#">English</a></li>
-                        <li><a href="#">English</a></li>
-                    </ul>
-                </div>
-
-                <div class="dropdown select-curency">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                             id="currency_currency">US Dollar</span> <span class="caret"></span></a>
                     <ul class="navbar-dropdown dropdown-menu">
@@ -42,6 +33,7 @@
                         <li><a href="#" class="currency_selector" data-sign="£">GBP</a></li>
                     </ul>
                 </div>
+
                 <script>
                     $(document).ready(() => {
                         if (!localStorage.getItem("fromCurrency")) {
