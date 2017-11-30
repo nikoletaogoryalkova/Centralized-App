@@ -17,49 +17,35 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 
     <script src="js/jquery.min.js"></script>
-    <script src="js/moment.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
-    <script src="js/daterangepicker/daterangepicker.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .odd a.ui-state-default {
+            color: white;
+            background-color: red;
+            background: red;
+        }
+    </style>
 
     <script src="js/config1.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
     <script src="js/jquery.fancybox.js"></script>
     <script src="js/smooth-scroll.min.js"></script>
     <script src="js/moment.js"></script>
     <script>
 
         $(document).ready(function () {
-            function setDatesInputs() {
-                let todayDate = new Date();
-                let dd = todayDate.getDate();
-                let mm = todayDate.getMonth() + 1; //January is 0!
-                let yyyy = todayDate.getFullYear();
-                if (dd < 10) {
-                    dd = '0' + dd
-                }
-                if (mm < 10) {
-                    mm = '0' + mm
-                }
-                let today = dd + '/' + mm + '/' + yyyy;
-
-                $('input[name="daterange"]').daterangepicker({
-                    "autoApply": true,
-                    "minDate": today,
-                    "locale": {
-                        format: 'DD/MM/YYYY'
-                    }
-                });
-            }
-            setDatesInputs();
+            $('.input-daterange input').each(function () {
+                $(this).datepicker("option", "dateFormat", $(this).val());
+            });
         });
     </script>
 
@@ -82,15 +68,15 @@
                 )
             }
             else {
-                $('#top-nav').empty().append(
-                    $('<li>').append(
-                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_login').text('Login')
-                    )
-                ).append(
-                    $('<li>').append(
-                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_signup').text('Register')
-                    )
-                )
+//                $('#top-nav').empty().append(
+//                    $('<li>').append(
+//                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_login').text('Login')
+//                    )
+//                ).append(
+//                    $('<li>').append(
+//                        $('<a>').attr('data-toggle', 'modal').attr('data-target', '#myModal_signup').text('Register')
+//                    )
+//                )
             }
         }
 
@@ -116,86 +102,86 @@
 
 <body>
 
-<div id="myModal_login" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1>Login</h1>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="form-login">
-                    <div id="login_errorMessage" class="error"></div>
-                    <div class="form-group">
-                        <input required type="email" class="form-control" tabindex="1" id="login-mail"
-                               placeholder="Email address">
-                    </div>
-                    <div class="form-group">
-                        <input required type="password" class="form-control" tabindex="2" id="login-password"
-                               placeholder="Password">
-                    </div>
-                    <div class="checkbox login-checkbox pull-left">
-                        <label><input type="checkbox" value="" tabindex="3" id="login-remember">Remember me</label>
-                    </div>
-                    <div class="clearfix"></div>
-                    <button type="submit" tabindex="4" class="btn btn-primary">Login</button>
-                    <div class="clearfix"></div>
-                </form>
-                <hr>
-                <div class="login-sign">Don’t have an account? <a href="#" data-toggle="modal" data-dismiss="modal"
-                                                                  data-target="#myModal_signup">Sign up</a></div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div id="myModal_login" class="modal fade" role="dialog">-->
+<!--<div class="modal-dialog">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h1>Login</h1>-->
+<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<form id="form-login">-->
+<!--<div id="login_errorMessage" class="error"></div>-->
+<!--<div class="form-group">-->
+<!--<input required type="email" class="form-control" tabindex="1" id="login-mail"-->
+<!--placeholder="Email address">-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<input required type="password" class="form-control" tabindex="2" id="login-password"-->
+<!--placeholder="Password">-->
+<!--</div>-->
+<!--<div class="checkbox login-checkbox pull-left">-->
+<!--<label><input type="checkbox" value="" tabindex="3" id="login-remember">Remember me</label>-->
+<!--</div>-->
+<!--<div class="clearfix"></div>-->
+<!--<button type="submit" tabindex="4" class="btn btn-primary">Login</button>-->
+<!--<div class="clearfix"></div>-->
+<!--</form>-->
+<!--<hr>-->
+<!--<div class="login-sign">Don’t have an account? <a href="#" data-toggle="modal" data-dismiss="modal"-->
+<!--data-target="#myModal_signup">Sign up</a></div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
-<div id="myModal_signup" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1>Sign up</h1>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div id="signup_errorMessage" class="error"></div>
-                    <div class="form-group">
-                        <input required type="email" class="form-control" name="email" id="signup-mail"
-                               placeholder="Email address">
-                    </div>
-                    <div class="form-group">
-                        <input required type="text" class="form-control" id="signup-firstname" placeholder="First Name">
-                    </div>
-                    <div class="form-group">
-                        <input required type="text" class="form-control" id="signup-lastname" placeholder="Last Name">
-                    </div>
-                    <div class="form-group">
-                        <input required type="password" class="form-control" name="password" id="signup-password"
-                               placeholder="Password">
-                    </div>
+<!--<div id="myModal_signup" class="modal fade" role="dialog">-->
+<!--<div class="modal-dialog">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<h1>Sign up</h1>-->
+<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<form>-->
+<!--<div id="signup_errorMessage" class="error"></div>-->
+<!--<div class="form-group">-->
+<!--<input required type="email" class="form-control" name="email" id="signup-mail"-->
+<!--placeholder="Email address">-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<input required type="text" class="form-control" id="signup-firstname" placeholder="First Name">-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<input required type="text" class="form-control" id="signup-lastname" placeholder="Last Name">-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<input required type="password" class="form-control" name="password" id="signup-password"-->
+<!--placeholder="Password">-->
+<!--</div>-->
 
-                    <button type="submit" class="btn btn-primary">Sign up</button>
-                    <div class="clearfix"></div>
-                </form>
+<!--<button type="submit" class="btn btn-primary">Sign up</button>-->
+<!--<div class="clearfix"></div>-->
+<!--</form>-->
 
-                <div class="signup-rights">
-                    By creating an account, you're agreeing with our
-                    Terms and Conditions and Privacy Statement.
-                </div>
+<!--<div class="signup-rights">-->
+<!--By creating an account, you're agreeing with our-->
+<!--Terms and Conditions and Privacy Statement.-->
+<!--</div>-->
 
-                <!--<div class="signup-with">or sign up with</div>-->
+<!--&lt;!&ndash;<div class="signup-with">or sign up with</div>&ndash;&gt;-->
 
-                <!--<a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"-->
-                <!--aria-hidden="true"></i> Facebook</a>-->
-                <hr>
-                <div class="signup-sign">Already have a LockChain account? <a href="#" data-toggle="modal"
-                                                                              data-dismiss="modal"
-                                                                              data-target="#myModal_login">Log in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--&lt;!&ndash;<a href="#" type="button" class="btn btn-primary-revers"><i class="fa fa-facebook"&ndash;&gt;-->
+<!--&lt;!&ndash;aria-hidden="true"></i> Facebook</a>&ndash;&gt;-->
+<!--<hr>-->
+<!--<div class="signup-sign">Already have a LockChain account? <a href="#" data-toggle="modal"-->
+<!--data-dismiss="modal"-->
+<!--data-target="#myModal_login">Log in</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
 <header id='main-nav' class="navbar home_page">
     <div class="container">
@@ -220,7 +206,7 @@
     <div class="container">
 
         <h1 class="home_title">Discover your next experience</h1>
-        <h2 class="home_title">Browse for homes & hotels worldwide</h2>
+        <h2 class="home_title">Browse for homes worldwide</h2>
 
         <div class="container absolute_box">
             <nav id="second-nav">
@@ -246,10 +232,23 @@
 
 
                     <div class="input-daterange">
-                        <div class="form-group has-feedback has-feedback-left">
+                        <div class="form-group has-feedback has-feedback-left input-group-date-in">
                             <i class="icon icon-calendar form-control-feedback"></i>
-                            <span class="icon-check-in">Check in & Check out</span>
-                            <input id="search-daterange" type="text" class="form-control" name="daterange" value="" required autocomplete="off"
+                            <span class="icon-check-in">Check in</span>
+                            <input name="startDate" type="text" class="form-control" value=""
+                                   data-date-format='dd/mm/yyyy' required
+                                   placeholder="Select date">
+                        </div>
+
+                        <div class="input-group-addon">
+
+                        </div>
+
+                        <div class="form-group has-feedback has-feedback-left input-group-date-out">
+                            <span class="icon-check-out">Check out</span>
+                            <i class="icon icon-calendar form-control-feedback"></i>
+                            <input name="endDate" type="text" class="form-control" value=""
+                                   data-date-format='dd/mm/yyyy' required
                                    placeholder="Select date">
                         </div>
                     </div>
@@ -260,11 +259,11 @@
 
                     <div class="form-group has-feedback has-feedback-left" id="guests">
                         <i class="icon icon-guest form-control-feedback"></i>
-                        <input type="text" id="guests-input" name="guests" class="form-control" placeholder="Guests"/>
+                        <input type="text" name="guests" class="form-control" placeholder="Guests"/>
                     </div>
 
 
-                    <button class="btn btn-primary" id="btn-home">Search</button>
+                    <button type="submit" class="btn btn-primary" id="btn-home">Search</button>
 
 
                 </form>
@@ -272,6 +271,22 @@
         </div>
     </div>
 </header>
+
+
+<!--<section id="discover-box">-->
+<!--<div class="container">-->
+<!--<h2>Discover</h2>-->
+<!--<div class="row">-->
+<!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
+<!--&lt;!&ndash;<a href="#" class="discover_hotels">Hotels</a>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--<div class="col-md-12">-->
+<!--<a href="#" class="discover_homes">Properties</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+
 
 <section id="popular-hotels-box" style="margin-top: 100px;">
 
@@ -316,14 +331,31 @@
                         <li><a href="#">English</a></li>
                     </ul>
                 </div>
-
                 <div class="dropdown select-curency">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">US Dollar <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                            id="currency_currency">US Dollar</span> <span class="caret"></span></a>
                     <ul class="navbar-dropdown dropdown-menu">
-                        <li><a href="#">US Dollar</a></li>
-                        <li><a href="#">LOC</a></li>
+                        <li><a href="#" class="currency_selector" data-sign="$">USD</a></li>
+                        <li><a href="#" class="currency_selector" data-sign="€">EUR</a></li>
+                        <li><a href="#" class="currency_selector" data-sign="£">GBP</a></li>
                     </ul>
                 </div>
+                <script>
+                    $(document).ready(() => {
+                        if (!localStorage.getItem("fromCurrency")) {
+                            localStorage.setItem("fromCurrency", "USD");
+                            localStorage.setItem("sign", "$");
+                        }
+                        $("#currency_currency").text(localStorage.getItem("fromCurrency"));
+
+                        $(".currency_selector").click((e) => {
+                            localStorage.setItem("fromCurrency", $(e.target).text());
+                            localStorage.setItem("sign", $(e.target).data("sign"));
+                            $("#currency_currency").text(localStorage.getItem("fromCurrency"));
+                            window.location.reload();
+                        })
+                    });
+                </script>
 
             </div>
 
@@ -339,6 +371,7 @@
 <link rel="stylesheet" href="css/owl.carousel.css">
 
 <script src="js/owl.carousel.js"></script>
+<script src="js/bootstrap-datepicker.js"></script>
 <script src="js/bootstrap-slider.js"></script>
 <script src="js/jquery.fancybox.js"></script>
 <script>
@@ -385,122 +418,103 @@
 
     let scroll = new SmoothScroll('a[href*="#"]');
 </script>
-<script>
-    $('#mymodal_signup form').on('submit', (event) => {
-        var [apiHost, frontEndHost] = config();
-        event.preventDefault();
+<!--<script>-->
+<!--$('#mymodal_signup form').on('submit', (event) => {-->
+<!--event.preventDefault();-->
 
-        let userEmail = $('#signup-mail').val();
-        let userFirstName = $('#signup-firstname').val();
-        let userLastName = $('#signup-lastname').val();
-        let userPassword = $('#signup-password').val();
+<!--let userEmail = $('#signup-mail').val();-->
+<!--let userFirstName = $('#signup-firstname').val();-->
+<!--let userLastName = $('#signup-lastname').val();-->
+<!--let userPassword = $('#signup-password').val();-->
 
-        let user = {};
+<!--let user = {};-->
 
-        user.email = userEmail;
-        user.firstName = userFirstName;
-        user.lastName = userLastName;
-        user.password = userPassword;
+<!--user.email = userEmail;-->
+<!--user.firstName = userFirstName;-->
+<!--user.lastName = userLastName;-->
+<!--user.password = userPassword;-->
 
-        let userJson = JSON.stringify(user);
+<!--let userJson = JSON.stringify(user);-->
 
-        $.ajax({
-            "async": true,
-            "crossDomain": true,
-            "url": apiHost + "users/signup",
-            "method": "POST",
-            "headers": {
-                "content-type": "application/json"
-            },
-            "processData": false,
-            "data": userJson
-        }).done(function (response) {
-            $('.close').click();
-            $('#myModal_login').modal('show');
-        }).catch(function (httpObj) {
-            if (httpObj.status === 401) {
-                $('#signup_errorMessage').text(httpObj.responseJSON.message);
-            }
-        });
-    });
+<!--$.ajax({-->
+<!--"async": true,-->
+<!--"crossDomain": true,-->
+<!--"url": apiHost + "users/signup",-->
+<!--"method": "POST",-->
+<!--"headers": {-->
+<!--"content-type": "application/json"-->
+<!--},-->
+<!--"processData": false,-->
+<!--"data": userJson-->
+<!--}).done(function (response) {-->
+<!--$('.close').click();-->
+<!--$('#myModal_login').modal('show');-->
+<!--}).catch(function (httpObj) {-->
+<!--if (httpObj.status === 401) {-->
+<!--$('#signup_errorMessage').text(httpObj.responseJSON.message);-->
+<!--}-->
+<!--});-->
+<!--});-->
 
-    $('#myModal_login form').on('submit', (event) => {
-        var [apiHost, frontEndHost] = config();
-        event.preventDefault();
+<!--$('#myModal_login form').on('submit', (event) => {-->
+<!--event.preventDefault();-->
 
-        let userEmail = $('#login-mail').val();
-        let userPassword = $('#login-password').val();
+<!--let userEmail = $('#login-mail').val();-->
+<!--let userPassword = $('#login-password').val();-->
 
-        let user = {};
+<!--let user = {};-->
 
-        user.email = userEmail;
-        user.password = userPassword;
+<!--user.email = userEmail;-->
+<!--user.password = userPassword;-->
 
-        let userJson = JSON.stringify(user);
+<!--let userJson = JSON.stringify(user);-->
 
-        $.ajax({
-            "async": true,
-            "crossDomain": true,
-            "url": apiHost + "login",
-            "method": "POST",
-            "data": userJson
-        }).done(function (data) {
-            $('.close').click();
-            localStorage["token"] = data.Authorization;
-            localStorage["name"] = userEmail;
-            checkLoggedInUser();
-        }).catch(function (httpObj) {
-            if (httpObj.status === 401) {
-                $('#login_errorMessage').text(httpObj.responseJSON.message);
-            }
-        });
-    });
+<!--$.ajax({-->
+<!--"async": true,-->
+<!--"crossDomain": true,-->
+<!--"url": apiHost + "login",-->
+<!--"method": "POST",-->
+<!--"data": userJson-->
+<!--}).done(function (data) {-->
+<!--$('.close').click();-->
+<!--localStorage["token"] = data.Authorization;-->
+<!--localStorage["name"] = userEmail;-->
+<!--checkLoggedInUser();-->
+<!--}).catch(function (httpObj) {-->
+<!--if (httpObj.status === 401) {-->
+<!--$('#login_errorMessage').text(httpObj.responseJSON.message);-->
+<!--}-->
+<!--});-->
+<!--});-->
 
-    function logout() {
-        localStorage.removeItem("token");
-        localStorage.removeItem("name");
+<!--function logout() {-->
+<!--localStorage.removeItem("token");-->
+<!--localStorage.removeItem("name");-->
 
-        checkLoggedInUser();
-    }
-</script>
+<!--checkLoggedInUser();-->
+<!--}-->
+<!--</script>-->
 <script>
     $(document).ready(function () {
-        let input = $('#search-daterange');
+        let inputs = $('#search .input-daterange input');
         let nights = $('#search-nights').find('span');
 
-        calculateNights(input, nights);
-
-        $("#btn-home").click((e) => {
-            e.preventDefault();
-
-            let queryStr = "";
-            queryStr += "countryId=" + ($("#location-select").val());
-            queryStr += "&guests=" +  ($("#guests-input").val());
-            let range = $("#search-daterange").val();
-            let rangeParts = range.split(" - ");
-            let startDate = rangeParts[0];
-            let endDate = rangeParts[1];
-            queryStr += "&startDate=" + startDate;
-            queryStr += "&endDate=" + endDate;
-
-            window.location.href = frontEndHost + "/Listings/listings.html?" + queryStr;
-        })
+        calculateNights(inputs, nights);
     });
 
-    function calculateNights(input, nights) {
+    function calculateNights(inputs, nights) {
         nights.text(0 + ' nights');
 
-        input.change(() => {
-            let range = input.val();
-            let rangeParts = range.split(" - ");
-            let checkIn = rangeParts[0].trim();
-            let checkOut = rangeParts[1].trim();
-
-
+        inputs.change(() => {
+            let checkIn = inputs[0].value;
+            let checkOut = inputs[1].value;
+            console.log(checkIn);
             let checkInDate = moment(checkIn, "DD/MM/YYYY");
             let checkOutDate = moment(checkOut, "DD/MM/YYYY");
 
             let timeDiff = checkOutDate.diff(checkInDate);
+
+            console.log(checkInDate);
 
             if ((checkOut && checkIn) && checkOutDate > checkInDate) {
                 let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
@@ -515,8 +529,10 @@
     }
 </script>
 <script>
+    //        $(document).ready(() => {
     var [apiHost, frontEndHost] = config();
-    $.getJSON(apiHost + 'api/listings?projection=listings&page=2&size=10', (data, status, xhr) => {
+    let pageRand = parseInt(Math.random() * 30);
+    $.getJSON(apiHost + 'api/listings?projection=listings&page=' + pageRand + '&size=10', (data, status, xhr) => {
         if (status === 'success') {
             let insertionRow = $('#popular_hotels_carusel');
 
@@ -552,6 +568,7 @@
                 }
             }
         })
+//    });
     });
 
     function generateSmallListingPicturesTemplate(listing) {
@@ -569,6 +586,21 @@
     }
 
     function generateSmallListingTemplate(listing) {
+        var fromCurrency = localStorage.getItem("fromCurrency");
+        var toCurrency = listing.currencyCode;
+        var price = listing.defaultDailyPrice;
+        var sign = localStorage.getItem("sign");
+        if (typeof locRate == 'undefined' || isNaN(locRate)) {
+            $.ajax({
+                async: false,
+                url: "https://lockchain.co/marketplace/internal_api/loc_price.php",
+                success: function (data) {
+                    $("#loc-rate").text(data.loc);
+                    console.log(data);
+                    locRate = parseFloat(data.loc);
+                }
+            });
+        }
         let smallListingTemplate = $('<div>').addClass('item')
             .append(
                 $('<div>').addClass('list-property-small')
@@ -603,14 +635,18 @@
                             )
                     )
                     .append(
-                        $('<div>').addClass('list-property-price').text('$' + listing["defaultDailyPrice"] + ' ')
+                        $('<div>').addClass('list-property-price').text(sign + "" + Math.round(listing.prices[fromCurrency], 0) + ' ')
                             .append(
-                                $('<span>').text('(LOC ' + parseInt(listing["defaultDailyPrice"]) * 0.25 + ')')
+                                $('<span>').text('(LOC ' + (listing.prices["EUR"] / locRate).toFixed(3) + ')')
                             )
                     )
             );
+        console.log(smallListingTemplate);
         return smallListingTemplate;
+
     }
+    //    })
+
 </script>
 </body>
 </html>

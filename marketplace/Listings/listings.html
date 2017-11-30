@@ -495,15 +495,18 @@
         localStorage["currentPageNumber"] = page;
     }
 
-    let [apiHost, frontEndHost] = config();
-    getListings(
-        apiHost +
-        'api/listings/search/getAllByFilter' +
-        localStorage["filtration"] +
-        "&projection=listings" +
-        '&page=' +
-        (page-1)
-    );
+    $(document).ready(() => {
+        let [apiHost, frontEndHost] = config();
+        getListings(
+            apiHost +
+            'api/listings/search/getAllByFilter' +
+            localStorage["filtration"] +
+            "&projection=listings" +
+            '&page=' +
+            (page-1)
+        );
+    });
+
 </script>
 <script>
     function generateListingTemplate(listing) {
@@ -535,7 +538,7 @@
             }
 
             let htmlItems = "";
-
+            let [apiHost, frontEndHost] = config();
             $.each(listing.pictures, function (i, item) {
                 if (i === 0) {
                     htmlItems += "<div class='item active'><a href='" + `${frontEndHost}Property/property.html?id=${listing.id}&${dateUrl.substr(0, dateUrl.length - 1)}` + "'><img src='" + item.thumbnail + "' /></a></div>";
@@ -574,7 +577,7 @@
             if ("endDate" in paramsObj) {
                 dateUrl+="endDate="+paramsObj.endDate+"&";
             }
-
+            let [apiHost, frontEndHost] = config();
             return listingContent = $('<div>').addClass('list-content')
                 .append(
                     $('<h2>')
@@ -666,8 +669,8 @@
             if ("endDate" in paramsObj) {
                 dateUrl+="endDate="+paramsObj.endDate+"&";
             }
-
-            if (locRate === null || isNaN(locRate)) {
+            let [apiHost, frontEndHost] = config();
+            if (typeof locRate == 'undefined' || isNaN(locRate)) {
                 $.ajax({
                     async: false,
                     url: "https://lockchain.co/marketplace/internal_api/loc_price.php",

@@ -94,11 +94,7 @@
         }
 
         $(document).ready(function () {
-//            if (typeof apiHost == 'undefined') {
-//                var apiHost = "//api.lockchain.co:8443/lockchain/";
-//
-//                var frontEndHost = "//lockchain.co/marketplace/";
-//            }
+            var [apiHost, frontEndHost] = config();
             checkLoggedInUser();
 
             let locationSelect = $('#location-select');
