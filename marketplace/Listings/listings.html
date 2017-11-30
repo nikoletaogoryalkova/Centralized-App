@@ -133,6 +133,33 @@
                         .addClass("active");
                 }
             }
+
+            if ("priceMin" in paramsObj || "priceMax" in paramsObj) {
+                let values = paramsObj.priceMin + ',' + paramsObj.priceMax;
+                console.log(values);
+                $("#price-slider").slider("destroy");
+                $("#price-slider").remove();
+                let newElement = '<input id="price-slider" type="text" class="span2" value="" data-slider-min="100"'+
+                    'data-slider-max="10000" data-slider-step="5" data-slider-value="[' + values + ']"/>'
+                $(".filter-price-box").prepend(newElement);
+                $("#price-slider").slider();
+            }
+
+            var currencyMap = {
+                USD: "&#36;",
+                EUR: "&euro;",
+                GBP: "&pound;"
+            };
+
+            console.log(currencyMap);
+
+            let currentCurrency = $("#currency_currency").text();
+            console.log(currentCurrency);
+            console.log(currencyMap[currentCurrency]);
+            $(".min-price-currency").text('');
+            $(".min-price-currency").append(currencyMap[currentCurrency]);
+            $(".max-price-currency").text('');
+            $(".max-price-currency").append(currencyMap[currentCurrency]);
         });
 
         let locationAmenities = $('#filter-amenity');
