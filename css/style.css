@@ -3878,3 +3878,9 @@ input[type="checkbox"].tick:checked + label:after {
 .daterangepicker .input-mini.active {
     min-height: auto;
 }
+
+.list-hotel-rating::after {
+    content: '';
+    clear: both;
+    display: block;
+}

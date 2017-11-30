@@ -92,8 +92,10 @@
         </div>
         <div class="hotel-chekin">
             <div class="hotel-chekin-box">
+
                 <form id="user-form">
                     <p id="hotel-top-price" class="hotel-top-price"><span>${{defaultDailyPrice}}</span> /per night</p>
+                    <div id="reservation_errorMessage" style="color: red; font-size: 16px; padding-bottom: 10px;"></div>
                     <div class="input-daterange">
                         <div class="form-group has-feedback has-feedback-left">
                             <i class="icon icon-calendar form-control-feedback"></i>
@@ -125,7 +127,6 @@
                         <input id="reservation-phone" type="tel" class="form-control" name="phone" required placeholder="Phone">
                     </div>
                     <br>
-                    <div id="reservation_errorMessage"></div>
 
                     <div class="hotel-second-price">total <span id="total-price">$0</span> / for
                         <div class="hotel-search-nights"><span>0 nights</span></div>

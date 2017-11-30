@@ -147,10 +147,13 @@
                                     "processData": false,
                                     "data": reservationJson
                                 }).done(function (response) {
-                                    window.location.href = frontEndHost + 'home.html';
+                                    window.location.href = frontEndHost;
                                 }).catch(function (httpObj) {
-                                    if (httpObj.status === 401) {
-                                        $('#reservation_errorMessage').text(httpObj.responseJSON.message);
+                                    if (httpObj.status === 401 || httpObj.status === 400) {
+                                        console.log(httpObj.responseText);
+                                        let response = JSON.parse(httpObj.responseText);
+                                        console.log(response);
+                                        $('#reservation_errorMessage').text(response.message);
                                     }
                                 });
                             });
@@ -178,7 +181,8 @@
                                 $('a[href$="#reviews"]').remove();
                             }
                             let rating = Math.round(data["averageRating"]);
-                            $('#rtng').text(getAverageRatingString(rating));
+
+                            $('#rtng').text(reviewsCount === 0 ? '' : getAverageRatingString(rating));
 
                             for (let i = 0; i < parseInt(rating); i++) {
                                 $("#rtng-stars").append("<span class=\"full-star\"></span>");
@@ -285,6 +289,21 @@
                         if(searchGuests){
                             $('#reservation-guests').val(searchGuests);
                         }
+                    }
+                    else {
+                        let todayDate = new Date();
+                        let dd = todayDate.getDate();
+                        let mm = todayDate.getMonth() + 1; //January is 0!
+                        let yyyy = todayDate.getFullYear();
+                        if (dd < 10) {
+                            dd = '0' + dd
+                        }
+                        if (mm < 10) {
+                            mm = '0' + mm
+                        }
+                        let today = dd + '/' + mm + '/' + yyyy;
+
+                        setDatesInputsReservation(today, today);
                     }
 
                     if(!property.descriptionsAccessInfo) {

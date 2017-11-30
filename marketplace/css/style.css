@@ -241,6 +241,12 @@ a.dropdown-toggle {
     min-height: 70px;
 }
 
+.list-hotel-rating::after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
 /* END */
 
 .form-control:focus {
