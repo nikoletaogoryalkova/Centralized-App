@@ -116,8 +116,7 @@
                                     return;
                                 }
 
-                                let reservationCheckIn = $('#reservation-checkin').val();
-                                let reservationCheckOut = $('#reservation-checkout').val();
+                                let reservationCheck = $('#reservation-check').val().split('-');
                                 let reservationGuests = $('#reservation-guests').val();
                                 let reservationPersonName = $('#reservation-name').val();
                                 let reservationPersonEmail = $('#reservation-email').val();
@@ -126,8 +125,8 @@
 
                                 let reservation = {};
 
-                                reservation.checkin = reservationCheckIn;
-                                reservation.checkout = reservationCheckOut;
+                                reservation.checkin = reservationCheck[0].trim();
+                                reservation.checkout = reservationCheck[1].trim();
                                 reservation.guests = reservationGuests;
                                 reservation.name = reservationPersonName;
                                 reservation.listingId = queryId;
