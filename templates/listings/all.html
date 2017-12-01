@@ -1,0 +1,137 @@
+<section id="breadcrumb-bar">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li>
+                <a href="#">Bulgaria</a>
+            </li>
+            <li>
+                <a href="#">Burgas Province</a>
+            </li>
+            <li>
+                <a href="#">Sozopol</a>
+            </li>
+        </ul>
+        <div class="breadcrumb-arrow"></div>
+        <div class="search-term">Sozopol, 4 adults, 6 nights (Sept 25 - Sept 30)</div>
+    </div>
+</section>
+
+<section id="hotel-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="filter-box">
+
+                    <div class="form-group" id="filter-star">
+                        <label>Star Rating</label>
+
+                        <div class="filter-stars">
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group" id="filter-price">
+                        <label>Pricing</label>
+
+                        <div class="filter-price-box">
+
+                            <input id="price-slider" type="text" class="span2" value="" data-slider-min="100"
+                                   data-slider-max="10000" data-slider-step="5" data-slider-value="[100,10000]"/>
+                            <span class="pull-left">$ 10</span>
+                            <span class="pull-right">$ 10000</span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="form-group" id="filter-type">
+                        <label>Property Type</label>
+
+                        <div class="filter-check-box">
+                            <label class="filter-check-label" id="apartments-filter">
+                                <span class="filter-check"></span>
+                                <span class="filter-check-text">Apartments</span>
+                                <span class="filter-check-count">153</span>
+                            </label>
+                            <label class="filter-check-label" id="hotels-filter">
+                                <span class="filter-check"></span>
+                                <span class="filter-check-text">Hotels</span>
+                                <span class="filter-check-count">76</span>
+                            </label>
+                            <label class="filter-check-label" id="resorts-filter">
+                                <span class="filter-check"></span>
+                                <span class="filter-check-text">Resorts</span>
+                                <span class="filter-check-count">35</span>
+                            </label>
+                            <label class="filter-check-label" id="villas-filter">
+                                <span class="filter-check"></span>
+                                <span class="filter-check-text">Villas</span>
+                                <span class="filter-check-count">2</span>
+                            </label>
+                            <label class="filter-check-label" id="vacation-homes-filter">
+                                <span class="filter-check"></span>
+                                <span class="filter-check-text">Vacation Homes</span>
+                                <span class="filter-check-count">1</span>
+                            </label>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="clearfix"></div>
+                    <div class="form-group" id="filter-button">
+                        <button type="submit" class="btn btn-primary">See Hotels</button>
+                    </div>
+
+                </div>
+
+                <div class="filter-box" id="map-bgr">
+
+                    <a href="#" class="btn btn-white">See Results on Map</a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="list-hotel-box">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h1>396 Hotels Found</h1>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="dropdown sort-by">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort by: newest
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="navbar-dropdown dropdown-menu">
+                                    <li>
+                                        <a href="#">Sort by: newest</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Sort by: newest</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <section id="hotels-render">
+                        <!--{{ templates/listings/view.js::renderHotels() }}-->
+                    </section>
+                    <div class="pagination-box">
+                        <!--{{ templates/listings/view.js::renderPager() }}-->
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
