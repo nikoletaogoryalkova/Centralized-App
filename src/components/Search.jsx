@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { getCountries } from '../requester';
+import DatePicker from './DatePicker';
 const queryString = require('query-string');
 
 class Search extends React.Component {
@@ -81,27 +82,7 @@ class Search extends React.Component {
                 </div>
 
 
-                <div className="input-daterange">
-                    <div className="form-group has-feedback has-feedback-left">
-                        <i className="icon icon-calendar form-control-feedback"></i>
-                        <span className="icon-check-in">Check in &amp; Check out</span>
-                        {/* <DatetimeRangePicker>
-                        <input onChange={this.onChange} type="text" value={this.state.stay} className="form-control" id="search-daterange" required="required" autoComplete="off" placeholder="Select date" name="stay" />
-                    </DatetimeRangePicker> */}
-                        <input onChange={this.onChange}
-                            id="search-daterange"
-                            className="form-control"
-                            value={this.state.stay}
-                            required="required"
-                            autoComplete="off"
-                            placeholder="Select date"
-                            name="stay" />
-                    </div>
-                </div>
-
-                <div id="search-nights">
-                    <span>0 nights</span>
-                </div>
+                <DatePicker stay={this.state.stay} onChange={this.onChange} />
 
                 <div className="form-group has-feedback has-feedback-left" id="guests">
                     <i className="icon icon-guest form-control-feedback"></i>

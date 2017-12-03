@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "moment": "^2.19.3",
     "query-string": "^5.0.1",
     "react": "^16.2.0",
+    "react-bootstrap-carousel": "^2.2.0",
     "react-bootstrap-datetimerangepicker": "^2.0.4",
     "react-dom": "^16.2.0",
     "react-owl-carousel": "^2.2.0",

@@ -11,6 +11,7 @@ class App extends React.Component {
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/listings" component={ListingPage} />
+                    <Route exact path="/listings/:id" component={PropertyPage} />
                     <Route exact path="/property" component={PropertyPage} />
                 </Switch>
             </div>

@@ -7,22 +7,28 @@ class Filters extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { propertyTypeFilters: [],
-                       loading: true }
+        this.state = {
+            propertyTypeFilters: [],
+            loading: true
+        }
     }
 
     componentDidMount() {
         getPropertyTypes().then(data => {
             this.setState({ propertyTypeFilters: data.content });
-            this.setState({loading: false});
+            this.setState({ loading: false });
         });
     };
 
-    render() {
-        const {loading } = this.state;
+    componentWillUnmount() {
+        this.setState({propertyTypeFilters: '', loading: true})
+    }
 
-        if(loading) {
-        return (<div className="loader">Loading...</div>);
+    render() {
+        const { loading } = this.state;
+
+        if (loading) {
+            return (<div className="loader"></div>);
         }
 
         return (
@@ -68,7 +74,7 @@ class Filters extends React.Component {
 
                 <div className="form-group" id="filter-amenities">
                     <label>Facility</label>
-
+                    
                     <div className="filter-check-box" id="filter-amenity">
                     </div>
                 </div>

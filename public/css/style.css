@@ -2865,6 +2865,7 @@ tspan {
     width: 68px;
     height: 68px;
     right: 0;
+    cursor: pointer;
 }
 
 .left_carusel {
@@ -2875,6 +2876,7 @@ tspan {
     background: url(../images/left-arrow-city.png) no-repeat;
     width: 68px;
     height: 68px;
+    cursor: pointer;
 }
 
 #myCarousel-city a.city-link {
@@ -3900,4 +3902,8 @@ input[type="checkbox"].tick:checked + label:after {
     margin: auto;
     padding: auto;
     background: transparent;
+}
+
+.item a img {
+    width: 120%;
 }
