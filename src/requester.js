@@ -19,3 +19,8 @@ export async function getListingsByFilter() {
     const res = await fetch(`${host}api/listings?projection=listings&page=1`);
     return res.json();
 }
+
+export async function getPropertyById(id) {
+    const res = await fetch((`${host}api/listings/${id}?projection=singleListing`));
+    return res.json();
+}
