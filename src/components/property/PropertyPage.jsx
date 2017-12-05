@@ -3,15 +3,35 @@ import { withRouter } from 'react-router-dom';
 import Header from '../Header';
 import ListingRating from '../listings/ListingRating';
 import Footer from '../Footer';
-import {getListingById} from '../../requester';
+import { getPropertyById } from '../../requester';
 
 class PropertyPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: null
+        };
+    };
+
+    componentDidMount() {
+        getPropertyById(this.props.match.params.id).then(res => {
+            this.setState({ data: res });
+            console.log(res);
+        });
+    };
+
     render() {
+
+        if (this.state.data === null) {
+            console.log('undefined');
+            return <div>Loading...</div>;
+        }
         return (
             <div key={1}>
                 <Header />
                 <section className="hotel-gallery">
-                    <div className="hotel-gallery-bgr" style={{'backgroundImage': 'url(../../../../images/hotel-big-img.jpg)'}}>
+                    <div className="hotel-gallery-bgr" style={{'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')'}}>
                         <div className="container">
                             <div className="hotel-gallery-social-button">
                                 <a className="btn btn-social btn-dark-blue">
@@ -55,15 +75,11 @@ class PropertyPage extends React.Component {
                 <section id="hotel-info">
                     <div className="container">
                         <div className="hotel-content">
-                            <h1>Green Life Beach Resort</h1>
-                            <ListingRating rating={3} reviewsCount={55}/>
+                            <h1> { this.state.data.name } </h1>
+                            <ListingRating rating={this.state.data.averageRating} reviewsCount={this.state.data.reviews.length}/>
                             <div className="clearfix"></div>
                             <div className="list-hotel-description">
-                                <p>Paradise Aparthotel &amp; SPA, 9 Han Tervel Street, 9101 Sozopol, Bulgaria</p>
-                                <p>In the historic quarter of Santo Spirito, on the left bank of the river Arno, studio apartment is perfect for those travelling alone or as a couple. To walk between Santo Spirito, Ponte Vecchio and Boboli Gardens is a magical experience.</p>
-                                <h3>The space</h3>
-                                <p>In the historic quarter of Santo Spirito, on the left bank of the river Arno, studio apartment is perfect for those travelling alone or as a couple. To walk between Santo Spirito, Ponte Vecchio and Boboli Gardens is a magical experience.</p>
-                                <p>On the third floor of a typical Florentine building, the apartment consists of an entrance with wardrobes and loft with double bed, equipped kitchen and bathroom with shower.</p>
+                                {this.state.data.descriptionText}
                             </div>
 
                             <div id="facilities">

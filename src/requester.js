@@ -24,3 +24,8 @@ export async function getAmenitiesFilters() {
     const res = await fetch(`${host}api/amenities?projection=amenity_aggregation`);
     return res.json();
 }
+
+export async function getPropertyById(id) {
+    const res = await fetch(`${host}api/listings/${id}?projection=singleListing`);
+    return res.json();
+}
