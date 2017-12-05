@@ -12,12 +12,12 @@ class PropertyInfo extends React.Component {
             result[i] = new Array(0);
         }
 
-        for (let i = 0; i < amenities.length; i++){
+        for (let i = 0; i < amenities.length; i++) {
             if (i % 3 === 0) {
                 result[0].push(amenities[i]);
             } else if (i % 3 === 1) {
                 result[1].push(amenities[i]);
-            }else if (i % 3 === 2) {
+            } else if (i % 3 === 2) {
                 result[2].push(amenities[i]);
             }
         }
@@ -26,19 +26,16 @@ class PropertyInfo extends React.Component {
     }
 
     render() {
-
         const allAmenities = this.props.data.amenities;
         const mostPopularFacilities = allAmenities.slice(0, 5);
         const amenities = this.getAmenities(allAmenities.slice(5));
 
-        console.log(this.props.data);
-
         return (
             <section id="hotel-info">
                 <div className="container">
-                    <div className="hotel-content">
-                        <h1> { this.props.data.name } </h1>
-                        <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length}/>
+                    <div className="hotel-content" id="overview">
+                        <h1> {this.props.data.name} </h1>
+                        <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
                         <div className="clearfix" />
                         <div className="list-hotel-description">
                             {this.props.descriptionText}
@@ -51,7 +48,7 @@ class PropertyInfo extends React.Component {
                             {mostPopularFacilities.map((item, i) => {
                                 return (
                                     <div key={i} className="icon-facilities">
-                                        <span className="icon-image" style={{textAlign: 'center',display: 'flex', justifyContent: 'center', alignItems: 'center'}}><b>{item.name}</b></span>
+                                        <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><b>{item.name}</b></span>
                                     </div>
                                 )
                             })}
@@ -76,25 +73,27 @@ class PropertyInfo extends React.Component {
                             }
                             <div className="clearfix" />
 
-                            <div id="reviews">
-                                <h2>User Rating &amp; Reviews</h2>
-                                {this.props.data.reviews.map((item, i) => {
-                                    return <PropertyReview key={i} rating={item.rating} reviewText={item.comments} />
-                                })}
-                                <hr />
-                            </div>
+                            {this.props.reviews && this.props.reviews.length > 0 &&
+                                <div id="reviews">
+                                    <h2>User Rating &amp; Reviews</h2>
+                                    {this.props.data.reviews.map((item, i) => {
+                                        return <PropertyReview key={i} rating={item.rating} reviewText={item.comments} />
+                                    })}
+                                    <hr />
+                                </div>
+                            }
                             <div className="clearfix" />
 
-                            <div id="location">
+                            <div id="map">
                                 <h2>Location</h2>
                                 <iframe title="location" src={`https://maps.google.com/maps?q=${this.props.data.longitude},${this.props.data.latitude}&z=15&output=embed`}
-                                        width="100%" height="400" frameBorder="0" style={{border:0}} />
+                                    width="100%" height="400" frameBorder="0" style={{ border: 0 }} />
                                 <hr />
                             </div>
                             <div className="clearfix" />
                         </div>
                     </div>
-                    <PropertyReservation />
+                    <PropertyReservation nights={this.props.nights} onApply={this.props.onApply} startDate={this.props.startDate} endDate={this.props.endDate} listing={this.props.data} currency={this.props.currency} currencySign={this.props.currencySign} />
                     <div className="clearfix"></div>
                 </div>
             </section>

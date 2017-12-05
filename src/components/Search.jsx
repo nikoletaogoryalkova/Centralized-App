@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { getCountries } from '../requester';
 import DatePicker from './DatePicker';
+import moment from 'moment';
 const queryString = require('query-string');
 
 class Search extends React.Component {
@@ -10,7 +11,8 @@ class Search extends React.Component {
 
         let guests = '';
         let countryId = '';
-        let stay = '';
+        let startDate = moment();
+        let endDate = moment().add(1, 'days');
 
         if (this.props) {
             let queryParams = queryString.parse(this.props.location.search);
@@ -21,17 +23,21 @@ class Search extends React.Component {
                 countryId = queryParams.countryId;
             }
             if (queryParams.startDate && queryParams.endDate) {
-                stay = queryParams.startDate + ' - ' + queryParams.endDate;
+                startDate = moment(queryParams.startDate, 'DD/MM/YYYY');
+                endDate = moment(queryParams.endDate, 'DD/MM/YYYY');
             }
         }
 
         this.state = {
             guests: guests,
-            stay: stay,
+            startDate: startDate,
+            endDate: endDate,
             countryid: countryId,
-            countries: []
+            countries: [],
+            nights: 0
         };
 
+        this.handleApply = this.handleApply.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -40,6 +46,10 @@ class Search extends React.Component {
         getCountries().then(data => {
             this.setState({ countries: data.content })
         });
+
+        if(this.state.startDate && this.state.endDate){
+            this.calculateNights(this.state.startDate, this.state.endDate);
+        }
     };
 
     onChange(e) {
@@ -48,19 +58,38 @@ class Search extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        let stayDates = this.state.stay.split("-");
-        let startDate = stayDates[0].trim();
-        let endDate = stayDates[1].trim();
 
         let queryString = '?';
-
+        console.log(this.state.startDate);
         queryString += 'countryId=' + this.state.countryid;
-        queryString += '&startDate=' + startDate;
-        queryString += '&endDate=' + endDate;
+        queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
+        queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
         queryString += '&guests=' + this.state.guests;
 
-        this.setState(this.state);
+        // this.setState(this.state);
         this.props.history.push('/listings' + queryString);
+    }
+
+    handleApply(event, picker) {
+        this.setState({
+            startDate: picker.startDate,
+            endDate: picker.endDate,
+        });
+        this.calculateNights(picker.startDate, picker.endDate);
+    }
+
+    calculateNights(startDate, endDate) {
+        let checkIn = moment(startDate, 'DD/MM/YYYY');
+        let checkOut =  moment(endDate, 'DD/MM/YYYY');
+
+        let diffDays = checkOut.diff(checkIn, 'days');
+
+        if (checkOut > checkIn) {
+            this.setState({ nights: diffDays })
+        }
+        else {
+            this.setState({ nights: 0 })
+        }
     }
 
     render() {
@@ -82,7 +111,7 @@ class Search extends React.Component {
                 </div>
 
 
-                <DatePicker stay={this.state.stay} onChange={this.onChange} search={true} />
+                <DatePicker startDate={this.state.startDate} endDate={this.state.endDate} onApply={this.handleApply} search={true} nights={this.state.nights} />
 
                 <div className="form-group has-feedback has-feedback-left" id="guests">
                     <i className="icon icon-guest form-control-feedback"></i>
