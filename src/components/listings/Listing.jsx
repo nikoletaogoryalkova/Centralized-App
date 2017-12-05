@@ -1,44 +1,14 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ListingRating from './ListingRating';
-import { React_Bootstrap_Carousel } from 'react-bootstrap-carousel';
+import ListingPictures from '../listings/ListingPictures';
 
-class Listing extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {leftIcon: <span className="left-carousel"> </span>,
-                      rightIcon: <span className="right-carousel"> </span>};
-    }
-
+export default class Listing extends React.Component {
     render() {
         return (
             <div className="list-hotel">
                 <div className="list-image">
-                    <div id={`myCarousel-${this.props.listing.id}`} className="carousel slide" data-ride="carousel">
-                        <div className="carousel-inner">
-                            <React_Bootstrap_Carousel
-                                animation={true}
-                                slideshowSpeed={7000}
-                                leftIcon={this.state.leftIcon}
-                                rightIcon={this.state.rightIcon}
-                                onSelect={this.onSelect}
-                                indicators={false}
-                                ref={r => this.slider = r}
-                                className="carousel-fade"    >
-                                {this.props.listing.pictures.map((item, i) => {
-                                    return (
-                                        <div className="item" key={i}>
-                                            <Link to={`/listings/${this.props.listing.id}`}>
-                                                <img src={item.thumbnail} alt="" />
-                                            </Link>
-                                        </div>
-                                    )
-                                })}
-
-                            </React_Bootstrap_Carousel>
-                        </div>
-                    </div>
+                    <ListingPictures pictures={this.props.listing.pictures} id={this.props.listing.id} />
                 </div>
                 <div className="list-content">
                     <h2><Link to={`/listings/${this.props.listing.id}`}>{this.props.listing.name}</Link></h2>
@@ -65,5 +35,3 @@ class Listing extends React.Component {
         );
     }
 }
-
-export default withRouter(Listing);

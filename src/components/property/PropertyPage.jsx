@@ -9,24 +9,24 @@ class PropertyPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = ({ data: [] });
-
-        console.log(this.props.match.params.id);
+        this.state = {
+            data: null
+        };
     };
 
     componentDidMount() {
         getPropertyById(this.props.match.params.id).then(res => {
             this.setState({ data: res });
+            console.log(res);
         });
     };
 
     render() {
 
-        if (this.state.data.name === undefined) {
+        if (this.state.data === null) {
+            console.log('undefined');
             return <div>Loading...</div>;
         }
-
-        console.log(this.state.data);
 
         return (
             <div>
