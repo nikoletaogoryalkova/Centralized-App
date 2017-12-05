@@ -2,9 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ListingRating from '../listings/ListingRating';
 import PropertyReservation from './PropertyReservation';
-import AmenityColumn from './AmenityColumn';
+import PropertyAmenityColumn from './PropertyAmenityColumn';
+import PropertyReview from './PropertyReview';
 
-class HotelInfo extends React.Component {
+class PropertyInfo extends React.Component {
     getAmenities(amenities) {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
@@ -29,6 +30,8 @@ class HotelInfo extends React.Component {
         const allAmenities = this.props.data.amenities;
         const mostPopularFacilities = allAmenities.slice(0, 5);
         const amenities = this.getAmenities(allAmenities.slice(5));
+
+        console.log(this.props.data);
 
         return (
             <section id="hotel-info">
@@ -58,9 +61,9 @@ class HotelInfo extends React.Component {
 
                         <div className="hotel-extras">
                             <div className="row">
-                                <AmenityColumn amenities={amenities[0]} />
-                                <AmenityColumn amenities={amenities[1]} />
-                                <AmenityColumn amenities={amenities[2]} />
+                                <PropertyAmenityColumn amenities={amenities[0]} />
+                                <PropertyAmenityColumn amenities={amenities[1]} />
+                                <PropertyAmenityColumn amenities={amenities[2]} />
                             </div>
                             <div className="clearfix" />
 
@@ -75,7 +78,9 @@ class HotelInfo extends React.Component {
 
                             <div id="reviews">
                                 <h2>User Rating &amp; Reviews</h2>
-                                <p>there are reviews from old version jquery. for now use royal algorithm</p>
+                                {this.props.data.reviews.map((item, i) => {
+                                    return <PropertyReview key={i} rating={item.rating} reviewText={item.comments} />
+                                })}
                                 <hr />
                             </div>
                             <div className="clearfix" />
@@ -97,4 +102,4 @@ class HotelInfo extends React.Component {
     }
 }
 
-export default withRouter(HotelInfo);
+export default withRouter(PropertyInfo);

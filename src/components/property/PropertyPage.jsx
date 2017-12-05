@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Header from '../Header';
-import HotelInfo from './HotelInfo';
+import PropertyInfo from './PropertyInfo';
 import Footer from '../Footer';
 import { getPropertyById } from '../../requester';
 
@@ -70,7 +70,7 @@ class PropertyPage extends React.Component {
                     </div>
                 </nav>
 
-                <HotelInfo data={this.state.data}/>
+                <PropertyInfo data={this.state.data}/>
                 <Footer />
             </div>
         );

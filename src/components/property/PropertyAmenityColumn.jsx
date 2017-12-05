@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-class AmenityColumn extends React.Component {
+class PropertyAmenityColumn extends React.Component {
     render() {
         return (
             <div className="col-md-4">
@@ -13,4 +13,4 @@ class AmenityColumn extends React.Component {
     }
 }
 
-export default withRouter(AmenityColumn);
+export default withRouter(PropertyAmenityColumn);
