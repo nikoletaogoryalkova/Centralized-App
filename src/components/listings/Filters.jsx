@@ -17,7 +17,6 @@ class Filters extends React.Component {
 
     async getData() {
         const [propertyTypeFilters, amenitiesFilters] = await Promise.all([getPropertyTypes(), getAmenitiesFilters()]);
-        console.log(propertyTypeFilters);
         this.setState({propertyTypeFilters: propertyTypeFilters.content, amenitiesFilters: amenitiesFilters.content, loading: false});
     }
 
@@ -80,10 +79,6 @@ class Filters extends React.Component {
                             min={100}
                             orientation="horizontal"
                             range={true} />
-                        {/* <input id="price-slider" type="text" className="span2" value="" data-slider-min="100"
-                            data-slider-max="10000" data-slider-step="5" data-slider-value="[100,10000]" />
-                        <span className="pull-left"><span className="min-price-currency">$</span> 10</span>
-                        <span className="pull-right"><span className="max-price-currency">$</span> 10000</span> */}
                         <div className="clearfix"></div>
                     </div>
 

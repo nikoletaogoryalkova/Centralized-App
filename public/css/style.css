@@ -720,8 +720,7 @@ a.dropdown-toggle {
     border: 0;
 }
 
-#search #search-nights {
-    width: 5%;
+#search-nights {
     float: left;
     border: 1px dashed #fff;
     margin-right: 5px;
@@ -732,7 +731,7 @@ a.dropdown-toggle {
     padding-top: 35px;
 }
 
-#search #search-nights span {
+#search-nights span {
     color: #fff;
     font-size: 11px;
     text-align: center;
@@ -1590,23 +1589,6 @@ a.dropdown-toggle {
 .hotel-extras .hotel-extras-list {
     font-size: 16px;
     margin: 7px 0;
-}
-
-.hotel-chekin-box #hotel-search-nights {
-    width: 18%;
-    float: left;
-    border: 1px dashed #fff;
-    min-height: 60px;
-    border-radius: 4px;
-    background: url(../images/icon-moon.png) center 5px no-repeat;
-    text-align: center;
-    padding-top: 35px;
-}
-
-.hotel-chekin-box #hotel-search-nights span {
-    color: #fff;
-    font-size: 11px;
-    text-align: center;
 }
 
 .hotel-chekin-box .has-feedback-left .form-control-feedback {

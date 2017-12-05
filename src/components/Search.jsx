@@ -82,7 +82,7 @@ class Search extends React.Component {
                 </div>
 
 
-                <DatePicker stay={this.state.stay} onChange={this.onChange} />
+                <DatePicker stay={this.state.stay} onChange={this.onChange} search={true} />
 
                 <div className="form-group has-feedback has-feedback-left" id="guests">
                     <i className="icon icon-guest form-control-feedback"></i>

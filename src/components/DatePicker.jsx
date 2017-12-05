@@ -42,6 +42,10 @@ class DatePicker extends React.Component {
     }
     
     render() {
+        let searchNightsWidth = 17.5;
+        if(this.props.search) {
+            searchNightsWidth = 5;
+        }
         return (
             <div>
                 <div className="input-daterange">
@@ -52,7 +56,6 @@ class DatePicker extends React.Component {
                 <input onChange={this.onChange} type="text" value={this.state.stay} className="form-control" id="search-daterange" required="required" autoComplete="off" placeholder="Select date" name="stay" />
             </DatetimeRangePicker> */}
                         <input onChange={(event) => { this.props.onChange(event); this.daterangepickerHandler(event); }}
-                            id="search-daterange"
                             className="form-control"
                             value={this.props.stay}
                             required="required"
@@ -62,7 +65,7 @@ class DatePicker extends React.Component {
                     </div>
                 </div>
 
-                <div id="search-nights">
+                <div id="search-nights" style={{width: searchNightsWidth + '%'}}>
                     <span>{this.state.nights} nights</span>
                 </div>
             </div>
