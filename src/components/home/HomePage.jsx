@@ -49,12 +49,10 @@ class HomePage extends React.Component {
                         <nav id="second-nav">
                             <div className="container">
                                 <ul className="nav navbar-nav">
-
                                     <li className="active">
                                         <a>HOMES</a>
                                     </li>
                                 </ul>
-
                             </div>
                         </nav>
                         <div id="search-bar">
@@ -66,15 +64,18 @@ class HomePage extends React.Component {
 
             <section id="popular-hotels-box">
                 <h2>Popular Properties</h2>
-                <div className="owl-theme" id="popular_hotels_carusel">
+                {/* <div className="owl-theme" id="popular_hotels_carusel"> */}
                     <OwlCarousel
+                        className="owl-theme"
                         loop
                         margin={30}
                         nav
                         navText={["<span class='left_carusel'></span>", "<span class='right_carusel'></span>"]}
                         smartSpeed={900}
                         autoplay
+                        items={4}
                         responsiveClass
+                        dots={false}
                         responsive={{
                             0: {
                                 items: 1
@@ -87,17 +88,14 @@ class HomePage extends React.Component {
                             },
                             1200: {
                                 items: 4
-                            },
-                            1920: {
-                                items: 4
                             }
                         }}>
                         {this.state.listings.map((item, i) => {
-                            return <ListingSliderBox key={i} name={item.name} />
-                    })}
+                            return <ListingSliderBox key={i} listing={item} />
+                        })}
                     </OwlCarousel>
-                    
-                </div>
+
+                {/* </div> */}
                 <div className="clearfix"></div>
             </section>
             <Footer />

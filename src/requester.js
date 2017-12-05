@@ -1,7 +1,7 @@
 const host = 'http://localhost:8080/';
 
 export async function getListings() {
-    const res = await fetch(`${host}api/listings?projection=listings&page=1`);
+    const res = await fetch(`${host}api/listings?projection=listings&page=1&size=10`);
     return res.json();
 }
 
@@ -17,5 +17,10 @@ export async function getPropertyTypes() {
 
 export async function getListingsByFilter() {
     const res = await fetch(`${host}api/listings?projection=listings&page=1`);
+    return res.json();
+}
+
+export async function getAmenitiesFilters() {
+    const res = await fetch(`${host}api/amenities?projection=amenity_aggregation`);
     return res.json();
 }
