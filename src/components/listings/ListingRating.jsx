@@ -25,7 +25,7 @@ class ListingRating extends React.Component {
         else if (ratingRoundedNumber === 1) {
             result += "Weak";
         }
-        else if (ratingRoundedNumber === 0) {
+        else if (ratingRoundedNumber === 0 && reviewsCount !== 0) {
             result += "Poor"
         }
         result += ' ';
