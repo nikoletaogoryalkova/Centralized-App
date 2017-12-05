@@ -5,7 +5,7 @@ class FiltersSection extends React.Component {
     render() {
         return (
             <div>
-                <label className="filter-check-label">
+                <label className={`filter-check-label${this.props.checked ? ' active' : ''}`}>
                     <span className="filter-check"></span>
                     <span className="filter-check-text">{this.props.text}</span>
                     <span className="filter-check-count">{this.props.count}</span>

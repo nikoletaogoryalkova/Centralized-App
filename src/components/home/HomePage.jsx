@@ -8,7 +8,7 @@ import { getListings } from '../../requester';
 class HomePage extends React.Component {
     constructor() {
         super();
-        this.state = { listings: [] };
+        this.state = { listings: []};        
     };
 
     componentDidMount() {
@@ -16,8 +16,6 @@ class HomePage extends React.Component {
             this.setState({ listings: data.content })
         });
     };
-
-
     render() {
         return (<div>
             <header id='main-nav' className="navbar home_page">
@@ -64,7 +62,6 @@ class HomePage extends React.Component {
 
             <section id="popular-hotels-box">
                 <h2>Popular Properties</h2>
-                {/* <div className="owl-theme" id="popular_hotels_carusel"> */}
                     <OwlCarousel
                         className="owl-theme"
                         loop
@@ -94,8 +91,6 @@ class HomePage extends React.Component {
                             return <ListingSliderBox key={i} listing={item} />
                         })}
                     </OwlCarousel>
-
-                {/* </div> */}
                 <div className="clearfix"></div>
             </section>
             <Footer />

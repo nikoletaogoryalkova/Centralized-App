@@ -3,12 +3,12 @@ import { withRouter } from 'react-router-dom';
 import Header from '../Header';
 import ListingRating from '../listings/ListingRating';
 import Footer from '../Footer';
+import {getListingById} from '../../requester';
 
 class PropertyPage extends React.Component {
     render() {
-        console.log(this.props);
         return (
-            <div>
+            <div key={1}>
                 <Header />
                 <section className="hotel-gallery">
                     <div className="hotel-gallery-bgr" style={{'backgroundImage': 'url(../../../../images/hotel-big-img.jpg)'}}>

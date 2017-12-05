@@ -1,6 +1,11 @@
 import React from 'react';
+import observer from '../services/observer';
 
 export default class Footer extends React.Component {
+    toggleCurrency(e) {
+        observer.currencyChange('EUR');
+    }
+
     render() {
         return (
             <footer id="main-footer">
@@ -39,7 +44,7 @@ export default class Footer extends React.Component {
                             </div>
 
                             <div className="dropdown select-curency">
-                                <a className="dropdown-toggle" data-toggle="dropdown">US Dollar <span className="caret"></span></a>
+                                <a className="dropdown-toggle" onClick={this.toggleCurrency} data-toggle="dropdown">US Dollar <span className="caret"></span></a>
                                 <ul className="navbar-dropdown dropdown-menu">
                                     <li><a >US Dollar</a></li>
                                     <li><a >LOC</a></li>

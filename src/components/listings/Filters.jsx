@@ -15,28 +15,27 @@ class Filters extends React.Component {
         }
     }
 
-    componentDidMount() {
-        getPropertyTypes().then(data => {
-            this.setState({ propertyTypeFilters: data.content });
-        });
+    async getData() {
+        const [propertyTypeFilters, amenitiesFilters] = await Promise.all([getPropertyTypes(), getAmenitiesFilters()]);
+        console.log(propertyTypeFilters);
+        this.setState({propertyTypeFilters: propertyTypeFilters.content, amenitiesFilters: amenitiesFilters.content, loading: false});
+    }
 
-        getAmenitiesFilters().then(data => {
-            this.setState({ amenitiesFilters: data.content });
-            this.setState({ loading: false });
-        });
+    componentDidMount() {
+        this.getData();
     };
 
     componentWillMount() {
         this.selectedStarFilters = new Set();
 
-        toggleCheckbox = label => {
-            if (this.selectedStarFilters.has(label)) {
-                this.selectedStarFilters.delete(label);
-            } else {
-                this.selectedStarFilters.add(label);
-            }
-            this.selectedStarFilters.forEach(s => console.log(s));
-        }
+        // toggleCheckbox = label => {
+        //     if (this.selectedStarFilters.has(label)) {
+        //         this.selectedStarFilters.delete(label);
+        //     } else {
+        //         this.selectedStarFilters.add(label);
+        //     }
+        //     this.selectedStarFilters.forEach(s => console.log(s));
+        // }
     }
 
     componentWillUnmount() {
@@ -96,7 +95,7 @@ class Filters extends React.Component {
                     <label>Property Type</label>
                     <div className="filter-check-box" id="filter-propertyType">
                         {this.state.propertyTypeFilters.map((item, i) => {
-                            return <FiltersSection key={i} text={item.name} count={item.count} />
+                            return <FiltersSection key={i} text={item.name} count={item.count} checked={true} />
                         })}
                     </div>
                 </div>
