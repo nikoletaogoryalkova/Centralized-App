@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import ListingRating from './ListingRating';
 import ListingPictures from '../listings/ListingPictures';
 
-export default class Listing extends React.Component {
+class Listing extends React.Component {
     render() {
         return (
             <div className="list-hotel">
@@ -11,7 +11,7 @@ export default class Listing extends React.Component {
                     <ListingPictures pictures={this.props.listing.pictures} id={this.props.listing.id} />
                 </div>
                 <div className="list-content">
-                    <h2><Link to={`/listings/${this.props.listing.id}`}>{this.props.listing.name}</Link></h2>
+                    <h2><Link to={`/listings/${this.props.listing.id}${this.props.location.search}`}>{this.props.listing.name}</Link></h2>
                     <ListingRating rating={this.props.listing.averageRating} reviewsCount={this.props.listing.reviewsCount} />
                     <div className="clearfix"></div>
                     <div className="list-hotel-text">
@@ -28,10 +28,12 @@ export default class Listing extends React.Component {
                     <div className="list-hotel-price-bgr">Price for 1 night</div>
                     <div className="list-hotel-price-curency">&euro; {this.props.listing.defaultDailyPrice}</div>
                     <div className="list-hotel-price-loc">(LOC 1.2)</div>
-                    <Link to={`/listings/${this.props.listing.id}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
+                    <Link to={`/listings/${this.props.listing.id}${this.props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
                 </div>
                 <div className="clearfix"></div>
             </div>
         );
     }
 }
+
+export default withRouter(Listing);

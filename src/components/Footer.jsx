@@ -3,7 +3,7 @@ import observer from '../services/observer';
 
 export default class Footer extends React.Component {
     toggleCurrency(e) {
-        observer.currencyChange('EUR');
+        observer.currencyChange('EUR', 'E');
     }
 
     render() {

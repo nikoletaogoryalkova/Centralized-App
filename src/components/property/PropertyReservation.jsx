@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import DatePicker from '../DatePicker';
+import moment from 'moment';
 const queryString = require('query-string');
 
 class PropertyReservation extends React.Component {
@@ -25,10 +26,37 @@ class PropertyReservation extends React.Component {
             guests: guests,
             name: '',
             email: '',
-            phone: ''
+            phone: '',
+            nights: 0,
+            listingPrice: 0
         };
 
         this.onChange = this.onChange.bind(this);
+        this.onStayChange = this.onStayChange.bind(this);
+    }
+
+    onStayChange(e) {
+        let stayDates = this.state.stay.split(' - ');
+        let checkInDate = moment(stayDates[0], 'DD/MM/YYYY');
+        let checkOutDate = moment(stayDates[1], 'DD/MM/YYYY');
+
+        let timeDiff = checkOutDate.diff(checkInDate);
+
+        if (stayDates.length === 2 && checkOutDate > checkInDate) {
+            let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            this.setState({ nights: diffDays });
+        }
+        else {
+            this.setState({ nights: 0 });
+        }
+
+        this.setState({stay: stayDates[0] + ' - ' + stayDates[1]});
+    }
+
+    componentWillMount() {
+        if (this.state.stay) {
+            this.onStayChange(this.state.stay);
+        }
     }
 
     onChange(e) {
@@ -36,14 +64,15 @@ class PropertyReservation extends React.Component {
     };
 
     render() {
+        const listingPrice = this.props.listing && parseInt(this.props.listing.prices[this.props.currency]).toFixed(2);
         return (
             <div className="hotel-chekin">
                 <div className="hotel-chekin-box">
                     <form id="user-form">
-                        <p id="hotel-top-price" className="hotel-top-price"><span>5</span> /per night</p>
+                        <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice}</span> /per night</p>
                         <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}></div>
 
-                        <DatePicker stay={this.state.stay} onChange={this.onChange} />
+                        <DatePicker stay={this.state.stay} onChange={this.onStayChange} />
 
                         <div className="clearfix"></div>
 
@@ -64,8 +93,8 @@ class PropertyReservation extends React.Component {
                         </div>
                         <br />
 
-                        <div className="hotel-second-price">total <span id="total-price">$0</span> / for
-                                <div className="hotel-search-nights"><span> 0 nights</span></div>
+                        <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{this.state.nights * this.props.listing.defaultDailyPrice}</span> / for&nbsp;
+                                <div className="hotel-search-nights"><span>{this.state.nights} nights</span></div>
                         </div>
 
                         <div className="nonev"></div>

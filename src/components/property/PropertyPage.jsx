@@ -178,7 +178,7 @@ class PropertyPage extends React.Component {
                                 <div className="clearfix"></div>
                             </div>
                         </div>
-                        <PropertyReservation />
+                        <PropertyReservation listing={this.state.data} currency={this.props.currency} currencySign={this.props.currencySign} />
                         <div className="clearfix"></div>
                     </div>
                 </section>
