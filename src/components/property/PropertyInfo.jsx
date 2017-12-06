@@ -6,6 +6,7 @@ import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyReview from './PropertyReview';
 
 class PropertyInfo extends React.Component {
+    
     getAmenities(amenities) {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
@@ -73,7 +74,7 @@ class PropertyInfo extends React.Component {
                             }
                             <div className="clearfix" />
 
-                            {this.props.reviews && this.props.reviews.length > 0 &&
+                            {this.props.data.reviews && this.props.data.reviews.length > 0 &&
                                 <div id="reviews">
                                     <h2>User Rating &amp; Reviews</h2>
                                     {this.props.data.reviews.map((item, i) => {

@@ -1,5 +1,5 @@
-const host = 'http://193.203.198.226:8080/lockchain/';
-// const host = 'http://localhost:8080/';
+// const host = 'http://193.203.198.226:8080/lockchain/';
+const host = 'http://localhost:8080/';
 
 export async function getListings() {
     const res = await fetch(`${host}api/listings?projection=listings&page=1&size=10`);
@@ -28,5 +28,18 @@ export async function getAmenitiesFilters() {
 
 export async function getPropertyById(id) {
     const res = await fetch(`${host}api/listings/${id}?projection=singleListing`);
+    return res.json();
+}
+
+export async function requestBooking(requestInfo) {
+    const res = await fetch(`${host}reservation/request`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify(requestInfo)
+    });
+
     return res.json();
 }
