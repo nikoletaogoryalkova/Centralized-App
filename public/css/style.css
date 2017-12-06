@@ -793,7 +793,7 @@ a.dropdown-toggle {
     font-size: 17px;
 }
 
-.filter-box .filter-stars span {
+.filter-box .filter-stars .star {
     width: 19%;
     margin-left: 0.5%;
     margin-right: 0.5%;
@@ -808,14 +808,14 @@ a.dropdown-toggle {
     cursor: pointer;
 }
 
-.filter-box .filter-stars span:hover,
-.filter-box .filter-stars span.active {
+.filter-box .filter-stars .star:hover,
+.filter-box .filter-stars .star.active {
     border: 1px solid #d87a61;
     background: #d87a61 url(../images/icon-star-filter-w.png) center 31px no-repeat;
     color: #fff;
 }
 
-.filter-box .filter-stars span {
+.filter-box .filter-stars .star {
     display: block;
     text-align: center;
 }

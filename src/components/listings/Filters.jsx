@@ -1,7 +1,8 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { getPropertyTypes, getAmenitiesFilters } from '../../requester';
-import FiltersSection from './FiltersSection';
+import {withRouter} from 'react-router-dom';
+import {getPropertyTypes, getAmenitiesFilters} from '../../requester';
+import FiltersCheckbox from './FiltersCheckbox';
+import StarCheckbox from './StarCheckbox';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 
 class Filters extends React.Component {
@@ -17,36 +18,103 @@ class Filters extends React.Component {
 
     async getData() {
         const [propertyTypeFilters, amenitiesFilters] = await Promise.all([getPropertyTypes(), getAmenitiesFilters()]);
-        this.setState({propertyTypeFilters: propertyTypeFilters.content, amenitiesFilters: amenitiesFilters.content, loading: false});
+        this.setState({
+            propertyTypeFilters: propertyTypeFilters.content,
+            amenitiesFilters: amenitiesFilters.content,
+            loading: false
+        });
     }
 
     componentDidMount() {
-        this.getData();
+        Promise.all([getPropertyTypes(), getAmenitiesFilters()])
+            .then((arr) => {
+                const [propertyTypeFilters, amenitiesFilters] = arr;
+                return [propertyTypeFilters, amenitiesFilters];
+            })
+            .then(([propertyTypeFilters, amenitiesFilters]) => {
+                this.setState({
+                    propertyTypeFilters: propertyTypeFilters.content,
+                    amenitiesFilters: amenitiesFilters.content,
+                    loading: false
+                });
+            });
     };
 
     componentWillMount() {
-        this.selectedStarFilters = new Set();
-
-        // toggleCheckbox = label => {
-        //     if (this.selectedStarFilters.has(label)) {
-        //         this.selectedStarFilters.delete(label);
-        //     } else {
-        //         this.selectedStarFilters.add(label);
-        //     }
-        //     this.selectedStarFilters.forEach(s => console.log(s));
-        // }
-    }
+        this.paramsMap = this.getParamsMap();
+        this.selectedStars = this.getSelectedFilters('propertyStars');
+        this.selectedPropertyTypes = this.getSelectedFilters('propertyTypes');
+        this.selectedAmenities = this.getSelectedFilters('propertyAmenities');
+    };
 
     componentWillUnmount() {
-        this.setState({ propertyTypeFilters: '', loading: true })
-    }
+        this.setState({propertyTypeFilters: '', loading: true})
+    };
 
     onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({[e.target.name]: e.target.value});
+    };
+
+    toggleStar(label) {
+        if (this.selectedStars.has(label)) {
+            this.selectedStars.delete(label);
+        } else {
+            this.selectedStars.add(label);
+        }
+    };
+
+    toggleAmenity(label) {
+        if (this.selectedAmenities.has(label)) {
+            this.selectedAmenities.delete(label);
+        } else {
+            this.selectedAmenities.add(label);
+        }
+    };
+
+    togglePropertyType(label) {
+        if (this.selectedPropertyTypes.has(label)) {
+            this.selectedPropertyTypes.delete(label);
+        } else {
+            this.selectedPropertyTypes.add(label);
+        }
+    };
+
+    getParamsMap() {
+        const map = new Map();
+        const pairs = this.props.location.search.substr(1).split('&');
+        for (let i = 0; i < pairs.length; i++) {
+            let pair = pairs[i].split('=');
+            map.set(pair[0], this.parseParam(pair[1]));
+        }
+
+        return map;
+    };
+
+    parseParam(param) {
+        return param.split('%20').join(' ');
     }
 
+    createParam(param) {
+        return param.split(' ').join('%20');
+    }
+
+    getSelectedFilters(property) {
+        let value = this.paramsMap.get(property);
+        let result = new Set();
+        let selected = [];
+        if (value) {
+            selected = value.split(',');
+            for (let i = 0; i < selected.length; i++) {
+                result.add(selected[i]);
+            }
+        }
+
+        console.log(result);
+        return result;
+    };
+
     render() {
-        const { loading } = this.state;
+        const {loading} = this.state;
 
         if (loading) {
             return (<div className="loader"></div>);
@@ -59,11 +127,16 @@ class Filters extends React.Component {
                     <label>Star Rating</label>
 
                     <div className="filter-stars">
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>4</span>
-                        <span>5</span>
+                        <span onClick={() => this.toggleStar("1")}><StarCheckbox text={"1"}
+                                                                                 checked={this.selectedStars.has("1")}/></span>
+                        <span onClick={() => this.toggleStar("2")}><StarCheckbox text={"2"}
+                                                                                 checked={this.selectedStars.has("2")}/></span>
+                        <span onClick={() => this.toggleStar("3")}><StarCheckbox text={"3"}
+                                                                                 checked={this.selectedStars.has("3")}/></span>
+                        <span onClick={() => this.toggleStar("4")}><StarCheckbox text={"4"}
+                                                                                 checked={this.selectedStars.has("4")}/></span>
+                        <span onClick={() => this.toggleStar("5")}><StarCheckbox text={"5"}
+                                                                                 checked={this.selectedStars.has("5")}/></span>
                     </div>
                 </div>
                 <div className="clearfix"></div>
@@ -78,7 +151,7 @@ class Filters extends React.Component {
                             max={10000}
                             min={100}
                             orientation="horizontal"
-                            range={true} />
+                            range={true}/>
                         <div className="clearfix"></div>
                     </div>
 
@@ -90,7 +163,15 @@ class Filters extends React.Component {
                     <label>Property Type</label>
                     <div className="filter-check-box" id="filter-propertyType">
                         {this.state.propertyTypeFilters.map((item, i) => {
-                            return <FiltersSection key={i} text={item.name} count={item.count} checked={true} />
+                            return (
+                                <div key={i} onClick={() => this.togglePropertyType(item.name)}>
+                                    <FiltersCheckbox
+                                        key={i}
+                                        text={item.name}
+                                        count={item.count}
+                                        checked={this.selectedPropertyTypes.has(item.name)}/>
+                                </div>
+                            );
                         })}
                     </div>
                 </div>
@@ -99,7 +180,15 @@ class Filters extends React.Component {
                     <label>Facility</label>
                     <div className="filter-check-box" id="filter-amenity">
                         {this.state.amenitiesFilters.map((item, i) => {
-                            return <FiltersSection key={i} text={item.name} count={item.count} />
+                            return (
+                                <div key={i} onClick={() => this.toggleAmenity(item.name)}>
+                                    <FiltersCheckbox
+                                        key={i}
+                                        text={item.name}
+                                        count={item.count}
+                                        checked={this.selectedAmenities.has(item.name)}/>
+                                </div>
+                            );
                         })}
                     </div>
                 </div>
@@ -110,7 +199,15 @@ class Filters extends React.Component {
                     <button type="submit" className="btn btn">Clear Filters</button>
                 </div>
                 <div className="form-group submit-search-button" id="filter-button">
-                    <button type="submit" className="btn btn-primary">See Hotels</button>
+                    <button type="submit" className="btn btn-primary">See Hotels
+                    </button>
+                </div>
+
+                <div className="form-group submit-search-button" id="filter-button">
+                    <button
+                        onClick={x => console.log(this.selectedStars, this.selectedPropertyTypes, this.selectedAmenities)}
+                        className="btn btn-primary">Check list
+                    </button>
                 </div>
 
             </div>
