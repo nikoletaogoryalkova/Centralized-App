@@ -4,9 +4,10 @@ import Footer from '../Footer';
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
 import Listing from './Listing';
+import {withRouter} from 'react-router-dom';
 import { getListingsByFilter } from '../../requester';
 
-export default class ListingsPage extends React.Component {
+class ListingsPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -22,6 +23,25 @@ export default class ListingsPage extends React.Component {
         });
     };
 
+    componentWillMount() {
+        this.paramsMap = this.getParamsMap();
+    };
+
+    getParamsMap() {
+        const map = new Map();
+        const pairs = this.props.location.search.substr(1).split('&');
+        for (let i = 0; i < pairs.length; i++) {
+            let pair = pairs[i].split('=');
+            map.set(pair[0], this.parseParam(pair[1]));
+        }
+
+        return map;
+    };
+
+    parseParam(param) {
+        return param.split('%20').join(' ');
+    };
+
     render() {
         if (this.state.listingLoading) {
             return <div className="loader"></div>;
@@ -35,7 +55,7 @@ export default class ListingsPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters />
+                                <Filters paramsMap={this.paramsMap} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
@@ -52,3 +72,5 @@ export default class ListingsPage extends React.Component {
         );
     }
 }
+
+export default withRouter(ListingsPage);

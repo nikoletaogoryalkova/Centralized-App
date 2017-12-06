@@ -28,7 +28,6 @@ class Listing extends React.Component {
 
         return (
             <div className="list-hotel">
-            {console.log(listingPrice)}
                 <div className="list-image">
                     <ListingPictures pictures={this.props.listing.pictures} id={this.props.listing.id} />
                 </div>

@@ -41,7 +41,6 @@ class Filters extends React.Component {
     };
 
     componentWillMount() {
-        this.paramsMap = this.getParamsMap();
         this.selectedStars = this.getSelectedFilters('propertyStars');
         this.selectedPropertyTypes = this.getSelectedFilters('propertyTypes');
         this.selectedAmenities = this.getSelectedFilters('propertyAmenities');
@@ -99,7 +98,7 @@ class Filters extends React.Component {
     }
 
     getSelectedFilters(property) {
-        let value = this.paramsMap.get(property);
+        let value = this.props.paramsMap.get(property);
         let result = new Set();
         let selected = [];
         if (value) {
@@ -109,7 +108,6 @@ class Filters extends React.Component {
             }
         }
 
-        console.log(result);
         return result;
     };
 
