@@ -75,7 +75,7 @@ class PropertyReservation extends React.Component {
     }
 
     render() {
-        const listingPrice = this.props.listing.prices && this.props.listing.cleaningFee && (parseInt(this.props.listing.prices[this.props.currency], 10) + this.props.listing.cleaningFee).toFixed(2);
+        const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
         return (
             <div className="hotel-chekin">
                 <div className="hotel-chekin-box">
@@ -109,7 +109,7 @@ class PropertyReservation extends React.Component {
                             </div>
                             <br />
 
-                            <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{this.props.nights * listingPrice}</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{((this.props.nights * listingPrice) + this.props.listing.cleaningFee).toFixed(2)}</span> / for&nbsp;
                                 <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
 
