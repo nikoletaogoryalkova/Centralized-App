@@ -32,19 +32,33 @@ class ListingsPage extends React.Component {
         const pairs = this.props.location.search.substr(1).split('&');
         for (let i = 0; i < pairs.length; i++) {
             let pair = pairs[i].split('=');
-            map.set(pair[0], this.parseParam(pair[1]));
+            map.set(pair[0], ListingsPage.parseParam(pair[1]));
         }
 
         return map;
     };
 
-    parseParam(param) {
+    updateParamsMap(key, value) {
+        if (!value || value === '') {
+            this.paramsMap.delete(key);
+        } else {
+            this.paramsMap.set(key, ListingsPage.createParam(value));
+        }
+
+        console.log(this.paramsMap);
+    }
+
+    static parseParam(param) {
         return param.split('%20').join(' ');
     };
 
+    static createParam(param) {
+        return param.split(' ').join('%20');
+    }
+
     render() {
         if (this.state.listingLoading) {
-            return <div className="loader"></div>;
+            return <div className="loader" />;
         }
         
         return (
@@ -55,7 +69,7 @@ class ListingsPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters paramsMap={this.paramsMap} />
+                                <Filters paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap}/>
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">

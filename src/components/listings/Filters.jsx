@@ -60,6 +60,8 @@ class Filters extends React.Component {
         } else {
             this.selectedStars.add(label);
         }
+
+        this.props.updateParamsMap('propertyStars', Array.from(this.selectedStars).join(','));
     };
 
     toggleAmenity(label) {
@@ -68,6 +70,8 @@ class Filters extends React.Component {
         } else {
             this.selectedAmenities.add(label);
         }
+
+        this.props.updateParamsMap('propertyAmenities', Array.from(this.selectedAmenities).join(','));
     };
 
     togglePropertyType(label) {
@@ -76,26 +80,9 @@ class Filters extends React.Component {
         } else {
             this.selectedPropertyTypes.add(label);
         }
+
+        this.props.updateParamsMap('propertyTypes', Array.from(this.selectedPropertyTypes).join(','));
     };
-
-    getParamsMap() {
-        const map = new Map();
-        const pairs = this.props.location.search.substr(1).split('&');
-        for (let i = 0; i < pairs.length; i++) {
-            let pair = pairs[i].split('=');
-            map.set(pair[0], this.parseParam(pair[1]));
-        }
-
-        return map;
-    };
-
-    parseParam(param) {
-        return param.split('%20').join(' ');
-    }
-
-    createParam(param) {
-        return param.split(' ').join('%20');
-    }
 
     getSelectedFilters(property) {
         let value = this.props.paramsMap.get(property);
@@ -115,7 +102,7 @@ class Filters extends React.Component {
         const {loading} = this.state;
 
         if (loading) {
-            return (<div className="loader"></div>);
+            return (<div className="loader" />);
         }
 
         return (
@@ -137,7 +124,7 @@ class Filters extends React.Component {
                                                                                  checked={this.selectedStars.has("5")}/></span>
                     </div>
                 </div>
-                <div className="clearfix"></div>
+                <div className="clearfix" />
 
                 <div className="form-group" id="filter-price">
                     <label>Pricing</label>
@@ -150,12 +137,12 @@ class Filters extends React.Component {
                             min={100}
                             orientation="horizontal"
                             range={true}/>
-                        <div className="clearfix"></div>
+                        <div className="clearfix" />
                     </div>
 
-                    <div id="slider-range"></div>
+                    <div id="slider-range" />
                 </div>
-                <div className="clearfix"></div>
+                <div className="clearfix" />
 
                 <div className="form-group" id="filter-type">
                     <label>Property Type</label>
@@ -190,9 +177,9 @@ class Filters extends React.Component {
                         })}
                     </div>
                 </div>
-                <div className="clearfix"></div>
+                <div className="clearfix"/>
 
-                <div className="clearfix"></div>
+                <div className="clearfix"/>
                 <div className="form-group" id="clear-filter-button">
                     <button type="submit" className="btn btn">Clear Filters</button>
                 </div>
