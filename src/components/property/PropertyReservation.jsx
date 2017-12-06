@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import DatePicker from '../DatePicker';
 import { requestBooking } from '../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
-import moment from 'moment';
 const queryString = require('query-string');
 
 class PropertyReservation extends React.Component {
@@ -110,7 +109,7 @@ class PropertyReservation extends React.Component {
                             </div>
                             <br />
 
-                            <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{this.props.nights * listingPrice}</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{((this.props.nights * listingPrice) + this.props.listing.cleaningFee).toFixed(2)}</span> / for&nbsp;
                                 <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
 
