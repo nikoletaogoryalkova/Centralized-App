@@ -1,5 +1,5 @@
-// const host = 'http://193.203.198.226:8080/lockchain/';
-const host = 'http://localhost:8080/';
+import {Config} from "./config";
+const host = Config.getValue("apiHost");
 
 export async function getListings() {
     const res = await fetch(`${host}api/listings?projection=listings&page=1&size=10`);
