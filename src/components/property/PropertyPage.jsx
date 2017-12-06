@@ -1,4 +1,5 @@
 import React from 'react';
+import Lightbox from 'react-images';
 import { withRouter } from 'react-router-dom';
 import Header from '../Header';
 import PropertyInfo from './PropertyInfo';
@@ -27,11 +28,19 @@ class PropertyPage extends React.Component {
             startDate: startDate,
             endDate: endDate,
             nights: 0,
-            data: null
+            data: null,
+            lightboxIsOpen: false,
+            currentImage: 0,
         };
 
 
         this.handleApply = this.handleApply.bind(this);
+        this.closeLightbox = this.closeLightbox.bind(this);
+        this.gotoNext = this.gotoNext.bind(this);
+        this.gotoPrevious = this.gotoPrevious.bind(this);
+        this.gotoImage = this.gotoImage.bind(this);
+        this.handleClickImage = this.handleClickImage.bind(this);
+        this.openLightbox = this.openLightbox.bind(this);
     };
 
     componentDidMount() {
@@ -52,6 +61,40 @@ class PropertyPage extends React.Component {
         this.calculateNights(picker.startDate, picker.endDate);
     }
 
+    openLightbox (event) {
+        event.preventDefault();
+        this.setState({
+            lightboxIsOpen: true,
+        });
+    }
+
+    closeLightbox () {
+        this.setState({
+            currentImage: 0,
+            lightboxIsOpen: false,
+        });
+    }
+    gotoPrevious () {
+        this.setState({
+            currentImage: this.state.currentImage - 1,
+        });
+    }
+    gotoNext () {
+        this.setState({
+            currentImage: this.state.currentImage + 1,
+        });
+    }
+    gotoImage (index) {
+        this.setState({
+            currentImage: index,
+        });
+    }
+    handleClickImage () {
+        if (this.state.currentImage === this.state.data.pictures.length - 1) return;
+
+        this.gotoNext();
+    }
+
     calculateNights(startDate, endDate) {
         let checkIn = moment(startDate, 'DD/MM/YYYY');
         let checkOut = moment(endDate, 'DD/MM/YYYY');
@@ -67,17 +110,31 @@ class PropertyPage extends React.Component {
     }
 
     render() {
-
         if (this.state.data === null) {
             return <div>Loading...</div>;
         }
+
+        const images = this.state.data.pictures.map(x =>  {
+            return { src: x.original };
+        });
+
         return (
             <div key={1}>
                 <Header />
                 <section className="hotel-gallery">
                     <div className="hotel-gallery-bgr" style={{ 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' }}>
                         <div className="container">
-                            <a className="btn btn-primary btn-gallery">Open Gallery</a>
+                            <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
+                            <Lightbox
+                                currentImage={this.state.currentImage}
+                                images={images}
+                                isOpen={this.state.lightboxIsOpen}
+                                onClickImage={this.handleClickImage}
+                                onClickNext={this.gotoNext}
+                                onClickPrev={this.gotoPrevious}
+                                onClickThumbnail={this.gotoImage}
+                                onClose={this.closeLightbox}
+                            />
                         </div>
                     </div>
                 </section>
