@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import DatePicker from '../DatePicker';
 import { requestBooking } from '../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
-import moment from 'moment';
 const queryString = require('query-string');
 
 class PropertyReservation extends React.Component {
@@ -76,7 +75,7 @@ class PropertyReservation extends React.Component {
     }
 
     render() {
-        const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
+        const listingPrice = this.props.listing.prices && this.props.listing.cleaningFee && (parseInt(this.props.listing.prices[this.props.currency], 10) + this.props.listing.cleaningFee).toFixed(2);
         return (
             <div className="hotel-chekin">
                 <div className="hotel-chekin-box">

@@ -3907,3 +3907,11 @@ input[type="checkbox"].tick:checked+label:after {
 .carousel .item img {
     width: 100%;
 }
+
+.dropdown button {
+    font-size: 14px;
+}
+
+.dropdown.btn-group {
+    width: 100%;
+}

@@ -1,9 +1,10 @@
 import React from 'react';
 import observer from '../services/observer';
+import  {DropdownButton, MenuItem} from 'react-bootstrap';
 
 export default class Footer extends React.Component {
-    toggleCurrency(e) {
-        observer.currencyChange('EUR', 'E');
+    toggleCurrency(currency) {
+        observer.currencyChange(currency);
     }
 
     render() {
@@ -43,14 +44,20 @@ export default class Footer extends React.Component {
                                 </ul>
                             </div>
 
-                            <div className="dropdown select-curency">
-                                <a className="dropdown-toggle" onClick={this.toggleCurrency} data-toggle="dropdown">US Dollar <span className="caret"></span></a>
-                                <ul className="navbar-dropdown dropdown-menu">
-                                    <li><a >US Dollar</a></li>
-                                    <li><a >LOC</a></li>
+                            {/* <div className="dropdown select-curency">
+                                <button className="dropdown-toggle" data-toggle="dropdown">USD<span className="caret"></span></button>
+                                <ul className="navbar-dropdown dropdown-menu" role="menu">
+                                    <li><a role="menuitem" href="#">USD</a></li>
+                                    <li><a role="menuitem" href="#">LOC</a></li>
+                                    <li><a role="menuitem" href="#">GBP</a></li>
                                 </ul>
-                            </div>
+                            </div> */}
 
+                            <DropdownButton block={true} title={localStorage["currency"] ? localStorage["currency"] : 'USD'} id="bg-nested-dropdown">
+                                <MenuItem onClick={() => this.toggleCurrency('GBP')}>£ GBP</MenuItem>
+                                <MenuItem onClick={() => this.toggleCurrency('EUR')}>€ EUR</MenuItem>
+                                <MenuItem onClick={() => this.toggleCurrency('USD')}>$ USD</MenuItem>
+                            </DropdownButton>
                         </div>
 
                         <div className="clearfix"></div>

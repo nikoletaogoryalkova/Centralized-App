@@ -88,7 +88,7 @@ class HomePage extends React.Component {
                             }
                         }}>
                         {this.state.listings.map((item, i) => {
-                            return <ListingSliderBox key={i} listing={item} />
+                            return <ListingSliderBox currency={this.props.currency} currencySign={this.props.currencySign} key={i} listing={item} />
                         })}
                     </OwlCarousel>
                 <div className="clearfix"></div>

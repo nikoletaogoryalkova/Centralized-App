@@ -43,3 +43,8 @@ export async function requestBooking(requestInfo) {
 
     return res.json();
 }
+
+export async function getLocRate() {
+    const res = await fetch('https://lockchain.co/marketplace/internal_api/loc_price.php');
+    return res.json();
+}

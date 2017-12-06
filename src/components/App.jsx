@@ -8,9 +8,23 @@ import observer from '../services/observer';
 class App extends React.Component {
     constructor(props) {
         super(props);
+        let currency = '';
+        let currencySign = '';
 
-        this.state = { currency: "USD", currencySign: "$" }
+        if(localStorage["currency"] && localStorage["currencySign"]) {
+            currency = localStorage["currency"];
+            currencySign = localStorage["currencySign"];
+        }
+        else {
+            currency = "USD";
+            currencySign= "$";
 
+            localStorage["currency"] = currency;
+            localStorage["currencySign"] = currencySign;
+        }
+
+        this.state = { currency: currency, currencySign: currencySign }
+    
         this.currencyChange = this.currencyChange.bind(this);
     }
 
@@ -23,11 +37,14 @@ class App extends React.Component {
         switch (currency) {
             case "EUR": currencySign = '€'
                 break;
-            case "LOC": currencySign = 'LOC'
+            case "GBP": currencySign = '£'
                 break;
             default: currencySign = '$';
                 break;
         }
+
+        localStorage["currency"] = currency;
+        localStorage["currencySign"] = currencySign;
 
         this.setState({ currency, currencySign });
     }

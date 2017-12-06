@@ -61,35 +61,35 @@ class PropertyPage extends React.Component {
         this.calculateNights(picker.startDate, picker.endDate);
     }
 
-    openLightbox (event) {
+    openLightbox(event) {
         event.preventDefault();
         this.setState({
             lightboxIsOpen: true,
         });
     }
 
-    closeLightbox () {
+    closeLightbox() {
         this.setState({
             currentImage: 0,
             lightboxIsOpen: false,
         });
     }
-    gotoPrevious () {
+    gotoPrevious() {
         this.setState({
             currentImage: this.state.currentImage - 1,
         });
     }
-    gotoNext () {
+    gotoNext() {
         this.setState({
             currentImage: this.state.currentImage + 1,
         });
     }
-    gotoImage (index) {
+    gotoImage(index) {
         this.setState({
             currentImage: index,
         });
     }
-    handleClickImage () {
+    handleClickImage() {
         if (this.state.currentImage === this.state.data.pictures.length - 1) return;
 
         this.gotoNext();
@@ -111,10 +111,10 @@ class PropertyPage extends React.Component {
 
     render() {
         if (this.state.data === null) {
-            return <div>Loading...</div>;
+            return <div className="loader"></div>;
         }
 
-        const images = this.state.data.pictures.map(x =>  {
+        const images = this.state.data.pictures.map(x => {
             return { src: x.original };
         });
 

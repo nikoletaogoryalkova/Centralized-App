@@ -2,11 +2,33 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import ListingRating from './ListingRating';
 import ListingPictures from '../listings/ListingPictures';
+import {getLocRate} from '../../requester';
 
 class Listing extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            locRate: null
+        }
+    }
+
+    componentDidMount() {
+        getLocRate().then((data) => {
+            this.setState({locRate: data.loc });
+        })
+    }
+    
     render() {
+        const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
+
+        if (this.state.locRate === null) {
+            return null;
+        }
+
         return (
             <div className="list-hotel">
+            {console.log(listingPrice)}
                 <div className="list-image">
                     <ListingPictures pictures={this.props.listing.pictures} id={this.props.listing.id} />
                 </div>
@@ -26,8 +48,8 @@ class Listing extends React.Component {
                 </div>
                 <div className="list-price">
                     <div className="list-hotel-price-bgr">Price for 1 night</div>
-                    <div className="list-hotel-price-curency">&euro; {this.props.listing.defaultDailyPrice}</div>
-                    <div className="list-hotel-price-loc">(LOC 1.2)</div>
+                    <div className="list-hotel-price-curency">{this.props.currencySign}{listingPrice}</div>
+                    <div className="list-hotel-price-loc">(LOC {(this.props.listing.defaultDailyPrice / this.state.locRate).toFixed(2)})</div>
                     <Link to={`/listings/${this.props.listing.id}${this.props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
                 </div>
                 <div className="clearfix"></div>
