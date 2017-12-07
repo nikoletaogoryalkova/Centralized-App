@@ -1,12 +1,8 @@
 import React from 'react';
-import { withRouter, NavLink, Switch, Route } from 'react-router-dom';
+import { NavLink, Switch, Route } from 'react-router-dom';
 
 export default class CreateListingPage extends React.Component {
     render() {
-        //create/1/1
-        //create/2/1
-        this.props.location.pathname
-
         return (
             <div>
                 <h1>Create listing</h1>

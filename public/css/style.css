@@ -1327,7 +1327,8 @@ a.dropdown-toggle {
 }
 
 .pagination-box .pagination>li>a:hover,
-.pagination-box .pagination>li.active>a {
+.pagination-box .pagination>li.active>a,
+.pagination-box li.rc-pagination-item-active a {
     color: #fff;
     background-color: #223843;
     border: 0;

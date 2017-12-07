@@ -4,8 +4,9 @@ import Footer from '../Footer';
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
 import Listing from './Listing';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { getListingsByFilter } from '../../requester';
+import Pagination from 'rc-pagination';
 
 class ListingsPage extends React.Component {
     constructor(props) {
@@ -13,7 +14,9 @@ class ListingsPage extends React.Component {
 
         this.state = {
             listings: [],
-            listingLoading: true
+            listingLoading: true,
+            currentPage: 1,
+            totalItems: 0
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -22,8 +25,8 @@ class ListingsPage extends React.Component {
 
     componentDidMount() {
         let searchTerms = this.getSearchTerms();
-        getListingsByFilter(searchTerms).then(data => {
-            this.setState({ listings: data.content, listingLoading: false })
+        getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
+            this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
         });
     };
 
@@ -40,8 +43,6 @@ class ListingsPage extends React.Component {
 
         let url = `/listings/?${searchTerms}`;
         this.props.history.push(url);
-
-        console.log(this.paramsMap);
     }
 
     getSearchTerms() {
@@ -81,20 +82,39 @@ class ListingsPage extends React.Component {
         return param.split(' ').join('%20');
     }
 
+    onPageChange = (page) => {
+        this.setState({
+            currentPage: page,
+        })
+
+        let searchTerms = this.getSearchTerms();
+        getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
+            console.log(data);
+            this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
+        });
+    }
+
+    componentWillUnmount() {
+        this.setState( {listings: [], listingLoading: true,
+            currentPage: 1,
+            totalItems: 0})
+    }
+
     render() {
         if (this.state.listingLoading) {
-            return <div className="loader" />;
+            return <div className="loader"></div>;
         }
-        let hasListings = this.state.listings.length > 1;
+
+        let hasListings = this.state.listings.length === 20;
         return (
             <div>
-                <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch}/>
+                <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
                 <Breadcrumb />
                 <section id="hotel-box">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch}/>
+                                <Filters paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
@@ -102,6 +122,10 @@ class ListingsPage extends React.Component {
                                     {hasListings ? this.state.listings.map((item, i) => {
                                         return <Listing key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
                                     }) : <div>No results</div>}
+
+                                    <div className="pagination-box">
+                                        {this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />}
+                                    </div>
                                 </div>
                             </div>
                         </div>
