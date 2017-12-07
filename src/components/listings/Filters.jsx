@@ -12,7 +12,8 @@ class Filters extends React.Component {
         this.state = {
             propertyTypeFilters: [],
             amenitiesFilters: [],
-            loading: true
+            priceValue: [100, 10000],
+            loading: true,
         };
 
         this.changeValue = this.changeValue.bind(this);
@@ -58,7 +59,8 @@ class Filters extends React.Component {
 
     toggleStar(label) {
         if (this.selectedStars.has(label)) {
-            this.selectedStars.delete(label);
+            this.selectedStars
+                .delete(label);
         } else {
             this.selectedStars.add(label);
         }
@@ -87,13 +89,13 @@ class Filters extends React.Component {
     };
 
     changeValue(e) {
+
         let min = e.target.value[0].toString();
         let max = e.target.value[1].toString();
 
-        this.props.updateParamsMap('priceMin', parseFloat(min));
-        this.props.updateParamsMap('priceMax', parseFloat(max));
-
-
+        this.props.updateParamsMap('priceMin', min);
+        this.props.updateParamsMap('priceMax', max);
+        this.setState({priceValue: e.target.value});
     }
 
     getSelectedFilters(property) {
@@ -101,6 +103,7 @@ class Filters extends React.Component {
         let result = new Set();
         let selected = [];
         if (value) {
+
             selected = value.split(',');
             for (let i = 0; i < selected.length; i++) {
                 result.add(selected[i]);
@@ -143,9 +146,10 @@ class Filters extends React.Component {
 
                     <div className="filter-price-box">
                         <ReactBootstrapSlider
+                            value={this.state.priceValue}
                             slideStop={this.changeValue}
                             step={5}
-                            max={10000}
+                            max={5000}
                             min={100}
                             orientation="horizontal"
                             range={true}/>

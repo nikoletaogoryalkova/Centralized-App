@@ -21,7 +21,8 @@ class ListingsPage extends React.Component {
     }
 
     componentDidMount() {
-        getListingsByFilter().then(data => {
+        let searchTerms = this.getSearchTerms();
+        getListingsByFilter(searchTerms).then(data => {
             this.setState({ listings: data.content, listingLoading: false })
         });
     };
@@ -32,22 +33,25 @@ class ListingsPage extends React.Component {
 
     handleSearch(e) {
         e.preventDefault();
+        let searchTerms = this.getSearchTerms();
+        getListingsByFilter(searchTerms).then(data => {
+            this.setState({ listings: data.content, listingLoading: false })
+        });
 
+        let url = `/listings/?${searchTerms}`;
+        this.props.history.push(url);
+
+        console.log(this.paramsMap);
+    }
+
+    getSearchTerms() {
         let keys = Array.from(this.paramsMap.keys());
         let pairs = [];
         for (let i = 0; i < keys.length; i++) {
             pairs.push(keys[i] + '=' + this.createParam(this.paramsMap.get(keys[i])));
         }
 
-        let searchTerms = pairs.join('&');
-        console.log(searchTerms);
-
-        getListingsByFilter().then(data => {
-            this.setState({ listings: data.content, listingLoading: false })
-        });
-
-        console.log(this.
-            paramsMap);
+        return pairs.join('&');
     }
 
     getParamsMap() {
@@ -81,7 +85,7 @@ class ListingsPage extends React.Component {
         if (this.state.listingLoading) {
             return <div className="loader" />;
         }
-        
+        let hasListings = this.state.listings.length > 1;
         return (
             <div>
                 <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch}/>
@@ -94,9 +98,10 @@ class ListingsPage extends React.Component {
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
-                                    {this.state.listings.map((item, i) => {
+
+                                    {hasListings ? this.state.listings.map((item, i) => {
                                         return <Listing key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
-                                    })}
+                                    }) : <div>No results</div>}
                                 </div>
                             </div>
                         </div>

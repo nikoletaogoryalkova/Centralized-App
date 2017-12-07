@@ -16,8 +16,8 @@ export async function getPropertyTypes() {
     return res.json();
 }
 
-export async function getListingsByFilter() {
-    const res = await fetch(`${host}api/listings?projection=listings&page=1`);
+export async function getListingsByFilter(searchTerms) {
+    const res = await fetch(`${host}api/listings/search/getAllByFilter?${searchTerms}&projection=listings&page=0`);
     return res.json();
 }
 
