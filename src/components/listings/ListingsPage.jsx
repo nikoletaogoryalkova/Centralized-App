@@ -17,6 +17,7 @@ class ListingsPage extends React.Component {
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     componentDidMount() {
@@ -29,8 +30,24 @@ class ListingsPage extends React.Component {
         this.paramsMap = this.getParamsMap();
     };
 
-    handleSearch() {
+    handleSearch(e) {
+        e.preventDefault();
 
+        let keys = Array.from(this.paramsMap.keys());
+        let pairs = [];
+        for (let i = 0; i < keys.length; i++) {
+            pairs.push(keys[i] + '=' + this.createParam(this.paramsMap.get(keys[i])));
+        }
+
+        let searchTerms = pairs.join('&');
+        console.log(searchTerms);
+
+        getListingsByFilter().then(data => {
+            this.setState({ listings: data.content, listingLoading: false })
+        });
+
+        console.log(this.
+            paramsMap);
     }
 
     getParamsMap() {
@@ -38,7 +55,7 @@ class ListingsPage extends React.Component {
         const pairs = this.props.location.search.substr(1).split('&');
         for (let i = 0; i < pairs.length; i++) {
             let pair = pairs[i].split('=');
-            map.set(pair[0], ListingsPage.parseParam(pair[1]));
+            map.set(pair[0], this.parseParam(pair[1]));
         }
 
         return map;
@@ -48,17 +65,15 @@ class ListingsPage extends React.Component {
         if (!value || value === '') {
             this.paramsMap.delete(key);
         } else {
-            this.paramsMap.set(key, ListingsPage.createParam(value));
+            this.paramsMap.set(key, this.createParam(value));
         }
-
-        console.log(this.paramsMap);
     }
 
-    static parseParam(param) {
+    parseParam(param) {
         return param.split('%20').join(' ');
     };
 
-    static createParam(param) {
+    createParam(param) {
         return param.split(' ').join('%20');
     }
 
@@ -69,13 +84,13 @@ class ListingsPage extends React.Component {
         
         return (
             <div>
-                <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap}/>
+                <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch}/>
                 <Breadcrumb />
                 <section id="hotel-box">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap}/>
+                                <Filters paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch}/>
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">

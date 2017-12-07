@@ -13,7 +13,9 @@ class Filters extends React.Component {
             propertyTypeFilters: [],
             amenitiesFilters: [],
             loading: true
-        }
+        };
+
+        this.changeValue = this.changeValue.bind(this);
     }
 
     async getData() {
@@ -83,6 +85,16 @@ class Filters extends React.Component {
 
         this.props.updateParamsMap('propertyTypes', Array.from(this.selectedPropertyTypes).join(','));
     };
+
+    changeValue(e) {
+        let min = e.target.value[0].toString();
+        let max = e.target.value[1].toString();
+
+        this.props.updateParamsMap('priceMin', parseFloat(min));
+        this.props.updateParamsMap('priceMax', parseFloat(max));
+
+
+    }
 
     getSelectedFilters(property) {
         let value = this.props.paramsMap.get(property);
@@ -184,17 +196,8 @@ class Filters extends React.Component {
                     <button type="submit" className="btn btn">Clear Filters</button>
                 </div>
                 <div className="form-group submit-search-button" id="filter-button">
-                    <button type="submit" className="btn btn-primary">See Hotels
-                    </button>
+                    <button type="submit" onClick={this.props.handleSearch} className="btn btn-primary">See Hotels</button>
                 </div>
-
-                <div className="form-group submit-search-button" id="filter-button">
-                    <button
-                        onClick={x => console.log(this.selectedStars, this.selectedPropertyTypes, this.selectedAmenities)}
-                        className="btn btn-primary">Check list
-                    </button>
-                </div>
-
             </div>
         )
     }

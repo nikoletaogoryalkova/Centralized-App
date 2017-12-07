@@ -1,5 +1,5 @@
 import React from 'react';
-import Search from '../Search';
+import Search from './Search';
 import ListingSliderBox from './ListingSliderBox';
 import OwlCarousel from 'react-owl-carousel';
 import Footer from '../Footer'

@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { getCountries } from '../requester';
-import DatePicker from './DatePicker';
+import { getCountries } from '../../requester';
+import DatePicker from '../DatePicker';
 import moment from 'moment';
 const queryString = require('query-string');
 
@@ -32,7 +32,7 @@ class Search extends React.Component {
             guests: guests,
             startDate: startDate,
             endDate: endDate,
-            countryid: countryId,
+            countryId: countryId,
             countries: [],
             nights: 0
         };
@@ -64,7 +64,7 @@ class Search extends React.Component {
 
         let queryString = '?';
         console.log(this.state.startDate);
-        queryString += 'countryId=' + this.state.countryid;
+        queryString += 'countryId=' + this.state.countryId;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
         queryString += '&guests=' + this.state.guests;
@@ -105,7 +105,7 @@ class Search extends React.Component {
                 <div className="form-group has-feedback has-feedback-left" id="location">
                     <i className="icon icon-map form-control-feedback"></i>
                     <select onChange={this.onChange}
-                        value={this.state.countryid}
+                        value={this.state.countryId}
                         className="form-control"
                         id="location-select"
                         name="countryId"
