@@ -6,6 +6,7 @@
     "bootstrap-daterangepicker": "^2.1.25",
     "create-react-class": "^15.6.2",
     "jquery": "^3.2.1",
+    "less": "^2.7.3",
     "moment": "^2.19.3",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
@@ -22,13 +23,14 @@
     "react-owl-carousel": "^2.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.17",
+    "react-scripts": "^1.0.17",
     "searchkit": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+	"bundle-css": "lessc src/app.less"
   }
 }

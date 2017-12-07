@@ -12,8 +12,11 @@ class Filters extends React.Component {
         this.state = {
             propertyTypeFilters: [],
             amenitiesFilters: [],
-            loading: true
-        }
+            priceValue: [100, 10000],
+            loading: true,
+        };
+
+        this.changeValue = this.changeValue.bind(this);
     }
 
     async getData() {
@@ -56,7 +59,8 @@ class Filters extends React.Component {
 
     toggleStar(label) {
         if (this.selectedStars.has(label)) {
-            this.selectedStars.delete(label);
+            this.selectedStars
+                .delete(label);
         } else {
             this.selectedStars.add(label);
         }
@@ -84,11 +88,22 @@ class Filters extends React.Component {
         this.props.updateParamsMap('propertyTypes', Array.from(this.selectedPropertyTypes).join(','));
     };
 
+    changeValue(e) {
+
+        let min = e.target.value[0].toString();
+        let max = e.target.value[1].toString();
+
+        this.props.updateParamsMap('priceMin', min);
+        this.props.updateParamsMap('priceMax', max);
+        this.setState({priceValue: e.target.value});
+    }
+
     getSelectedFilters(property) {
         let value = this.props.paramsMap.get(property);
         let result = new Set();
         let selected = [];
         if (value) {
+
             selected = value.split(',');
             for (let i = 0; i < selected.length; i++) {
                 result.add(selected[i]);
@@ -131,9 +146,10 @@ class Filters extends React.Component {
 
                     <div className="filter-price-box">
                         <ReactBootstrapSlider
+                            value={this.state.priceValue}
                             slideStop={this.changeValue}
                             step={5}
-                            max={10000}
+                            max={5000}
                             min={100}
                             orientation="horizontal"
                             range={true}/>
@@ -184,17 +200,8 @@ class Filters extends React.Component {
                     <button type="submit" className="btn btn">Clear Filters</button>
                 </div>
                 <div className="form-group submit-search-button" id="filter-button">
-                    <button type="submit" className="btn btn-primary">See Hotels
-                    </button>
+                    <button type="submit" onClick={this.props.handleSearch} className="btn btn-primary">See Hotels</button>
                 </div>
-
-                <div className="form-group submit-search-button" id="filter-button">
-                    <button
-                        onClick={x => console.log(this.selectedStars, this.selectedPropertyTypes, this.selectedAmenities)}
-                        className="btn btn-primary">Check list
-                    </button>
-                </div>
-
             </div>
         )
     }
