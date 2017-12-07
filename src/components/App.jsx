@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import HomePage from './home/HomePage.jsx';
 import ListingPage from './listings/ListingsPage';
 import PropertyPage from './property/PropertyPage';
+import ProfilePage from './profile/ProfilePage';
 import observer from '../services/observer';
 
 class App extends React.Component {
@@ -40,7 +41,8 @@ class App extends React.Component {
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                </Switch>
+                    <Route exact path="/profile" render={() => <ProfilePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    </Switch>
             </div>
         );
     }
