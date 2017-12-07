@@ -111,7 +111,15 @@ a:hover {
 a:focus {
     outline: none;
     background-color: transparent;
-    !important;
+}
+
+.block {
+    display:block;
+}
+
+.bold {
+    font-weight: bold;
+    font-family: 'FuturaStd-Medium', sans-serif;
 }
 
 .caret {
@@ -152,6 +160,10 @@ a:focus {
 
 .text-ffffff {
     color: #ffffff;
+}
+
+.text-green {
+    color:green;
 }
 
 .bgr-1f2427 {
@@ -2711,6 +2723,7 @@ ul.navbar-localization>li.currency span.value {
 
 #profile-nav {
     background-color: #223843;
+    margin-bottom: 40px;
 }
 
 ul.navbar-profile {
@@ -2744,6 +2757,15 @@ ul.navbar-profile>li.active>a {
     color: white;
 }
 
+#profile-dashboard-pending hr {
+    border-top:1px solid #CCCCCC;
+    margin: 0 0 30px 0;
+}
+
+ul.profile-pending-list {
+    overflow: hidden;
+}
+
 ul.profile-pending-list:before,
 ul.profile-pending-list:after {
     content: " ";
@@ -2761,11 +2783,11 @@ ul.profile-pending-list>li {
 }
 
 ul.profile-pending-list>li:nth-child(1) {
-    width:100px;
+    width:95px;
 }
 
 ul.profile-pending-list>li:nth-child(2) {
-    width:275px;
+    width:250px;
 }
 
 ul.profile-pending-list>li:nth-child(3) {
@@ -2773,11 +2795,16 @@ ul.profile-pending-list>li:nth-child(3) {
 }
 
 ul.profile-pending-list>li:nth-child(4) {
-    width:160px;
+    width:200px;
 }
 
 ul.profile-pending-list>li:nth-child(5) {
-    width:260px;
+    width:240px;
+}
+
+ul.profile-pending-list>li:nth-child(6) {
+    width: 1px;
+    overflow:visible;
 }
 
 ul.profile-pending-header {
@@ -2793,7 +2820,6 @@ ul.profile-pending-header>li {
 
 ul.profile-pending-header>li>span {
     font-size: 18px;
-    font-weight: bold;
 }
 
 ul.profile-pending-item {
@@ -2812,7 +2838,7 @@ ul.profile-pending-item>li {
 }
 
 ul.profile-pending-item>li span {
-    display: block;
+    white-space: nowrap;
 }
 
 ul.profile-pending-item>li>span.cnt {
