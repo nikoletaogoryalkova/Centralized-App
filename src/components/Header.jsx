@@ -3,6 +3,10 @@ import { withRouter, Link } from 'react-router-dom';
 import Search from './Search';
 
 class Header extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <div>
@@ -41,7 +45,7 @@ class Header extends React.Component {
 
                 <section id="search-bar">
                     <div className="container">
-                        <Search />
+                        <Search paramsMap={this.props.paramsMap} updateParamsMap={this.props.updateParamsMap}/>
                     </div>
                 </section>
             </div>

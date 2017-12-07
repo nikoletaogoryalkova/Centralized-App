@@ -14,7 +14,9 @@ class ListingsPage extends React.Component {
         this.state = {
             listings: [],
             listingLoading: true
-        }
+        };
+
+        this.updateParamsMap = this.updateParamsMap.bind(this);
     }
 
     componentDidMount() {
@@ -26,6 +28,10 @@ class ListingsPage extends React.Component {
     componentWillMount() {
         this.paramsMap = this.getParamsMap();
     };
+
+    handleSearch() {
+
+    }
 
     getParamsMap() {
         const map = new Map();
@@ -63,7 +69,7 @@ class ListingsPage extends React.Component {
         
         return (
             <div>
-                <Header />
+                <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap}/>
                 <Breadcrumb />
                 <section id="hotel-box">
                     <div className="container">
