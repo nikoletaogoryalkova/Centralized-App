@@ -6,7 +6,7 @@ export default class ProfileDashboardPending extends React.Component {
             <section id="profile-dashboard-pending">
                 <div className="container">
                     <h2>Pending Requests &amp; Discussions (3)</h2>
-                    <hr />
+                    <hr className="profile-line" />
                     <ul className="profile-pending-list profile-pending-header bold">
                         <li><span>&nbsp;</span></li>
                         <li><span>Booker</span></li>
