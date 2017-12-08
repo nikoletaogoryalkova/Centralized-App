@@ -4,6 +4,21 @@ import Footer from '../Footer';
 import { Radio, FormControl, FormGroup } from 'react-bootstrap';
 
 export default class CreateListingLandingPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            location: '',
+            listingType: 'home',
+        };
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange(e) {
+        this.setState({[e.target.name]: e.target.value})
+    }
+
     render() {
         return (
             <div>
@@ -21,17 +36,32 @@ export default class CreateListingLandingPage extends React.Component {
                                 <hr/>
                                 <form>
                                     <FormGroup>
-                                        <Radio name="radioGroup" inline>
-                                        Home
+                                        <Radio 
+                                            name="listingType"
+                                            value="home"
+                                            onChange={this.onChange}
+                                            checked={this.state.listingType === "home"} 
+                                            inline>
+                                            Home
                                         </Radio>
                                         {' '}
-                                        <Radio name="radioGroup" inline>
-                                        Hotel
+                                        <Radio 
+                                            name="listingType"
+                                            value="hotel"
+                                            onChange={this.onChange}
+                                            checked={this.state.listingType === "hotel"} 
+                                            inline>
+                                            Hotel
                                         </Radio>
                                     </FormGroup>
                                     <br/>
                                     <FormGroup>
-                                        <FormControl type="text" placeholder="Enter a location" />
+                                        <FormControl
+                                            name="location"
+                                            type="text" 
+                                            placeholder="Enter a location"
+                                            value={this.state.location} 
+                                            onChange={this.onChange}/>
                                     </FormGroup>
                                     <button class="btn btn-primary" id="btn-continue">Continue</button>
                                 </form>
