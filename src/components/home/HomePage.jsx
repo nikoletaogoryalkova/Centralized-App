@@ -8,7 +8,7 @@ import { getListings } from '../../requester';
 class HomePage extends React.Component {
     constructor() {
         super();
-        this.state = { listings: []};        
+        this.state = { listings: [] };
     };
 
     componentDidMount() {
@@ -62,14 +62,13 @@ class HomePage extends React.Component {
 
             <section id="popular-hotels-box">
                 <h2>Popular Properties</h2>
+                {this.state.listings.length > 1 &&
                     <OwlCarousel
                         className="owl-theme"
                         loop
                         margin={30}
                         nav
                         navText={["<span class='left_carusel'></span>", "<span class='right_carusel'></span>"]}
-                        smartSpeed={900}
-                        autoplay
                         items={4}
                         responsiveClass
                         dots={false}
@@ -91,6 +90,7 @@ class HomePage extends React.Component {
                             return <ListingSliderBox currency={this.props.currency} currencySign={this.props.currencySign} key={i} listing={item} />
                         })}
                     </OwlCarousel>
+                }
                 <div className="clearfix"></div>
             </section>
             <Footer />
