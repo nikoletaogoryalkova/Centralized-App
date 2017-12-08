@@ -44,6 +44,9 @@ class Filters extends React.Component {
     };
 
     componentWillMount() {
+        if (this.props.paramsMap.has("priceMin") && this.props.paramsMap.has("priceMax")) {
+            this.setState({priceValue: this.getPriceValue()});
+        }
         this.selectedStars = this.getSelectedFilters('propertyStars');
         this.selectedPropertyTypes = this.getSelectedFilters('propertyTypes');
         this.selectedAmenities = this.getSelectedFilters('propertyAmenities');
@@ -89,13 +92,18 @@ class Filters extends React.Component {
     };
 
     changeValue(e) {
-
         let min = e.target.value[0].toString();
         let max = e.target.value[1].toString();
 
         this.props.updateParamsMap('priceMin', min);
         this.props.updateParamsMap('priceMax', max);
         this.setState({priceValue: e.target.value});
+    }
+
+    getPriceValue() {
+        let min = Number(this.props.paramsMap.get("priceMin")) > 100 ? Number(this.props.paramsMap.get("priceMin")) : 100;
+        let max = Number(this.props.paramsMap.get("priceMax")) < 5000 ? Number(this.props.paramsMap.get("priceMax")) : 5000;
+        return [ min, max ];
     }
 
     getSelectedFilters(property) {
