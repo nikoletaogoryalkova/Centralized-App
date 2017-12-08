@@ -6,6 +6,7 @@ import PropertyPage from './property/PropertyPage';
 import ProfilePage from './profile/ProfilePage';
 import observer from '../services/observer';
 import CreateListingPage from './createListing/CreateListingPage';
+import CreateListingLandingPage from './createListing/CreateListingLandingPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -59,7 +60,7 @@ class App extends React.Component {
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route path="/create" component={CreateListingPage} />
+                    <Route path="/create" render={() => <CreateListingLandingPage />} />
                     <Route exact path="/profile" render={() => <ProfilePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                 </Switch>
             </div>
