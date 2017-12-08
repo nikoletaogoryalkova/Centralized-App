@@ -1,19 +1,25 @@
 import React from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
+import CreateListingLandingPage from './CreateListingLandingPage';
+import CreateListingPlaceType from './CreateListingPlaceType';
 
 export default class CreateListingPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+
+    }
+
     render() {
         return (
             <div>
                 <h1>Create listing</h1>
-                <NavLink className="btn btn-default" activeClassName={'active'} to="/create/a">a</NavLink>
-                <NavLink className="btn btn-default" activeClassName={'active'} to="/create/b">b</NavLink>
-                <NavLink className="btn btn-default" activeClassName={'active'} to="/create/c">c</NavLink>
+                <NavLink className="btn btn-default" activeClassName={'active'} to="/listings/create">Create</NavLink>
+                <NavLink className="btn btn-default" activeClassName={'active'} to="/listings/create/placetype">Place Type</NavLink>
 
                 <Switch>
-                    <Route path="/create/a" render={() => <h1>A</h1>} />
-                    <Route path="/create/b" render={() => <h1>B</h1>} />
-                    <Route path="/create/c" render={() => <h1>C</h1>} />
+                    <Route exact path="/listings/create" render={() => <CreateListingLandingPage />} />
+                    <Route exact path="/listings/create/placetype" render={() => <CreateListingPlaceType />} />
                 </Switch>
             </div>
         );

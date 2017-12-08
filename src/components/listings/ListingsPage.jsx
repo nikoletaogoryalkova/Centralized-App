@@ -105,7 +105,7 @@ class ListingsPage extends React.Component {
             return <div className="loader"></div>;
         }
 
-        let hasListings = this.state.listings.length === 20;
+        let hasListings = this.state.listings.length > 1;
         return (
             <div>
                 <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
