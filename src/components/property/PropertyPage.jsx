@@ -1,8 +1,10 @@
 import React from 'react';
 import Lightbox from 'react-images';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Header from '../Header';
 import PropertyInfo from './PropertyInfo';
+import Search from '../home/Search';
+import MainNav from '../MainNav';
 import Footer from '../Footer';
 import { getPropertyById } from '../../requester';
 import moment from 'moment';
@@ -120,7 +122,28 @@ class PropertyPage extends React.Component {
 
         return (
             <div key={1}>
-                <Header />
+                <div>
+                    <MainNav />
+
+                    <nav id="second-nav">
+                        <div className="container">
+                            <ul className="nav navbar-nav">
+                                <li className="active">
+                                    <Link to="/">HOMES</Link>
+                                </li>
+                            </ul>
+
+                            <ul className="second-nav-text pull-right">
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section id="search-bar">
+                        <div className="container">
+                            <Search />
+                        </div>
+                    </section>
+                </div>
                 <section className="hotel-gallery">
                     <div className="hotel-gallery-bgr" style={{ 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' }}>
                         <div className="container">
