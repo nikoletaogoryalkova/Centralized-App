@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { Config } from '../../config';
 
 export default class NavMain extends React.Component {
     render() {
-        return(
+        return (
             <nav id="main-nav" className="navbar">
                 <div className="container">
                     <div className="navbar-header">
@@ -17,8 +18,8 @@ export default class NavMain extends React.Component {
                             <img src={Config.getValue("basePath") + "images/logo.png"} alt="logo" />
                         </a>
                     </div>
-                    <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav" id="top-nav"></ul>
+                    <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
+                        <ul className="nav navbar-nav" id="top-nav"></ul>
                     </div>
                 </div>
             </nav>

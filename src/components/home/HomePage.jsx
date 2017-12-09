@@ -1,8 +1,10 @@
 import React from 'react';
+
 import Search from './Search';
-import ListingSliderBox from './ListingSliderBox';
 import OwlCarousel from 'react-owl-carousel';
+import ListingSliderBox from './ListingSliderBox';
 import Footer from '../Footer'
+
 import { getListings } from '../../requester';
 
 class HomePage extends React.Component {

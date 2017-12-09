@@ -1,14 +1,16 @@
 import React from 'react';
-import Lightbox from 'react-images';
 import { withRouter, Link } from 'react-router-dom';
-import Header from '../Header';
-import PropertyInfo from './PropertyInfo';
-import Search from '../home/Search';
+
 import MainNav from '../MainNav';
+import Search from '../home/Search';
+import PropertyInfo from './PropertyInfo';
 import Footer from '../Footer';
-import { getPropertyById } from '../../requester';
+
+import Lightbox from 'react-images';
 import moment from 'moment';
-const queryString = require('query-string');
+
+import { getPropertyById } from '../../requester';
+import { parse } from 'query-string';
 
 class PropertyPage extends React.Component {
     constructor(props) {
@@ -18,7 +20,7 @@ class PropertyPage extends React.Component {
         let endDate = moment().add(1, 'days');
 
         if (this.props) {
-            let queryParams = queryString.parse(this.props.location.search);
+            let queryParams = parse(this.props.location.search);
 
             if (queryParams.startDate && queryParams.endDate) {
                 startDate = moment(queryParams.startDate, 'DD/MM/YYYY');

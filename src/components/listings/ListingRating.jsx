@@ -2,8 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 class ListingRating extends React.Component {
-    getRatingString(ratingNumber, reviewsCount){
-        if(reviewsCount === 0) {
+    getRatingString(ratingNumber, reviewsCount) {
+        if (reviewsCount === 0) {
             return '';
         }
 

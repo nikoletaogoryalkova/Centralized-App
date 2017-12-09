@@ -1,12 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+
 import ListingRating from '../listings/ListingRating';
-import PropertyReservation from './PropertyReservation';
 import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyReview from './PropertyReview';
+import PropertyReservation from './PropertyReservation';
 
 class PropertyInfo extends React.Component {
-    
+
     getAmenities(amenities) {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {

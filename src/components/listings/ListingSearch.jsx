@@ -1,9 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { getCountries } from '../../requester';
+
 import DatePicker from '../DatePicker';
 import moment from 'moment';
-const queryString = require('query-string');
+
+import { getCountries } from '../../requester';
+import { parse } from 'query-string';
 
 class ListingSearch extends React.Component {
     constructor(props) {
@@ -15,7 +17,7 @@ class ListingSearch extends React.Component {
         let endDate = moment().add(1, 'days');
 
         if (this.props) {
-            let queryParams = queryString.parse(this.props.location.search);
+            let queryParams = parse(this.props.location.search);
             if (queryParams.guests) {
                 guests = queryParams.guests;
             }
@@ -39,7 +41,6 @@ class ListingSearch extends React.Component {
 
         this.handleApply = this.handleApply.bind(this);
         this.onChange = this.onChange.bind(this);
-        // this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -47,7 +48,7 @@ class ListingSearch extends React.Component {
             this.setState({ countries: data.content })
         });
 
-        if(this.state.startDate && this.state.endDate){
+        if (this.state.startDate && this.state.endDate) {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
     };
@@ -73,7 +74,7 @@ class ListingSearch extends React.Component {
 
     calculateNights(startDate, endDate) {
         let checkIn = moment(startDate, 'DD/MM/YYYY');
-        let checkOut =  moment(endDate, 'DD/MM/YYYY');
+        let checkOut = moment(endDate, 'DD/MM/YYYY');
 
         let diffDays = checkOut.diff(checkIn, 'days');
 

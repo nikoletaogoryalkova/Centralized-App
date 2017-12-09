@@ -47,7 +47,7 @@ class Search extends React.Component {
             this.setState({ countries: data.content })
         });
 
-        if(this.state.startDate && this.state.endDate){
+        if (this.state.startDate && this.state.endDate) {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
     };
@@ -87,7 +87,7 @@ class Search extends React.Component {
 
     calculateNights(startDate, endDate) {
         let checkIn = moment(startDate, 'DD/MM/YYYY');
-        let checkOut =  moment(endDate, 'DD/MM/YYYY');
+        let checkOut = moment(endDate, 'DD/MM/YYYY');
 
         let diffDays = checkOut.diff(checkIn, 'days');
 

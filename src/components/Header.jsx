@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
+
 import MainNav from './MainNav';
 import ListingSearch from './listings/ListingSearch';
 
@@ -24,7 +25,7 @@ class Header extends React.Component {
 
                 <section id="search-bar">
                     <div className="container">
-                        <ListingSearch paramsMap={this.props.paramsMap} updateParamsMap={this.props.updateParamsMap} handleSearch={this.props.handleSearch}/>
+                        <ListingSearch paramsMap={this.props.paramsMap} updateParamsMap={this.props.updateParamsMap} handleSearch={this.props.handleSearch} />
                     </div>
                 </section>
             </div>

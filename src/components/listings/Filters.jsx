@@ -1,9 +1,12 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
-import {getPropertyTypes, getAmenitiesFilters} from '../../requester';
-import FiltersCheckbox from './FiltersCheckbox';
+import { withRouter } from 'react-router-dom';
+
 import StarCheckbox from './StarCheckbox';
+import FiltersCheckbox from './FiltersCheckbox';
+
 import ReactBootstrapSlider from 'react-bootstrap-slider';
+
+import { getPropertyTypes, getAmenitiesFilters } from '../../requester';
 
 class Filters extends React.Component {
     constructor(props) {
@@ -45,7 +48,7 @@ class Filters extends React.Component {
 
     componentWillMount() {
         if (this.props.paramsMap.has("priceMin") && this.props.paramsMap.has("priceMax")) {
-            this.setState({priceValue: this.getPriceValue()});
+            this.setState({ priceValue: this.getPriceValue() });
         }
         this.selectedStars = this.getSelectedFilters('propertyStars');
         this.selectedPropertyTypes = this.getSelectedFilters('propertyTypes');
@@ -53,11 +56,11 @@ class Filters extends React.Component {
     };
 
     componentWillUnmount() {
-        this.setState({propertyTypeFilters: '', loading: true})
+        this.setState({ propertyTypeFilters: '', loading: true })
     };
 
     onChange(e) {
-        this.setState({[e.target.name]: e.target.value});
+        this.setState({ [e.target.name]: e.target.value });
     };
 
     toggleStar(label) {
@@ -97,13 +100,13 @@ class Filters extends React.Component {
 
         this.props.updateParamsMap('priceMin', min);
         this.props.updateParamsMap('priceMax', max);
-        this.setState({priceValue: e.target.value});
+        this.setState({ priceValue: e.target.value });
     }
 
     getPriceValue() {
         let min = Number(this.props.paramsMap.get("priceMin")) > 100 ? Number(this.props.paramsMap.get("priceMin")) : 100;
         let max = Number(this.props.paramsMap.get("priceMax")) < 5000 ? Number(this.props.paramsMap.get("priceMax")) : 5000;
-        return [ min, max ];
+        return [min, max];
     }
 
     getSelectedFilters(property) {
@@ -122,7 +125,7 @@ class Filters extends React.Component {
     };
 
     render() {
-        const {loading} = this.state;
+        const { loading } = this.state;
 
         if (loading) {
             return (<div className="loader" />);
@@ -136,15 +139,15 @@ class Filters extends React.Component {
 
                     <div className="filter-stars">
                         <span onClick={() => this.toggleStar("1")}><StarCheckbox text={"1"}
-                                                                                 checked={this.selectedStars.has("1")}/></span>
+                            checked={this.selectedStars.has("1")} /></span>
                         <span onClick={() => this.toggleStar("2")}><StarCheckbox text={"2"}
-                                                                                 checked={this.selectedStars.has("2")}/></span>
+                            checked={this.selectedStars.has("2")} /></span>
                         <span onClick={() => this.toggleStar("3")}><StarCheckbox text={"3"}
-                                                                                 checked={this.selectedStars.has("3")}/></span>
+                            checked={this.selectedStars.has("3")} /></span>
                         <span onClick={() => this.toggleStar("4")}><StarCheckbox text={"4"}
-                                                                                 checked={this.selectedStars.has("4")}/></span>
+                            checked={this.selectedStars.has("4")} /></span>
                         <span onClick={() => this.toggleStar("5")}><StarCheckbox text={"5"}
-                                                                                 checked={this.selectedStars.has("5")}/></span>
+                            checked={this.selectedStars.has("5")} /></span>
                     </div>
                 </div>
                 <div className="clearfix" />
@@ -160,7 +163,7 @@ class Filters extends React.Component {
                             max={5000}
                             min={100}
                             orientation="horizontal"
-                            range={true}/>
+                            range={true} />
                         <div className="clearfix" />
                     </div>
 
@@ -178,7 +181,7 @@ class Filters extends React.Component {
                                         key={i}
                                         text={item.name}
                                         count={item.count}
-                                        checked={this.selectedPropertyTypes.has(item.name)}/>
+                                        checked={this.selectedPropertyTypes.has(item.name)} />
                                 </div>
                             );
                         })}
@@ -195,15 +198,15 @@ class Filters extends React.Component {
                                         key={i}
                                         text={item.name}
                                         count={item.count}
-                                        checked={this.selectedAmenities.has(item.name)}/>
+                                        checked={this.selectedAmenities.has(item.name)} />
                                 </div>
                             );
                         })}
                     </div>
                 </div>
-                <div className="clearfix"/>
+                <div className="clearfix" />
 
-                <div className="clearfix"/>
+                <div className="clearfix" />
                 <div className="form-group" id="clear-filter-button">
                     <button type="submit" className="btn btn">Clear Filters</button>
                 </div>

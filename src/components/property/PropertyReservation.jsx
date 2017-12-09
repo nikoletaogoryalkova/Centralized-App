@@ -1,9 +1,11 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+
 import DatePicker from '../DatePicker';
-import { requestBooking } from '../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
-const queryString = require('query-string');
+
+import { parse } from 'query-string';
+import { requestBooking } from '../../requester';
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -12,7 +14,7 @@ class PropertyReservation extends React.Component {
         let guests = '';
 
         if (this.props) {
-            let queryParams = queryString.parse(this.props.location.search);
+            let queryParams = parse(this.props.location.search);
             if (queryParams.guests) {
                 guests = queryParams.guests;
             }
@@ -68,7 +70,7 @@ class PropertyReservation extends React.Component {
                     this.props.history.push('/');
                 }
                 else {
-                    this.setState({error: data.message});
+                    this.setState({ error: data.message });
                 }
             });
         }

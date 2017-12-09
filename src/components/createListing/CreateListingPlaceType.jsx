@@ -1,25 +1,9 @@
 import React from 'react';
-import NavMain from './NavMain';
-import Footer from '../Footer';
 
 export default class CreateListingPlaceType extends React.Component {
     render() {
         return (
             <div>
-                 <NavMain />
-
-                 <section id="reservation-content-box">
-    <div className="container">
-
-        <div className="row">
-            <div className="col-md-3">
-                <div className="host-step">Place Type</div>
-                <div className="host-step active">Accommodation</div>
-                <div className="host-step">Facilities</div>
-                <div className="host-step">Safety amenities</div>
-                <div className="host-step">Location</div>
-            </div>
-            <div className="col-md-8">
                 <div className="reservation-hotel-review-room">
                     <h2>What kind of place do you want to list?</h2>
                     <hr />
@@ -28,9 +12,9 @@ export default class CreateListingPlaceType extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label for="listing-type">What are you listing?</label>
+                                    <label htmlFor="listing-type">What are you listing?</label>
                                     <select className="form-control" name="listing-type" required="required"
-                                            id="listing-type">
+                                        id="listing-type">
                                         <option value="Home">Home</option>
                                         <option value="Hotel">Hotel</option>
                                     </select>
@@ -38,9 +22,9 @@ export default class CreateListingPlaceType extends React.Component {
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label for="property-type">What type of property is this?</label>
+                                    <label htmlFor="property-type">What type of property is this?</label>
                                     <select className="form-control" name="property-type" required="required"
-                                            id="property-type">
+                                        id="property-type">
                                         <option value="Apartment">Apartment</option>
                                         <option value="Condominium">Condominium</option>
                                         <option value="Guesthouse">Guesthouse</option>
@@ -83,34 +67,34 @@ export default class CreateListingPlaceType extends React.Component {
                                     </div>
                                     <div className="col-md-4">
                                         <input type="radio" className="host-step-radio" id="entire-place"
-                                               name="reservation-type" />
+                                            name="reservation-type" />
                                         <div className="radio-input-group">
                                             <div className="host-img-box">
                                                 <img src="images/icon-home.png" alt="icon home" />
                                             </div>
-                                            <label for="entire-place">Entire Place</label>
+                                            <label htmlFor="entire-place">Entire Place</label>
                                         </div>
                                     </div>
 
                                     <div className="col-md-4">
                                         <input type="radio" className="host-step-radio" id="private-room"
-                                               name="reservation-type" />
+                                            name="reservation-type" />
                                         <div className="radio-input-group">
                                             <div className="host-img-box">
                                                 <img src="images/icon-home.png" alt="icon home" />
                                             </div>
-                                            <label for="private-room">Private room</label>
+                                            <label htmlFor="private-room">Private room</label>
                                         </div>
                                     </div>
 
                                     <div className="col-md-4">
                                         <input type="radio" className="host-step-radio" id="shared-room"
-                                               name="reservation-type" />
+                                            name="reservation-type" />
                                         <div className="radio-input-group">
                                             <div className="host-img-box">
                                                 <img src="images/icon-home.png" alt="icon home" />
                                             </div>
-                                            <label for="shared-room">Shared Room</label>
+                                            <label htmlFor="shared-room">Shared Room</label>
                                         </div>
                                     </div>
                                 </div>
@@ -121,11 +105,11 @@ export default class CreateListingPlaceType extends React.Component {
                                     <label>Is this set up as dedicated guest space?</label>
 
                                     <input type="checkbox" name="dedicated-space" id="dedicated-space-yes"
-                                           className="checkbox"/>
-                                    <label for="dedicated-space-yes">Yes, it's primarily set up for guests</label>
+                                        className="checkbox" />
+                                    <label htmlFor="dedicated-space-yes">Yes, it's primarily set up for guests</label>
                                     <input type="checkbox" name="dedicated-space" id="dedicated-space-no"
-                                           className="checkbox"/>
-                                    <label for="dedicated-space-no">No, I keep my personal belongings here</label>
+                                        className="checkbox" />
+                                    <label htmlFor="dedicated-space-no">No, I keep my personal belongings here</label>
                                 </div>
                             </div>
 
@@ -133,9 +117,9 @@ export default class CreateListingPlaceType extends React.Component {
 
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label for="property-size">Please enter the size of your property</label>
+                                    <label htmlFor="property-size">Please enter the size of your property</label>
                                     <div className="input-group">
-                                        <input type="number" className="form-control" id="property-size"/>
+                                        <input type="number" className="form-control" id="property-size" />
                                         <span className="input-group-addon">m&sup2;</span>
                                     </div>
                                 </div>
@@ -147,15 +131,6 @@ export default class CreateListingPlaceType extends React.Component {
                     </form>
 
                 </div>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-                <Footer />
             </div>
         )
     }

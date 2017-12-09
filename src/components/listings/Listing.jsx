@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import ListingRating from './ListingRating';
+import { withRouter, Link } from 'react-router-dom';
+
 import ListingPictures from '../listings/ListingPictures';
-import {getLocRate} from '../../requester';
+import ListingRating from './ListingRating';
+
+import { getLocRate } from '../../requester';
 
 class Listing extends React.Component {
     constructor(props) {
@@ -15,10 +17,10 @@ class Listing extends React.Component {
 
     componentDidMount() {
         getLocRate().then((data) => {
-            this.setState({locRate: data.loc });
+            this.setState({ locRate: data.loc });
         })
     }
-    
+
     render() {
         const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
 

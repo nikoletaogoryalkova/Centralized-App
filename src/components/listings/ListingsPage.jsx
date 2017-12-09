@@ -1,12 +1,14 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+
 import Header from '../Header';
-import Footer from '../Footer';
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
 import Listing from './Listing';
-import { withRouter } from 'react-router-dom';
-import { getListingsByFilter } from '../../requester';
 import Pagination from 'rc-pagination';
+import Footer from '../Footer';
+
+import { getListingsByFilter } from '../../requester';
 
 class ListingsPage extends React.Component {
     constructor(props) {
@@ -95,9 +97,11 @@ class ListingsPage extends React.Component {
     }
 
     componentWillUnmount() {
-        this.setState( {listings: [], listingLoading: true,
+        this.setState({
+            listings: [], listingLoading: true,
             currentPage: 1,
-            totalItems: 0})
+            totalItems: 0
+        })
     }
 
     render() {
@@ -105,7 +109,7 @@ class ListingsPage extends React.Component {
             return <div className="loader"></div>;
         }
 
-        let hasListings = this.state.listings.length > 1;
+        let hasListings = this.state.listings.length > 0;
         return (
             <div>
                 <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
@@ -121,11 +125,13 @@ class ListingsPage extends React.Component {
 
                                     {hasListings ? this.state.listings.map((item, i) => {
                                         return <Listing key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
-                                    }) : <div>No results</div>}
+                                    }) : <div className="text-center"><h3>No results</h3></div>}
 
-                                    <div className="pagination-box">
-                                        {this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />}
-                                    </div>
+                                    {hasListings &&
+                                        <div className="pagination-box">
+                                            {this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />}
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>

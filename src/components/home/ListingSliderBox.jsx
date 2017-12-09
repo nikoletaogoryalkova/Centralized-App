@@ -16,7 +16,7 @@ export default class ListingSliderBox extends React.Component {
 
     componentDidMount() {
         getLocRate().then((data) => {
-            this.setState({locRate: data.loc, loading: false});
+            this.setState({ locRate: data.loc, loading: false });
         })
     }
 

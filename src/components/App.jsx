@@ -1,12 +1,13 @@
 import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
+
 import HomePage from './home/HomePage.jsx';
 import ListingPage from './listings/ListingsPage';
 import PropertyPage from './property/PropertyPage';
 import ProfilePage from './profile/ProfilePage';
-import observer from '../services/observer';
-import CreateListingPage from './createListing/CreateListingPage';
 import CreateListingLandingPage from './createListing/CreateListingLandingPage';
+
+import observer from '../services/observer';
 
 class App extends React.Component {
     constructor(props) {
@@ -14,20 +15,20 @@ class App extends React.Component {
         let currency = '';
         let currencySign = '';
 
-        if(localStorage["currency"] && localStorage["currencySign"]) {
+        if (localStorage["currency"] && localStorage["currencySign"]) {
             currency = localStorage["currency"];
             currencySign = localStorage["currencySign"];
         }
         else {
             currency = "USD";
-            currencySign= "$";
+            currencySign = "$";
 
             localStorage["currency"] = currency;
             localStorage["currencySign"] = currencySign;
         }
 
         this.state = { currency: currency, currencySign: currencySign }
-    
+
         this.currencyChange = this.currencyChange.bind(this);
     }
 
@@ -58,7 +59,7 @@ class App extends React.Component {
                 <Switch>
                     <Route exact path="/" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route path="/listings/create" render={() => <CreateListingPage />} />
+                    <Route exact path="/listings/create" render={() => <CreateListingLandingPage />} />
                     <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile" render={() => <ProfilePage currency={this.state.currency} currencySign={this.state.currencySign} />} />

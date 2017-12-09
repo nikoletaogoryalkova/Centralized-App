@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 class PropertyReview extends React.Component {
-    getRatingString(rating){
+    getRatingString(rating) {
         let result = "";
         let ratingRoundedNumber = Math.round(rating);
 
