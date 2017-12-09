@@ -1,23 +1,10 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import { Config } from '../../config';
 import { Radio, FormControl, FormGroup } from 'react-bootstrap';
 
 export default class CreateListingLandingPage extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            location: '',
-            listingType: 'home',
-        };
-
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value })
-    }
 
     render() {
         return (
@@ -36,18 +23,16 @@ export default class CreateListingLandingPage extends React.Component {
                                     <FormGroup>
                                         <Radio
                                             name="listingType"
-                                            value="home"
-                                            onChange={this.onChange}
-                                            checked={this.state.listingType === "home"}
+                                            value={1}
+                                            onChange={this.props.onChange}
                                             inline>
                                             Home
                                         </Radio>
                                         {' '}
                                         <Radio
                                             name="listingType"
-                                            value="hotel"
-                                            onChange={this.onChange}
-                                            checked={this.state.listingType === "hotel"}
+                                            value={2}
+                                            onChange={this.props.onChange}
                                             inline>
                                             Hotel
                                         </Radio>
@@ -59,9 +44,9 @@ export default class CreateListingLandingPage extends React.Component {
                                             type="text"
                                             placeholder="Enter a location"
                                             value={this.state.location}
-                                            onChange={this.onChange} />
+                                            onChange={this.props.onChange} />
                                     </FormGroup>
-                                    <button className="btn btn-primary" id="btn-continue">Continue</button>
+                                    <NavLink onClick={this.props.stepNext} to="/listings/create/2" className="btn btn-primary" id="btn-continue">Continue</NavLink>
                                 </form>
                             </div>
                         </div>

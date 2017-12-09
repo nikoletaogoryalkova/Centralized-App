@@ -5,7 +5,7 @@ import HomePage from './home/HomePage.jsx';
 import ListingPage from './listings/ListingsPage';
 import PropertyPage from './property/PropertyPage';
 import ProfilePage from './profile/ProfilePage';
-import CreateListingLandingPage from './createListing/CreateListingLandingPage';
+import CreateListingPage from './createListing/CreateListingPage';
 
 import observer from '../services/observer';
 
@@ -59,7 +59,7 @@ class App extends React.Component {
                 <Switch>
                     <Route exact path="/" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/listings/create" render={() => <CreateListingLandingPage />} />
+                    <Route path="/listings/create" render={() => <CreateListingPage />} />
                     <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile" render={() => <ProfilePage currency={this.state.currency} currencySign={this.state.currencySign} />} />

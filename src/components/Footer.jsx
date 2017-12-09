@@ -45,7 +45,7 @@ export default class Footer extends React.Component {
                                 </ul>
                             </div>
 
-                            <DropdownButton componentClass="div" componentClassName="select-curency" block={true} title={localStorage["currency"] ? localStorage["currency"] : 'USD'} id="bg-nested-dropdown">
+                            <DropdownButton block={true} title={localStorage["currency"] ? localStorage["currency"] : 'USD'} id="bg-nested-dropdown">
                                 <MenuItem  onClick={() => this.toggleCurrency('GBP')}>£ GBP</MenuItem>
                                 <MenuItem onClick={() => this.toggleCurrency('EUR')}>€ EUR</MenuItem>
                                 <MenuItem onClick={() => this.toggleCurrency('USD')}>$ USD</MenuItem>
