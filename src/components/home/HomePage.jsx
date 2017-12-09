@@ -5,6 +5,7 @@ import OwlCarousel from 'react-owl-carousel';
 import ListingSliderBox from './ListingSliderBox';
 import Footer from '../Footer'
 
+import { Config } from '../../config';
 import { getListings } from '../../requester';
 
 class HomePage extends React.Component {
@@ -30,7 +31,7 @@ class HomePage extends React.Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="/"><img src="images/logo-w.png" alt='logo' /></a>
+                        <a className="navbar-brand" href="/"><img src={Config.getValue("basePath") + "images/logo-w.png"} alt='logo' /></a>
                     </div>
 
                     <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">

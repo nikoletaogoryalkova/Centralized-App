@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Config } from '../../config';
+
 export default class CreateListingPlaceType extends React.Component {
     render() {
         return (
@@ -70,7 +72,7 @@ export default class CreateListingPlaceType extends React.Component {
                                             name="reservation-type" />
                                         <div className="radio-input-group">
                                             <div className="host-img-box">
-                                                <img src="images/icon-home.png" alt="icon home" />
+                                                <img src={Config.getValue("basePath") + "images/icon-home.png"} alt="icon home" />
                                             </div>
                                             <label htmlFor="entire-place">Entire Place</label>
                                         </div>
@@ -81,7 +83,7 @@ export default class CreateListingPlaceType extends React.Component {
                                             name="reservation-type" />
                                         <div className="radio-input-group">
                                             <div className="host-img-box">
-                                                <img src="images/icon-home.png" alt="icon home" />
+                                                <img src={Config.getValue("basePath") + "images/icon-home.png"} alt="icon home" />
                                             </div>
                                             <label htmlFor="private-room">Private room</label>
                                         </div>
@@ -92,7 +94,7 @@ export default class CreateListingPlaceType extends React.Component {
                                             name="reservation-type" />
                                         <div className="radio-input-group">
                                             <div className="host-img-box">
-                                                <img src="images/icon-home.png" alt="icon home" />
+                                                <img src={Config.getValue("basePath") + "images/icon-home.png"} alt="icon home" />
                                             </div>
                                             <label htmlFor="shared-room">Shared Room</label>
                                         </div>

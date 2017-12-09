@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Config } from '../../config';
 import { Radio, FormControl, FormGroup } from 'react-bootstrap';
 
 export default class CreateListingLandingPage extends React.Component {
@@ -25,7 +26,7 @@ export default class CreateListingLandingPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-6">
-                                <img src="../../../images/listing-illustration.png" alt="listing-creation" />
+                                <img src={Config.getValue("basePath") + "images/listing-illustration.png"} alt="listing-creation" />
                             </div>
                             <div className="col-md-6">
                                 <h4>STEP ONE</h4>

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Config } from '../../config';
+
 export default class NavMain extends React.Component {
     render() {
         return (
@@ -13,7 +15,7 @@ export default class NavMain extends React.Component {
                             <span className="icon-bar"></span>
                         </button>
                         <a className="navbar-brand" href="/">
-                            <img src="../images/logo.png" alt="logo" />
+                            <img src={Config.getValue("basePath") + "images/logo.png"} alt="logo" />
                         </a>
                     </div>
                     <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">

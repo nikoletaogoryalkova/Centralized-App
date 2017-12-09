@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { Config } from '../config';
+
 export default class MainNav extends React.Component {
     render() {
         return (
@@ -14,7 +16,7 @@ export default class MainNav extends React.Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <Link className="navbar-brand" to="/"><img src="../images/logo.png" alt='logo' /></Link>
+                        <Link className="navbar-brand" to="/"><img src={Config.getValue("basePath") + "images/logo.png"} alt='logo' /></Link>
                     </div>
 
                     <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">

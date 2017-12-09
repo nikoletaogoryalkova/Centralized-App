@@ -8,8 +8,6 @@ import Footer from '../Footer';
 export default class CreateListingPage extends React.Component {
     constructor(props) {
         super(props);
-
-
     }
 
     render() {
