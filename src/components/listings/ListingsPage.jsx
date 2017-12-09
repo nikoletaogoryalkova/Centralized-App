@@ -26,14 +26,21 @@ class ListingsPage extends React.Component {
     }
 
     componentDidMount() {
-        let searchTerms = this.getSearchTerms();
-        getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-            this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
-        });
+        if (this.props.location.search) {
+            let searchTerms = this.getSearchTerms();
+            getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
+                this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
+            });
+        }
+        else {
+            this.props.history.push("/");
+        }
     };
 
     componentWillMount() {
-        this.paramsMap = this.getParamsMap();
+        if (this.props.location.search) {
+            this.paramsMap = this.getParamsMap();
+        }
     };
 
     handleSearch(e) {
