@@ -15,7 +15,7 @@ class ListingsPage extends React.Component {
         super(props);
 
         this.state = {
-            listings: [],
+            listings: null,
             listingLoading: true,
             currentPage: 1,
             totalItems: 0
@@ -29,6 +29,7 @@ class ListingsPage extends React.Component {
         if (this.props.location.search) {
             let searchTerms = this.getSearchTerms();
             getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
+                console.log(data.page.totalElements);
                 this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
             });
         }
@@ -47,7 +48,12 @@ class ListingsPage extends React.Component {
         e.preventDefault();
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms).then(data => {
-            this.setState({ listings: data.content, listingLoading: false })
+            console.log(data.page.totalElements);
+            this.setState({ 
+                listings: data.content, 
+                listingLoading: false,
+                totalItems: data.page.totalElements,
+            })
         });
 
         let url = `/listings/?${searchTerms}`;
@@ -98,14 +104,17 @@ class ListingsPage extends React.Component {
 
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
-            console.log(data);
-            this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
+            this.setState({ 
+                listings: data.content, 
+                listingLoading: false, 
+                totalItems: data.page.totalElements 
+            })
         });
     }
 
     componentWillUnmount() {
         this.setState({
-            listings: [], listingLoading: true,
+            listings: null, listingLoading: true,
             currentPage: 1,
             totalItems: 0
         })
@@ -116,7 +125,10 @@ class ListingsPage extends React.Component {
             return <div className="loader"></div>;
         }
 
-        let hasListings = this.state.listings.length > 0;
+        let listings = this.state.listings;
+        let hasListings = listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
+        console.log(hasListings);
+        console.log(this.state.totalItems);
         return (
             <div>
                 <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
