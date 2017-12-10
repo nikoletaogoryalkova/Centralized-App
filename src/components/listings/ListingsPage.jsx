@@ -11,6 +11,7 @@ import Footer from '../Footer';
 import { getListingsByFilter } from '../../requester';
 
 class ListingsPage extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -29,7 +30,6 @@ class ListingsPage extends React.Component {
         if (this.props.location.search) {
             let searchTerms = this.getSearchTerms();
             getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-                console.log(data.page.totalElements);
                 this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
             });
         }
@@ -76,6 +76,14 @@ class ListingsPage extends React.Component {
         for (let i = 0; i < pairs.length; i++) {
             let pair = pairs[i].split('=');
             map.set(pair[0], this.parseParam(pair[1]));
+        }
+
+        if (!map.has('priceMin')) {
+            map.set('priceMin', '100');
+        }
+
+        if (!map.has('priceMax')) {
+            map.set('priceMax', '5000');
         }
 
         return map;
