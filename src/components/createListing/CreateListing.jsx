@@ -1,10 +1,12 @@
 import React from 'react';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import CreateListingAside from './CreateListingAside';
 import CreateListingLandingPage from './CreateListingLandingPage';
 import CreateListingPlaceType from './CreateListingPlaceType';
 import CreateListingAccommodation from './CreateListingAccommodation';
+import CreateListingTitle from './CreateListingTitle';
+import CreateListingDescription from './CreateListingDescription';
 import CreateListingNavigation from './CreateListingNavigation';
 
 class CreateListing extends React.Component {
@@ -98,9 +100,12 @@ class CreateListing extends React.Component {
                                 <CreateListingAside stepOn={this.stepOn} process={this.state.process} />
                                 <div className="col-md-8">
                                     <Switch>
+                                        <Redirect exact path="/listings/create/" to="/listings/create/1" />
                                         <Route exact path="/listings/create/1" render={() => <CreateListingLandingPage onChange={this.onChange} />} />
                                         <Route exact path="/listings/create/2" render={() => <CreateListingPlaceType />} />
-                                        <Route exact path="/listings/create/7" render={() => <CreateListingAccommodation />} />
+                                        <Route exact path="/listings/create/3" render={() => <CreateListingAccommodation />} />
+                                        <Route exact path="/listings/create/7" render={() => <CreateListingTitle />} />
+                                        <Route exact path="/listings/create/8" render={() => <CreateListingDescription />} />
                                     </Switch>
                                 </div>
                             </div>

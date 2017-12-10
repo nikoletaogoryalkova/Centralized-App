@@ -43,7 +43,6 @@ export default class CreateListingLandingPage extends React.Component {
                                             name="location"
                                             type="text"
                                             placeholder="Enter a location"
-                                            value={this.state.location}
                                             onChange={this.props.onChange} />
                                     </FormGroup>
                                     <NavLink onClick={this.props.stepNext} to="/listings/create/2" className="btn btn-primary" id="btn-continue">Continue</NavLink>
