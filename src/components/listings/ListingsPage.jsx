@@ -48,7 +48,6 @@ class ListingsPage extends React.Component {
         e.preventDefault();
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms).then(data => {
-            console.log(data.page.totalElements);
             this.setState({ 
                 listings: data.content, 
                 listingLoading: false,
@@ -135,8 +134,6 @@ class ListingsPage extends React.Component {
 
         let listings = this.state.listings;
         let hasListings = listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
-        console.log(hasListings);
-        console.log(this.state.totalItems);
         return (
             <div>
                 <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
