@@ -16,8 +16,8 @@ export async function getPropertyTypes() {
     return res.json();
 }
 
-export async function getListingsByFilter() {
-    const res = await fetch(`${host}api/listings?projection=listings&page=1`);
+export async function getListingsByFilter(searchTerms) {
+    const res = await fetch(`${host}api/listings/search/getAllByFilter?${searchTerms}&projection=listings`);
     return res.json();
 }
 
@@ -41,5 +41,10 @@ export async function requestBooking(requestInfo) {
         body: JSON.stringify(requestInfo)
     });
 
+    return res.json();
+}
+
+export async function getLocRate() {
+    const res = await fetch('https://lockchain.co/marketplace/internal_api/loc_price.php');
     return res.json();
 }

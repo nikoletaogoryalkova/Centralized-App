@@ -1,14 +1,17 @@
 import React from 'react';
-import Search from '../Search';
-import ListingSliderBox from './ListingSliderBox';
+
+import Search from './Search';
 import OwlCarousel from 'react-owl-carousel';
+import ListingSliderBox from './ListingSliderBox';
 import Footer from '../Footer'
+
+import { Config } from '../../config';
 import { getListings } from '../../requester';
 
 class HomePage extends React.Component {
     constructor() {
         super();
-        this.state = { listings: []};        
+        this.state = { listings: [] };
     };
 
     componentDidMount() {
@@ -28,7 +31,7 @@ class HomePage extends React.Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="/"><img src="images/logo-w.png" alt='logo' /></a>
+                        <a className="navbar-brand" href="/"><img src={Config.getValue("basePath") + "images/logo-w.png"} alt='logo' /></a>
                     </div>
 
                     <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
@@ -62,14 +65,13 @@ class HomePage extends React.Component {
 
             <section id="popular-hotels-box">
                 <h2>Popular Properties</h2>
+                {this.state.listings.length > 1 &&
                     <OwlCarousel
                         className="owl-theme"
                         loop
                         margin={30}
                         nav
                         navText={["<span class='left_carusel'></span>", "<span class='right_carusel'></span>"]}
-                        smartSpeed={900}
-                        autoplay
                         items={4}
                         responsiveClass
                         dots={false}
@@ -88,9 +90,10 @@ class HomePage extends React.Component {
                             }
                         }}>
                         {this.state.listings.map((item, i) => {
-                            return <ListingSliderBox key={i} listing={item} />
+                            return <ListingSliderBox currency={this.props.currency} currencySign={this.props.currencySign} key={i} listing={item} />
                         })}
                     </OwlCarousel>
+                }
                 <div className="clearfix"></div>
             </section>
             <Footer />

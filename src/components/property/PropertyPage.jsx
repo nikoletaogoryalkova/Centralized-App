@@ -1,12 +1,16 @@
 import React from 'react';
-import Lightbox from 'react-images';
-import { withRouter } from 'react-router-dom';
-import Header from '../Header';
+import { withRouter, Link } from 'react-router-dom';
+
+import MainNav from '../MainNav';
+import Search from '../home/Search';
 import PropertyInfo from './PropertyInfo';
 import Footer from '../Footer';
-import { getPropertyById } from '../../requester';
+
+import Lightbox from 'react-images';
 import moment from 'moment';
-const queryString = require('query-string');
+
+import { getPropertyById } from '../../requester';
+import { parse } from 'query-string';
 
 class PropertyPage extends React.Component {
     constructor(props) {
@@ -16,7 +20,7 @@ class PropertyPage extends React.Component {
         let endDate = moment().add(1, 'days');
 
         if (this.props) {
-            let queryParams = queryString.parse(this.props.location.search);
+            let queryParams = parse(this.props.location.search);
 
             if (queryParams.startDate && queryParams.endDate) {
                 startDate = moment(queryParams.startDate, 'DD/MM/YYYY');
@@ -61,35 +65,35 @@ class PropertyPage extends React.Component {
         this.calculateNights(picker.startDate, picker.endDate);
     }
 
-    openLightbox (event) {
+    openLightbox(event) {
         event.preventDefault();
         this.setState({
             lightboxIsOpen: true,
         });
     }
 
-    closeLightbox () {
+    closeLightbox() {
         this.setState({
             currentImage: 0,
             lightboxIsOpen: false,
         });
     }
-    gotoPrevious () {
+    gotoPrevious() {
         this.setState({
             currentImage: this.state.currentImage - 1,
         });
     }
-    gotoNext () {
+    gotoNext() {
         this.setState({
             currentImage: this.state.currentImage + 1,
         });
     }
-    gotoImage (index) {
+    gotoImage(index) {
         this.setState({
             currentImage: index,
         });
     }
-    handleClickImage () {
+    handleClickImage() {
         if (this.state.currentImage === this.state.data.pictures.length - 1) return;
 
         this.gotoNext();
@@ -111,16 +115,37 @@ class PropertyPage extends React.Component {
 
     render() {
         if (this.state.data === null) {
-            return <div>Loading...</div>;
+            return <div className="loader"></div>;
         }
 
-        const images = this.state.data.pictures.map(x =>  {
+        const images = this.state.data.pictures.map(x => {
             return { src: x.original };
         });
 
         return (
             <div key={1}>
-                <Header />
+                <div>
+                    <MainNav />
+
+                    <nav id="second-nav">
+                        <div className="container">
+                            <ul className="nav navbar-nav">
+                                <li className="active">
+                                    <Link to="/">HOMES</Link>
+                                </li>
+                            </ul>
+
+                            <ul className="second-nav-text pull-right">
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <section id="search-bar">
+                        <div className="container">
+                            <Search />
+                        </div>
+                    </section>
+                </div>
                 <section className="hotel-gallery">
                     <div className="hotel-gallery-bgr" style={{ 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' }}>
                         <div className="container">

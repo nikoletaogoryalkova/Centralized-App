@@ -1,9 +1,11 @@
 import React from 'react';
-import observer from '../services/observer';
 
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+
+import observer from '../services/observer';
 export default class Footer extends React.Component {
-    toggleCurrency(e) {
-        observer.currencyChange('EUR', 'E');
+    toggleCurrency(currency) {
+        observer.currencyChange(currency);
     }
 
     render() {
@@ -43,14 +45,11 @@ export default class Footer extends React.Component {
                                 </ul>
                             </div>
 
-                            <div className="dropdown select-curency">
-                                <a className="dropdown-toggle" onClick={this.toggleCurrency} data-toggle="dropdown">US Dollar <span className="caret"></span></a>
-                                <ul className="navbar-dropdown dropdown-menu">
-                                    <li><a >US Dollar</a></li>
-                                    <li><a >LOC</a></li>
-                                </ul>
-                            </div>
-
+                            <DropdownButton block={true} title={localStorage["currency"] ? localStorage["currency"] : 'USD'} id="bg-nested-dropdown">
+                                <MenuItem  onClick={() => this.toggleCurrency('GBP')}>£ GBP</MenuItem>
+                                <MenuItem onClick={() => this.toggleCurrency('EUR')}>€ EUR</MenuItem>
+                                <MenuItem onClick={() => this.toggleCurrency('USD')}>$ USD</MenuItem>
+                            </DropdownButton>
                         </div>
 
                         <div className="clearfix"></div>

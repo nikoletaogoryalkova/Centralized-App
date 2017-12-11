@@ -2,10 +2,10 @@ import React from 'react';
 
 export default class NavLocalization extends React.Component {
     render() {
-        return(
+        return (
             <nav id="localization-nav">
                 <div className="container">
-                    <ul class="navbar-localization">
+                    <ul className="navbar-localization">
                         <li className="conversion">
                             <span className="name">LOC/EUR</span>
                             <span className="value">0.25EUR</span>
@@ -13,7 +13,10 @@ export default class NavLocalization extends React.Component {
                         <li className="balance">
                             <span className="border">
                                 <span className="name">Balance:</span>
-                                <span className="value">0,035,974.23 LOC</span>                            
+                                <span className="value">0,035,974.23 LOC</span>
+                            </span>
+                            <span className="plus">
+                                <span>+</span>
                             </span>
                         </li>
                         <li className="language">
@@ -22,7 +25,7 @@ export default class NavLocalization extends React.Component {
                         </li>
                         <li className="currency">
                             <span className="name">Currency:</span>
-                            <span className="value">USD</span>                        
+                            <span className="value">USD</span>
                         </li>
                     </ul>
                 </div>

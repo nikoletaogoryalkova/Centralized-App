@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class ProfileDashboardPending extends React.Component {
     render() {
-        return(
+        return (
             <section id="profile-dashboard-pending">
                 <div className="container">
                     <h2>Pending Requests &amp; Discussions (3)</h2>
@@ -40,7 +40,7 @@ export default class ProfileDashboardPending extends React.Component {
                             <span className="cnt block">17 oct</span>
                         </li>
                     </ul>
-                 </div>
+                </div>
             </section>
         )
     }
