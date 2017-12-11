@@ -10,10 +10,6 @@ export default class ProfilePage extends React.Component {
             <div>
                 <ProfileHeader />
                 <ProfileDashboard />
-                <section id="hotel-box">
-                    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                </section>
                 <Footer />
             </div>
         );
