@@ -553,7 +553,7 @@ ul.session-nav>li.session-nav-user img {
     margin-right: 15px;
 }
 
-#main-nav .navbar-nav a {
+#main-nav .navbar-nav a { /**/
     font-size: 16px;
     border-radius: 0;
     border: 2px solid #fff;
