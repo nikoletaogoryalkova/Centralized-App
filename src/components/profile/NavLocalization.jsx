@@ -15,6 +15,9 @@ export default class NavLocalization extends React.Component {
                                 <span className="name">Balance:</span>
                                 <span className="value">0,035,974.23 LOC</span>
                             </span>
+                            <span className="plus">
+                                <span>+</span>
+                            </span>
                         </li>
                         <li className="language">
                             <span className="name">Language:</span>
