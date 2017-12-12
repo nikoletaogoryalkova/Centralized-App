@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ProfileDashboardPending extends React.Component {
+export default class DashboardPending extends React.Component {
     render() {
         return (
             <section id="profile-dashboard-pending">
