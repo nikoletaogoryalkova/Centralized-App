@@ -90,6 +90,8 @@ class PropertyReservation extends React.Component {
 
             return false;
         };
+
+        const cleaningFee = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees[this.props.currency], 10) : 0;
         const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
         return (
             <div className="hotel-chekin">
@@ -124,13 +126,17 @@ class PropertyReservation extends React.Component {
                             </div>
                             <br />
 
-                            <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{((this.props.nights * listingPrice) + this.props.listing.cleaningFee).toFixed(2)}</span> / for&nbsp;
+                            <div>
+                                <p style={{ color: 'white' }}>Cleaning Fee: {this.props.currencySign}{cleaningFee.toFixed(2)}</p>
+                            </div>
+
+                            <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{((this.props.nights * listingPrice) + cleaningFee).toFixed(2)}</span> / for&nbsp;
                                 <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
 
                             <div className="nonev"></div>
 
-                            <button type="submit" className="btn btn-primary" id="reservation-btn">Request Booking in LOC or FIAT</button>
+                            <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary" id="reservation-btn">Request Booking in LOC or FIAT</button>
                             <input required type="checkbox" name="agree-terms" id="agree-terms"
                                 className="checkbox tick" />
                             <label htmlFor="agree-terms" className="text-ffffff" style={{ marginTop: 10 + 'px' }}>I agree to the <a>Terms &amp; Conditions</a></label>

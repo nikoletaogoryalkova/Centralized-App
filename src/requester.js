@@ -49,6 +49,26 @@ export async function getLocRate() {
     return res.json();
 }
 
+export async function register(user) {
+    const res = await fetch(`${host}users/signup`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: user
+    });
+    return res;
+}
+
+export async function login(user) {
+    const res = await fetch(`${host}login`, {
+        method: "POST",
+        body: user
+    });
+    
+    return res;
+}
+
 /**
  *
  * @param {int} listingId
@@ -58,6 +78,7 @@ export async function getLocRate() {
  * @param {int} results
  * @returns {Promise.<*>}
  */
+
 export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, page = 0, results = 20) {
     const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth()+1}/${startDate.getUTCFullYear()}`;
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
