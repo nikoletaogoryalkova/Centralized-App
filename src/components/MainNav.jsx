@@ -64,15 +64,12 @@ class MainNav extends React.Component {
 
         register(JSON.stringify(user)).then((res) => {
             if (res.status === 200) {
-                localStorage[".auth.lockchain"] = 'asdasdasdasd';
-                localStorage[".auth.username"] = 'Pesho';
                 this.setState({
                     showSignUpModal: false,
                     signUpEmail: '',
                     signUpFirstName: '',
                     signUpLastName: '',
-                    signUpPassword: '',
-                    userName: 'Pesho'
+                    signUpPassword: ''
                 })
                 this.openLogIn();
             }
