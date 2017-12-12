@@ -29,6 +29,7 @@ class PropertyInfo extends React.Component {
 
     render() {
         const allAmenities = this.props.data.amenities;
+        const calendar = this.props.calendar;
         const mostPopularFacilities = allAmenities.slice(0, 5);
         const amenities = this.getAmenities(allAmenities.slice(5));
 
@@ -95,7 +96,7 @@ class PropertyInfo extends React.Component {
                             <div className="clearfix" />
                         </div>
                     </div>
-                    <PropertyReservation nights={this.props.nights} onApply={this.props.onApply} startDate={this.props.startDate} endDate={this.props.endDate} listing={this.props.data} currency={this.props.currency} currencySign={this.props.currencySign} />
+                    <PropertyReservation calendar={calendar} nights={this.props.nights} onApply={this.props.onApply} startDate={this.props.startDate} endDate={this.props.endDate} listing={this.props.data} currency={this.props.currency} currencySign={this.props.currencySign} />
                     <div className="clearfix"></div>
                 </div>
             </section>
