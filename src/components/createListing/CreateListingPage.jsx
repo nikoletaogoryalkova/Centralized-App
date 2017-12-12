@@ -32,11 +32,11 @@ export default class CreateListingPage extends React.Component {
 
             placeType: {
                 listingType: '',
+                location: '',
                 propertyType: '',
                 reservationType: '',
                 dedicatedSpace: '',
                 propertySize: '',
-
             },
 
             accommodations: {
@@ -129,7 +129,6 @@ export default class CreateListingPage extends React.Component {
         let value = Number(e.target.value);
         if (value < 0) { value = 0; }
         if (value > 9) { value = 9; }
-        // let bedrooms = JSON.parse(JSON.stringify(pageValues.bedrooms));
         pageValues.bedrooms[bedroom][name] = value;
         this.setState({
             [page]: pageValues
@@ -158,7 +157,9 @@ export default class CreateListingPage extends React.Component {
                             <Redirect exact path="/listings/create/" to="/listings/create/landing" />
                             
                             <Route exact path="/listings/create/landing" render={() => 
-                                <CreateListingLandingPage />} 
+                                <CreateListingLandingPage 
+                                    values={this.state.placeType}
+                                    onChange={this.onChange}/>} 
                             />
                             
                             <Route exact path="/listings/create/placetype" render={() => 

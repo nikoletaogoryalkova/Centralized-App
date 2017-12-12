@@ -21,8 +21,8 @@ export default class CreateListingPlaceType extends React.Component {
                             <div className="form-group">
                                 <label htmlFor="listing-type">What are you listing?</label>
                                 <select onChange={(e) => this.props.onChange(page, e)} className="form-control" name="listingType" value={this.props.values.listingType} required="required" id="listing-type">
-                                    <option value="Home">Home</option>
-                                    <option value="Hotel">Hotel</option>
+                                    <option value="home">Home</option>
+                                    <option value="hotel">Hotel</option>
                                 </select>
                             </div>
                         </div>
