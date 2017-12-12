@@ -1,5 +1,6 @@
 import React from 'react';
 
+import MainNav from '../MainNav';
 import Search from './Search';
 import OwlCarousel from 'react-owl-carousel';
 import ListingSliderBox from './ListingSliderBox';
@@ -22,23 +23,7 @@ class HomePage extends React.Component {
     render() {
         return (<div>
             <header id='main-nav' className="navbar home_page">
-                <div className="container">
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1">
-                            <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                        </button>
-                        <a className="navbar-brand" href="/"><img src={Config.getValue("basePath") + "images/logo-w.png"} alt='logo' /></a>
-                    </div>
-
-                    <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
-                        <ul className="nav navbar-nav" id="top-nav">
-                        </ul>
-                    </div>
-                </div>
+                <MainNav />
 
 
                 <div className="container">
