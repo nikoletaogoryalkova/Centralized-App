@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 
 function Textbox({name, value, placeholder, ...props}) {
     return (
-        <input type="text" name={name} value={value} placeholder={placeholder} />
+        <input 
+            type="text" 
+            name={name}
+            value={value} 
+            placeholder={placeholder} 
+            {...props} />
     )
 }
 

@@ -25,7 +25,6 @@ export default class CreateListingAccommodation extends React.Component {
 
     render() {
         const {guests, bedroomCount, bedrooms, bathrooms} = this.props.values;
-        console.log(bedrooms);
         const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>

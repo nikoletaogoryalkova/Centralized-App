@@ -22,12 +22,12 @@ export default class CreateListingSafetyAmenities extends React.Component {
                 <div className="form-group">
                     <h3>Safety Amenities</h3>
                     <div className="filter-check-box">
-                        <Checkbox toggleCheckbox={(e) => this.props.toggleCheckbox(e)} name="smokeDetector" text="Smoke detector" checked={smokeDetector} />
-                        <Checkbox toggleCheckbox={(e) => this.props.toggleCheckbox(e)} name="carbonMonoxideDetector" text="Carbon monoxide detector" checked={carbonMonoxideDetector} />
-                        <Checkbox toggleCheckbox={(e) => this.props.toggleCheckbox(e)} name="firstAidKit" text="First aid kit" checked={firstAidKit} />
-                        <Checkbox toggleCheckbox={(e) => this.props.toggleCheckbox(e)} name="safetyCard" text="Safety card" checked={safetyCard} />
-                        <Checkbox toggleCheckbox={(e) => this.props.toggleCheckbox(e)} name="fireExtinguisher" text="Fire extinguisher" checked={fireExtinguisher} />
-                        <Checkbox toggleCheckbox={(e) => this.props.toggleCheckbox(e)} name="lockOnBedroomDoor" text="Lock on bedroom door" checked={lockOnBedroomDoor} />
+                        <Checkbox toggleCheckbox={this.props.toggleCheckbox} name="smokeDetector" label="Smoke detector" checked={smokeDetector} />
+                        <Checkbox toggleCheckbox={this.props.toggleCheckbox} name="carbonMonoxideDetector" label="Carbon monoxide detector" checked={carbonMonoxideDetector} />
+                        <Checkbox toggleCheckbox={this.props.toggleCheckbox} name="firstAidKit" label="First aid kit" checked={firstAidKit} />
+                        <Checkbox toggleCheckbox={this.props.toggleCheckbox} name="safetyCard" label="Safety card" checked={safetyCard} />
+                        <Checkbox toggleCheckbox={this.props.toggleCheckbox} name="fireExtinguisher" label="Fire extinguisher" checked={fireExtinguisher} />
+                        <Checkbox toggleCheckbox={this.props.toggleCheckbox} name="lockOnBedroomDoor" label="Lock on bedroom door" checked={lockOnBedroomDoor} />
                     </div>
                 </div>
 
