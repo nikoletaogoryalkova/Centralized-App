@@ -8,7 +8,78 @@ export default class MessagesHostingPage extends React.Component {
         return (
             <div>
                 <ProfileHeader />
-                <br />
+                <section id="profile-messages-hosting">
+                    <div className="container">
+                        <ul className="profile-messages-nav">
+                            <li className="active"><a href="hosting"><h2>Hosting</h2></a></li>
+                            <li><a href="traveling"><h2>Traveling</h2></a></li>
+                        </ul>
+                        <ul className="profile-messages-hosting-item">
+                            <li></li>
+                            <li></li>
+                            <li>
+                                <span className="cnt block">
+                                    <span className="block bold">Jaine Davidson</span>
+                                    <span className="where block">Heaven - Junior Suite with view</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span className="cnt block">Hello! It is a long established fact that a reader will be distrtacted by the readable contnet of a page when looking at its layout</span>
+                            </li>
+                            <li>
+                                <span className="cnt block bold">22 Nov, 2017<br />&nbsp;</span>
+                            </li>
+                        </ul>
+                        <ul className="profile-messages-hosting-item">
+                            <li></li>
+                            <li></li>
+                            <li>
+                                <span className="cnt block">
+                                    <span className="block bold">Jaine Davidson</span>
+                                    <span className="where block">Heaven - Junior Suite with view</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span className="cnt block">Hello! It is a long established fact that a reader will be distrtacted by the readable contnet of a page when looking at its layout</span>
+                            </li>
+                            <li>
+                                <span className="cnt block bold">22 Nov, 2017<br />&nbsp;</span>
+                            </li>
+                        </ul>
+                        <ul className="profile-messages-hosting-item">
+                            <li></li>
+                            <li></li>
+                            <li>
+                                <span className="cnt block">
+                                    <span className="block bold">Jaine Davidson</span>
+                                    <span className="where block">Heaven - Junior Suite with view</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span className="cnt block">Hello! It is a long established fact that a reader will be distrtacted by the readable contnet of a page when looking at its layout</span>
+                            </li>
+                            <li>
+                                <span className="cnt block bold">22 Nov, 2017<br />&nbsp;</span>
+                            </li>
+                        </ul>
+                        <ul className="profile-messages-hosting-item">
+                            <li></li>
+                            <li></li>
+                            <li>
+                                <span className="cnt block">
+                                    <span className="block bold">Jaine Davidson</span>
+                                    <span className="where block">Heaven - Junior Suite with view</span>
+                                </span>
+                            </li>
+                            <li>
+                                <span className="cnt block">Hello! It is a long established fact that a reader will be distrtacted by the readable contnet of a page when looking at its layout</span>
+                            </li>
+                            <li>
+                                <span className="cnt block bold">22 Nov, 2017<br />&nbsp;</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
                 <Footer />
             </div>
         );
