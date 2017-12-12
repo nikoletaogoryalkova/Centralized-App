@@ -4,7 +4,16 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import HomePage from './home/HomePage.jsx';
 import ListingPage from './listings/ListingsPage';
 import PropertyPage from './property/PropertyPage';
-import ProfilePage from './profile/ProfilePage';
+
+import DashboardPage from './profile/dashboard/DashboardPage';
+import MyListingsPage from './profile/listings/MyListingsPage';
+import MyReservationsPage from './profile/reservations/MyReservationsPage';
+import MyTripsPage from './profile/trips/MyTripsPage';
+import MessagesHostingPage from './profile/messages/MessagesHostingPage';
+import MessagesTravelingPage from './profile/messages/MessagesTravelingPage';
+import ProfileEditPage from './profile/me/ProfileEditPage';
+import AccountNotificationsPage from './profile/account/AccountNotificationsPage';
+
 import CreateListingPage from './createListing/CreateListingPage';
 
 import observer from '../services/observer';
@@ -62,7 +71,14 @@ class App extends React.Component {
                     <Route path="/listings/create" render={() => <CreateListingPage />} />
                     <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile" render={() => <ProfilePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/dashboard" render={() => <DashboardPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/listings" render={() => <MyListingsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/reservations" render={() => <MyReservationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/trips" render={() => <MyTripsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/messages/hosting" render={() => <MessagesHostingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/messages/traveling" render={() => <MessagesTravelingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/me/edit" render={() => <ProfileEditPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/account/notifications" render={() => <AccountNotificationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                 </Switch>
             </div>
         );

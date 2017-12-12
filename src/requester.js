@@ -2,7 +2,7 @@ import {Config} from "./config";
 const host = Config.getValue("apiHost");
 
 export async function getListings() {
-    const res = await fetch(`${host}api/listings?projection=listings&page=1&size=10`);
+    const res = await fetch(`${host}api/listings?projection=singleListing&page=1&size=10`);
     return res.json();
 }
 
@@ -71,4 +71,21 @@ export async function login(user) {
     });
     
     return res;
+}
+
+/**
+ *
+ * @param {int} listingId
+ * @param {Date} startDate
+ * @param {date} endDate
+ * @param {int} page
+ * @param {int} results
+ * @returns {Promise.<*>}
+ */
+
+export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, page = 0, results = 20) {
+    const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth()+1}/${startDate.getUTCFullYear()}`;
+    const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
+    const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}`);
+    return res.json();
 }

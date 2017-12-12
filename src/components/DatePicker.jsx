@@ -20,6 +20,7 @@ class DatePicker extends React.Component {
                         <DateRangePicker
                             autoUpdateInput={true}
                             onApply={this.props.onApply}
+                            isInvalidDate={this.props.isInvalidDate}
                             autoApply={true}
                             startDate={this.props.startDate}
                             endDate={this.props.endDate}

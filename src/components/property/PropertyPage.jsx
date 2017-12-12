@@ -9,7 +9,7 @@ import Footer from '../Footer';
 import Lightbox from 'react-images';
 import moment from 'moment';
 
-import { getPropertyById } from '../../requester';
+import { getPropertyById, getCalendarByListingIdAndDateRange } from '../../requester';
 import { parse } from 'query-string';
 
 class PropertyPage extends React.Component {
@@ -35,6 +35,7 @@ class PropertyPage extends React.Component {
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
+            calendar: null
         };
 
 
@@ -50,6 +51,19 @@ class PropertyPage extends React.Component {
     componentDidMount() {
         getPropertyById(this.props.match.params.id).then(res => {
             this.setState({ data: res });
+        });
+        let now = new Date();
+        let end = new Date();
+        const DAY_INTERVAL = 60;
+        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
+        getCalendarByListingIdAndDateRange(
+            this.props.match.params.id,
+            now,
+            end,
+            0,
+            DAY_INTERVAL
+        ).then(res => {
+           this.setState({ calendar: res.content });
         });
 
         if (this.state.startDate && this.state.endDate) {
@@ -193,7 +207,7 @@ class PropertyPage extends React.Component {
                         </ul>
                     </div>
                 </nav>
-                <PropertyInfo nights={this.state.nights} onApply={this.handleApply} startDate={this.state.startDate} endDate={this.state.endDate} data={this.state.data} currency={this.props.currency} currencySign={this.props.currencySign} />
+                <PropertyInfo calendar={this.state.calendar} nights={this.state.nights} onApply={this.handleApply} startDate={this.state.startDate} endDate={this.state.endDate} data={this.state.data} currency={this.props.currency} currencySign={this.props.currencySign} />
                 <Footer />
             </div>
         );
