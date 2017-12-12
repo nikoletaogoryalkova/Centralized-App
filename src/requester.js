@@ -48,3 +48,27 @@ export async function getLocRate() {
     const res = await fetch('https://lockchain.co/marketplace/internal_api/loc_price.php');
     return res.json();
 }
+
+export async function register(user) {
+    const res = await fetch(`${host}users/signup`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: user
+    });
+    return res;
+}
+
+export async function login(user) {
+    const res = await fetch(`${host}login`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: user
+    });
+    
+    return res;
+}

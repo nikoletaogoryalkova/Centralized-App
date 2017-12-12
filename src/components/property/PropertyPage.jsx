@@ -125,7 +125,9 @@ class PropertyPage extends React.Component {
         return (
             <div key={1}>
                 <div>
+                <header id='main-nav' className="navbar"> 
                     <MainNav />
+                </header>
 
                     <nav id="second-nav">
                         <div className="container">
