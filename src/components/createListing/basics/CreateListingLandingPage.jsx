@@ -6,8 +6,10 @@ import { Radio, FormControl, FormGroup } from 'react-bootstrap';
 
 export default class CreateListingLandingPage extends React.Component {
 
+
     render() {
-        const page = "placeType";
+        const {listingType, location} = this.props.values;
+    
         return (
             <div>
                 <div className="col-md-6">
@@ -23,9 +25,9 @@ export default class CreateListingLandingPage extends React.Component {
                                 <label>
                                     <input 
                                         type="radio" 
-                                        onChange={(e) => this.props.onChange(page, e)} 
+                                        onChange={(e) => this.props.onChange(e)} 
                                         name="listingType" 
-                                        checked={this.props.values.listingType === 'home'} 
+                                        checked={listingType === 'home'} 
                                         value="home"/>
                                     Home
                                 </label>
@@ -33,9 +35,9 @@ export default class CreateListingLandingPage extends React.Component {
                                 <label>
                                     <input 
                                         type="radio" 
-                                        onChange={(e) => this.props.onChange(page, e)} 
+                                        onChange={(e) => this.props.onChange(e)} 
                                         name="listingType" 
-                                        checked={this.props.values.listingType === 'hotel'} 
+                                        checked={listingType === 'hotel'} 
                                         value="hotel"/>
                                     Hotel
                                 </label>
@@ -45,15 +47,20 @@ export default class CreateListingLandingPage extends React.Component {
                                 <input 
                                     type="text"
                                     name="location" 
-                                    value={this.props.values.location}
+                                    value={location}
                                     placeholder="Enter a location" 
-                                    onChange={(e) => this.props.onChange(page, e)} />
+                                    onChange={(e) => this.props.onChange(e)} />
                             </div>
                         </div>
                     </div>
                     <br />
                     
-                    <NavLink to="/listings/create/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                    <NavLink 
+                        to="/listings/create/placetype" 
+                        className="btn btn-primary" 
+                        id="btn-continue">
+                        Continue
+                    </NavLink>
                 </div>
             </div>
         );

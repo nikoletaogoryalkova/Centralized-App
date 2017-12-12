@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Dropdown({name, options, value, page, onChange, ...props}) {
+function Dropdown({name, options, value, onChange, ...props}) {
     return (
-        <select name={name} value={value} onChange={(e) => onChange(page, e)} {...props}>
+        <select name={name} value={value} onChange={(e) => onChange(e)} {...props}>
             {
                 options.map((option) => <option key={option} value={option}>{option}</option>)
             }

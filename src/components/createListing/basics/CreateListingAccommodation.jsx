@@ -9,29 +9,7 @@ import LabeledBedroomCounter from '../LabeledBedroomCounter';
 export default class CreateListingAccommodation extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            guests: 1,
-            bedroomCount: 1,
-            bedrooms: [
-                this.createBedroom(),
-            ],
-            bathrooms: 1,
-        }
-
-        // this.updateBedCount = this.updateBedCount.bind(this);
     }
-
-    // updateBedCount(page, bedroom, e) {
-    //     let value = Number(e.target.value);
-    //     if (value < 0) { value = 0; }
-    //     if (value > 9) { value = 9; }
-    //     let bedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
-    //     bedrooms[bedroom][e.target.name] = value;
-    //     this.setState({
-    //         bedrooms: bedrooms
-    //     })
-    // }
 
     createBedroom() {
         return {
@@ -46,16 +24,16 @@ export default class CreateListingAccommodation extends React.Component {
     }
 
     render() {
-        const page = "accommodations"
-        const bedroomRows = this.props.values.bedrooms.map((bedroom, i) => {
+        const {guests, bedroomCount, bedrooms, bathrooms} = this.props.values;
+        console.log(bedrooms);
+        const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
                 <LabeledBedroomCounter
                     label="Single Bed"
                     name="singleBed"
                     bedroom={i}
-                    page={page}
-                    value={this.props.values.bedrooms[i].singleBed}
+                    value={bedrooms[i].singleBed}
                     onChange={this.props.updateBedCount}
                     />
 
@@ -63,8 +41,7 @@ export default class CreateListingAccommodation extends React.Component {
                     label="Double Bed"
                     name="doubleBed"
                     bedroom={i}
-                    page={page}
-                    value={this.props.values.bedrooms[i].doubleBed}
+                    value={bedrooms[i].doubleBed}
                     onChange={this.props.updateBedCount}
                     />
 
@@ -72,8 +49,7 @@ export default class CreateListingAccommodation extends React.Component {
                     label="King Bed"
                     name="kingBed"
                     bedroom={i}
-                    page={page}
-                    value={this.props.values.bedrooms[i].kingBed}
+                    value={bedrooms[i].kingBed}
                     onChange={this.props.updateBedCount}
                     />
                 </div>
@@ -94,8 +70,7 @@ export default class CreateListingAccommodation extends React.Component {
                         <label>Guests:</label>
                         <Counter
                             name="guests"
-                            page={page}
-                            value={this.props.values.guests}
+                            value={guests}
                             onChange={this.props.updateCounter}/>
                     </div>
 
@@ -106,15 +81,13 @@ export default class CreateListingAccommodation extends React.Component {
                         <Dropdown 
                             name="bedroomCount" 
                             options={[ 1, 2, 3, 4, 5 ]} 
-                            value={this.props.values.bedroomCount}
-                            page={page}
+                            value={bedroomCount}
                             onChange={this.props.updateBedrooms} />
                     </div>
                     
                     <div>
                         <h2>Sleeping arrangement</h2>
                         <hr/>
-                        
                         {bedroomRows}
                     </div>
 
@@ -126,8 +99,7 @@ export default class CreateListingAccommodation extends React.Component {
                         <label>Bathrooms:</label>
                         <Counter
                             name="bathrooms"
-                            page={page}
-                            value={this.props.values.bathrooms}
+                            value={bathrooms}
                             onChange={this.props.updateCounter}/>
                     </div>
 

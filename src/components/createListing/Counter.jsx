@@ -14,13 +14,13 @@ export default class Counter extends React.Component {
     increment = (e) => {
         e.target.name = this.props.name;
         e.target.value = this.props.value + 1;
-        this.props.onChange(this.props.page, e);
+        this.props.onChange(e);
     }
 
     decrement = (e) => {
         e.target.name = this.props.name;
         e.target.value = this.props.value - 1;
-        this.props.onChange(this.props.page, e);
+        this.props.onChange(e);
     }
 
     render() {
@@ -32,7 +32,7 @@ export default class Counter extends React.Component {
                     alt="plus"
                     onClick={(e) => this.decrement(e)} />
                 
-                <span 
+                <span
                     style={{margin: '10px', padding: '10px'}}>
                     {this.props.value}
                 </span>

@@ -14,13 +14,13 @@ export default class BedroomCounter extends React.Component {
     increment = (e) => {
         e.target.name = this.props.name;
         e.target.value = this.props.value + 1;
-        this.props.onChange(this.props.page, this.props.bedroom, e);
+        this.props.onChange(this.props.bedroom, e);
     }
 
     decrement = (e) => {
         e.target.name = this.props.name;
         e.target.value = this.props.value - 1;
-        this.props.onChange(this.props.page, this.props.bedroom, e);
+        this.props.onChange(this.props.bedroom, e);
     }
 
     render() {
