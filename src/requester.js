@@ -62,10 +62,6 @@ export async function register(user) {
 
 export async function login(user) {
     const res = await fetch(`${host}login`, {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
         method: "POST",
         body: user
     });

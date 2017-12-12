@@ -34,6 +34,13 @@ class MainNav extends React.Component {
 
     closeSignUp() {
         this.setState({ showSignUpModal: false });
+        this.setState({
+            showSignUpModal: false,
+            signUpEmail: '',
+            signUpFirstName: '',
+            signUpLastName: '',
+            signUpPassword: ''
+        })
     }
 
     openSignUp() {
@@ -42,6 +49,13 @@ class MainNav extends React.Component {
 
     closeLogIn() {
         this.setState({ showLoginModal: false });
+
+        this.setState({
+            showLoginModal: false,
+            loginEmail: '',
+            loginPassword: '',
+            loginError: ''
+        })
     }
 
     openLogIn() {
@@ -64,13 +78,7 @@ class MainNav extends React.Component {
 
         register(JSON.stringify(user)).then((res) => {
             if (res.status === 200) {
-                this.setState({
-                    showSignUpModal: false,
-                    signUpEmail: '',
-                    signUpFirstName: '',
-                    signUpLastName: '',
-                    signUpPassword: ''
-                })
+                this.closeSignUp();
                 this.openLogIn();
             }
             else {
@@ -91,24 +99,29 @@ class MainNav extends React.Component {
         }
 
         login(JSON.stringify(user)).then((res) => {
-            console.log(res);
-            // let responseJson = res.json();
-            // if (res.status === 200) {
-            //     responseJson.then((data) => {
-            //         localStorage[".auth.lockchain"] = data.Authorization;
-            //         localStorage[".auth.username"] = user.email;
-            //         console.log(data);
-            //     })
-            // }
-            // else {
-            //     responseJson.then((data) => {
-            //         this.setState({ loginError: data.message });
-            //     })
-            // }
+            let responseJson = res.json();
+            if (res.status === 200) {
+                responseJson.then((data) => {
+                    localStorage[".auth.lockchain"] = data.Authorization;
+                    // TODO Get first name + last name from response included with Authorization token (Backend)
+
+                    localStorage[".auth.username"] = user.email;
+                    this.setState({ userName: user.email });
+
+                    this.closeLogIn();
+                })
+            }
+            else {
+                responseJson.then((data) => {
+                    this.setState({ loginError: data.message });
+                })
+            }
         })
     }
 
     render() {
+        let colorStyle = this.props.location.pathname === "/" ? "white" : '#223843';
+
         return (
             <div>
                 <Modal id="myModal_login" show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade">
@@ -184,7 +197,7 @@ class MainNav extends React.Component {
                     <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
 
                         {localStorage[".auth.lockchain"] ?
-                            <ul className="nav navbar-nav session-nav" id="top-nav">
+                            <ul className="nav navbar-nav session-nav" style={{ color: colorStyle }} id="top-nav">
                                 <li className="session-nav-hosting session-nav-simple"><span>Hosting</span></li>
                                 <li className="session-nav-traveling session-nav-simple"><span>Traveling</span></li>
                                 <li className="session-nav-help session-nav-simple"><span>Help</span></li>

@@ -504,10 +504,13 @@ ul.session-nav>li.session-nav-simple {
     padding-top: 24px;
 }
 
-ul.session-nav>li>span {
+.session-nav {
+    color: #223843;
+}
+
+.session-nav li span {
     font-size: 18px;
     font-weight: bold;
-    color: #223843;
 }
 
 ul.session-nav>li.session-nav-inbox {
