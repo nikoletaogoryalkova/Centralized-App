@@ -77,6 +77,19 @@ class PropertyReservation extends React.Component {
     }
 
     render() {
+        const calendar = this.props.calendar;
+        const invalidDates = calendar.filter(c => !c.available)
+            .map(c => new Date(c.date));
+        const isInvalidDate = date => {
+            let dateCandidate = new Date(date.format("MM/DD/YYYY"));
+            for (let invalidDate of invalidDates) {
+                if (invalidDate - dateCandidate === 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
         const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
         return (
             <div className="hotel-chekin">
@@ -90,7 +103,7 @@ class PropertyReservation extends React.Component {
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
-                            <DatePicker nights={this.props.nights} onApply={this.props.onApply} startDate={this.props.startDate} endDate={this.props.endDate} />
+                            <DatePicker isInvalidDate={isInvalidDate} nights={this.props.nights} onApply={this.props.onApply} startDate={this.props.startDate} endDate={this.props.endDate} />
 
                             <div className="clearfix"></div>
 

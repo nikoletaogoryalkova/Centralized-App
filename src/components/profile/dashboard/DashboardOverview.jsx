@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class ProfileDashboardOverview extends React.Component {
+export default class DashboardOverview extends React.Component {
     render() {
         return (
             <section id="profile-dashboard-overview">
