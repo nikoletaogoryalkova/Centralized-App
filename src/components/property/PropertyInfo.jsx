@@ -41,8 +41,8 @@ class PropertyInfo extends React.Component {
             for (let dayInfo of calendar) {
                 let dateCandidate = new Date(dayInfo.date);
                 if (dateCandidate - date === 0) {
-                    let color = dayInfo.available ? "green" : "red";
-                    return <p style={{color: color }}>{localStorage["currencySign"]} {dayInfo.prices[localStorage["currency"]]}</p>;
+                    if (!dayInfo.available) return null;
+                    return <p style={{color: "blue" }}>{localStorage["currencySign"]} {dayInfo.prices[localStorage["currency"]]}</p>;
                 }
             }
         };
