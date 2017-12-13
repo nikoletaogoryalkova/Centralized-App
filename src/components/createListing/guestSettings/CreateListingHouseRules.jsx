@@ -7,7 +7,7 @@ import Textbox from '../Textbox';
 export default class CreateListingHouseRules extends React.Component {
 
     render() {
-        const {suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules} = this.props.values;
+        const {suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText} = this.props.values;
         return (
             <div>
                 <CreateListingGuestSettingsAside />
@@ -159,13 +159,17 @@ export default class CreateListingHouseRules extends React.Component {
                             <div className="col-md-9">
                                 <label htmlFor="">
                                     Anything else?
-                                    <Textbox 
+                                    <Textbox
+                                        name="otherRuleText"
+                                        value={otherRuleText}
+                                        placeholder="Type rule here"
+                                        onChange={this.props.onChange}
                                         />
                                 </label>
                             </div>
                                     
                             <div className="col-md-3">
-                                <input type="button" value="Add" onClick={this.props.addRule}/>
+                                <input type="button" value="Add" onClick={() => this.props.addRule()}/>
                             </div>
 
                         </div>
@@ -177,7 +181,7 @@ export default class CreateListingHouseRules extends React.Component {
                                         {item}
                                     </div>
                                     <div className="col-md-3">
-                                        <input type="button" value="Remove" onClick={this.props.removeRule}/>
+                                        <input type="button" value="Remove" onClick={() => this.props.removeRule(item)}/>
                                     </div>
                                 </div>
                             )}

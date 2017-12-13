@@ -59,6 +59,7 @@ export default class CreateListingPage extends React.Component {
 
             // house rules
             otherHouseRules: new Set(),
+            otherRuleText: '',
         };
 
         this.onChange = this.onChange.bind(this);
@@ -67,6 +68,8 @@ export default class CreateListingPage extends React.Component {
         this.updateBedrooms = this.updateBedrooms.bind(this);
         this.updateBedCount = this.updateBedCount.bind(this);
         this.toggleFacility = this.toggleFacility.bind(this);
+        this.addHouseRule = this.addHouseRule.bind(this);
+        this.removeHouseRule = this.removeHouseRule.bind(this);
     }
 
     onChange(event) {
@@ -136,7 +139,22 @@ export default class CreateListingPage extends React.Component {
 
     addHouseRule() {
         const rules = this.state.otherHouseRules;
-        rules.add()
+        const value = this.state.otherRuleText;
+        if (value && value.length > 0) {
+            rules.add(value);
+            this.setState({
+                otherHouseRules: rules,
+                otherRuleText: '',
+            })
+        }
+    }
+
+    removeHouseRule(value) {
+        const rules = this.state.otherHouseRules;
+        rules.delete(value);
+        this.setState({
+            otherHouseRules: rules,
+        })
     }
 
     createBedroom() {
@@ -210,7 +228,9 @@ export default class CreateListingPage extends React.Component {
                             <Route exact path="/listings/create/houserules" render={() => 
                                 <CreateListingHouseRules 
                                     values={this.state}
-                                    onChange={this.onChange} />} />
+                                    onChange={this.onChange}
+                                    addRule={this.addHouseRule}
+                                    removeRule={this.removeHouseRule} />} />
                             
                             <Route exact path="/listings/create/checking" render={() => 
                                 <CreateListingChecking 
