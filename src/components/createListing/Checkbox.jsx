@@ -1,24 +1,28 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default class Checkbox extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-
-    render() {
-        return (
-            <div>
-                <label>
-                    <input 
-                        onChange={(page, event) => this.props.toggleCheckbox(page, event)} 
-                        id="checkBox" name={this.props.name} 
-                        type="checkbox" checked={this.props.checked} 
-                        />
-                    {this.props.text}
-                </label>
-            </div>
-        );
-    }
+function Checkbox({name, label, checked, toggleCheckbox, ...props}) {
+    return (
+        <div>
+            <label>
+                <input 
+                    type="checkbox" 
+                    name={name} 
+                    checked={checked} 
+                    onChange={(event) => toggleCheckbox(event)}
+                    // {...props}
+                    />
+                {label}
+            </label>
+        </div>
+    );
 }
+
+Checkbox.propTypes ={
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    checked: PropTypes.bool.isRequired,
+    toggleCheckbox: PropTypes.func.isRequired,
+}
+
+export default Checkbox;
