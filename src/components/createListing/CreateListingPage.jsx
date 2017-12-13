@@ -53,6 +53,9 @@ export default class CreateListingPage extends React.Component {
             safetyCard: false,
             fireExtinguisher: false,
             lockOnBedroomDoor: false,
+
+            // facilities
+            facilities: new Set(),
         };
 
         this.onChange = this.onChange.bind(this);
@@ -60,6 +63,7 @@ export default class CreateListingPage extends React.Component {
         this.updateCounter = this.updateCounter.bind(this);
         this.updateBedrooms = this.updateBedrooms.bind(this);
         this.updateBedCount = this.updateBedCount.bind(this);
+        this.toggleFacility = this.toggleFacility.bind(this);
     }
 
     onChange(event) {
@@ -114,6 +118,19 @@ export default class CreateListingPage extends React.Component {
         })
     }
 
+    toggleFacility(item) {
+        let fac = this.state.facilities;
+        if (fac.has(item)) {
+            fac.delete(item);
+        } else {
+            fac.add(item);
+        }
+
+        this.setState({
+            facilities: fac,
+        })
+    }
+
     createBedroom() {
         return {
             singleBed: 0,
@@ -154,7 +171,10 @@ export default class CreateListingPage extends React.Component {
                                     updateBedCount={this.updateBedCount}
                                     />} />
                             
-                            <Route exact path="/listings/create/facilities" render={() => <CreateListingFacilities />} />
+                            <Route exact path="/listings/create/facilities" render={() => 
+                                <CreateListingFacilities 
+                                    values={this.state}
+                                    toggle={this.toggleFacility}/>} />
                             
                             <Route exact path="/listings/create/safetyamenities" render={() => 
                             <CreateListingSafetyAmenities 
