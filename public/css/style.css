@@ -489,7 +489,6 @@ a.dropdown-toggle {
 
 ul.session-nav {
     height: 70px;
-    overflow: hidden;
 }
 
 ul.session-nav>li {
@@ -530,9 +529,16 @@ ul.session-nav>li.session-nav-inbox img {
 
 ul.session-nav>li.session-nav-user {
     padding-top: 13px;
+    position: relative;
 }
 
-ul.session-nav>li.session-nav-user .session-nav-user-thumb {
+ul.session-nav>li.session-nav-user>ul>li>span.info {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+ul.session-nav>li.session-nav-user>span.info .session-nav-user-thumb {
     display: inline-block;
     vertical-align: middle;
     border-radius: 5px;
@@ -544,17 +550,84 @@ ul.session-nav>li.session-nav-user .session-nav-user-thumb {
     margin-right: 15px;
 }
 
-ul.session-nav>li.session-nav-user>span {
+ul.session-nav>li.session-nav-user>span.info {
     background-image: url(../images/drop_arow.png);
     background-repeat: no-repeat;
     background-position: center right;
     padding-right: 20px;
 }
 
-ul.session-nav>li.session-nav-user img {
+ul.session-nav>li.session-nav-user>span.info img {
     vertical-align: middle;
     margin-right: 15px;
 }
+
+ul.session-nav>li.session-nav-user>span.sub {
+    position: relative;
+}
+
+ul.session-nav>li.session-nav-user>span.sub>ul {
+    visibility: hidden;
+    position: absolute;
+    display: block;
+    background-color:white;
+    top:35px;
+    left:-299px;
+    width:300px;
+    list-style: none;
+    border:1px solid #f0f1f3;
+    z-index: 100;
+    font-size: 18px;
+}
+
+ul.session-nav>li.session-nav-user:hover>span.sub>ul {
+    visibility: visible;
+}
+
+ul.session-nav>li.session-nav-user>span.sub>ul>li {
+    padding: 20px 0 20px 30px;
+    border-bottom:1px solid #f0f1f3;
+}
+
+ul.session-nav>li.session-nav-user>span.sub>ul>li.opal {
+    background-color: #a2c5bf;
+    color:white;
+    font-size: 17px;
+    font-weight: normal;
+
+}
+
+ul.session-nav>li.session-nav-user>span.sub>ul>li.opal>span.ico {
+    width:40px;
+    height:40px;
+    float:right;
+    position: relative;
+    top:-8px;
+    left:-15px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+ul.session-nav>li.session-nav-user>span.sub>ul>li.opal.profile>span.ico {
+    background-image: url(../images/icon-dropdown/icon-user.png);
+}
+
+ul.session-nav>li.session-nav-user>span.sub>ul>li.opal.account>span.ico {
+    background-image: url(../images/icon-dropdown/icon-settings.png);
+}
+
+ul.session-nav>li.session-nav-user>span.sub>ul>li.opal.logout>span.ico {
+    background-image: url(../images/icon-dropdown/icon-logout.png);
+}
+
+
+
+
+
+
+
+
+
 
 #main-nav .navbar-nav a {
     font-size: 16px;
@@ -2738,6 +2811,7 @@ tspan {
 ul.navbar-localization {
     list-style: none;
     float: right;
+    margin-right:14px;
 }
 
 ul.navbar-localization>li {
