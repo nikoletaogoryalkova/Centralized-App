@@ -3,7 +3,6 @@ import {withRouter} from 'react-router-dom';
 
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import moment from 'moment';
-import $ from 'jquery';
 
 class DatePicker extends React.Component {
     render() {

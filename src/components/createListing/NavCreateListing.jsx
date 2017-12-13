@@ -1,10 +1,7 @@
 import React from 'react';
-import { withRouter, NavLink, Switch, Route, Redirect } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 
 class NavCreateListing extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (

@@ -6,7 +6,6 @@ import OwlCarousel from 'react-owl-carousel';
 import ListingSliderBox from './ListingSliderBox';
 import Footer from '../Footer'
 
-import { Config } from '../../config';
 import { getListings } from '../../requester';
 
 class HomePage extends React.Component {

@@ -2,13 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import Checkbox from '../Checkbox';
-import FiltersCheckbox from '../../listings/FiltersCheckbox';
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 
 export default class CreateListingSafetyAmenities extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const {smokeDetector, carbonMonoxideDetector, firstAidKit, safetyCard, fireExtinguisher, lockOnBedroomDoor} = this.props.values;

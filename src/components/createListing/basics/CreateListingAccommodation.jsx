@@ -7,10 +7,6 @@ import Dropdown from '../Dropdown';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
 
 export default class CreateListingAccommodation extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     createBedroom() {
         return {
             singleBed: 0,

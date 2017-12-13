@@ -487,19 +487,18 @@ a.dropdown-toggle {
 
 #main-nav .navbar-nav {}
 
-ul.session-nav {
+.session-nav {
     height: 70px;
 }
 
-ul.session-nav>li {
+.session-nav>li {
     display: block;
     margin-left: 25px;
-    display: block;
     height: 100%;
     position: relative;
 }
 
-ul.session-nav>li.session-nav-simple {
+.session-nav>li.session-nav-simple {
     padding-top: 24px;
 }
 
@@ -507,7 +506,11 @@ ul.session-nav>li.session-nav-simple {
     color: #223843;
 }
 
-.session-nav li span {
+.session-nav li {
+    cursor: pointer;
+}
+
+.session-nav li a {
     font-size: 18px;
     font-weight: bold;
 }
@@ -544,7 +547,7 @@ ul.session-nav>li.session-nav-user>span.info .session-nav-user-thumb {
     border-radius: 5px;
     background-position: center center;
     background-size: contain;
-    background-image: url(../images/placeholder.png);
+    background-image: url(../images/user_img_small.jpg);
     width: 45px;
     height: 45px;
     margin-right: 15px;
@@ -620,11 +623,20 @@ ul.session-nav>li.session-nav-user>span.sub>ul>li.opal.logout>span.ico {
     background-image: url(../images/icon-dropdown/icon-logout.png);
 }
 
+ul.session-nav > li > .sub .opal a {
+    color: white;
+}
+
+
+
+
+
+
+
+
 #main-nav .navbar-nav a {
     font-size: 16px;
     border-radius: 0;
-    border: 2px solid #fff;
-    padding: 25px 25px;
 }
 
 #main-nav .navbar-nav .first-nav-button a {
@@ -2740,21 +2752,21 @@ tspan {
     min-height: 500px;
 }
 
-#main-nav.home_page .navbar-nav .first-nav-button a {
+/* #main-nav.home_page .navbar-nav .first-nav-button a {
     border-radius: 0;
     border: 0 !important;
     margin-left: 0;
     padding: 25px 25px;
     color: #fff;
-}
+} */
 
-#main-nav.home_page .navbar-nav a {
+/* #main-nav.home_page .navbar-nav a {
     font-size: 16px;
     border-radius: 0;
     border: 0 !important;
     padding: 25px 25px;
     color: #fff;
-}
+} */
 
 #main-nav #second-nav {
     background-color: transparent;

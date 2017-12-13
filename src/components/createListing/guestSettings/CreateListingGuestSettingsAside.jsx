@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, NavLink, Switch, Route } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 
 class CreateListingGuestSettingsAside extends React.Component {
     render() {

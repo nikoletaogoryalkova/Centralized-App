@@ -2,10 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 
 class FiltersCheckbox extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <label className={`filter-check-label${this.props.checked ? ' active' : ''}`}>
