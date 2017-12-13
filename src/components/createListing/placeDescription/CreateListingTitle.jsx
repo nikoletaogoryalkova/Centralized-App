@@ -2,9 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import Textbox from '../Textbox';
 
 export default class CreateListingTitle extends React.Component {
     render() {
+        const {listingTitle} = this.props.values;
         return (
             <div>
                 <CreateListingPlaceDescriptionAside />
@@ -13,7 +15,12 @@ export default class CreateListingTitle extends React.Component {
                     <hr />
 
                     <div className="form-group">
-                        <input type="text" className="form-control" placeholder="Listing title" />
+                        <Textbox
+                            name="listingTitle"
+                            value={listingTitle}
+                            placeholder="Listing title"
+                            onChange={this.props.updateTextbox} />
+                        {/* <input type="text" className="form-control" placeholder="Listing title" /> */}
                     </div>
 
                     <div className="clearfix"></div>

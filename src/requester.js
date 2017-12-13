@@ -82,6 +82,6 @@ export async function login(user) {
 export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, page = 0, results = 20) {
     const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth()+1}/${startDate.getUTCFullYear()}`;
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
-    const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}`);
+    const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}&projection=singlePropertyCalendar`);
     return res.json();
 }

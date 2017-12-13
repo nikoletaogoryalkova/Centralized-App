@@ -2,9 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import Textarea from '../Textarea';
 
 export default class CreateListingDescription extends React.Component {
     render() {
+        const {descriptionSummary, neighborhoodSummary} = this.props.values;
         return (
             <div>
                 <CreateListingPlaceDescriptionAside />
@@ -17,7 +19,13 @@ export default class CreateListingDescription extends React.Component {
                         <div className="col-md-12">
                             <div className="form-group">
                                 <label>Summary</label>
-                                <textarea rows={5} className="form-control" placeholder="Describe your place..."></textarea>
+                                <Textarea
+                                    name="descriptionSummary"
+                                    value={descriptionSummary}
+                                    placeholder="Describe your place..."
+                                    rows={5}
+                                    onChange={this.props.updateTextarea}
+                                    />
                             </div>
                         </div>
                         <div className="clearfix"></div>
@@ -30,7 +38,13 @@ export default class CreateListingDescription extends React.Component {
                         <div className="col-md-12">
                             <div className="form-group">
                                 <label>The neighborhood (optional)</label>
-                                <textarea rows={5} className="form-control" placeholder="Describe what's near by, how to get around, etc..."></textarea>
+                                <Textarea
+                                    name="neighborhoodSummary"
+                                    value={neighborhoodSummary}
+                                    placeholder="Describe what's near by, how to get around, etc..."
+                                    rows={5}
+                                    onChange={this.props.updateTextarea}
+                                    />
                             </div>
                         </div>
                         <div className="clearfix"></div>
