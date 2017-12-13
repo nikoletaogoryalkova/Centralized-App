@@ -23,7 +23,7 @@ export default class CreateListingPlaceType extends React.Component {
                                     onChange={(e) => this.props.onChange(e)} 
                                     className="form-control" 
                                     name="listingType" 
-                                    value={this.props.values.listingType} 
+                                    value={listingType} 
                                     required="required" 
                                     id="listing-type">
                                     <option value="home">Home</option>

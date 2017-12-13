@@ -30,6 +30,7 @@ class MainNav extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.register = this.register.bind(this);
         this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     closeSignUp() {
@@ -119,18 +120,23 @@ class MainNav extends React.Component {
         })
     }
 
-    render() {
-        let colorStyle = this.props.location.pathname === "/" ? "white" : '#223843';
+    logout() {
+        localStorage.removeItem(".auth.lockchain");
+        localStorage.removeItem(".auth.username");
 
+        this.setState({ userName: '' })
+    }
+
+    render() {
         return (
-            <div>
+            <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                 <Modal id="myModal_login" show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade">
                     <Modal.Header>
                         <h1>Login</h1>
                         <button type="button" className="close" onClick={this.closeLogIn}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
-                        {this.state.loginError !== null ? <div class="error">{this.state.loginError}</div> : ''}
+                        {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
                         <form onSubmit={this.login}>
                             <div className="form-group">
                                 <input type="mail" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" id="login-mail" placeholder="Email address" />
@@ -147,7 +153,7 @@ class MainNav extends React.Component {
                         </form>
 
                         <hr />
-                        <div className="login-sign">Don’t have an account? <a href="#" onClick={(e) => { this.closeLogIn(e); this.openSignUp(e) }}>Sign up</a></div>
+                        <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.closeLogIn(e); this.openSignUp(e) }}>Sign up</a></div>
                     </Modal.Body>
                 </Modal>
 
@@ -157,7 +163,7 @@ class MainNav extends React.Component {
                         <button type="button" className="close" onClick={this.closeSignUp}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
-                        {this.state.signUpError !== null ? <div class="error">{this.state.signUpError}</div> : ''}
+                        {this.state.signUpError !== null ? <div className="error">{this.state.signUpError}</div> : ''}
                         <form onSubmit={this.register}>
                             <div className="form-group">
                                 <input type="mail" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" id="signup-mail" placeholder="Email address" />
@@ -184,30 +190,43 @@ class MainNav extends React.Component {
 
                 <div className="container">
                     <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1">
+                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                             <span className="sr-only">Toggle navigation</span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <Link className="navbar-brand" to="/"><img src={Config.getValue("basePath") + (this.props.location.pathname === "/" ? "images/logo-w.png" : "images/logo.png")} alt='logo' /></Link>
+                        <Link className="navbar-brand" to="/">
+                            <img src={Config.getValue("basePath") + "images/logo.png"} alt='logo' />
+                        </Link>
                     </div>
 
-                    <div className="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
-
+                    <div className="collapse navbar-collapse pull-right">
                         {localStorage[".auth.lockchain"] ?
-                            <ul className="nav navbar-nav session-nav" style={{ color: colorStyle }} id="top-nav">
-                                <li className="session-nav-hosting session-nav-simple"><span>Hosting</span></li>
-                                <li className="session-nav-traveling session-nav-simple"><span>Traveling</span></li>
-                                <li className="session-nav-help session-nav-simple"><span>Help</span></li>
-                                <li className="session-nav-inbox"><span><img src="/images/mail-notification.png" /></span></li>
-                                <li className="session-nav-user"><span><span className="session-nav-user-thumb"></span>{localStorage[".auth.username"]}</span></li>
+                            <ul className="nav navbar-nav session-nav" id="top-nav">
+                                {/* <li className="session-nav-hosting session-nav-simple"><span><Link to="/listings/create"><i className="icon icon-home"></i>List Your Property</Link></span></li> */}
+                                <li className="session-nav-hosting session-nav-simple"><span><Link to="/profile/reservations">Hosting</Link></span></li>
+                                <li className="session-nav-traveling session-nav-simple"><span><Link to="/profile/trips">Traveling</Link></span></li>
+                                {/* <li className="session-nav-help session-nav-simple"><span>Help</span></li> */}
+                                <li className="session-nav-inbox"><span><img src="/images/mail-notification.png" alt="mail-notification" /></span></li>
+                                <li className="session-nav-user">
+                                    <span className="info">
+                                        <span className="session-nav-user-thumb"></span>
+                                        <Link to="/profile/dashboard">{localStorage[".auth.username"]}</Link>
+                                    </span>
+                                    <span className="sub">
+                                        <ul>
+                                            <li className="opal profile"><span className="ico"></span><span><Link to="/profile/dashboard">View Profile</Link></span></li>
+                                            <li><span><Link to="/profile/me/edit">Edit Profile</Link></span></li>
+                                            <li><span><Link to="/profile/dashboard/#profile-dashboard-reviews">Reviews</Link></span></li>
+                                            <li onClick={this.logout} className="opal logout"><span className="ico"></span><span>Logout</span></li>
+                                        </ul>
+                                    </span>
+                                </li>
                             </ul> :
-                            <ul className="nav navbar-nav" id="top-nav">
-                                <li className="first-nav-button"><a href="#"><i className="icon icon-home"></i>List Your Property</a></li>
-                                <li><a href="#" onClick={this.openLogIn}>Login</a></li>
-                                <li><a href="#" onClick={this.openSignUp}>Register</a></li>
+                            <ul className="nav navbar-nav session-nav" id="top-nav">
+                                <li onClick={this.openLogIn} className="session-nav-simple"><span><a>Login</a></span></li>
+                                <li onClick={this.openSignUp} className="session-nav-simple"><span><a>Register</a></span></li>
                             </ul>
                         }
                     </div>

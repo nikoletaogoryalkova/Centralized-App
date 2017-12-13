@@ -1,7 +1,7 @@
 import React from 'react';
-import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import NavMain from './NavMain';
+import MainNav from '../MainNav';
 import NavCreateListing from './NavCreateListing';
 import CreateListingLandingPage from './basics/CreateListingLandingPage';
 import CreateListingPlaceType from './basics/CreateListingPlaceType';
@@ -17,11 +17,6 @@ import CreateListingChecking from './guestSettings/CreateListingChecking';
 import CreateListingCancellation from './guestSettings/CreateListingCancellation';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
-
-
-import Counter from './Counter';
-import Dropdown from './Dropdown';
-import LabeledBedroomCounter from './LabeledBedroomCounter';
 
 
 export default class CreateListingPage extends React.Component {
@@ -73,8 +68,8 @@ export default class CreateListingPage extends React.Component {
     }
 
     toggleCheckbox(event) {
-        this.setState({ 
-            [event.target.name]: event.target.checked 
+        this.setState({
+            [event.target.name]: event.target.checked
         });
     }
 
@@ -84,7 +79,7 @@ export default class CreateListingPage extends React.Component {
         if (value < 1) { value = 1; }
         this.setState({ [name]: value });
     }
-    
+
     updateBedrooms(event) {
         let bedroomCount = this.state.bedroomCount;
         let value = Number(event.target.value);
@@ -93,7 +88,7 @@ export default class CreateListingPage extends React.Component {
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
 
         if (value > bedroomCount) {
-            for(let i = bedroomCount; i < value; i++) {
+            for (let i = bedroomCount; i < value; i++) {
                 newBedrooms.push(this.createBedroom());
             }
         } else {
@@ -103,7 +98,7 @@ export default class CreateListingPage extends React.Component {
         this.setState({
             bedroomCount: value,
             bedrooms: newBedrooms,
-         });
+        });
     }
 
     updateBedCount(bedroom, e) {
@@ -142,61 +137,63 @@ export default class CreateListingPage extends React.Component {
     render() {
         return (
             <div>
-                <NavMain />
+                <nav id="main-nav" className="navbar">
+                    <MainNav />
+                </nav>
                 <NavCreateListing />
-                
+
                 <div className="container">
                     <div className="row">
                         <Switch>
                             <Redirect exact path="/listings/create/" to="/listings/create/landing" />
-                            
-                            <Route exact path="/listings/create/landing" render={() => 
+
+                            <Route exact path="/listings/create/landing" render={() =>
                                 <CreateListingLandingPage
                                     values={this.state}
-                                    onChange={this.onChange}/>} 
-                            />
-                            
-                            <Route exact path="/listings/create/placetype" render={() => 
-                                <CreateListingPlaceType 
-                                    values={this.state} 
-                                    toggleCheckbox={this.toggleCheckbox} 
-                                    onChange={this.onChange} />} 
+                                    onChange={this.onChange} />}
                             />
 
-                            <Route exact path="/listings/create/accommodation" render={() => 
-                                <CreateListingAccommodation 
+                            <Route exact path="/listings/create/placetype" render={() =>
+                                <CreateListingPlaceType
+                                    values={this.state}
+                                    toggleCheckbox={this.toggleCheckbox}
+                                    onChange={this.onChange} />}
+                            />
+
+                            <Route exact path="/listings/create/accommodation" render={() =>
+                                <CreateListingAccommodation
                                     values={this.state}
                                     updateCounter={this.updateCounter}
                                     updateBedrooms={this.updateBedrooms}
                                     updateBedCount={this.updateBedCount}
-                                    />} />
-                            
-                            <Route exact path="/listings/create/facilities" render={() => 
-                                <CreateListingFacilities 
+                                />} />
+
+                            <Route exact path="/listings/create/facilities" render={() =>
+                                <CreateListingFacilities
                                     values={this.state}
-                                    toggle={this.toggleFacility}/>} />
-                            
-                            <Route exact path="/listings/create/safetyamenities" render={() => 
-                                <CreateListingSafetyAmenities 
-                                    values={this.state} 
+                                    toggle={this.toggleFacility} />} />
+
+                            <Route exact path="/listings/create/safetyamenities" render={() =>
+                                <CreateListingSafetyAmenities
+                                    values={this.state}
                                     toggleCheckbox={this.toggleCheckbox} />} />
-                            
-                            <Route exact path="/listings/create/location" render={() => 
-                                <CreateListingLocation 
+
+                            <Route exact path="/listings/create/location" render={() =>
+                                <CreateListingLocation
                                     values={this.state}
                                     updateDropdown={this.onChange}
-                                    updateTextbox={this.onChange}/>} />
-                            
-                            <Route exact path="/listings/create/title" render={() => 
-                                <CreateListingTitle 
-                                    values={this.state}
-                                    updateTextbox={this.onChange}/>} />
+                                    updateTextbox={this.onChange} />} />
 
-                            <Route exact path="/listings/create/description" render={() => 
-                                <CreateListingDescription 
+                            <Route exact path="/listings/create/title" render={() =>
+                                <CreateListingTitle
                                     values={this.state}
-                                    updateTextarea={this.onChange}/>} />
-                                    
+                                    updateTextbox={this.onChange} />} />
+
+                            <Route exact path="/listings/create/description" render={() =>
+                                <CreateListingDescription
+                                    values={this.state}
+                                    updateTextarea={this.onChange} />} />
+
                             <Route exact path="/listings/create/photos" render={() => <CreateListingPhotos />} />
                             <Route exact path="/listings/create/houserules" render={() => <CreateListingHouseRules />} />
                             <Route exact path="/listings/create/checking" render={() => <CreateListingChecking />} />

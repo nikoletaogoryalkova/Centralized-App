@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { Config } from '../../../config';
-import { Radio, FormControl, FormGroup } from 'react-bootstrap';
 
 export default class CreateListingLandingPage extends React.Component {
 

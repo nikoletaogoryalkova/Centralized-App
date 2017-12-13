@@ -11,13 +11,13 @@ export default class DashboardReviews extends React.Component {
                         <li>
                             <span className="cnt block"><strong>James Kirk</strong> has left you a <a>review</a>. Both of your reviews from this trip are now public.</span>
                         </li>
-                        <li><a className="x"></a></li>
+                        <li><span className="x"></span></li>
                     </ul>
                     <ul className="profile-reviews-item">
                         <li>
                             <span className="cnt block"><strong>James Kirk</strong> has left you a <a>review</a>. Both of your reviews from this trip are now public.</span>
                         </li>
-                        <li><a className="x"></a></li>
+                        <li><span className="x"></span></li>
                     </ul>
                 </div>
             </section>

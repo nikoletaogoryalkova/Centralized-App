@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NavMain from './NavMain';
+import MainNav from '../MainNav';
 import NavLocalization from './NavLocalization';
 import NavProfile from './NavProfile';
 
@@ -8,7 +8,9 @@ export default class ProfileHeader extends React.Component {
     render() {
         return (
             <div>
-                <NavMain />
+                <nav id="main-nav" className="navbar">
+                    <MainNav />
+                </nav>
                 <NavLocalization />
                 <NavProfile />
             </div>

@@ -9,11 +9,6 @@ import PropertyReservation from './PropertyReservation';
 import Calendar from "react-calendar";
 
 class PropertyInfo extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     getAmenities(amenities) {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
