@@ -56,6 +56,9 @@ export default class CreateListingPage extends React.Component {
 
             // facilities
             facilities: new Set(),
+
+            // house rules
+            otherHouseRules: new Set(),
         };
 
         this.onChange = this.onChange.bind(this);
@@ -131,6 +134,11 @@ export default class CreateListingPage extends React.Component {
         })
     }
 
+    addHouseRule() {
+        const rules = this.state.otherHouseRules;
+        rules.add()
+    }
+
     createBedroom() {
         return {
             singleBed: 0,
@@ -198,10 +206,25 @@ export default class CreateListingPage extends React.Component {
                                     updateTextarea={this.onChange}/>} />
                                     
                             <Route exact path="/listings/create/photos" render={() => <CreateListingPhotos />} />
-                            <Route exact path="/listings/create/houserules" render={() => <CreateListingHouseRules />} />
-                            <Route exact path="/listings/create/checking" render={() => <CreateListingChecking />} />
-                            <Route exact path="/listings/create/cancellation" render={() => <CreateListingCancellation />} />
-                            <Route exact path="/listings/create/price" render={() => <CreateListingPrice />} />
+                            
+                            <Route exact path="/listings/create/houserules" render={() => 
+                                <CreateListingHouseRules 
+                                    values={this.state}
+                                    onChange={this.onChange} />} />
+                            
+                            <Route exact path="/listings/create/checking" render={() => 
+                                <CreateListingChecking 
+                                    values={this.state}
+                                    updateDropdown={this.onChange}/>} />
+                            
+                            <Route exact path="/listings/create/cancellation" render={() => 
+                                <CreateListingCancellation />} />
+                            
+                            <Route exact path="/listings/create/price" render={() => 
+                                <CreateListingPrice 
+                                    values={this.state}
+                                    updateNumber={this.onChange}
+                                    updateDropdown={this.onChange}/>} />
                         </Switch>
                     </div>
                 </div>
