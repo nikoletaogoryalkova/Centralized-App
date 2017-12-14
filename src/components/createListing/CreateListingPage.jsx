@@ -18,6 +18,10 @@ import CreateListingCancellation from './guestSettings/CreateListingCancellation
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
+import { getCountries } from '../../requester';
+
+import {Config} from "../../config";
+const host = Config.getValue("apiHost");
 
 export default class CreateListingPage extends React.Component {
     constructor(props) {
@@ -25,23 +29,29 @@ export default class CreateListingPage extends React.Component {
 
         this.state = {
 
-            // landing page and place type
-            listingType: '',
-            location: '',
+            countries: [],
+
+            // step 1
+                // landing page and place type
+            type: '',
+            country: '',
             propertyType: '',
-            reservationType: '',
+            roomType: '',
             dedicatedSpace: '',
             propertySize: '',
 
-            // accommodations
-            guests: 1,
+                // accommodations
+            guestsIncluded: 1,
             bedroomCount: 1,
             bedrooms: [
                 this.createBedroom(),
             ],
             bathrooms: 1,
+            
+                // facilities
+            facilities: new Set(),
 
-            // safety amenities
+                // safety amenities
             smokeDetector: false,
             carbonMonoxideDetector: false,
             firstAidKit: false,
@@ -49,12 +59,25 @@ export default class CreateListingPage extends React.Component {
             fireExtinguisher: false,
             lockOnBedroomDoor: false,
 
-            // facilities
-            facilities: new Set(),
+                // location
+            billingCountry: '',
+            streetAddress: '',
+            city: '',
+            apartment: '',
+            zipCode: '',
 
-            // house rules
+            // step 2
+                // title
+            name: '',
+
+            // step 3
+                // house rules
             otherHouseRules: new Set(),
             otherRuleText: '',
+
+                // price
+            defaultDailyPrice: '',
+            currency: '',
         };
 
         this.onChange = this.onChange.bind(this);
@@ -65,7 +88,15 @@ export default class CreateListingPage extends React.Component {
         this.toggleFacility = this.toggleFacility.bind(this);
         this.addHouseRule = this.addHouseRule.bind(this);
         this.removeHouseRule = this.removeHouseRule.bind(this);
+        this.submitPost = this.submitPost.bind(this);
+        this.resetCity = this.resetCity.bind(this);
     }
+    
+    componentDidMount() {
+        getCountries().then(data => {
+            this.setState({ countries: data.content });
+        });
+    };
 
     onChange(event) {
         this.setState({
@@ -160,6 +191,42 @@ export default class CreateListingPage extends React.Component {
         };
     }
 
+    resetCity() {
+        this.setState({ city: '' });
+    }
+
+    submitPost() {
+
+        let listing = {
+            name: this.state.name,
+            country: `${host}api/countries/${this.state.country}`,
+            property_type: this.state.propertyType.toString(),
+            room_type: this.state.roomType,
+            size: this.state.propertySize.toString(),
+            guests_included: this.state.guestsIncluded.toString(),
+            bedrooms: this.state.bedroomCount.toString(),
+            bedrooms_rooms: [], // TODO
+            bathrooms: this.state.bathrooms,
+            default_daily_price: this.state.defaultDailyPrice.toString(),
+            type: this.state.type,
+            billing_country: `${host}api/countries/${this.state.billing_country}`,
+            city: `${host}api/cities/${this.state.city}`,
+        }
+
+        console.log(JSON.stringify(listing));
+
+        // return;
+
+        fetch('http://localhost:8080/api/listings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'authorization': localStorage['.auth.lockchain'],
+            },
+            body: JSON.stringify(listing),
+        });
+    }
+
     render() {
         return (
             <div>
@@ -208,7 +275,8 @@ export default class CreateListingPage extends React.Component {
                                 <CreateListingLocation
                                     values={this.state}
                                     updateDropdown={this.onChange}
-                                    updateTextbox={this.onChange} />} />
+                                    updateTextbox={this.onChange}
+                                    resetCity={this.resetCity} />} />
 
                             <Route exact path="/listings/create/title" render={() =>
                                 <CreateListingTitle
@@ -241,7 +309,8 @@ export default class CreateListingPage extends React.Component {
                                 <CreateListingPrice 
                                     values={this.state}
                                     updateNumber={this.onChange}
-                                    updateDropdown={this.onChange}/>} />
+                                    updateDropdown={this.onChange}
+                                    submitPost={this.submitPost} />} />
                         </Switch>
                     </div>
                 </div>

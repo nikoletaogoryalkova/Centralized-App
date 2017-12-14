@@ -7,20 +7,9 @@ import Dropdown from '../Dropdown';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
 
 export default class CreateListingAccommodation extends React.Component {
-    createBedroom() {
-        return {
-            singleBed: 0,
-            doubleBed: 0,
-            kingBed: 0,
-        };
-    }
-
-    onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-    }
 
     render() {
-        const {guests, bedroomCount, bedrooms, bathrooms} = this.props.values;
+        const {guestsIncluded, bedroomCount, bedrooms, bathrooms} = this.props.values;
         const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
@@ -64,8 +53,8 @@ export default class CreateListingAccommodation extends React.Component {
                         <h3>How many guests can stay in your place?</h3>
                         <label>Guests:</label>
                         <Counter
-                            name="guests"
-                            value={guests}
+                            name="guestsIncluded"
+                            value={guestsIncluded}
                             onChange={this.props.updateCounter}/>
                     </div>
 

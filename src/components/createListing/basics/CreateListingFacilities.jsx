@@ -4,31 +4,52 @@ import { NavLink } from 'react-router-dom';
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 import FiltersCheckbox from '../../listings/FiltersCheckbox';
 
-export default class CreateListingFacilities extends React.Component {
-    render() {
-        // const {
-        //     diningArea,
-        //     sofa,
-        //     sittingArea,
-        //     desk,
-        //     wardrobeClosset,
-        //     walkInCloset,
-        //     diningTable,
-        //     toaster,
-        //     oven,
-        //     electricTable,
-        //     kitchenette,
-        //     kitchenware,
-        //     microwave,
-        //     refrigerator,
-        //     coffeeMachine,
-        //     toiletPaper,
-        //     bathtub,
-        //     bathrobe,
-        //     outdoorFurniture,
-        //     outdoorDiningArea,
+import { getAmenitiesByCategory } from '../../../requester';
 
-        // } = this.props.values;
+export default class CreateListingFacilities extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            categories: [],
+        }
+    }
+
+    componentDidMount() {
+        getAmenitiesByCategory().then(data => {
+            this.setState({ categories: data.content });
+        });
+    };
+
+    render() {
+        if (!this.props) {
+            return null;
+        }
+
+        const facilities = [];
+        this.state.categories.forEach((category) => {
+            if (category.amenities.length > 0) {
+                facilities.push( 
+                    <div className="filter-box">
+                        <h3>{category.name}</h3>
+                        {category.amenities.map((item, i) => {
+                                return <div key={i} onClick={() => this.props.toggle(item.id)}>
+                                    <FiltersCheckbox
+                                        key={i}
+                                        text={item.name}
+                                        checked={this.props.values.facilities.has(item.id)} />
+                                </div>
+                            })
+                        }
+                    </div>
+                );
+            }
+        });
+
+        const columns = [[], [], []];
+        facilities.forEach((item, i) => {
+            columns[i % 3].push(item);
+        });
 
         return (
             <div>
@@ -40,192 +61,15 @@ export default class CreateListingFacilities extends React.Component {
                         <hr/>
 
                         <div className="col-md-4">
-                            <div className="filter-box">
-                                <h3>Living Area</h3>
-                                {
-                                    CreateListingFacilities.livingArea.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-
-                            <div className="filter-box">
-                                <h3>Bedroom</h3>
-                                {
-                                    CreateListingFacilities.bedroom.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-                            
-                            <div className="filter-box">
-                                <h3>Kitchen</h3>
-                                {
-                                    CreateListingFacilities.kitchen.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-
-                            <div className="filter-box">
-                                <h3>Bathroom</h3>
-                                {
-                                    CreateListingFacilities.bathroom.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-                        </div>
-                        
-                        <div className="col-md-4">
-                            <div className="filter-box">
-                                <h3>Outdoors</h3>
-                                {
-                                    CreateListingFacilities.outdoors.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-
-                            <div className="filter-box">
-                                <h3>Outdoor &amp; View</h3>
-                                {
-                                    CreateListingFacilities.outdoorAndView.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-
-                            <div className="filter-box">
-                                <h3>Pool &amp; Spa</h3>
-                                {
-                                    CreateListingFacilities.poolAndSpa.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-
-                            <div className="filter-box">
-                                <h3>Food &amp; Drink</h3>
-                                {
-                                    CreateListingFacilities.foodAndDrink.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
+                            {columns[0]}
                         </div>
 
                         <div className="col-md-4">
-                            <div className="filter-box">
-                                <h3>Miscellaneous</h3>
-                                {
-                                    CreateListingFacilities.miscellaneous.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
+                            {columns[1]}
+                        </div>
 
-                            <div className="filter-box">
-                                <h3>Media</h3>
-                                {
-                                    CreateListingFacilities.media.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-                            
-                            
-                            <div className="filter-box">
-                                <h3>Activities</h3>
-                                {
-                                    CreateListingFacilities.activities.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-                            
-                            <div className="filter-box">
-                                <h3>Cleaning Services</h3>
-                                {
-                                    CreateListingFacilities.cleaningServices.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
-
-                            <div className="filter-box">
-                                <h3>Transportation</h3>
-                                {
-                                    CreateListingFacilities.transportation.map((item, i) => {
-                                        return <div key={i} onClick={() => this.props.toggle(item)}>
-                                            <FiltersCheckbox
-                                                key={i}
-                                                text={item}
-                                                checked={this.props.values.facilities.has(item)} />
-                                        </div>
-                                    })
-                                }
-                            </div>
+                        <div className="col-md-4">
+                            {columns[2]}
                         </div>
                     </div>
                     
