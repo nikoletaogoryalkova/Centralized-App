@@ -521,7 +521,7 @@ ul.session-nav>li.session-nav-inbox {
     width: 75px;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(/images/mail.png);
+    background-image: url(../images/mail.png);
 }
 
 ul.session-nav>li.session-nav-inbox img {
