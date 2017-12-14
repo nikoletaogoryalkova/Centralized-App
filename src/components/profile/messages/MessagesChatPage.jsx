@@ -32,12 +32,8 @@ export default class MessagesChatPage extends React.Component {
                                     <MessagesChatDay />
                                 </div>
                             </div>
+                            <div className="clear-both before-footer" />
                         </div>
-                    </div>
-                </section>
-                <section id="profile-messages-chat-head">
-                    <div className="container">
-                        <br />
                     </div>
                 </section>
                 <Footer />
