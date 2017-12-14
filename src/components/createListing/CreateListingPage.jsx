@@ -70,6 +70,8 @@ export default class CreateListingPage extends React.Component {
                 // title
             name: '',
 
+                // photos
+
             // step 3
                 // house rules
             otherHouseRules: new Set(),

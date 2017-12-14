@@ -5039,3 +5039,8 @@ h2 + hr {
     border-radius: 3px;
     margin: 10px 0;
 }
+
+.inactiveLink {
+    pointer-events: none;
+    cursor: default;
+ }

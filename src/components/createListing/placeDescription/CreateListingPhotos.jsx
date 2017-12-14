@@ -9,8 +9,7 @@ import update from 'react-addons-update';
 
 import { Config } from '../../../config';
 
-const CLOUDINARY_UPLOAD_PRESET = 'kevdtpwc';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dvhembyhr/upload';
+const LOCKCHAIN_UPLOAD_URL = 'http://localhost:8080/images/upload';
 
 
 export default class CreateListingPhotos extends React.Component {
@@ -37,9 +36,8 @@ export default class CreateListingPhotos extends React.Component {
 
     handleImageUpload(files) {
         files.forEach((file) => {
-            let upload = request.post(CLOUDINARY_UPLOAD_URL)
-                .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                .field('file', file);
+            let upload = request.post(LOCKCHAIN_UPLOAD_URL)
+                .field('image', file);
 
 
             upload.end((err, response) => {
@@ -47,8 +45,9 @@ export default class CreateListingPhotos extends React.Component {
                     console.error(err);
                 }
                 if (response.body.secure_url !== '') {
+                    console.log(response);
                     this.setState(previousState => ({
-                        uploadedFilesUrls: [...previousState.uploadedFilesUrls, response.body.secure_url]
+                        uploadedFilesUrls: [...previousState.uploadedFilesUrls, response.body.original]
                     }));
                 }
             });
@@ -58,13 +57,15 @@ export default class CreateListingPhotos extends React.Component {
     removePhoto(e) {
         e.preventDefault();
 
-        let imageUrl = e.target.nextSibling.getAttribute('src');
+        let imageUrl = e.target.nextSibling;
 
-        let indexOfImage = this.state.uploadedFilesUrls.indexOf(imageUrl);
+        if (imageUrl.src !== null) {
+            let indexOfImage = this.state.uploadedFilesUrls.indexOf(imageUrl.getAttribute('src'));
 
-        this.setState({
-            uploadedFilesUrls: update(this.state.uploadedFilesUrls, { $splice: [[indexOfImage, 1]] })
-        });
+            this.setState({
+                uploadedFilesUrls: update(this.state.uploadedFilesUrls, { $splice: [[indexOfImage, 1]] })
+            });
+        }
     }
 
     render() {
@@ -88,7 +89,9 @@ export default class CreateListingPhotos extends React.Component {
                         {this.state.uploadedFilesUrls.length === 0 ? null :
                             this.state.uploadedFilesUrls.map((imageUrl, i) =>
                                 <div key={i} className="uploaded-small-picture col-md-4">
-                                    <button onClick={this.removePhoto} className="close"><img src={Config.getValue("basePath") + "images/icon-delete.png"} /></button>
+                                    <button onClick={this.removePhoto} className="close">
+                                        <img className="inactiveLink" src={Config.getValue("basePath") + "images/icon-delete.png"} />
+                                    </button>
                                     <img src={imageUrl} height={200} />
                                 </div>
                             )
