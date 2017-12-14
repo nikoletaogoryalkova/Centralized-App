@@ -206,6 +206,17 @@ a:focus {
     border: none;
 }
 
+.clear-both {
+    clear: both;
+}
+
+.after-header {
+    height:60px;
+}
+
+.before-footer {
+    height: 2em;
+}
 
 /* Override bootstrap */
 
@@ -521,7 +532,7 @@ ul.session-nav>li.session-nav-inbox {
     width: 75px;
     background-position: center center;
     background-repeat: no-repeat;
-    background-image: url(/images/mail.png);
+    background-image: url(../images/mail.png);
 }
 
 ul.session-nav>li.session-nav-inbox img {
@@ -3216,6 +3227,7 @@ ul.profile-messages-nav>li>a>h2 {
 
 ul.profile-messages-item {
     overflow: hidden;
+    cursor: pointer;
 }
 
 ul.profile-messages-item:before,
@@ -3573,6 +3585,137 @@ ul.profile-messages-item>li:nth-child(5)>span {
     border-radius: 5px;
     margin: 0 auto;
     letter-spacing: .15em;
+}
+
+#profile-nav-side {
+    width:260px;
+}
+
+#profile-nav-side>ul {
+    list-style-type: none;
+    font-size: 18px;
+    font-family: 'FuturaStd-Light', sans-serif;
+    font-weight: bold;
+}
+
+#profile-nav-side>ul>li {
+    border-radius:5px;
+    padding: 10px 20px;
+    margin-bottom: 20px
+}
+
+#profile-nav-side>ul>li.active {
+    color:white;
+    background-color: #a2c5bf;
+    font-weight: normal;
+}
+
+#profile-edit-form {
+    width: 785px;
+    margin-left:60px;;
+}
+
+#profile-edit-form>h2 {
+    margin: 0;
+}
+
+#profile-edit-form>hr {
+    margin-top: 10px;
+    border-top:1px solid #cfcfcf;
+}
+
+#profile-edit-form label {
+    display: block;
+    margin: 0 0 4px 0;
+    font-size: 17px;
+}
+
+#profile-edit-form input {
+    border:1px solid #cfcfcf;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 18px;
+    padding: 15px;
+    width:100%;
+}
+
+#profile-edit-form input.dropdown {
+    background-image: url(../images/icon-arrow-dropdown.png);
+    background-repeat: no-repeat;
+    background-position: center right;
+}
+
+#profile-edit-form .lock {
+    vertical-align: baseline;
+    margin-left: 5px;
+}
+
+#profile-edit-form>div {
+    clear: both;
+    margin-bottom: 20px;
+}
+
+#profile-edit-form>.text {
+    color:#8b8c8e;
+    font-size: 18px;
+
+}
+
+#profile-edit-form>.name>div {
+    width: 377px;
+    float: left;
+}
+
+#profile-edit-form>.name>.first {
+    margin-right:30px;
+}
+
+#profile-edit-form>.birth-sex>div {
+    float: left;
+    margin-right:30px; 
+}
+
+#profile-edit-form>.birth-sex>.bmonth {
+    width:165px;
+}
+
+#profile-edit-form>.birth-sex>.bday {
+    width:127px;
+}
+
+#profile-edit-form>.birth-sex>.byear {
+    width:130px;
+}
+
+#profile-edit-form>.birth-sex>.sex {
+    width:165px;
+    margin: 0 0 0 30px;
+}
+
+#profile-edit-form>.language-currency>div {
+    width: 270px;
+    float: left;
+}
+
+#profile-edit-form>.language-currency>.language {
+    margin-right:30px;
+}
+
+#profile-edit-form>input.save {
+    background-color: #d87a61;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 18px 70px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    letter-spacing: .1em;
+    width: auto;
+    margin: 50px 0 30px 0;
 }
 
 .home_page h1.home_title {

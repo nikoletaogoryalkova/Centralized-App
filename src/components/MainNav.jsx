@@ -208,7 +208,7 @@ class MainNav extends React.Component {
                                 <li className="session-nav-hosting session-nav-simple"><span><Link to="/profile/reservations">Hosting</Link></span></li>
                                 <li className="session-nav-traveling session-nav-simple"><span><Link to="/profile/trips">Traveling</Link></span></li>
                                 {/* <li className="session-nav-help session-nav-simple"><span>Help</span></li> */}
-                                <li className="session-nav-inbox"><span><img src="/images/mail-notification.png" alt="mail-notification" /></span></li>
+                                <li className="session-nav-inbox"><span><img src={Config.getValue("basePath") + "images/mail-notification.png"} alt="mail-notification" /></span></li>
                                 <li className="session-nav-user">
                                     <span className="info">
                                         <span className="session-nav-user-thumb"></span>
