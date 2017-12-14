@@ -2447,7 +2447,7 @@ tspan {
     margin-bottom: 0;
 }
 
-#myModal_login .modal-header .close {
+.close {
     opacity: 1;
     margin-top: -10px;
     height: 35px;
@@ -2461,7 +2461,7 @@ tspan {
     user-select: none;
 }
 
-#myModal_login .modal-header .close:hover {
+.close:hover {
     opacity: 0.2;
     margin-top: -10px;
     height: 35px;
@@ -4588,4 +4588,47 @@ input[type="checkbox"].tick:checked+label:after {
 
 .dropdown.btn-group {
     width: 100%;
+}
+
+.pictures-upload {
+    width: 90%;
+    padding: 100px 0;
+    text-align: center;
+    background: #FFFFFF;
+    border: 2px dashed #CCCCCC;
+    border-radius: 3px;
+    margin: 0 auto;
+}
+
+.pictures-upload p {
+    font-size: 22px;
+}
+
+h2 + hr {
+    border-top: 1px solid #CFD1D0;
+}
+
+.pictures-preview {
+    margin: 20px 0;
+}
+
+.pictures-preview .close {
+    position: absolute;
+    top: 180px;
+    left: 20px;
+    background-color: #213844;
+    border-radius: 5px;
+    color: white;
+}
+
+.pictures-preview .close:hover {
+    background-color: #E98B73;
+    opacity: 1;
+    border-color: #E98B73;
+}
+
+.uploaded-small-picture > img {
+    width: 90%;
+    border-radius: 3px;
+    margin: 10px 0;
 }
