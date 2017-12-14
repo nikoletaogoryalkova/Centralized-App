@@ -5,7 +5,27 @@ import CreateListingBasicsAside from './CreateListingBasicsAside';
 import Dropdown from '../Dropdown';
 import Textbox from '../Textbox';
 
+import { getCountries, getCities } from '../../../requester';
+
 export default class CreateListingLocation extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            cities: [],
+        }
+    }    
+
+    updateBillingCountry(e) {
+        const countryId = e.target.value;
+        getCities(countryId).then(data => {
+            this.setState({ cities: data.content });
+        });
+
+        this.props.updateDropdown(e);
+        this.props.resetCity();
+    }
+
     render() {
         const {billingCountry, streetAddress, city, apartment, state, zipCode} = this.props.values;
         return (
@@ -19,11 +39,16 @@ export default class CreateListingLocation extends React.Component {
                         <div className="col-md-6">
                             <label>
                                 Billing Country
-                                <Dropdown 
-                                    name="billingCountry"
+                                <select 
                                     value={billingCountry}
-                                    options={[ "Bulgaria", "United Kingdom" ]} 
-                                    onChange={this.props.updateDropdown}/>
+                                    name="billingCountry"
+                                    required="required"
+                                    onChange={(e) => this.updateBillingCountry(e)}>
+                                    <option disabled value="">Location</option>
+                                    {this.state.countries.map((item, i) => {
+                                        return <option key={i} value={item.id}>{item.name}</option>
+                                    })}
+                                </select>
                             </label>
                             <label>
                                 Street Address
@@ -34,10 +59,16 @@ export default class CreateListingLocation extends React.Component {
                             </label>
                             <label>
                                 City
-                                <Textbox 
+                                <select 
+                                    value={city}
                                     name="city"
-                                    value={city} 
-                                    onChange={this.props.updateTextbox}/>
+                                    required="required"
+                                    onChange={this.props.updateDropdown}>
+                                    <option disabled value="">City</option>
+                                    {this.state.cities.map((item, i) => {
+                                        return <option key={i} value={item.id}>{item.name}</option>
+                                    })}
+                                </select>
                             </label>
                         </div>
 
@@ -49,7 +80,7 @@ export default class CreateListingLocation extends React.Component {
                                     value={apartment} 
                                     onChange={this.props.updateTextbox}/>
                             </label>
-                            <div className="col-md-6">
+                            {/* <div className="col-md-6">
                                 <label>
                                     State
                                     <Dropdown 
@@ -58,7 +89,7 @@ export default class CreateListingLocation extends React.Component {
                                         options={[ "State", "Another state" ]} 
                                         onChange={this.props.updateDropdown}/>
                                 </label>
-                             </div>
+                             </div> */}
                              <div className="col-md-6">
                                 <label>
                                     ZipCode

@@ -11,6 +11,7 @@ import MyReservationsPage from './profile/reservations/MyReservationsPage';
 import MyTripsPage from './profile/trips/MyTripsPage';
 import MessagesHostingPage from './profile/messages/MessagesHostingPage';
 import MessagesTravelingPage from './profile/messages/MessagesTravelingPage';
+import MessagesChatPage from './profile/messages/MessagesChatPage';
 import ProfileEditPage from './profile/me/ProfileEditPage';
 import AccountNotificationsPage from './profile/account/AccountNotificationsPage';
 
@@ -77,6 +78,7 @@ class App extends React.Component {
                     <Route exact path="/profile/trips" render={() => <MyTripsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/messages/hosting" render={() => <MessagesHostingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/messages/traveling" render={() => <MessagesTravelingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/messages/chat" render={() => <MessagesChatPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/me/edit" render={() => <ProfileEditPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/account/notifications" render={() => <AccountNotificationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                 </Switch>

@@ -1,4 +1,4 @@
-import {Config} from "./config";
+import { Config } from "./config";
 const host = Config.getValue("apiHost");
 
 export async function getListings() {
@@ -11,8 +11,23 @@ export async function getCountries() {
     return res.json();
 }
 
+export async function getCities(countryId) {
+    const res = await fetch(`${host}api/countries/${countryId}/cities?projection=cityNameAndId`);
+    return res.json();
+}
+
 export async function getPropertyTypes() {
     const res = await fetch(`${host}api/property_types?projection=property_type`);
+    return res.json();
+}
+
+export async function getAmenitiesByCategory() { // TODO
+    const res = await fetch(`${host}api/categories?projection=singleCategory`);
+    return res.json();
+}
+
+export async function getPropertyTypesWithIds() {
+    const res = await fetch(`${host}api/property_types?projection=property_type_name_and_id`);
     return res.json();
 }
 
@@ -65,7 +80,7 @@ export async function login(user) {
         method: "POST",
         body: user
     });
-    
+
     return res;
 }
 

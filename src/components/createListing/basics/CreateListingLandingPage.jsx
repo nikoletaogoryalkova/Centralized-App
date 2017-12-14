@@ -7,7 +7,7 @@ export default class CreateListingLandingPage extends React.Component {
 
 
     render() {
-        const {listingType, location} = this.props.values;
+        const {type, country, countries} = this.props.values;
     
         return (
             <div>
@@ -25,8 +25,8 @@ export default class CreateListingLandingPage extends React.Component {
                                     <input 
                                         type="radio" 
                                         onChange={(e) => this.props.onChange(e)} 
-                                        name="listingType" 
-                                        checked={listingType === 'home'} 
+                                        name="type" 
+                                        checked={type === 'home'} 
                                         value="home"/>
                                     Home
                                 </label>
@@ -35,20 +35,24 @@ export default class CreateListingLandingPage extends React.Component {
                                     <input 
                                         type="radio" 
                                         onChange={(e) => this.props.onChange(e)} 
-                                        name="listingType" 
-                                        checked={listingType === 'hotel'} 
+                                        name="type" 
+                                        checked={type === 'hotel'} 
                                         value="hotel"/>
                                     Hotel
                                 </label>
                                 
                                 <br />
 
-                                <input 
-                                    type="text"
-                                    name="location" 
-                                    value={location}
-                                    placeholder="Enter a location" 
-                                    onChange={(e) => this.props.onChange(e)} />
+                                <select 
+                                    value={country}
+                                    name="country"
+                                    required="required"
+                                    onChange={(e) => this.props.onChange(e)}>
+                                    <option disabled value="">Location</option>
+                                    {countries.map((item, i) => {
+                                        return <option key={i} value={item.id}>{item.name}</option>
+                                    })}
+                                </select>
                             </div>
                         </div>
                     </div>
