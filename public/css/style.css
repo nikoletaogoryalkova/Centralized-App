@@ -3783,7 +3783,7 @@ ul.profile-messages-item>li:nth-child(5)>span {
 #profile-mylistings ul.profile-mylistings-active>li.remove>span {
     display:block;
     background-position:center center;
-    background-image: url(../images/icon-delete.png);
+    background-image: url(../images/icon-remove.png);
     width:39px;
     height:39px;
     border-radius: 2px;
