@@ -655,13 +655,6 @@ ul.session-nav>li>.sub .opal a {
     margin-right: 10px;
 }
 
-#main-nav .navbar-nav>li>a:hover {
-    text-decoration: none;
-    background-color: #d87a61;
-    border: 2px solid #d87a61;
-    color: #fff;
-}
-
 #second-nav {
     background: #f0f1f3;
 }
@@ -3607,7 +3600,7 @@ ul.profile-messages-item>li:nth-child(5)>span {
 }
 
 #profile-edit-form input,
-.dropdown {
+#profile-edit-form .dropdown {
     border: 1px solid #cfcfcf;
     border-radius: 5px;
     background-color: white;
@@ -3709,7 +3702,7 @@ li.dropdown {
     list-style: none;
     background-color: white;
     height: 100px;
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li {
@@ -3722,30 +3715,30 @@ li.dropdown {
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.toggle {
-    width:50px;
+    width: 50px;
     background-repeat: no-repeat;
     background-position: center 30px;
     background-image: url(../images/arrow-right.png);
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.thumb {
-    width:120px;
+    width: 120px;
     padding-top: 20px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.thumb>span {
-    display:block;
-    background-position:center center;
+    display: block;
+    background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    width:85px;
-    height:60px;
+    width: 85px;
+    height: 60px;
     background-color: silver;
     border-radius: 2px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.details {
-    width:410px;
+    width: 410px;
     padding-top: 20px;
 }
 
@@ -3763,27 +3756,27 @@ li.dropdown {
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.price {
-    width:140px;
-    padding-top:35px;
+    width: 140px;
+    padding-top: 35px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.price>span {
-    font-size:18px;
+    font-size: 18px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.edit {
-    width:150px;
-    padding-top:33px;
+    width: 150px;
+    padding-top: 33px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.edit>a {
-    font-size:20px;
+    font-size: 20px;
     font-family: 'FuturaStd-Medium', sans-serif;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.calendar {
-    width:210px;
-    padding-top:20px;
+    width: 210px;
+    padding-top: 20px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.calendar>input {
@@ -3803,15 +3796,15 @@ li.dropdown {
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.remove {
-    padding-top:27px;
+    padding-top: 27px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.remove>span {
-    display:block;
-    background-position:center center;
+    display: block;
+    background-position: center center;
     background-image: url(../images/icon-remove.png);
-    width:39px;
-    height:39px;
+    width: 39px;
+    height: 39px;
     border-radius: 2px;
     cursor: pointer;
 }
@@ -3821,8 +3814,8 @@ li.dropdown {
 }
 
 .rating-feedback .stars-cnt {
-    height:15px;
-    width:100px;
+    height: 15px;
+    width: 100px;
 }
 
 .rating-feedback .stars-bg {
@@ -3838,7 +3831,7 @@ li.dropdown {
     display: block;
     position: absolute;
     overflow: hidden;
-    width:0;
+    width: 0;
 }
 
 .rating-feedback .stars-over {
@@ -3855,7 +3848,7 @@ li.dropdown {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
-    float:left;
+    float: left;
 }
 
 .home_page h1.home_title {

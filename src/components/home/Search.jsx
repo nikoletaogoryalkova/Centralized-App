@@ -63,7 +63,7 @@ class Search extends React.Component {
         e.preventDefault();
 
         let queryString = '?';
-        console.log(this.state.startDate);
+        
         queryString += 'countryId=' + this.state.countryId;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');

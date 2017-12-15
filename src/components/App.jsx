@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 import HomePage from './home/HomePage.jsx';
 import ListingPage from './listings/ListingsPage';
@@ -63,24 +63,32 @@ class App extends React.Component {
         this.setState({ currency, currencySign });
     }
 
+    isAuthenticated() {
+        let token = localStorage.getItem('.auth.lockchain');
+        if(token) {
+            return true;
+        }
+        return false;
+    }
+
     render() {
         return (
             <div>
                 <Switch>
                     <Route exact path="/" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route path="/listings/create" render={() => <CreateListingPage />} />
+                    <Route path="/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
                     <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/dashboard" render={() => <DashboardPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/listings" render={() => <MyListingsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/reservations" render={() => <MyReservationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/trips" render={() => <MyTripsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/messages/hosting" render={() => <MessagesHostingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/messages/traveling" render={() => <MessagesTravelingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/messages/chat" render={() => <MessagesChatPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/me/edit" render={() => <ProfileEditPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/account/notifications" render={() => <AccountNotificationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/dashboard" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <DashboardPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/listings" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyListingsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/reservations" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyReservationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/trips" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyTripsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/messages/hosting" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesHostingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/messages/traveling" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesTravelingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/messages/chat" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesChatPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/me/edit" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfileEditPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                 </Switch>
             </div>
         );

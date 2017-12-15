@@ -36,7 +36,7 @@ export default class ProfileEditPage extends React.Component {
         let years = [];
 
         for(let i = 1940; i <= 1999; i++) {
-            years.push(<MenuItem>{i}</MenuItem>)
+            years.push(<MenuItem key={i}>{i}</MenuItem>)
         }
 
         return (
@@ -45,11 +45,11 @@ export default class ProfileEditPage extends React.Component {
                 <hr />
                 <div className="name">
                     <div className="first">
-                        <label for="fname">First name</label>
+                        <label htmlFor="fname">First name</label>
                         <input id="fname" name="firstName" value={this.state.firstName} onChange={this.onChange} type="text" />
                     </div>
                     <div className="last">
-                        <label for="lname">Last name</label>
+                        <label htmlFor="lname">Last name</label>
                         <input id="lname" name="lastName" value={this.state.lastName} onChange={this.onChange} type="text" />
                     </div>
                     <br className="clear-both" />
@@ -57,7 +57,7 @@ export default class ProfileEditPage extends React.Component {
                 <div className="text"><span>Your public profile only shows your first name.<br />When you request a booking, your host will see your first and last name.</span></div>
                 <div className="birth-sex">
                     <div className="bmonth">
-                        <label for="bmonth">Birthdate <img src="/images/icon-lock.png" className="lock" /></label>
+                        <label htmlFor="bmonth">Birthdate <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
                         <NavDropdown title={this.state.month} onSelect={this.changeDropdownValue} id="month">
                             <MenuItem>January</MenuItem>
                             <MenuItem>February</MenuItem>
@@ -74,21 +74,21 @@ export default class ProfileEditPage extends React.Component {
                         </NavDropdown>
                     </div>
                     <div className="bday">
-                        <label for="bday">&nbsp;</label>
+                        <label htmlFor="bday">&nbsp;</label>
                         <NavDropdown title={this.state.day} onSelect={this.changeDropdownValue} id="day">
                             {Array.apply(null, Array(31)).map(function (item, i) {
-                                return <MenuItem>{i}</MenuItem>
+                                return <MenuItem key={i}>{i}</MenuItem>
                             })}
                         </NavDropdown>
                     </div>
                     <div className="byear">
-                        <label for="byear">&nbsp;</label>
+                        <label htmlFor="byear">&nbsp;</label>
                         <NavDropdown title={this.state.year} onSelect={this.changeDropdownValue} id="year">
                             {years}
                         </NavDropdown>
                     </div>
                     <div className="sex">
-                        <label for="sex">Gender <img src="/images/icon-lock.png" className="lock" /></label>
+                        <label htmlFor="sex">Gender <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
                         <NavDropdown title={this.state.gender} onSelect={this.changeDropdownValue} id="gender">
                             <MenuItem>Men</MenuItem>
                             <MenuItem>Women</MenuItem>
@@ -99,32 +99,32 @@ export default class ProfileEditPage extends React.Component {
                 </div>
                 <div className="text"><span>We user this data for analysis and never share it with other users.</span></div>
                 <div className="phone">
-                    <label for="phone">Email address <img src="/images/icon-lock.png" className="lock" /></label>
+                    <label htmlFor="phone">Email address <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
                     <input id="phone" name="email" type="text" value={this.state.email} onChange={this.onChange} />
                 </div>
                 <div className="text"><span>We won't share your private email address with other LockChain users.</span></div>
                 <div className="phone">
-                    <label for="phone">Phone number <img src="/images/icon-lock.png" className="lock" /></label>
+                    <label htmlFor="phone">Phone number <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
                     <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
                 </div>
                 <div className="text"><span>We won't share your phone number with other LockChain users.</span></div>
 
                 <div className="language-currency">
                     <div className="language">
-                        <label for="language">Preferred language</label>
-                        <input id="language" name="language" type="text" readonly="readonly" value="English" class="dropdown" />
+                        <label htmlFor="language">Preferred language</label>
+                        <input id="language" name="language" type="text" readOnly={true} value="English" className="dropdown" />
                     </div>
                     <div className="currency">
-                        <label for="lname">Preferred currency</label>
-                        <input id="lname" name="lname" type="text" readonly="readonly" value="Bulgarian Lev" class="dropdown" />
+                        <label htmlFor="lname">Preferred currency</label>
+                        <input id="lname" name="lname" type="text" readOnly={true} value="Bulgarian Lev" className="dropdown" />
                     </div>
                     <br className="clear-both" />
                 </div>
                 <div className="address">
-                    <label for="address">Where you live</label>
+                    <label htmlFor="address">Where you live</label>
                     <input id="address" name="address" type="text" />
                 </div>
-                <input type="button" class="button" value="Save" class="save" />
+                <input type="button" className="button save" value="Save" />
             </div>
         );
     }

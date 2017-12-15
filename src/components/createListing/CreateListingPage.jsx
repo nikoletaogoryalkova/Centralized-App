@@ -248,7 +248,7 @@ export default class CreateListingPage extends React.Component {
 
         let photosToUpload = [];
         photos.forEach((photo, i) => {
-            const res = fetch('http://localhost:8080/api/pictures', {
+            fetch('http://localhost:8080/api/pictures', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -266,7 +266,6 @@ export default class CreateListingPage extends React.Component {
 
     createListing() {
         let photos = this.getPhotos();
-        console.log(photos);
 
         let listing = {
             checkinStart: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mmZ"),
@@ -281,8 +280,6 @@ export default class CreateListingPage extends React.Component {
             type: `${host}api/property_types/${this.state.type}`,
             pictures: photos,
         }
-
-        console.log(listing);
 
         return listing;
     }
@@ -324,7 +321,7 @@ export default class CreateListingPage extends React.Component {
 
         let listing = this.createListing();
 
-        const res = fetch('http://localhost:8080/api/listings', {
+        fetch('http://localhost:8080/api/listings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -333,8 +330,6 @@ export default class CreateListingPage extends React.Component {
             body: JSON.stringify(listing),
         }).then((res) => {
             return res.json();
-        }).then((data) => {
-            console.log(data.links[0].href)
         });
     }
 

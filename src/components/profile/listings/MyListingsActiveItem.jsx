@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-import MyListingsActiveItem from './MyListingsActiveItem';
 import RatingFeedback from '../RatingFeedback';
-import ProfileHeader from '../ProfileHeader';
-import Footer from '../../Footer';
 
 export default class MyListingsPage extends React.Component {
     render() {
@@ -23,7 +20,7 @@ export default class MyListingsPage extends React.Component {
                     <Link to="#">Edit Listing</Link>
                 </li>
                 <li className="calendar">
-                <input type="button" class="button" value="View Calendar"/>
+                <input type="button" className="button" value="View Calendar"/>
                 </li>
                 <li className="remove">
                     <span></span>
