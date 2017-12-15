@@ -20,8 +20,11 @@ import Footer from '../Footer';
 
 import { getCountries } from '../../requester';
 
-import {Config} from "../../config";
+import { Config } from "../../config";
+import request from 'superagent';
+import update from 'react-addons-update';
 const host = Config.getValue("apiHost");
+const LOCKCHAIN_UPLOAD_URL = 'http://localhost:8080/images/upload';
 
 export default class CreateListingPage extends React.Component {
     constructor(props) {
@@ -32,7 +35,7 @@ export default class CreateListingPage extends React.Component {
             countries: [],
 
             // step 1
-                // landing page and place type
+            // landing page and place type
             type: '',
             country: '',
             propertyType: '',
@@ -40,18 +43,18 @@ export default class CreateListingPage extends React.Component {
             dedicatedSpace: '',
             propertySize: '',
 
-                // accommodations
+            // accommodations
             guestsIncluded: 1,
             bedroomCount: 1,
             bedrooms: [
                 this.createBedroom(),
             ],
             bathrooms: 1,
-            
-                // facilities
+
+            // facilities
             facilities: new Set(),
 
-                // safety amenities
+            // safety amenities
             smokeDetector: false,
             carbonMonoxideDetector: false,
             firstAidKit: false,
@@ -59,7 +62,7 @@ export default class CreateListingPage extends React.Component {
             fireExtinguisher: false,
             lockOnBedroomDoor: false,
 
-                // location
+            // location
             billingCountry: '',
             streetAddress: '',
             city: '',
@@ -67,17 +70,19 @@ export default class CreateListingPage extends React.Component {
             zipCode: '',
 
             // step 2
-                // title
+            // title
             name: '',
 
-                // photos
-
+            // photos
+            uploadedFiles: [],
+            uploadedFilesUrls: [],
+            uploadedFilesThumbUrls: [],
             // step 3
-                // house rules
+            // house rules
             otherHouseRules: new Set(),
             otherRuleText: '',
 
-                // price
+            // price
             defaultDailyPrice: '',
             currency: '',
         };
@@ -92,8 +97,11 @@ export default class CreateListingPage extends React.Component {
         this.removeHouseRule = this.removeHouseRule.bind(this);
         this.submitPost = this.submitPost.bind(this);
         this.resetCity = this.resetCity.bind(this);
+        this.onImageDrop = this.onImageDrop.bind(this);
+        this.handleImageUpload = this.handleImageUpload.bind(this);
+        this.removePhoto = this.removePhoto.bind(this);
     }
-    
+
     componentDidMount() {
         getCountries().then(data => {
             this.setState({ countries: data.content });
@@ -197,7 +205,7 @@ export default class CreateListingPage extends React.Component {
         this.setState({ city: '' });
     }
 
-    submitPost() {
+    submitPost() {       
 
         let listing = {
             name: this.state.name,
@@ -212,7 +220,7 @@ export default class CreateListingPage extends React.Component {
             default_daily_price: this.state.defaultDailyPrice.toString(),
             type: this.state.type,
             billing_country: `${host}api/countries/${this.state.billing_country}`,
-            city: `${host}api/cities/${this.state.city}`,
+            city: `${host}api/cities/${this.state.city}`
         }
 
         console.log(JSON.stringify(listing));
@@ -222,11 +230,55 @@ export default class CreateListingPage extends React.Component {
         fetch('http://localhost:8080/api/listings', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
-              'authorization': localStorage['.auth.lockchain'],
+                'Content-Type': 'application/json',
+                'authorization': localStorage['.auth.lockchain'],
             },
             body: JSON.stringify(listing),
         });
+    }
+
+
+    onImageDrop(files) {
+        this.handleImageUpload(files)
+
+        this.setState({
+            uploadedFiles: files
+        });
+    }
+
+    handleImageUpload(files) {
+        files.forEach((file) => {
+            let upload = request.post(LOCKCHAIN_UPLOAD_URL)
+                .field('image', file);
+
+
+            upload.end((err, response) => {
+                if (err) {
+                    console.error(err);
+                }
+                if (response.body.secure_url !== '') {
+                    this.setState(previousState => ({
+                        uploadedFilesUrls: [...previousState.uploadedFilesUrls, response.body.original],
+                        uploadedFilesThumbUrls: [...previousState.uploadedFilesThumbUrls, response.body.thumbnail]
+                    }));
+                }
+            });
+        });
+    }
+
+    removePhoto(e) {
+        e.preventDefault();
+
+        let imageUrl = e.target.nextSibling;
+
+        if (imageUrl.src !== null) {
+            let indexOfImage = this.state.uploadedFilesUrls.indexOf(imageUrl.getAttribute('src'));
+
+            this.setState({
+                uploadedFilesUrls: update(this.state.uploadedFilesUrls, { $splice: [[indexOfImage, 1]] }),
+                uploadedFilesThumbUrls: update(this.state.uploadedFilesThumbUrls, { $splice: [[indexOfImage, 1]] })
+            });
+        }
     }
 
     render() {
@@ -290,25 +342,30 @@ export default class CreateListingPage extends React.Component {
                                     values={this.state}
                                     updateTextarea={this.onChange} />} />
 
-                            <Route exact path="/listings/create/photos" render={() => <CreateListingPhotos />} />
-                            
-                            <Route exact path="/listings/create/houserules" render={() => 
-                                <CreateListingHouseRules 
+                            <Route exact path="/listings/create/photos" render={() =>
+                                <CreateListingPhotos
+                                    values={this.state}
+                                    onImageDrop={this.onImageDrop}
+                                    removePhoto={this.removePhoto}
+                                />} />
+
+                            <Route exact path="/listings/create/houserules" render={() =>
+                                <CreateListingHouseRules
                                     values={this.state}
                                     onChange={this.onChange}
                                     addRule={this.addHouseRule}
                                     removeRule={this.removeHouseRule} />} />
-                            
-                            <Route exact path="/listings/create/checking" render={() => 
-                                <CreateListingChecking 
+
+                            <Route exact path="/listings/create/checking" render={() =>
+                                <CreateListingChecking
                                     values={this.state}
-                                    updateDropdown={this.onChange}/>} />
-                            
-                            <Route exact path="/listings/create/cancellation" render={() => 
+                                    updateDropdown={this.onChange} />} />
+
+                            <Route exact path="/listings/create/cancellation" render={() =>
                                 <CreateListingCancellation />} />
-                            
-                            <Route exact path="/listings/create/price" render={() => 
-                                <CreateListingPrice 
+
+                            <Route exact path="/listings/create/price" render={() =>
+                                <CreateListingPrice
                                     values={this.state}
                                     updateNumber={this.onChange}
                                     updateDropdown={this.onChange}
