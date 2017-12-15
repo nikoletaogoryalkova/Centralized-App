@@ -2,10 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
-import Dropdown from '../Dropdown';
 import Textbox from '../Textbox';
 
-import { getCountries, getCities } from '../../../requester';
+import { getCities } from '../../../requester';
 
 export default class CreateListingLocation extends React.Component {
     constructor(props) {
@@ -14,7 +13,13 @@ export default class CreateListingLocation extends React.Component {
         this.state = {
             cities: [],
         }
-    }    
+    }
+
+    componentDidMount() {
+        getCities(this.props.values.billingCountry).then(data => {
+            this.setState({ cities: data.content });
+        });
+    }
 
     updateBillingCountry(e) {
         const countryId = e.target.value;
@@ -27,7 +32,11 @@ export default class CreateListingLocation extends React.Component {
     }
 
     render() {
-        const {billingCountry, streetAddress, city, apartment, state, zipCode} = this.props.values;
+        if (!this.state.cities) {
+            return null;
+        }
+        
+        const {billingCountry, streetAddress, city, apartment, zipCode, countries} = this.props.values;
         return (
             <div>
                 <CreateListingBasicsAside />
@@ -45,7 +54,7 @@ export default class CreateListingLocation extends React.Component {
                                     required="required"
                                     onChange={(e) => this.updateBillingCountry(e)}>
                                     <option disabled value="">Location</option>
-                                    {this.state.countries.map((item, i) => {
+                                    {countries.map((item, i) => {
                                         return <option key={i} value={item.id}>{item.name}</option>
                                     })}
                                 </select>

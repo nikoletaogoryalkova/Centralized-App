@@ -6,7 +6,7 @@ import Textarea from '../Textarea';
 
 export default class CreateListingDescription extends React.Component {
     render() {
-        const {descriptionSummary, neighborhoodSummary} = this.props.values;
+        const {description, neighborhood} = this.props.values;
         return (
             <div>
                 <CreateListingPlaceDescriptionAside />
@@ -20,8 +20,8 @@ export default class CreateListingDescription extends React.Component {
                             <div className="form-group">
                                 <label>Summary</label>
                                 <Textarea
-                                    name="descriptionSummary"
-                                    value={descriptionSummary}
+                                    name="description"
+                                    value={description}
                                     placeholder="Describe your place..."
                                     rows={5}
                                     onChange={this.props.updateTextarea}
@@ -39,8 +39,8 @@ export default class CreateListingDescription extends React.Component {
                             <div className="form-group">
                                 <label>The neighborhood (optional)</label>
                                 <Textarea
-                                    name="neighborhoodSummary"
-                                    value={neighborhoodSummary}
+                                    name="neighborhood"
+                                    value={neighborhood}
                                     placeholder="Describe what's near by, how to get around, etc..."
                                     rows={5}
                                     onChange={this.props.updateTextarea}

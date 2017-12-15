@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import moment from 'moment';
 
 import MainNav from '../MainNav';
 import NavCreateListing from './NavCreateListing';
@@ -18,7 +19,7 @@ import CreateListingCancellation from './guestSettings/CreateListingCancellation
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
-import { getCountries } from '../../requester';
+import { getCountries, getAmenitiesByCategory } from '../../requester';
 
 import { Config } from "../../config";
 import request from 'superagent';
@@ -33,12 +34,13 @@ export default class CreateListingPage extends React.Component {
         this.state = {
 
             countries: [],
+            categories: [],
 
             // step 1
             // landing page and place type
-            type: '',
-            country: '',
-            propertyType: '',
+            type: '1',
+            country: '1',
+            propertyType: '1',
             roomType: '',
             dedicatedSpace: '',
             propertySize: '',
@@ -63,7 +65,7 @@ export default class CreateListingPage extends React.Component {
             lockOnBedroomDoor: false,
 
             // location
-            billingCountry: '',
+            billingCountry: '1',
             streetAddress: '',
             city: '',
             apartment: '',
@@ -72,19 +74,33 @@ export default class CreateListingPage extends React.Component {
             // step 2
             // title
             name: '',
+            description: '',
+            neighborhood: '',
 
             // photos
             uploadedFiles: [],
             uploadedFilesUrls: [],
             uploadedFilesThumbUrls: [],
+            
             // step 3
-            // house rules
-            otherHouseRules: new Set(),
+                // house rules
+            suitableForChildren: 'false', 
+            suitableForInfants: 'false', 
+            suitableForPets: 'false',
+            smokingAllowed: 'false', 
+            eventsAllowed: 'false', 
             otherRuleText: '',
+            otherHouseRules: new Set(),
+
+            // checkin
+            checkinFrom: '1:00 AM',
+            checkinTo: '1:00 AM',
+            checkoutFrom: '1:00 AM',
+            checkoutTo: '1:00 AM',
 
             // price
-            defaultDailyPrice: '',
-            currency: '',
+            defaultDailyPrice: '0',
+            currency: '2', // USD
         };
 
         this.onChange = this.onChange.bind(this);
@@ -105,6 +121,10 @@ export default class CreateListingPage extends React.Component {
     componentDidMount() {
         getCountries().then(data => {
             this.setState({ countries: data.content });
+        });
+
+        getAmenitiesByCategory().then(data => {
+            this.setState({ categories: data.content });
         });
     };
 
@@ -205,35 +225,116 @@ export default class CreateListingPage extends React.Component {
         this.setState({ city: '' });
     }
 
-    submitPost() {       
+    getFacilities() {
+        const facilities = [];
+        this.state.facilities.forEach(item => {
+            facilities.push(`${host}api/amenities/${item}`);
+        });
 
-        let listing = {
-            name: this.state.name,
-            country: `${host}api/countries/${this.state.country}`,
-            property_type: this.state.propertyType.toString(),
-            room_type: this.state.roomType,
-            size: this.state.propertySize.toString(),
-            guests_included: this.state.guestsIncluded.toString(),
-            bedrooms: this.state.bedroomCount.toString(),
-            bedrooms_rooms: [], // TODO
-            bathrooms: this.state.bathrooms,
-            default_daily_price: this.state.defaultDailyPrice.toString(),
-            type: this.state.type,
-            billing_country: `${host}api/countries/${this.state.billing_country}`,
-            city: `${host}api/cities/${this.state.city}`
+        return facilities;
+    }
+
+    getPhotos() {
+        let photos = [];
+        for (let i = 0; i < this.state.uploadedFilesUrls.length; i++) {
+            let photo = {
+                sortOrder: i,
+                original: this.state.uploadedFilesUrls[i],
+                thumbnail: this.state.uploadedFilesThumbUrls[i]
+            };
+
+            photos.push(photo);
         }
 
-        console.log(JSON.stringify(listing));
+        let photosToUpload = [];
+        photos.forEach((photo, i) => {
+            const res = fetch('http://localhost:8080/api/pictures', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage['.auth.lockchain'],
+                },
+                body: JSON.stringify(photo),
+            }).then((res) => {
+                return res.json();
+            }).then((data) => {
+                photosToUpload.push(data.links[0].href);
+            });
+        });
+        return photosToUpload;
+    }
 
-        // return;
+    createListing() {
+        let photos = this.getPhotos();
+        console.log(photos);
 
-        fetch('http://localhost:8080/api/listings', {
+        let listing = {
+            checkinStart: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mmZ"),
+            checkinEnd: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mmZ"),
+            checkout: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mmZ"),
+            defaultDailyPrice: this.state.defaultDailyPrice.toString(),
+            guestsIncluded: this.state.guestsIncluded.toString(),
+            name: this.state.name,
+            // city: `${host}api/cities/${this.state.city}`,
+            country: `${host}api/countries/${this.state.country}`,
+            currency: `${host}api/currencies/${this.state.currency}`,
+            type: `${host}api/property_types/${this.state.type}`,
+            pictures: photos,
+        }
+
+        console.log(listing);
+
+        return listing;
+    }
+
+    submitPost() {       
+        let l = {
+            property_type: this.state.propertyType.toString(),
+            // type: this.state.type,
+            // country: `${host}api/countries/${this.state.country}`,
+            room_type: this.state.roomType,
+            size: this.state.propertySize.toString(),
+            // guests_included: this.state.guestsIncluded.toString(),
+            bedroomsCount: this.state.bedroomCount.toString(),
+            rooms: [], // TODO:
+            bathrooms: this.state.bathrooms,
+            facilities: this.getFacilities(),
+            billing_country: `${host}api/countries/${this.state.billingCountry}`,
+            address: this.state.streetAddress,
+            // city: `${host}api/cities/${this.state.city}`,
+            apartment: this.state.apartment,
+            zipCode: this.state.zipCode,
+            // name: this.state.name,
+            description: this.state.description, // TODO: link to description entity
+            neighborhood: this.state.description, // TODO: link to description entity
+            // photos: [], // TODO:
+            // photos_thumbnails: [], // TODO:
+            suitableForChildren: this.state.suitableForChildren, 
+            suitableForInfants: this.state.suitableForInfants, 
+            suitableForPets: this.state.suitableForPets,
+            smokingAllowed: this.state.smokingAllowed, 
+            eventsAllowed: this.state.eventsAllowed, 
+            otherHouseRules: Array.from(this.state.otherHouseRules).join("\n"),
+            // checkin_start: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            // checkin_end: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            // checkout: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            // default_daily_price: this.state.defaultDailyPrice.toString(),
+            // currency_id: this.state.currency.toString(),
+        }
+
+        let listing = this.createListing();
+
+        const res = fetch('http://localhost:8080/api/listings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'authorization': localStorage['.auth.lockchain'],
             },
             body: JSON.stringify(listing),
+        }).then((res) => {
+            return res.json();
+        }).then((data) => {
+            console.log(data.links[0].href)
         });
     }
 
@@ -323,7 +424,7 @@ export default class CreateListingPage extends React.Component {
                             <Route exact path="/listings/create/safetyamenities" render={() =>
                                 <CreateListingSafetyAmenities
                                     values={this.state}
-                                    toggleCheckbox={this.toggleCheckbox} />} />
+                                    toggle={this.toggleFacility} />} />
 
                             <Route exact path="/listings/create/location" render={() =>
                                 <CreateListingLocation

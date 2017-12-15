@@ -21,8 +21,13 @@ export async function getPropertyTypes() {
     return res.json();
 }
 
-export async function getAmenitiesByCategory() { // TODO
+export async function getAmenitiesByCategory() {
     const res = await fetch(`${host}api/categories?projection=singleCategory`);
+    return res.json();
+}
+
+export async function getCurrencies() {
+    const res = await fetch(`${host}api/currencies?projection=currencyNameAndId`);
     return res.json();
 }
 

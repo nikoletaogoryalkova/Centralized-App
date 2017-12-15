@@ -26,8 +26,8 @@ export default class CreateListingLandingPage extends React.Component {
                                         type="radio" 
                                         onChange={(e) => this.props.onChange(e)} 
                                         name="type" 
-                                        checked={type === 'home'} 
-                                        value="home"/>
+                                        checked={type === '1'} 
+                                        value="1"/>
                                     Home
                                 </label>
                                 {' '}
@@ -36,8 +36,8 @@ export default class CreateListingLandingPage extends React.Component {
                                         type="radio" 
                                         onChange={(e) => this.props.onChange(e)} 
                                         name="type" 
-                                        checked={type === 'hotel'} 
-                                        value="hotel"/>
+                                        checked={type === '2'} 
+                                        value="2"/>
                                     Hotel
                                 </label>
                                 
