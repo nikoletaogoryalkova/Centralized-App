@@ -6,7 +6,7 @@ import Textbox from '../Textbox';
 
 export default class CreateListingTitle extends React.Component {
     render() {
-        const {listingTitle} = this.props.values;
+        const {name} = this.props.values;
         return (
             <div>
                 <CreateListingPlaceDescriptionAside />
@@ -16,8 +16,8 @@ export default class CreateListingTitle extends React.Component {
 
                     <div className="form-group">
                         <Textbox
-                            name="listingTitle"
-                            value={listingTitle}
+                            name="name"
+                            value={name}
                             placeholder="Listing title"
                             onChange={this.props.updateTextbox} />
                         {/* <input type="text" className="form-control" placeholder="Listing title" /> */}

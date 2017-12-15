@@ -7,7 +7,7 @@ import Dropdown from '../Dropdown';
 
 export default class CreateListingPrice extends React.Component {
     render() {
-        const {basePrice, currency} = this.props.values;
+        const {defaultDailyPrice, currency} = this.props.values;
         return (
             <div>
                 <CreateListingGuestSettingsAside />
@@ -21,8 +21,8 @@ export default class CreateListingPrice extends React.Component {
                                 Base price
                                 <Textbox
                                     type="number" 
-                                    name="basePrice"
-                                    value={basePrice} 
+                                    name="defaultDailyPrice"
+                                    value={defaultDailyPrice} 
                                     onChange={this.props.updateNumber}/>
                             </label>
                             <label>
@@ -37,7 +37,8 @@ export default class CreateListingPrice extends React.Component {
                     </div>
                 </div>
                 <NavLink to="/listings/create/cancellation" className="btn btn-default" id="btn-continue">Back</NavLink>
-                <NavLink to="/listings/create/price" className="btn btn-primary" id="btn-continue">Finish</NavLink>
+                <input type="button" className="btn btn-primary" onClick={this.props.submitPost} />
+                {/* <NavLink to="/listings/create/price" className="btn btn-primary" id="btn-continue" onClick={this.props.submitPost}>Finish</NavLink> */}
             </div>
         );
     }

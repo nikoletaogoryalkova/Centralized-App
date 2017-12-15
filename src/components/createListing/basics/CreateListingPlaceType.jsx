@@ -4,10 +4,25 @@ import { NavLink } from 'react-router-dom';
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 
 import { Config } from '../../../config';
+import { getPropertyTypesWithIds } from '../../../requester';
 
 export default class CreateListingPlaceType extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            propertyTypes: [],
+        }
+    }
+
+    componentDidMount() {
+        getPropertyTypesWithIds().then(data => {
+            this.setState({ propertyTypes: data.content });
+        });
+    }
+
     render() {
-        const {listingType, propertyType, reservationType, dedicatedSpace, propertySize} = this.props.values;
+        const {type, propertyType, roomType, dedicated_space, propertySize} = this.props.values;
         return (
             <div>
                 <CreateListingBasicsAside />
@@ -22,8 +37,8 @@ export default class CreateListingPlaceType extends React.Component {
                                 <select 
                                     onChange={(e) => this.props.onChange(e)} 
                                     className="form-control" 
-                                    name="listingType" 
-                                    value={listingType} 
+                                    name="type" 
+                                    value={type} 
                                     required="required" 
                                     id="listing-type">
                                     <option value="home">Home</option>
@@ -35,6 +50,17 @@ export default class CreateListingPlaceType extends React.Component {
                             <div className="form-group">
                                 <label htmlFor="property-type">What type of property is this?</label>
                                 <select 
+                                    value={propertyType}
+                                    name="propertyType"
+                                    required="required"
+                                    id="property-type"
+                                    onChange={(e) => this.props.onChange(e)}>
+                                    <option disabled value="">Location</option>
+                                    {this.state.propertyTypes.map((item, i) => {
+                                        return <option key={i} value={item.id}>{item.name}</option>
+                                    })}
+                                </select>
+                                {/* <select 
                                     onChange={(e) => this.props.onChange(e)} 
                                     className="form-control" 
                                     name="propertyType" 
@@ -71,7 +97,7 @@ export default class CreateListingPlaceType extends React.Component {
                                     <option value="Villa">Villa</option>
                                     <option value="Yurt">Yurt</option>
                                     <option value="Other">Other</option>
-                                </select>
+                                </select> */}
                             </div>
                         </div>
                         <div className="col-md-12">
@@ -86,9 +112,9 @@ export default class CreateListingPlaceType extends React.Component {
                                         onChange={(e) => this.props.onChange(e)} 
                                         className="host-step-radio" 
                                         id="entire-place" 
-                                        name="reservationType" 
-                                        checked={reservationType === 'entirePlace'} 
-                                        value="entirePlace"/>
+                                        name="roomType" 
+                                        checked={roomType === 'entire'} 
+                                        value="entire"/>
                                     <div className="radio-input-group">
                                         <div className="host-img-box">
                                             <img src={Config.getValue("basePath") + "images/icon-home.png"} alt="icon home" />
@@ -103,9 +129,9 @@ export default class CreateListingPlaceType extends React.Component {
                                         onChange={(e) => this.props.onChange(e)} 
                                         className="host-step-radio" 
                                         id="private-room" 
-                                        name="reservationType" 
-                                        checked={reservationType === 'privateRoom'} 
-                                        value="privateRoom"/>
+                                        name="roomType" 
+                                        checked={roomType === 'private'} 
+                                        value="private"/>
                                     
                                     <div className="radio-input-group">
                                         <div className="host-img-box">
@@ -120,9 +146,9 @@ export default class CreateListingPlaceType extends React.Component {
                                         type="radio" onChange={(e) => this.props.onChange(e)} 
                                         className="host-step-radio" 
                                         id="shared-room" 
-                                        name="reservationType"  
-                                        checked={reservationType === 'sharedRoom'} 
-                                        value="sharedRoom"/>
+                                        name="roomType"  
+                                        checked={roomType === 'shared'} 
+                                        value="shared"/>
 
                                     <div className="radio-input-group">
                                         <div className="host-img-box">
@@ -139,11 +165,11 @@ export default class CreateListingPlaceType extends React.Component {
                                 <label>Is this set up as dedicated guest space?</label>
                                 <br/>
 
-                                <input type="radio" onChange={(e) => this.props.onChange( e)} name="dedicatedSpace" id="dedicated-space-yes" className="radio-input-group" checked={dedicatedSpace === "true"} value="true"/>
+                                <input type="radio" onChange={(e) => this.props.onChange( e)} name="dedicated_space" id="dedicated-space-yes" className="radio-input-group" checked={dedicated_space === "true"} value="true"/>
                                 <label htmlFor="dedicated-space-yes">Yes, it's primarily set up for guests</label>
                                 <br/>
 
-                                <input type="radio" onChange={(e) => this.props.onChange(e)} name="dedicatedSpace" id="dedicated-space-no" className="radio-input-group" checked={dedicatedSpace === "false"} value="false"/>
+                                <input type="radio" onChange={(e) => this.props.onChange(e)} name="dedicated_space" id="dedicated-space-no" className="radio-input-group" checked={dedicated_space === "false"} value="false"/>
                                 <label htmlFor="dedicated-space-no">No, I keep my personal belongings here</label>
                             </div>
                         </div>

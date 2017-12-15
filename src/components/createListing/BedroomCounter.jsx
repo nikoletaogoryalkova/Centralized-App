@@ -49,6 +49,5 @@ export default class BedroomCounter extends React.Component {
 
 BedroomCounter.propTypes ={
     name: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
 }
