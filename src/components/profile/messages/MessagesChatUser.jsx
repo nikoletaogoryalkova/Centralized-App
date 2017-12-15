@@ -1,4 +1,5 @@
 import React from 'react';
+import RatingFeedback from '../RatingFeedback';
 
 export default class MessagesChatUser extends React.Component {
     render() {
@@ -8,26 +9,7 @@ export default class MessagesChatUser extends React.Component {
                     <div className="thump"></div> {/* pls add style backgound-image the user's thumb */}
                     <h2>Jaime Davidson</h2>
                     <h3>London, England</h3>
-                    <span>
-                        Excellent 4.1/5
-                        <span className="stars-outer stars-cnt stars-bg">
-                            <span className="star"></span>
-                            <span className="star"></span>
-                            <span className="star"></span>
-                            <span className="star"></span>
-                            <span className="star"></span>
-                            <span className="stars-cnt stars-fg" style={{width:'60%'}}> {/* 20% per rated star */}
-                                <span className="stars-cnt stars-over">
-                                    <span className="star"></span>
-                                    <span className="star"></span>
-                                    <span className="star"></span>
-                                    <span className="star"></span>
-                                    <span className="star"></span>
-                                </span>
-                            </span>
-                        </span>
-                        78 Reviews
-                    </span>
+                    <RatingFeedback />
                 </div>
                 <div className="bottom">
                     <ul>

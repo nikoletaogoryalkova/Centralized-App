@@ -497,8 +497,6 @@ a.dropdown-toggle {
     background: #fff;
 }
 
-#main-nav .navbar-nav {}
-
 .session-nav {
     height: 70px;
 }
@@ -697,8 +695,6 @@ ul.session-nav>li>.sub .opal a {
     padding-bottom: 16px;
 }
 
-.second-nav-text {}
-
 .second-nav-text ul {
     list-style: none;
     margin: 0;
@@ -783,7 +779,6 @@ ul.session-nav>li>.sub .opal a {
     border: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
-    -webkit-transition: none;
 }
 
 .icon {
@@ -1457,8 +1452,6 @@ ul.session-nav>li>.sub .opal a {
     padding: 10px 25px;
     margin: 20px auto 0 auto;
 }
-
-.pagination-box .pagination {}
 
 .pagination-box {
     margin: 30px auto 20px auto;
@@ -2960,10 +2953,6 @@ hr.profile-line {
     margin: 0 0 30px 0;
 }
 
-#profile-dashboard-pending {
-    margin-top: 40px;
-}
-
 ul.profile-pending-list {
     overflow: hidden;
 }
@@ -3293,8 +3282,6 @@ ul.profile-messages-item>li:nth-child(1) {
     background-image: url(../images/icon-star-filter-g.png);
 }
 
-ul.profile-messages-item>li:nth-child(2) {}
-
 ul.profile-messages-item>li:nth-child(2)>span.thumb {
     display: block;
     width: 60px;
@@ -3384,8 +3371,6 @@ ul.profile-messages-item>li:nth-child(5)>span {
     top: -12px;
 }
 
-#chat>.day>.message {}
-
 #chat>.day>.message>ul.user {
     list-style: none;
     display: block;
@@ -3395,8 +3380,6 @@ ul.profile-messages-item>li:nth-child(5)>span {
     vertical-align: middle;
     display: inline-block;
 }
-
-#chat>.day>.message.from>ul.user {}
 
 #chat>.day>.message.to>ul.user {
     text-align: right;
@@ -3446,8 +3429,6 @@ ul.profile-messages-item>li:nth-child(5)>span {
 #chat>.day>.message.from>.body {
     float: right;
 }
-
-#chat>.day>.message.to>.body {}
 
 #card-user {
     border: 1px solid #cdcdcd;
@@ -3721,6 +3702,162 @@ li.dropdown {
     margin: 50px 0 30px 0;
 }
 
+#profile-mylistings ul.profile-mylistings-active {
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    display: block;
+    list-style: none;
+    background-color: white;
+    height: 100px;
+    margin-bottom:20px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li {
+    height: 100px;
+    float: left;
+    overflow: hidden;
+    height: 100px;
+    position: relative;
+    font-size: 18px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.toggle {
+    width:50px;
+    background-repeat: no-repeat;
+    background-position: center 30px;
+    background-image: url(../images/arrow-right.png);
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.thumb {
+    width:120px;
+    padding-top: 20px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.thumb>span {
+    display:block;
+    background-position:center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width:85px;
+    height:60px;
+    background-color: silver;
+    border-radius: 2px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.details {
+    width:410px;
+    padding-top: 20px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.details>* {
+    display: block;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.details>a {
+    font-size: 24px;
+    font-family: 'FuturaStd-Medium', sans-serif;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.details>span.rating-feedback {
+    font-size: 14px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.price {
+    width:140px;
+    padding-top:35px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.price>span {
+    font-size:18px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.edit {
+    width:150px;
+    padding-top:33px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.edit>a {
+    font-size:20px;
+    font-family: 'FuturaStd-Medium', sans-serif;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.calendar {
+    width:210px;
+    padding-top:20px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.calendar>input {
+    background-color: #d87a61;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 18px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    letter-spacing: .1em;
+    margin-bottom: 40px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.remove {
+    padding-top:27px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.remove>span {
+    display:block;
+    background-position:center center;
+    background-image: url(../images/icon-remove.png);
+    width:39px;
+    height:39px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.rating-feedback .stars-outer {
+    margin: 0 10px;
+}
+
+.rating-feedback .stars-cnt {
+    height:15px;
+    width:100px;
+}
+
+.rating-feedback .stars-bg {
+    display: inline-block;
+    position: relative;
+}
+
+.rating-feedback .stars-bg>.star {
+    background-image: url(../images/icon-star-filter-g.png);
+}
+
+.rating-feedback .stars-fg {
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    width:0;
+}
+
+.rating-feedback .stars-over {
+    display: block;
+}
+
+.rating-feedback .stars-fg .star {
+    background-image: url(../images/icon-star-filter.png);
+}
+
+.rating-feedback .star {
+    width: 20px;
+    height: 15px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    float:left;
+}
+
 .home_page h1.home_title {
     text-align: center;
     color: #fff;
@@ -3910,8 +4047,6 @@ li.dropdown {
 #top-destinations-box h3 {
     font-family: 'FuturaStd-Light', sans-serif;
 }
-
-#myCarousel-city {}
 
 #myCarousel-city .left-carousel {
     bottom: 40%;
