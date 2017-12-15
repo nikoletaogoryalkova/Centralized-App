@@ -1,19 +1,20 @@
 import React from 'react';
 
+import {Link} from 'react-router-dom';
+
 export default class NavProfile extends React.Component {
     render() {
         return (
             <nav id="profile-nav">
                 <div className="container">
                     <ul className="navbar-profile">
-                        {/* <li class="active">...</li> for underline */}
-                        <li><a href="/profile/dashboard">Dashboard</a></li>
-                        <li><a href="/profile/listings">My Listings</a></li>
-                        <li><a href="/profile/reservations">My Reservations</a></li>
-                        <li><a href="/profile/trips">My Trips</a></li>
-                        <li><a href="/profile/messages/hosting">Messages</a></li>
-                        <li><a href="/profile/me/edit">Profile</a></li>
-                        <li><a href="/profile/account/notifications">Account</a></li>
+                        <li><Link to="/profile/dashboard">Dashboard</Link></li>
+                        <li><Link to="/profile/listings">My Listings</Link></li>
+                        <li><Link to="/profile/reservations">My Reservations</Link></li>
+                        <li><Link to="/profile/trips">My Trips</Link></li>
+                        <li><Link to="/profile/messages/hosting">Messages</Link></li>
+                        <li><Link to="/profile/me/edit">Profile</Link></li>
+                        <li><Link to="/profile/account/notifications">Account</Link></li>
                     </ul>
                 </div>
             </nav>
