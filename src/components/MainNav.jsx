@@ -125,6 +125,8 @@ class MainNav extends React.Component {
         localStorage.removeItem(".auth.username");
 
         this.setState({ userName: '' })
+        
+        this.props.history.push('/');
     }
 
     render() {

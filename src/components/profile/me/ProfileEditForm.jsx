@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { NavDropdown, MenuItem } from 'react-bootstrap';
+import { Config } from '../../../config';
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
@@ -29,13 +30,13 @@ export default class ProfileEditPage extends React.Component {
 
     changeDropdownValue(a, event) {
         let stateKey = event.target.parentElement.parentElement.getAttribute('aria-labelledby');
-        this.setState({[stateKey]: event.target.innerText});
+        this.setState({ [stateKey]: event.target.innerText });
     }
 
     render() {
         let years = [];
 
-        for(let i = 1940; i <= 1999; i++) {
+        for (let i = 1940; i <= 1999; i++) {
             years.push(<MenuItem key={i}>{i}</MenuItem>)
         }
 
@@ -57,7 +58,7 @@ export default class ProfileEditPage extends React.Component {
                 <div className="text"><span>Your public profile only shows your first name.<br />When you request a booking, your host will see your first and last name.</span></div>
                 <div className="birth-sex">
                     <div className="bmonth">
-                        <label htmlFor="bmonth">Birthdate <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
+                        <label htmlFor="bmonth">Birthdate <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
                         <NavDropdown title={this.state.month} onSelect={this.changeDropdownValue} id="month">
                             <MenuItem>January</MenuItem>
                             <MenuItem>February</MenuItem>
@@ -88,23 +89,23 @@ export default class ProfileEditPage extends React.Component {
                         </NavDropdown>
                     </div>
                     <div className="sex">
-                        <label htmlFor="sex">Gender <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
+                        <label htmlFor="sex">Gender <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
                         <NavDropdown title={this.state.gender} onSelect={this.changeDropdownValue} id="gender">
                             <MenuItem>Men</MenuItem>
                             <MenuItem>Women</MenuItem>
                             <MenuItem>Other</MenuItem>
-                        </NavDropdown> 
+                        </NavDropdown>
                     </div>
                     <br className="clear-both" />
                 </div>
                 <div className="text"><span>We user this data for analysis and never share it with other users.</span></div>
                 <div className="phone">
-                    <label htmlFor="phone">Email address <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
+                    <label htmlFor="phone">Email address <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
                     <input id="phone" name="email" type="text" value={this.state.email} onChange={this.onChange} />
                 </div>
                 <div className="text"><span>We won't share your private email address with other LockChain users.</span></div>
                 <div className="phone">
-                    <label htmlFor="phone">Phone number <img src="/images/icon-lock.png" className="lock" alt="lock-o" /></label>
+                    <label htmlFor="phone">Phone number <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
                     <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
                 </div>
                 <div className="text"><span>We won't share your phone number with other LockChain users.</span></div>

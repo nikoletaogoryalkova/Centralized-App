@@ -25,7 +25,7 @@ import { Config } from "../../config";
 import request from 'superagent';
 import update from 'react-addons-update';
 const host = Config.getValue("apiHost");
-const LOCKCHAIN_UPLOAD_URL = 'http://localhost:8080/images/upload';
+const LOCKCHAIN_UPLOAD_URL = `${host}images/upload`;
 
 export default class CreateListingPage extends React.Component {
     constructor(props) {
