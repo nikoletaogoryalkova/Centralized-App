@@ -122,8 +122,8 @@ export default class ProfileEditPage extends React.Component {
                     <br className="clear-both" />
                 </div>
                 <div className="address">
-                    <label htmlFor="address">Where you live</label>
-                    <input id="address" name="address" type="text" />
+                    <label for="address">Where you live</label>
+                    <input id="address" name="address" type="text" placeholder="eg. Rome, Italy / Manhattan, NY / Seattle, WA" />
                 </div>
                 <input type="button" className="button save" value="Save" />
             </div>
