@@ -11,7 +11,7 @@ class ListingSearch extends React.Component {
     constructor(props) {
         super(props);
 
-        let guests = '';
+        let guests = 2;
         let countryId = '';
         let startDate = moment();
         let endDate = moment().add(1, 'days');
