@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 
 import MyListingsActiveItem from './MyListingsActiveItem';
-import RatingFeedback from '../RatingFeedback';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 

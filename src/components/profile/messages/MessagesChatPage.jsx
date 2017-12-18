@@ -25,7 +25,7 @@ export default class MessagesChatPage extends React.Component {
                             <div className="col-md-7">
                                 <div id="chat">
                                     <textarea placeholder="Type your message here..."></textarea>
-                                    <input type="button" class="button" value="Send Message" />
+                                    <input type="button" className="button" value="Send Message" />
                                     <MessagesChatDay />
                                     <MessagesChatDay />
                                     <MessagesChatDay />

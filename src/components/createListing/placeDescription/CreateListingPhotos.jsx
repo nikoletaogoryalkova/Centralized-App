@@ -8,9 +8,6 @@ import Dropzone from 'react-dropzone';
 import { Config } from '../../../config';
 
 export default class CreateListingPhotos extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -34,9 +31,9 @@ export default class CreateListingPhotos extends React.Component {
                             this.props.values.uploadedFilesUrls.map((imageUrl, i) =>
                                 <div key={i} className="uploaded-small-picture col-md-4">
                                     <button onClick={this.props.removePhoto} className="close">
-                                        <img className="inactiveLink" src={Config.getValue("basePath") + "images/icon-delete.png"} />
+                                        <img className="inactiveLink" src={Config.getValue("basePath") + "images/icon-delete.png"} alt="remove" />
                                     </button>
-                                    <img src={imageUrl} height={200} />
+                                    <img src={imageUrl} height={200} alt={`uploaded-${i}`} />
                                 </div>
                             )
                         }

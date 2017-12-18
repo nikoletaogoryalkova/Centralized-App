@@ -125,6 +125,8 @@ class MainNav extends React.Component {
         localStorage.removeItem(".auth.username");
 
         this.setState({ userName: '' })
+        
+        this.props.history.push('/');
     }
 
     render() {
@@ -169,7 +171,7 @@ class MainNav extends React.Component {
                                 <input type="mail" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" id="signup-mail" placeholder="Email address" />
                             </div>
                             <div className="form-group">
-                                <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" id="signup-lastname" placeholder="First Name" />
+                                <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" id="signup-firstname" placeholder="First Name" />
                             </div>
                             <div className="form-group">
                                 <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" id="signup-lastname" placeholder="Last Name" />

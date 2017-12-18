@@ -11,7 +11,7 @@ export default class MessagesItem extends React.Component {
         return (
             <ul className="profile-messages-item" onClick={this.handleClick}>
                 <li></li>
-                <li><span class="thumb"></span></li> {/* pls add on span.thumb style backgound-image the user's thumb */}
+                <li><span className="thumb"></span></li> {/* pls add on span.thumb style backgound-image the user's thumb */}
                 <li>
                     <span className="cnt block">
                         <span className="block bold">Jaine Davidson</span>

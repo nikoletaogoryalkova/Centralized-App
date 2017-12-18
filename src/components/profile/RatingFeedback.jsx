@@ -3,7 +3,7 @@ import React from 'react';
 export default class RatingFeedback extends React.Component {
     render() {
         return (
-            <span class="rating-feedback">
+            <span className="rating-feedback">
                 Excellent 4.1/5
                 <span className="stars-outer stars-cnt stars-bg">
                     <span className="star"></span>

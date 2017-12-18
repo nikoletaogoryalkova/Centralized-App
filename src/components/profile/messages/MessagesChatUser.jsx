@@ -13,12 +13,12 @@ export default class MessagesChatUser extends React.Component {
                 </div>
                 <div className="bottom">
                     <ul>
-                        <li className="payment"><span class="ico"></span><span>Payment Verified</span></li>
-                        <li className="email"><span class="ico"></span><span>Email Verified</span></li>
-                        <li className="phone"><span class="ico"></span><span>Phone Verified</span></li>
-                        <li className="gid"><span class="ico"></span><span>Goverment ID Verified</span></li>
+                        <li className="payment"><span className="ico"></span><span>Payment Verified</span></li>
+                        <li className="email"><span className="ico"></span><span>Email Verified</span></li>
+                        <li className="phone"><span className="ico"></span><span>Phone Verified</span></li>
+                        <li className="gid"><span className="ico"></span><span>Goverment ID Verified</span></li>
                     </ul>
-                    <input type="button" class="button" value="View Profile" />
+                    <input type="button" className="button" value="View Profile" />
                 </div>
             </div>
         );

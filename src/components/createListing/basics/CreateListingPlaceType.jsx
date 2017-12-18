@@ -41,8 +41,8 @@ export default class CreateListingPlaceType extends React.Component {
                                     value={type} 
                                     required="required" 
                                     id="listing-type">
-                                    <option value="home">Home</option>
-                                    <option value="hotel">Hotel</option>
+                                    <option value="1">Home</option>
+                                    <option value="2">Hotel</option>
                                 </select>
                             </div>
                         </div>
@@ -55,49 +55,11 @@ export default class CreateListingPlaceType extends React.Component {
                                     required="required"
                                     id="property-type"
                                     onChange={(e) => this.props.onChange(e)}>
-                                    <option disabled value="">Location</option>
+                                    <option disabled value="">Type</option>
                                     {this.state.propertyTypes.map((item, i) => {
                                         return <option key={i} value={item.id}>{item.name}</option>
                                     })}
                                 </select>
-                                {/* <select 
-                                    onChange={(e) => this.props.onChange(e)} 
-                                    className="form-control" 
-                                    name="propertyType" 
-                                    value={propertyType}
-                                    required="required" 
-                                    id="property-type">
-                                    <option value="Apartment">Apartment</option>
-                                    <option value="Condominium">Condominium</option>
-                                    <option value="Guesthouse">Guesthouse</option>
-                                    <option value="House">House</option>
-                                    <option value="In-law">In-law</option>
-                                    <option value="Guest suite">Guest suite</option>
-                                    <option value="Townhouse">Townhouse</option>
-                                    <option value="Vacation home">Vacation home</option>
-                                    <option value="Boat">Boat</option>
-                                    <option value="Bungalow">Bungalow</option>
-                                    <option value="Cabin">Cabin</option>
-                                    <option value="Castle">Castle</option>
-                                    <option value="Cave">Cave</option>
-                                    <option value="Chalet">Chalet</option>
-                                    <option value="Dorm">Dorm</option>
-                                    <option value="Earth House">Earth House</option>
-                                    <option value="Hut">Hut</option>
-                                    <option value="Igloo">Igloo</option>
-                                    <option value="Island">Island</option>
-                                    <option value="Lighthouse">Lighthouse</option>
-                                    <option value="Loft">Loft</option>
-                                    <option value="Plane">Plane</option>
-                                    <option value="Camper/RV">Camper/RV</option>
-                                    <option value="Tent">Tent</option>
-                                    <option value="Tipi">Tipi</option>
-                                    <option value="Train">Train</option>
-                                    <option value="Treehouse">Treehouse</option>
-                                    <option value="Villa">Villa</option>
-                                    <option value="Yurt">Yurt</option>
-                                    <option value="Other">Other</option>
-                                </select> */}
                             </div>
                         </div>
                         <div className="col-md-12">
