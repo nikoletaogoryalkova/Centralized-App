@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import MainNav from '../MainNav';
@@ -27,7 +27,7 @@ import update from 'react-addons-update';
 const host = Config.getValue("apiHost");
 const LOCKCHAIN_UPLOAD_URL = `${host}images/upload`;
 
-export default class CreateListingPage extends React.Component {
+class CreateListingPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -81,14 +81,14 @@ export default class CreateListingPage extends React.Component {
             uploadedFiles: [],
             uploadedFilesUrls: [],
             uploadedFilesThumbUrls: [],
-            
+
             // step 3
-                // house rules
-            suitableForChildren: 'false', 
-            suitableForInfants: 'false', 
+            // house rules
+            suitableForChildren: 'false',
+            suitableForInfants: 'false',
             suitableForPets: 'false',
-            smokingAllowed: 'false', 
-            eventsAllowed: 'false', 
+            smokingAllowed: 'false',
+            eventsAllowed: 'false',
             otherRuleText: '',
             otherHouseRules: new Set(),
 
@@ -284,7 +284,7 @@ export default class CreateListingPage extends React.Component {
         return listing;
     }
 
-    submitPost() {       
+    submitPost() {
         let l = {
             property_type: this.state.propertyType.toString(),
             // type: this.state.type,
@@ -306,11 +306,11 @@ export default class CreateListingPage extends React.Component {
             neighborhood: this.state.description, // TODO: link to description entity
             // photos: [], // TODO:
             // photos_thumbnails: [], // TODO:
-            suitableForChildren: this.state.suitableForChildren, 
-            suitableForInfants: this.state.suitableForInfants, 
+            suitableForChildren: this.state.suitableForChildren,
+            suitableForInfants: this.state.suitableForInfants,
             suitableForPets: this.state.suitableForPets,
-            smokingAllowed: this.state.smokingAllowed, 
-            eventsAllowed: this.state.eventsAllowed, 
+            smokingAllowed: this.state.smokingAllowed,
+            eventsAllowed: this.state.eventsAllowed,
             otherHouseRules: Array.from(this.state.otherHouseRules).join("\n"),
             // checkin_start: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
             // checkin_end: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
@@ -383,7 +383,10 @@ export default class CreateListingPage extends React.Component {
                 <nav id="main-nav" className="navbar">
                     <MainNav />
                 </nav>
-                <NavCreateListing />
+
+                {this.props.location.pathname !== "/listings/create" && this.props.location.pathname !== "/listings/create/landing" &&
+                    <NavCreateListing />
+                }
 
                 <div className="container">
                     <div className="row">
@@ -475,3 +478,5 @@ export default class CreateListingPage extends React.Component {
         );
     }
 }
+
+export default withRouter(CreateListingPage);

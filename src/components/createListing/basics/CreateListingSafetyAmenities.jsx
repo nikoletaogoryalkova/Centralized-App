@@ -32,6 +32,7 @@ export default class CreateListingSafetyAmenities extends React.Component {
             <div>
                 <CreateListingBasicsAside />
 
+                <div class="col-md-9">
                 <h2>What safety amenities do you offer to your guests?</h2>
                 <hr/>
                 
@@ -44,6 +45,7 @@ export default class CreateListingSafetyAmenities extends React.Component {
 
                 <NavLink to="/listings/create/facilities" className="btn btn-default" id="btn-continue">Back</NavLink>
                 <NavLink to="/listings/create/location" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                </div>
             </div>
         );
     }
