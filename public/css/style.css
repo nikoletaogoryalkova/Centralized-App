@@ -2049,6 +2049,7 @@ footer .select-language {
     width: 100%;
     color: #54575a;
     margin: 45px 0 20px 0;
+    text-align: center;
 }
 
 footer .caret {
@@ -2887,9 +2888,6 @@ ul.navbar-localization>li.language span.name {
 ul.navbar-localization>li.language span.value {
     color: #d87a61;
     font-weight: bold;
-    background-image: url(../images/drop_arow.png);
-    background-repeat: no-repeat;
-    background-position: center right;
     padding-right: 20px;
 }
 
