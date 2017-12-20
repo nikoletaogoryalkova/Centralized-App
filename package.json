@@ -34,9 +34,11 @@
     "searchkit": "^2.3.0",
     "superagent": "^3.8.2"
   },
+  "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build/dev": "react-scripts build --env=dev",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "bundle-css": "lessc src/app.less"

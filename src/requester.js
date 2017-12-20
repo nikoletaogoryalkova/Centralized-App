@@ -2,61 +2,61 @@ import { Config } from "./config";
 const host = Config.getValue("apiHost");
 
 export async function getListings() {
-    const res = await fetch(`${host}api/listings?projection=singleListing&page=1&size=10`);
+    const res = await fetch(`${host}api/listings?projection=singleListing&page=1&size=10`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getCountries() {
-    const res = await fetch(`${host}api/countries?projection=singleCountry`);
+    const res = await fetch(`${host}api/countries?projection=singleCountry`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getCities(countryId) {
-    const res = await fetch(`${host}api/countries/${countryId}/cities?projection=cityNameAndId`);
+    const res = await fetch(`${host}api/countries/${countryId}/cities?projection=cityNameAndId`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getPropertyTypes() {
-    const res = await fetch(`${host}api/property_types?projection=property_type`);
+    const res = await fetch(`${host}api/property_types?projection=property_type`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getAmenitiesByCategory() {
-    const res = await fetch(`${host}api/categories?projection=singleCategory`);
+    const res = await fetch(`${host}api/categories?projection=singleCategory`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getCurrencies() {
-    const res = await fetch(`${host}api/currencies?projection=currencyNameAndId`);
+    const res = await fetch(`${host}api/currencies?projection=currencyNameAndId`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getPropertyTypesWithIds() {
-    const res = await fetch(`${host}api/property_types?projection=property_type_name_and_id`);
+    const res = await fetch(`${host}api/property_types?projection=property_type_name_and_id`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getListingsByFilter(searchTerms) {
-    const res = await fetch(`${host}api/listings/search/getAllByFilter?${searchTerms}&projection=listings`);
+    const res = await fetch(`${host}api/listings/search/getAllByFilter?${searchTerms}&projection=listings`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getAmenitiesFilters() {
-    const res = await fetch(`${host}api/amenities?projection=amenity_aggregation`);
+    const res = await fetch(`${host}api/amenities?projection=amenity_aggregation`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function getPropertyById(id) {
-    const res = await fetch(`${host}api/listings/${id}?projection=singleListing`);
+    const res = await fetch(`${host}api/listings/${id}?projection=singleListing`, {headers: getHeaders()});
     return res.json();
 }
 
 export async function requestBooking(requestInfo) {
     const res = await fetch(`${host}reservation/request`, {
-        headers: {
+        headers: getHeaders({
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        },
+        }),
         method: "POST",
         body: JSON.stringify(requestInfo)
     });
@@ -71,9 +71,9 @@ export async function getLocRate() {
 
 export async function register(user) {
     const res = await fetch(`${host}users/signup`, {
-        headers: {
+        headers: getHeaders({
             'Content-Type': 'application/json'
-        },
+        }),
         method: "POST",
         body: user
     });
@@ -104,4 +104,12 @@ export async function getCalendarByListingIdAndDateRange(listingId, startDate, e
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
     const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}&projection=singlePropertyCalendar`);
     return res.json();
+}
+
+function getHeaders(headers = null) {
+    headers = headers || {};
+    if (localStorage.getItem('.auth.lockchain')) {
+        headers["Authorization"] = localStorage[".auth.lockchain"];
+    }
+    return headers;
 }
