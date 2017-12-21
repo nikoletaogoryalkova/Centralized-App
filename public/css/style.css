@@ -3634,57 +3634,57 @@ li.dropdown {
     margin-left: 5px;
 }
 
-#profile-edit-form>div {
+#profile-edit-form>form>div {
     clear: both;
     margin-bottom: 20px;
 }
 
-#profile-edit-form>.text {
+#profile-edit-form .text {
     color: #8b8c8e;
     font-size: 18px;
 }
 
-#profile-edit-form>.name>div {
+#profile-edit-form .name>div {
     width: 377px;
     float: left;
 }
 
-#profile-edit-form>.name>.first {
+#profile-edit-form .name>.first {
     margin-right: 30px;
 }
 
-#profile-edit-form>.birth-sex>div {
+#profile-edit-form .birth-sex>div {
     float: left;
     margin-right: 30px;
 }
 
-#profile-edit-form>.birth-sex>.bmonth {
+#profile-edit-form .birth-sex>.bmonth {
     width: 165px;
 }
 
-#profile-edit-form>.birth-sex>.bday {
+#profile-edit-form .birth-sex>.bday {
     width: 127px;
 }
 
-#profile-edit-form>.birth-sex>.byear {
+#profile-edit-form .birth-sex>.byear {
     width: 130px;
 }
 
-#profile-edit-form>.birth-sex>.sex {
+#profile-edit-form .birth-sex>.sex {
     width: 165px;
     margin: 0 0 0 30px;
 }
 
-#profile-edit-form>.language-currency>div {
+#profile-edit-form .language-currency>div {
     width: 270px;
     float: left;
 }
 
-#profile-edit-form>.language-currency>.language {
+#profile-edit-form .language-currency>.language {
     margin-right: 30px;
 }
 
-#profile-edit-form>input.save {
+#profile-edit-form input.save {
     background-color: #d87a61;
     border: none;
     color: white;

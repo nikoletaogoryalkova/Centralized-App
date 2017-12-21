@@ -68,7 +68,9 @@ export default class ProfileEditPage extends React.Component {
         this.setState({ [stateKey]: event.target.innerText });
     }
 
-    updateUser() {
+    updateUser(e) {
+        e.preventDefault();
+
         let birthday;
         if (this.state.day !== '' && this.state.month !== '' && this.state.year !== '') {
             birthday = `${this.state.day}/${this.state.month}/${this.state.year}`;
@@ -95,7 +97,7 @@ export default class ProfileEditPage extends React.Component {
                 NotificationManager.error('Error!', 'Update user profile')
             }
         })
-
+        this.forceUpdate();
     }
 
     render() {
@@ -113,111 +115,113 @@ export default class ProfileEditPage extends React.Component {
             <div id="profile-edit-form">
                 <h2>Edit Profile</h2>
                 <hr />
-                <div className="name">
-                    <div className="first">
-                        <label htmlFor="fname">First name</label>
-                        <input id="fname" name="firstName" value={this.state.firstName} onChange={this.onChange} type="text" />
+                <form onSubmit={this.updateUser}>
+                    <div className="name">
+                        <div className="first">
+                            <label htmlFor="fname">First name</label>
+                            <input id="fname" name="firstName" value={this.state.firstName} onChange={this.onChange} type="text" required />
+                        </div>
+                        <div className="last">
+                            <label htmlFor="lname">Last name</label>
+                            <input id="lname" name="lastName" value={this.state.lastName} onChange={this.onChange} type="text" required />
+                        </div>
+                        <br className="clear-both" />
                     </div>
-                    <div className="last">
-                        <label htmlFor="lname">Last name</label>
-                        <input id="lname" name="lastName" value={this.state.lastName} onChange={this.onChange} type="text" />
+                    <div className="text"><span>Your public profile only shows your first name.<br />When you request a booking, your host will see your first and last name.</span></div>
+                    <div className="birth-sex">
+                        <div className="bmonth">
+                            <label htmlFor="bmonth">Birthdate <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                            <select name="month" id="bmonth" onChange={this.onChange} value={this.state.month}>
+                                <option disabled value="">Month</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div className="bday">
+                            <label htmlFor="bday">&nbsp;</label>
+                            <select name="day" id="bday" onChange={this.onChange} value={this.state.day}>
+                                <option disabled value="">Day</option>
+                                {Array.apply(null, Array(32)).map(function (item, i) {
+                                    if (i > 0)
+                                        return <option key={i} value={i}>{i}</option>
+                                })}
+                            </select>
+                        </div>
+                        <div className="byear">
+                            <label htmlFor="byear">&nbsp;</label>
+                            <select name="year" id="byear" onChange={this.onChange} value={this.state.year}>
+                                <option disabled value="">Year</option>
+                                {years}
+                            </select>
+                        </div>
+                        <div className="sex">
+                            <label htmlFor="sex">Gender <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                            <select name="gender" id="sex" onChange={this.onChange} value={this.state.gender}>
+                                <option disabled value="">Gender</option>
+                                <option value="men">Men</option>
+                                <option value="women">Women</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <br className="clear-both" />
                     </div>
-                    <br className="clear-both" />
-                </div>
-                <div className="text"><span>Your public profile only shows your first name.<br />When you request a booking, your host will see your first and last name.</span></div>
-                <div className="birth-sex">
-                    <div className="bmonth">
-                        <label htmlFor="bmonth">Birthdate <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
-                        <select name="month" id="bmonth" onChange={this.onChange} value={this.state.month}>
-                            <option disabled value="">Month</option>
-                            <option value="01">January</option>
-                            <option value="02">February</option>
-                            <option value="03">March</option>
-                            <option value="04">April</option>
-                            <option value="05">May</option>
-                            <option value="06">June</option>
-                            <option value="07">July</option>
-                            <option value="08">August</option>
-                            <option value="09">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
+                    <div className="text"><span>We user this data for analysis and never share it with other users.</span></div>
+                    <div className="phone">
+                        <label htmlFor="phone">Phone number <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                        <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
                     </div>
-                    <div className="bday">
-                        <label htmlFor="bday">&nbsp;</label>
-                        <select name="day" id="bday" onChange={this.onChange} value={this.state.day}>
-                            <option disabled value="">Day</option>
-                            {Array.apply(null, Array(32)).map(function (item, i) {
-                                if (i > 0)
-                                    return <option key={i} value={i}>{i}</option>
-                            })}
-                        </select>
-                    </div>
-                    <div className="byear">
-                        <label htmlFor="byear">&nbsp;</label>
-                        <select name="year" id="byear" onChange={this.onChange} value={this.state.year}>
-                            <option disabled value="">Year</option>
-                            {years}
-                        </select>
-                    </div>
-                    <div className="sex">
-                        <label htmlFor="sex">Gender <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
-                        <select name="gender" id="sex" onChange={this.onChange} value={this.state.gender}>
-                            <option disabled value="">Gender</option>
-                            <option value="men">Men</option>
-                            <option value="women">Women</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <br className="clear-both" />
-                </div>
-                <div className="text"><span>We user this data for analysis and never share it with other users.</span></div>
-                <div className="phone">
-                    <label htmlFor="phone">Phone number <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
-                    <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
-                </div>
-                <div className="text"><span>We won't share your phone number with other LockChain users.</span></div>
+                    <div className="text"><span>We won't share your phone number with other LockChain users.</span></div>
 
-                <div className="language-currency">
-                    <div className="language">
-                        <label htmlFor="language">Preferred language</label>
-                        <select name="preferredLanguage" id="language" onChange={this.onChange} value={this.state.preferredLanguage}>
-                            <option value="1">English</option>
-                        </select>
+                    <div className="language-currency">
+                        <div className="language">
+                            <label htmlFor="language">Preferred language</label>
+                            <select name="preferredLanguage" id="language" onChange={this.onChange} value={this.state.preferredLanguage}>
+                                <option value="1">English</option>
+                            </select>
+                        </div>
+                        <div className="currency">
+                            <label htmlFor="currency">Preferred currency</label>
+                            <select name="preferredCurrency" id="currency" onChange={this.onChange} value={this.state.preferredCurrency}>
+                                <option disabled value="">Currency</option>
+                                {this.state.currencies.map((item, i) => {
+                                    return <option key={i} value={item.id}>{item.code}</option>
+                                })}
+                            </select>
+                        </div>
+                        <br className="clear-both" />
                     </div>
-                    <div className="currency">
-                        <label htmlFor="currency">Preferred currency</label>
-                        <select name="preferredCurrency" id="currency" onChange={this.onChange} value={this.state.preferredCurrency}>
-                            <option disabled value="">Currency</option>
-                            {this.state.currencies.map((item, i) => {
-                                return <option key={i} value={item.id}>{item.code}</option>
-                            })}
-                        </select>
+                    <div className="address language-currency">
+                        <label htmlFor="address">Where you live</label>
+                        <div className="language">
+                            <select name="country" id="address" onChange={this.onChange} value={this.state.country}>
+                                <option disabled value="">Country</option>
+                                {this.state.countries.map((item, i) => {
+                                    return <option key={i} value={item.id}>{item.name}</option>
+                                })}
+                            </select>
+                        </div>
+                        <div className="language">
+                            <select name="city" onChange={this.onChange} value={this.state.city}>
+                                <option disabled value="">City</option>
+                                {this.state.countries.some(x => x.id === parseInt(this.state.country, 10)) && this.state.countries.find(x => x.id === parseInt(this.state.country, 10)).cities.map((item, i) => {
+                                    return <option key={i} value={item.id}>{item.name}</option>
+                                })}
+                            </select>
+                        </div>
+                        <br className="clear-both" />
                     </div>
-                    <br className="clear-both" />
-                </div>
-                <div className="address language-currency">
-                    <label htmlFor="address">Where you live</label>
-                    <div className="language">
-                        <select name="country" id="address" onChange={this.onChange} value={this.state.country}>
-                            <option disabled value="">Country</option>
-                            {this.state.countries.map((item, i) => {
-                                return <option key={i} value={item.id}>{item.name}</option>
-                            })}
-                        </select>
-                    </div>
-                    <div className="language">
-                        <select name="city" onChange={this.onChange} value={this.state.city}>
-                            <option disabled value="">City</option>
-                            {this.state.countries.some(x => x.id === parseInt(this.state.country, 10)) && this.state.countries.find(x => x.id === parseInt(this.state.country, 10)).cities.map((item, i) => {
-                                return <option key={i} value={item.id}>{item.name}</option>
-                            })}
-                        </select>
-                    </div>
-                    <br className="clear-both" />
-                </div>
-                <input type="button" className="button save" value="Save" onClick={this.updateUser} />
+                    <input type="submit" className="button save" value="Save" />
+                </form>
                 <NotificationContainer />
             </div>
         );
