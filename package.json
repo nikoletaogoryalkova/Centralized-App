@@ -37,7 +37,7 @@
     "superagent": "^3.8.2"
   },
   "scripts": {
-    "start": "sh -ac '. ./.env; react-scripts build' && serve -s build",
+    "start": "sh -ac '. ./.env; react-scripts start'",
     "build": "react-scripts build",
     "build/stage": "sh -ac '. ./.env.staging; react-scripts build'",
     "build/prod": "sh -ac '. ./.env.production; react-scripts build'",
