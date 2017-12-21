@@ -35,92 +35,101 @@ export default class CreateListingLocation extends React.Component {
         if (!this.state.cities) {
             return null;
         }
-        
-        const {billingCountry, streetAddress, city, apartment, zipCode, countries} = this.props.values;
+
+        const { billingCountry, streetAddress, city, apartment, zipCode, countries } = this.props.values;
         return (
             <div>
-                <CreateListingBasicsAside />
-                <div className="col-md-9">
-                    <div className="form-group">
-                        <h2>Where's your place located?</h2>
-                        <hr/>
-
-                        <div className="col-md-6">
-                            <label>
-                                Billing Country
-                                <select 
-                                    value={billingCountry}
-                                    name="billingCountry"
-                                    required="required"
-                                    onChange={(e) => this.updateBillingCountry(e)}>
-                                    <option disabled value="">Location</option>
-                                    {countries.map((item, i) => {
-                                        return <option key={i} value={item.id}>{item.name}</option>
-                                    })}
-                                </select>
-                            </label>
-                            <label>
-                                Street Address
-                                <Textbox 
-                                    name="streetAddress"
-                                    value={streetAddress} 
-                                    onChange={this.props.updateTextbox}/>
-                            </label>
-                            <label>
-                                City
-                                <select 
-                                    value={city}
-                                    name="city"
-                                    required="required"
-                                    onChange={this.props.updateDropdown}>
-                                    <option disabled value="">City</option>
-                                    {this.state.cities.map((item, i) => {
-                                        return <option key={i} value={item.id}>{item.name}</option>
-                                    })}
-                                </select>
-                            </label>
+                <div className="container">
+                    <div className="row">
+                        <div className="listings create">
+                            <div className="col-md-3">
+                                <CreateListingBasicsAside />
+                            </div>
+                            <div className="col-md-9">
+                                <div className="form-group">
+                                    <h2>Where's your place located?</h2>
+                                    <hr />
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="billingCountry">Billing Country</label>
+                                                <select
+                                                    onChange={(e) => this.updateBillingCountry(e)}
+                                                    className="form-control"
+                                                    name="billingCountry"
+                                                    value={billingCountry}
+                                                    required="required"
+                                                    id="billingCountry">
+                                                    <option disabled value="">Location</option>
+                                                    {countries.map((item, i) => {
+                                                        return <option key={i} value={item.id}>{item.name}</option>
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="streetAddress">Street Address</label>
+                                                <input onChange={this.props.updateTextbox} className="form-control" id="streetAddress" name="streetAddress" value={streetAddress} />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="apartment">Apt, Suite, Bldg. (optional)</label>
+                                                <input onChange={this.props.updateTextbox} className="form-control" id="apartment" name="apartment" value={apartment} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="city">City</label>
+                                                <select
+                                                    onChange={this.props.updateDropdown}
+                                                    className="form-control"
+                                                    name="city"
+                                                    value={city}
+                                                    required="required"
+                                                    id="city">
+                                                    <option disabled value="">City</option>
+                                                    {this.state.cities.map((item, i) => {
+                                                        return <option key={i} value={item.id}>{item.name}</option>
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="zipCode">ZIP Code</label>
+                                                <input onChange={this.props.updateTextbox} className="form-control" id="zipCode" name="zipCode" value={zipCode} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-12">
+                                            <div className="col-md-12 protection-message">
+                                                <p><i className="fa fa-2x fa-lightbulb-o" aria-hidden="true"></i>Your exact address will only be shared with confirmed guests.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                        <div className="col-md-6">
-                            <label>
-                                Apt, Suite, Blgd. (optional)
-                                <Textbox 
-                                    name="apartment"
-                                    value={apartment} 
-                                    onChange={this.props.updateTextbox}/>
-                            </label>
-                            {/* <div className="col-md-6">
-                                <label>
-                                    State
-                                    <Dropdown 
-                                        name="state"
-                                        value={state}
-                                        options={[ "State", "Another state" ]} 
-                                        onChange={this.props.updateDropdown}/>
-                                </label>
-                             </div> */}
-                             <div className="col-md-6">
-                                <label>
-                                    ZipCode
-                                    <Textbox 
-                                        name="zipCode"
-                                        value={zipCode} 
-                                        onChange={this.props.updateTextbox}/>
-                                </label>
-                             </div>
-                            
-                        </div>
-
-                        <div>
-                            Your exact address will only be shared with confirmed guests.
-                        </div>
-                        
                     </div>
-                    
-                    <NavLink to="/listings/create/safetyamenities" className="btn btn-default" id="btn-continue">Back</NavLink>
-                    <NavLink to="/listings/create/title" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                </div >
+                <div className="navigation col-md-12">
+                    <div className="col-md-3">
+                    </div>
+                    <div className="col-md-7">
+                        <NavLink to="/listings/create/safetyamenities" className="btn btn-default btn-back" id="btn-continue">
+                            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
+                            &nbsp;Back</NavLink>
+                        <NavLink to="/listings/create/title" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                    </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }

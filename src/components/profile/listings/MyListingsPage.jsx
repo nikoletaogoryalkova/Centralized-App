@@ -4,6 +4,8 @@ import MyListingsActiveItem from './MyListingsActiveItem';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
 export default class MyListingsPage extends React.Component {
     render() {
         return (
@@ -25,6 +27,7 @@ export default class MyListingsPage extends React.Component {
                     </div>
                 </section>
                 <Footer />
+                <NotificationContainer />
             </div>
         );
     }

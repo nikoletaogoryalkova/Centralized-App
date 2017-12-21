@@ -25,8 +25,7 @@ export default class ProfileEditPage extends React.Component {
             currencies: [],
             cities: [],
             countries: [],
-            loading: true,
-
+            loading: true
         }
 
 
@@ -92,12 +91,13 @@ export default class ProfileEditPage extends React.Component {
         updateUserInfo(userInfo).then((res) => {
             if (res.status === 200 || res.status === 202) {
                 NotificationManager.success('Successfully updated your profile', 'Update user profile');
+                this.componentDidMount();
             }
             else {
                 NotificationManager.error('Error!', 'Update user profile')
             }
         })
-        this.forceUpdate();
+       
     }
 
     render() {

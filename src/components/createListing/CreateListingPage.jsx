@@ -102,6 +102,8 @@ class CreateListingPage extends React.Component {
             // price
             defaultDailyPrice: '0',
             currency: '2', // USD
+
+            loading: false
         };
 
         this.onChange = this.onChange.bind(this);
@@ -242,6 +244,7 @@ class CreateListingPage extends React.Component {
     }
 
     createListing() {
+        this.setState({loading: true});
         let listing = {
             listingType: this.state.type,
             type: this.state.propertyType,
@@ -298,7 +301,7 @@ class CreateListingPage extends React.Component {
                 },
                 {
                     value: this.state.billingCountry,
-                    detail: { name: "billingCountry"}
+                    detail: { name: "billingCountry" }
                 }
             ],
             description: {
@@ -325,11 +328,15 @@ class CreateListingPage extends React.Component {
         }
 
         createListing(listing).then((res) => {
-            if(res.status === 200 || res.status === 202) {
-                NotificationManager.success('Successfully updated your profile', 'Update user profile');
+            if (res.status === 200 || res.status === 202) {
+                this.setState({loading: false});
+                this.props.history.push('/profile/listings');
+                NotificationManager.success('Successfully updated your profile', 'Create new listing');
+                
             }
             else {
-                NotificationManager.error('Error!', 'Update user profile')
+                this.setState({loading: false});
+                NotificationManager.error('Something went wrong!', 'Create new listing');
             }
         });
     }
@@ -389,92 +396,89 @@ class CreateListingPage extends React.Component {
                     <NavCreateListing />
                 }
 
-                <div className="container">
-                    <div className="row">
-                        <Switch>
-                            <Redirect exact path="/listings/create/" to="/listings/create/landing" />
+                <Switch>
+                    <Redirect exact path="/listings/create/" to="/listings/create/landing" />
 
-                            <Route exact path="/listings/create/landing" render={() =>
-                                <CreateListingLandingPage
-                                    values={this.state}
-                                    onChange={this.onChange} />}
-                            />
+                    <Route exact path="/listings/create/landing" render={() =>
+                        <CreateListingLandingPage
+                            values={this.state}
+                            onChange={this.onChange} />}
+                    />
 
-                            <Route exact path="/listings/create/placetype" render={() =>
-                                <CreateListingPlaceType
-                                    values={this.state}
-                                    toggleCheckbox={this.toggleCheckbox}
-                                    onChange={this.onChange} />}
-                            />
+                    <Route exact path="/listings/create/placetype" render={() =>
+                        <CreateListingPlaceType
+                            values={this.state}
+                            toggleCheckbox={this.toggleCheckbox}
+                            onChange={this.onChange} />}
+                    />
 
-                            <Route exact path="/listings/create/accommodation" render={() =>
-                                <CreateListingAccommodation
-                                    values={this.state}
-                                    updateCounter={this.updateCounter}
-                                    updateBedrooms={this.updateBedrooms}
-                                    updateBedCount={this.updateBedCount}
-                                />} />
+                    <Route exact path="/listings/create/accommodation" render={() =>
+                        <CreateListingAccommodation
+                            values={this.state}
+                            updateCounter={this.updateCounter}
+                            updateBedrooms={this.updateBedrooms}
+                            updateBedCount={this.updateBedCount}
+                        />} />
 
-                            <Route exact path="/listings/create/facilities" render={() =>
-                                <CreateListingFacilities
-                                    values={this.state}
-                                    toggle={this.toggleFacility} />} />
+                    <Route exact path="/listings/create/facilities" render={() =>
+                        <CreateListingFacilities
+                            values={this.state}
+                            toggle={this.toggleFacility} />} />
 
-                            <Route exact path="/listings/create/safetyamenities" render={() =>
-                                <CreateListingSafetyAmenities
-                                    values={this.state}
-                                    toggle={this.toggleFacility} />} />
+                    <Route exact path="/listings/create/safetyamenities" render={() =>
+                        <CreateListingSafetyAmenities
+                            values={this.state}
+                            toggle={this.toggleFacility} />} />
 
-                            <Route exact path="/listings/create/location" render={() =>
-                                <CreateListingLocation
-                                    values={this.state}
-                                    updateDropdown={this.onChange}
-                                    updateTextbox={this.onChange}
-                                    resetCity={this.resetCity} />} />
+                    <Route exact path="/listings/create/location" render={() =>
+                        <CreateListingLocation
+                            values={this.state}
+                            updateDropdown={this.onChange}
+                            updateTextbox={this.onChange}
+                            resetCity={this.resetCity} />} />
 
-                            <Route exact path="/listings/create/title" render={() =>
-                                <CreateListingTitle
-                                    values={this.state}
-                                    updateTextbox={this.onChange} />} />
+                    <Route exact path="/listings/create/title" render={() =>
+                        <CreateListingTitle
+                            values={this.state}
+                            updateTextbox={this.onChange} />} />
 
-                            <Route exact path="/listings/create/description" render={() =>
-                                <CreateListingDescription
-                                    values={this.state}
-                                    updateTextarea={this.onChange} />} />
+                    <Route exact path="/listings/create/description" render={() =>
+                        <CreateListingDescription
+                            values={this.state}
+                            updateTextarea={this.onChange} />} />
 
-                            <Route exact path="/listings/create/photos" render={() =>
-                                <CreateListingPhotos
-                                    values={this.state}
-                                    onImageDrop={this.onImageDrop}
-                                    removePhoto={this.removePhoto}
-                                />} />
+                    <Route exact path="/listings/create/photos" render={() =>
+                        <CreateListingPhotos
+                            values={this.state}
+                            onImageDrop={this.onImageDrop}
+                            removePhoto={this.removePhoto}
+                        />} />
 
-                            <Route exact path="/listings/create/houserules" render={() =>
-                                <CreateListingHouseRules
-                                    values={this.state}
-                                    onChange={this.onChange}
-                                    addRule={this.addHouseRule}
-                                    removeRule={this.removeHouseRule} />} />
+                    <Route exact path="/listings/create/houserules" render={() =>
+                        <CreateListingHouseRules
+                            values={this.state}
+                            onChange={this.onChange}
+                            addRule={this.addHouseRule}
+                            removeRule={this.removeHouseRule} />} />
 
-                            <Route exact path="/listings/create/checking" render={() =>
-                                <CreateListingChecking
-                                    values={this.state}
-                                    updateDropdown={this.onChange} />} />
+                    <Route exact path="/listings/create/checking" render={() =>
+                        <CreateListingChecking
+                            values={this.state}
+                            updateDropdown={this.onChange} />} />
 
-                            <Route exact path="/listings/create/cancellation" render={() =>
-                                <CreateListingCancellation />} />
+                    {/* <Route exact path="/listings/create/cancellation" render={() =>
+                        <CreateListingCancellation />} /> */}
 
-                            <Route exact path="/listings/create/price" render={() =>
-                                <CreateListingPrice
-                                    values={this.state}
-                                    updateNumber={this.onChange}
-                                    updateDropdown={this.onChange}
-                                    createListing={this.createListing} />} />
-                        </Switch>
-                    </div>
-                </div>
-                <NotificationContainer />
+                    <Route exact path="/listings/create/price" render={() =>
+                        <CreateListingPrice
+                            values={this.state}
+                            updateNumber={this.onChange}
+                            updateDropdown={this.onChange}
+                            createListing={this.createListing} />} />
+                </Switch>
+
                 <Footer />
+                <NotificationContainer />
             </div>
         );
     }

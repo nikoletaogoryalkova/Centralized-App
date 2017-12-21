@@ -8,20 +8,10 @@ class NavCreateListing extends React.Component {
             <div className="admin_dashboard">
                 <section id="search-bar" className="step-by-step">
                     <div className="container">
-                        <ul className="nav navbar-nav nav_dash_menu" style={{ display: 'flex', justifyContent: 'space-between', float: 'none' }}>
-                            <NavLink to="/listings/create/landing" style={{ float: 'none', display: 'inline-block', color: 'white', fontSize: '20px' }}>Step 1: The Basics</NavLink>
-                            <NavLink to="/listings/create/title" style={{ float: 'none', display: 'inline-block', color: 'white', fontSize: '20px' }}>Step 2: Place description</NavLink>
-                            <NavLink to="/listings/create/houserules" style={{ float: 'none', display: 'inline-block', color: 'white', fontSize: '20px' }}>Step 3: Guest Settings</NavLink>
-
-                            {/* <li style={{ float: 'none', display: 'inline-block' }}>
-                                <a href="#">Step 1: The Basics</a>
-                            </li>
-                            <li style={{ float: 'none', display: 'inline-block' }}>
-                                <a href="#">Step 2: Place description</a>
-                            </li>
-                            <li style={{ float: 'none', display: 'inline-block' }}>
-                                <a href="#">Step 3: Guest Settings</a>
-                            </li> */}
+                        <ul className="nav navbar-nav nav_dash_menu" style={{padding: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' , float: 'none' }}>
+                            <p to="/listings/create/landing" style={{ float: 'none', display: 'inline-block', color: 'white', fontSize: '20px' }}>Step 1: The Basics</p>
+                            <p to="/listings/create/title" style={{ float: 'none', display: 'inline-block', color: 'white', fontSize: '20px' }}>Step 2: Place description</p>
+                            <p to="/listings/create/houserules" style={{ float: 'none', display: 'inline-block', color: 'white', fontSize: '20px' }}>Step 3: Guest Settings</p>
                         </ul>
                     </div>
                 </section>

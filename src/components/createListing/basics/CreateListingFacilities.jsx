@@ -13,17 +13,17 @@ export default class CreateListingFacilities extends React.Component {
         const facilities = [];
         this.props.values.categories.forEach((category, j) => {
             if (category.amenities.length > 0 && category.name !== "Safety Amenities") {
-                facilities.push( 
+                facilities.push(
                     <div key={j} className="filter-box">
                         <h3>{category.name}</h3>
                         {category.amenities.map((item, i) => {
-                                return <div key={i} onClick={() => this.props.toggle(item.id)}>
-                                    <FiltersCheckbox
-                                        key={i}
-                                        text={item.name}
-                                        checked={this.props.values.facilities.has(item.id)} />
-                                </div>
-                            })
+                            return <div key={i} onClick={() => this.props.toggle(item.id)}>
+                                <FiltersCheckbox
+                                    key={i}
+                                    text={item.name}
+                                    checked={this.props.values.facilities.has(item.id)} />
+                            </div>
+                        })
                         }
                     </div>
                 );
@@ -37,30 +37,43 @@ export default class CreateListingFacilities extends React.Component {
 
         return (
             <div>
-                <CreateListingBasicsAside />
+                <div className="container">
+                    <div className="row">
+                        <div className="listings create">
+                            <div className="col-md-3">
+                                <CreateListingBasicsAside />
+                            </div>
+                            <div className="col-md-9">
+                                <div className="form-group">
+                                    <h2>What facilities do you offer to your guests</h2>
+                                    <hr />
 
-                <div className="col-md-9">
-                    <div className="form-group">
-                        <h2>What facilities do you offer to your guests</h2>
-                        <hr/>
+                                    <div className="col-md-4">
+                                        {columns[0]}
+                                    </div>
 
-                        <div className="col-md-4">
-                            {columns[0]}
-                        </div>
+                                    <div className="col-md-4">
+                                        {columns[1]}
+                                    </div>
 
-                        <div className="col-md-4">
-                            {columns[1]}
-                        </div>
-
-                        <div className="col-md-4">
-                            {columns[2]}
+                                    <div className="col-md-4">
+                                        {columns[2]}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <NavLink to="/listings/create/accommodation" className="btn btn-default" id="btn-continue">Back</NavLink>
-                    <NavLink to="/listings/create/safetyamenities" className="btn btn-primary" id="btn-continue">Continue</NavLink>
                 </div>
-
+                <div className="navigation col-md-12">
+                    <div className="col-md-3">
+                    </div>
+                    <div className="col-md-7">
+                        <NavLink to="/listings/create/accommodation" className="btn btn-default btn-back" id="btn-continue">
+                            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
+                            &nbsp;Back</NavLink>
+                        <NavLink to="/listings/create/safetyamenities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                    </div>
+                </div>
             </div>
         );
     }

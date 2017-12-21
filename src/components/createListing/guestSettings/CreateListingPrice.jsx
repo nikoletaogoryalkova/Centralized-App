@@ -11,7 +11,7 @@ export default class CreateListingPrice extends React.Component {
         super(props);
 
         this.state = {
-            currencies: [],
+            currencies: []
         }
     }
 
@@ -22,44 +22,64 @@ export default class CreateListingPrice extends React.Component {
     }
 
     render() {
-        const {defaultDailyPrice, currency} = this.props.values;
+        const { defaultDailyPrice, currency } = this.props.values;
+
         return (
             <div>
-                <CreateListingGuestSettingsAside />
-                <div className="col-md-9">
-                    <div className="form-group">
-                        <h2>Default nightly rate</h2>
-                        <hr/>
+                <div className="container">
+                    <div className="row">
+                        <div className="listings create">
+                            <div className="col-md-3">
+                                <CreateListingGuestSettingsAside />
+                            </div>
 
-                        <div className="col-md-6">
-                            <label>
-                                Base price
-                                <Textbox
-                                    type="number" 
-                                    name="defaultDailyPrice"
-                                    value={defaultDailyPrice} 
-                                    onChange={this.props.updateNumber}/>
-                            </label>
-                            
-                            <label>
-                                Currency
-                                <select 
-                                    value={currency}
-                                    name="currency"
-                                    required="required"
-                                    onChange={this.props.updateDropdown}>
-                                    <option disabled value="">Currency</option>
-                                    {this.state.currencies.map((item, i) => {
-                                        return <option key={i} value={item.id}>{item.code}</option>
-                                    })}
-                                </select>
-                            </label>
+                            {!this.props.values.loading && <div className="col-md-9">
+                                <div className="form-group">
+                                    <h2>Default nightly rate</h2>
+                                    <hr />
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="defaultDailyPrice">Base price</label>
+                                                <input onChange={this.props.updateNumber} type="number" id="defaultDailyPrice" className="form-control" name="defaultDailyPrice" value={defaultDailyPrice} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="city">Currency</label>
+                                                <select
+                                                    onChange={this.props.updateDropdown}
+                                                    className="form-control"
+                                                    name="currency"
+                                                    value={currency}
+                                                    required="required"
+                                                    id="currency">
+                                                    <option disabled value="">Currency</option>
+                                                    {this.state.currencies.map((item, i) => {
+                                                        return <option key={i} value={item.id}>{item.code}</option>
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>}
                         </div>
                     </div>
                 </div>
-                <NavLink to="/listings/create/cancellation" className="btn btn-default" id="btn-continue">Back</NavLink>
-                <NavLink to="/listings/create/price" className="btn btn-primary" id="btn-continue" onClick={this.props.createListing}>Finish</NavLink>
-            </div>
+                <div className="navigation col-md-12">
+                    <div className="col-md-3">
+                    </div>
+                    <div className="col-md-7">
+                        <NavLink to="/listings/create/checking" className="btn btn-default btn-back" id="btn-continue">
+                            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
+                            &nbsp;Back</NavLink>
+                        <NavLink to="/listings/create/price" className="btn btn-primary btn-next" onClick={this.props.createListing} id="btn-continue">Finish</NavLink>
+                    </div>
+                </div>
+            </div >
         );
     }
 }

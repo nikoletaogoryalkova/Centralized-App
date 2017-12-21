@@ -6,71 +6,103 @@ import Dropdown from '../Dropdown';
 
 export default class CreateListingChecking extends React.Component {
     render() {
-        const {checkinFrom, checkinTo, checkoutFrom, checkoutTo} = this.props.values;
+        const { checkinFrom, checkinTo, checkoutFrom, checkoutTo } = this.props.values;
         return (
             <div>
-                <CreateListingGuestSettingsAside />
-                <div className="col-md-9">
-                    <h2>When can guests check-in?</h2>
-                    <hr/>
-                    <div className="form-group">    
-                        <div className="col-md-6">
-                            <label htmlFor="">
-                                from:
-                                <Dropdown 
-                                    name="checkinFrom"
-                                    value={checkinFrom}
-                                    options={CreateListingChecking.hours}
-                                    onChange={this.props.updateDropdown}
-                                    />
-                            </label>
-                        </div>
-                            
-                        <div className="col-md-6">
-                        <label htmlFor="">
-                                to:
-                                <Dropdown 
-                                    name="checkinTo"
-                                    value={checkinTo}
-                                    options={CreateListingChecking.hours}
-                                    onChange={this.props.updateDropdown}
-                                    />
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                <div className="container">
+                    <div className="row">
+                        <div className="listings create">
+                            <div className="col-md-3">
+                                <CreateListingGuestSettingsAside />
+                            </div>
+                            <div className="col-md-9">
+                                <h2>When can guests check-in?</h2>
+                                <hr />
+                                <div className="col-md-12">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="checkinFrom">from:</label>
+                                            <select
+                                                onChange={this.props.updateDropdown}
+                                                className="form-control"
+                                                name="checkinFrom"
+                                                value={checkinFrom}
+                                                required="required"
+                                                id="checkinFrom">
+                                                {CreateListingChecking.hours.map((item, i) => {
+                                                    return <option key={i} value={item}>{item}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="checkinTo">to:</label>
+                                            <select
+                                                onChange={this.props.updateDropdown}
+                                                className="form-control"
+                                                name="checkinTo"
+                                                value={checkinTo}
+                                                required="required"
+                                                id="checkinTo">
+                                                {CreateListingChecking.hours.map((item, i) => {
+                                                    return <option key={i} value={item}>{item}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div className="col-md-9">
-                    <h2>When can guests check-out?</h2>
-                    <hr/>
-                    <div className="form-group">    
-                        <div className="col-md-6">
-                            <label htmlFor="">
-                                from:
-                                <Dropdown 
-                                    name="checkoutFrom"
-                                    value={checkoutFrom}
-                                    options={CreateListingChecking.hours}
-                                    onChange={this.props.updateDropdown}
-                                    />
-                            </label>
-                        </div>
-                            
-                        <div className="col-md-6">
-                            <label htmlFor="">
-                                to:
-                                <Dropdown 
-                                    name="checkoutTo"
-                                    value={checkoutTo}
-                                    options={CreateListingChecking.hours}
-                                    onChange={this.props.updateDropdown}
-                                    />
-                            </label>
+                                <h2>When can guests check-out?</h2>
+                                <hr />
+                                <div className="col-md-12">
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="checkoutFrom">from:</label>
+                                            <select
+                                                onChange={this.props.updateDropdown}
+                                                className="form-control"
+                                                name="checkoutFrom"
+                                                value={checkoutFrom}
+                                                required="required"
+                                                id="checkoutFrom">
+                                                {CreateListingChecking.hours.map((item, i) => {
+                                                    return <option key={i} value={item}>{item}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="checkoutTo">to:</label>
+                                            <select
+                                                onChange={this.props.updateDropdown}
+                                                className="form-control"
+                                                name="checkoutTo"
+                                                value={checkoutTo}
+                                                required="required"
+                                                id="checkoutTo">
+                                                {CreateListingChecking.hours.map((item, i) => {
+                                                    return <option key={i} value={item}>{item}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <NavLink to="/listings/create/houserules" className="btn btn-default" id="btn-continue">Back</NavLink>
-                <NavLink to="/listings/create/cancellation" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                <div className="navigation col-md-12">
+                    <div className="col-md-3">
+                    </div>
+                    <div className="col-md-7">
+                        <NavLink to="/listings/create/houserules" className="btn btn-default btn-back" id="btn-continue">
+                            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
+                            &nbsp;Back</NavLink>
+                        <NavLink to="/listings/create/price" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                    </div>
+                </div>
             </div>
         );
     }
