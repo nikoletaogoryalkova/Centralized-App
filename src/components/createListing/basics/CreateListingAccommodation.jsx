@@ -15,25 +15,25 @@ export default class CreateListingAccommodation extends React.Component {
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
                 <LabeledBedroomCounter
                     label="Single Bed"
-                    name="singleBed"
+                    name="singleBedCount"
                     bedroom={i}
-                    value={bedrooms[i].singleBed}
+                    value={bedrooms[i].singleBedCount}
                     onChange={this.props.updateBedCount}
                     />
 
                 <LabeledBedroomCounter
                     label="Double Bed"
-                    name="doubleBed"
+                    name="doubleBedCount"
                     bedroom={i}
-                    value={bedrooms[i].doubleBed}
+                    value={bedrooms[i].doubleBedCount}
                     onChange={this.props.updateBedCount}
                     />
 
                 <LabeledBedroomCounter
                     label="King Bed"
-                    name="kingBed"
+                    name="kingBedCount"
                     bedroom={i}
-                    value={bedrooms[i].kingBed}
+                    value={bedrooms[i].kingBedCount}
                     onChange={this.props.updateBedCount}
                     />
                 </div>

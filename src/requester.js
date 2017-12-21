@@ -69,6 +69,28 @@ export async function getLocRate() {
     return res.json();
 }
 
+export async function getCurrentLoggedInUserInfo() {
+    const res = await fetch(`${host}users/me/edit`, {
+        headers: {
+            'Authorization': localStorage[".auth.lockchain"]
+        }
+    });
+
+    return res.json();
+}
+
+export async function updateUserInfo(userObj) {
+    const res = await fetch(`${host}users/me`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage[".auth.lockchain"]
+        },
+        method: "PATCH",
+        body: JSON.stringify(userObj)
+    })
+    return res;
+}
+
 export async function register(user) {
     const res = await fetch(`${host}users/signup`, {
         headers: {
@@ -89,6 +111,19 @@ export async function login(user) {
     return res;
 }
 
+export async function createListing(listingObj) {
+    const res = await fetch(`${host}listingTest`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage[".auth.lockchain"]
+        },
+        method: "POST",
+        body: JSON.stringify(listingObj)
+    })
+
+    return res;
+}
+
 /**
  *
  * @param {int} listingId
@@ -105,3 +140,4 @@ export async function getCalendarByListingIdAndDateRange(listingId, startDate, e
     const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}&projection=singlePropertyCalendar`);
     return res.json();
 }
+

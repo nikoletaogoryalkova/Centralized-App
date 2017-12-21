@@ -3579,7 +3579,15 @@ ul.profile-messages-item>li:nth-child(5)>span {
 #profile-edit-form {
     width: 785px;
     margin-left: 60px;
-    ;
+}
+
+#profile-edit-form select {
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 18px;
+    padding: 15px;
+    width: 100%;
 }
 
 #profile-edit-form>h2 {
