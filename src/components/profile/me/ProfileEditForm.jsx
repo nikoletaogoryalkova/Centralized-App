@@ -4,7 +4,7 @@ import { Config } from '../../../config';
 import { getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import  moment from 'moment';
+import moment from 'moment';
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
@@ -88,7 +88,7 @@ export default class ProfileEditPage extends React.Component {
         Object.keys(userInfo).forEach((key) => (userInfo[key] === null || userInfo[key] === '') && delete userInfo[key]);
 
         updateUserInfo(userInfo).then((res) => {
-            if(res.status === 200 || res.status === 202) {
+            if (res.status === 200 || res.status === 202) {
                 NotificationManager.success('Successfully updated your profile', 'Update user profile');
             }
             else {
@@ -149,7 +149,8 @@ export default class ProfileEditPage extends React.Component {
                         <select name="day" id="bday" onChange={this.onChange} value={this.state.day}>
                             <option disabled value="">Day</option>
                             {Array.apply(null, Array(32)).map(function (item, i) {
-                                return <option key={i} value={i}>{i}</option>
+                                if (i > 0)
+                                    return <option key={i} value={i}>{i}</option>
                             })}
                         </select>
                     </div>

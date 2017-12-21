@@ -314,7 +314,7 @@ class CreateListingPage extends React.Component {
             apartment: this.state.apartment,
             zipCode: this.state.zipCode,
             name: this.state.name,
-            photos: this.getPhotos(),
+            pictures: this.getPhotos(),
             otherHouseRules: Array.from(this.state.otherHouseRules).join("\r\n"),
             checkinStart: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
             checkinEnd: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),

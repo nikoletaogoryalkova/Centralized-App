@@ -37,7 +37,7 @@ export async function getPropertyTypesWithIds() {
 }
 
 export async function getListingsByFilter(searchTerms) {
-    const res = await fetch(`${host}api/listings/search/getAllByFilter?${searchTerms}&projection=listings`, {headers: getHeaders()});
+    const res = await fetch(`${host}/api/filter_listings?${searchTerms}&projection=listings`, {headers: getHeaders()});
     return res.json();
 }
 
@@ -71,9 +71,7 @@ export async function getLocRate() {
 
 export async function getCurrentLoggedInUserInfo() {
     const res = await fetch(`${host}users/me/edit`, {
-        headers: {
-            'Authorization': localStorage[".auth.lockchain"]
-        }
+        headers: getHeaders()
     });
 
     return res.json();
@@ -81,10 +79,9 @@ export async function getCurrentLoggedInUserInfo() {
 
 export async function updateUserInfo(userObj) {
     const res = await fetch(`${host}users/me`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': localStorage[".auth.lockchain"]
-        },
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        }),
         method: "PATCH",
         body: JSON.stringify(userObj)
     })
@@ -113,10 +110,9 @@ export async function login(user) {
 
 export async function createListing(listingObj) {
     const res = await fetch(`${host}listingTest`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': localStorage[".auth.lockchain"]
-        },
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        }),
         method: "POST",
         body: JSON.stringify(listingObj)
     })
