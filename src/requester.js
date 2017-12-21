@@ -37,7 +37,7 @@ export async function getPropertyTypesWithIds() {
 }
 
 export async function getListingsByFilter(searchTerms) {
-    const res = await fetch(`${host}api/listings/search/getAllByFilter?${searchTerms}&projection=listings`, {headers: getHeaders()});
+    const res = await fetch(`${host}/api/filter_listings?${searchTerms}&projection=listings`, {headers: getHeaders()});
     return res.json();
 }
 
@@ -69,6 +69,25 @@ export async function getLocRate() {
     return res.json();
 }
 
+export async function getCurrentLoggedInUserInfo() {
+    const res = await fetch(`${host}users/me/edit`, {
+        headers: getHeaders()
+    });
+
+    return res.json();
+}
+
+export async function updateUserInfo(userObj) {
+    const res = await fetch(`${host}users/me`, {
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        }),
+        method: "PATCH",
+        body: JSON.stringify(userObj)
+    })
+    return res;
+}
+
 export async function register(user) {
     const res = await fetch(`${host}users/signup`, {
         headers: getHeaders({
@@ -85,6 +104,18 @@ export async function login(user) {
         method: "POST",
         body: user
     });
+
+    return res;
+}
+
+export async function createListing(listingObj) {
+    const res = await fetch(`${host}listingTest`, {
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        }),
+        method: "POST",
+        body: JSON.stringify(listingObj)
+    })
 
     return res;
 }

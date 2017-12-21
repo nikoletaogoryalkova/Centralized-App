@@ -58,8 +58,7 @@ export default class CreateListingPrice extends React.Component {
                     </div>
                 </div>
                 <NavLink to="/listings/create/cancellation" className="btn btn-default" id="btn-continue">Back</NavLink>
-                {/* <input type="button" className="btn btn-primary" onClick={this.props.submitPost} /> */}
-                <NavLink to="/listings/create/price" className="btn btn-primary" id="btn-continue" onClick={this.props.submitPost}>Finish</NavLink>
+                <NavLink to="/listings/create/price" className="btn btn-primary" id="btn-continue" onClick={this.props.createListing}>Finish</NavLink>
             </div>
         );
     }

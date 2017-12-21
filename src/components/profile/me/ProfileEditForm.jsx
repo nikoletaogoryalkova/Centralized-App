@@ -1,7 +1,10 @@
 import React from 'react';
 
-import { NavDropdown, MenuItem } from 'react-bootstrap';
 import { Config } from '../../../config';
+import { getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import moment from 'moment';
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
@@ -10,18 +13,50 @@ export default class ProfileEditPage extends React.Component {
         this.state = {
             firstName: '',
             lastName: '',
-            email: '',
             phoneNumber: '',
             preferredLanguage: '',
             preferredCurrency: '',
-            month: 'Month',
-            day: 'Day',
-            year: 'Year',
-            gender: 'Gender'
+            month: '',
+            day: '',
+            year: '',
+            gender: '',
+            country: '',
+            city: '',
+            currencies: [],
+            cities: [],
+            countries: [],
+            loading: true,
+
         }
+
 
         this.onChange = this.onChange.bind(this);
         this.changeDropdownValue = this.changeDropdownValue.bind(this);
+        this.updateUser = this.updateUser.bind(this);
+    }
+
+    componentDidMount() {
+        getCurrentLoggedInUserInfo().then((data) => {
+            let birthday = moment.utc(data.birthday);
+
+            this.setState({
+                firstName: data.firstName !== null ? data.firstName : '',
+                lastName: data.lastName !== null ? data.lastName : '',
+                phoneNumber: data.phoneNumber !== null ? data.phoneNumber : '',
+                preferredLanguage: data.preferredLanguage !== null ? data.preferredLanguage : '',
+                preferredCurrency: data.preferredCurrency !== null ? data.preferredCurrency.id : '',
+                gender: data.gender !== null ? data.gender : '',
+                country: data.country !== null ? data.country.id : '',
+                city: data.city !== null ? data.city.id : '',
+                countries: data.countries,
+                currencies: data.currencies,
+                day: birthday.add(1, 'days').format('D'),
+                month: birthday.format('MM'),
+                year: birthday.format('YYYY')
+            });
+        }).then(() => {
+            this.setState({ loading: false });
+        })
     }
 
     onChange(e) {
@@ -33,11 +68,45 @@ export default class ProfileEditPage extends React.Component {
         this.setState({ [stateKey]: event.target.innerText });
     }
 
+    updateUser() {
+        let birthday;
+        if (this.state.day !== '' && this.state.month !== '' && this.state.year !== '') {
+            birthday = `${this.state.day}/${this.state.month}/${this.state.year}`;
+        }
+        let userInfo = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            phoneNumber: this.state.phoneNumber,
+            preferredLanguage: this.state.preferredLanguage,
+            preferredCurrency: parseInt(this.state.preferredCurrency, 10),
+            gender: this.state.gender,
+            country: parseInt(this.state.country, 10),
+            city: parseInt(this.state.city, 10),
+            birthday: birthday
+        }
+
+        Object.keys(userInfo).forEach((key) => (userInfo[key] === null || userInfo[key] === '') && delete userInfo[key]);
+
+        updateUserInfo(userInfo).then((res) => {
+            if (res.status === 200 || res.status === 202) {
+                NotificationManager.success('Successfully updated your profile', 'Update user profile');
+            }
+            else {
+                NotificationManager.error('Error!', 'Update user profile')
+            }
+        })
+
+    }
+
     render() {
+        if (this.state.loading) {
+            return <div className="loader"></div>;
+        }
+
         let years = [];
 
-        for (let i = 1940; i <= 1999; i++) {
-            years.push(<MenuItem key={i}>{i}</MenuItem>)
+        for (let i = (new Date()).getFullYear(); i >= 1940; i--) {
+            years.push(<option key={i} value={i}>{i}</option>)
         }
 
         return (
@@ -59,51 +128,51 @@ export default class ProfileEditPage extends React.Component {
                 <div className="birth-sex">
                     <div className="bmonth">
                         <label htmlFor="bmonth">Birthdate <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
-                        <NavDropdown title={this.state.month} onSelect={this.changeDropdownValue} id="month">
-                            <MenuItem>January</MenuItem>
-                            <MenuItem>February</MenuItem>
-                            <MenuItem>March</MenuItem>
-                            <MenuItem>April</MenuItem>
-                            <MenuItem>May</MenuItem>
-                            <MenuItem>June</MenuItem>
-                            <MenuItem>July</MenuItem>
-                            <MenuItem>August</MenuItem>
-                            <MenuItem>September</MenuItem>
-                            <MenuItem>October</MenuItem>
-                            <MenuItem>November</MenuItem>
-                            <MenuItem>December</MenuItem>
-                        </NavDropdown>
+                        <select name="month" id="bmonth" onChange={this.onChange} value={this.state.month}>
+                            <option disabled value="">Month</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
                     </div>
                     <div className="bday">
                         <label htmlFor="bday">&nbsp;</label>
-                        <NavDropdown title={this.state.day} onSelect={this.changeDropdownValue} id="day">
-                            {Array.apply(null, Array(31)).map(function (item, i) {
-                                return <MenuItem key={i}>{i}</MenuItem>
+                        <select name="day" id="bday" onChange={this.onChange} value={this.state.day}>
+                            <option disabled value="">Day</option>
+                            {Array.apply(null, Array(32)).map(function (item, i) {
+                                if (i > 0)
+                                    return <option key={i} value={i}>{i}</option>
                             })}
-                        </NavDropdown>
+                        </select>
                     </div>
                     <div className="byear">
                         <label htmlFor="byear">&nbsp;</label>
-                        <NavDropdown title={this.state.year} onSelect={this.changeDropdownValue} id="year">
+                        <select name="year" id="byear" onChange={this.onChange} value={this.state.year}>
+                            <option disabled value="">Year</option>
                             {years}
-                        </NavDropdown>
+                        </select>
                     </div>
                     <div className="sex">
                         <label htmlFor="sex">Gender <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
-                        <NavDropdown title={this.state.gender} onSelect={this.changeDropdownValue} id="gender">
-                            <MenuItem>Men</MenuItem>
-                            <MenuItem>Women</MenuItem>
-                            <MenuItem>Other</MenuItem>
-                        </NavDropdown>
+                        <select name="gender" id="sex" onChange={this.onChange} value={this.state.gender}>
+                            <option disabled value="">Gender</option>
+                            <option value="men">Men</option>
+                            <option value="women">Women</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
                     <br className="clear-both" />
                 </div>
                 <div className="text"><span>We user this data for analysis and never share it with other users.</span></div>
-                <div className="phone">
-                    <label htmlFor="phone">Email address <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
-                    <input id="phone" name="email" type="text" value={this.state.email} onChange={this.onChange} />
-                </div>
-                <div className="text"><span>We won't share your private email address with other LockChain users.</span></div>
                 <div className="phone">
                     <label htmlFor="phone">Phone number <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
                     <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
@@ -113,19 +182,43 @@ export default class ProfileEditPage extends React.Component {
                 <div className="language-currency">
                     <div className="language">
                         <label htmlFor="language">Preferred language</label>
-                        <input id="language" name="language" type="text" readOnly={true} value="English" className="dropdown" />
+                        <select name="preferredLanguage" id="language" onChange={this.onChange} value={this.state.preferredLanguage}>
+                            <option value="1">English</option>
+                        </select>
                     </div>
                     <div className="currency">
-                        <label htmlFor="lname">Preferred currency</label>
-                        <input id="lname" name="lname" type="text" readOnly={true} value="Bulgarian Lev" className="dropdown" />
+                        <label htmlFor="currency">Preferred currency</label>
+                        <select name="preferredCurrency" id="currency" onChange={this.onChange} value={this.state.preferredCurrency}>
+                            <option disabled value="">Currency</option>
+                            {this.state.currencies.map((item, i) => {
+                                return <option key={i} value={item.id}>{item.code}</option>
+                            })}
+                        </select>
                     </div>
                     <br className="clear-both" />
                 </div>
-                <div className="address">
-                    <label for="address">Where you live</label>
-                    <input id="address" name="address" type="text" placeholder="eg. Rome, Italy / Manhattan, NY / Seattle, WA" />
+                <div className="address language-currency">
+                    <label htmlFor="address">Where you live</label>
+                    <div className="language">
+                        <select name="country" id="address" onChange={this.onChange} value={this.state.country}>
+                            <option disabled value="">Country</option>
+                            {this.state.countries.map((item, i) => {
+                                return <option key={i} value={item.id}>{item.name}</option>
+                            })}
+                        </select>
+                    </div>
+                    <div className="language">
+                        <select name="city" onChange={this.onChange} value={this.state.city}>
+                            <option disabled value="">City</option>
+                            {this.state.countries.some(x => x.id === parseInt(this.state.country, 10)) && this.state.countries.find(x => x.id === parseInt(this.state.country, 10)).cities.map((item, i) => {
+                                return <option key={i} value={item.id}>{item.name}</option>
+                            })}
+                        </select>
+                    </div>
+                    <br className="clear-both" />
                 </div>
-                <input type="button" className="button save" value="Save" />
+                <input type="button" className="button save" value="Save" onClick={this.updateUser} />
+                <NotificationContainer />
             </div>
         );
     }

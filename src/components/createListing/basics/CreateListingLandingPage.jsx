@@ -29,7 +29,7 @@ export default class CreateListingLandingPage extends React.Component {
                                             name="type" 
                                             checked={type === '1'} 
                                             value="1"/>
-                                        <span className="button"><img src="/images/icon-check-japonica.png" /></span>
+                                        <span className="button"><img src="/images/icon-check-japonica.png" alt="radio-home" /></span>
                                         <span>Home</span>
                                     </label>
                                     <label className="hotel">
@@ -39,7 +39,7 @@ export default class CreateListingLandingPage extends React.Component {
                                             name="type" 
                                             checked={type === '2'} 
                                             value="2"/>
-                                        <span className="button"><img src="/images/icon-check-japonica.png" /></span>
+                                        <span className="button"><img src="/images/icon-check-japonica.png" alt="radio-hotel" /></span>
                                         <span>Hotel</span>
                                     </label>
                                     <br />

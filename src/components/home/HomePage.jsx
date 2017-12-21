@@ -6,20 +6,30 @@ import OwlCarousel from 'react-owl-carousel';
 import ListingSliderBox from './ListingSliderBox';
 import Footer from '../Footer'
 
-import { getListings } from '../../requester';
-
+import { getListings, getLocRate } from '../../requester';
 class HomePage extends React.Component {
     constructor() {
         super();
-        this.state = { listings: [] };
+        this.state = { 
+            listings: [],
+            locRate: null,
+            loading: true
+        };
     };
 
     componentDidMount() {
         getListings().then(data => {
             this.setState({ listings: data.content })
         });
+        getLocRate().then((data) => {
+            this.setState({ locRate: data.loc, loading: false });
+        })
     };
     render() {
+        if (this.state.loading) {
+            return <div className="loader"></div>;
+        }
+
         return (<div>
             <header id='main-nav' className="navbar home_page">
                 <MainNav />
@@ -74,7 +84,7 @@ class HomePage extends React.Component {
                             }
                         }}>
                         {this.state.listings.map((item, i) => {
-                            return <ListingSliderBox currency={this.props.currency} currencySign={this.props.currencySign} key={i} listing={item} />
+                            return <ListingSliderBox locRate={this.state.locRate} currency={this.props.currency} currencySign={this.props.currencySign} key={i} listing={item} />
                         })}
                     </OwlCarousel>
                 }

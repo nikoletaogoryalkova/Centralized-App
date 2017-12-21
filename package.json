@@ -28,6 +28,7 @@
     "react-image-preview": "^0.1.0",
     "react-images": "^0.5.13",
     "react-images-uploader": "^1.1.0",
+    "react-notifications": "^1.4.3",
     "react-owl-carousel": "^2.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
