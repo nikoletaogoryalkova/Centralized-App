@@ -19,9 +19,16 @@ import CreateListingPage from './createListing/CreateListingPage';
 
 import observer from '../services/observer';
 
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+import TestCalendar from "./listings/TestCalendar";
+
 class App extends React.Component {
     constructor(props) {
         super(props);
+        BigCalendar.setLocalizer(
+            BigCalendar.momentLocalizer(moment)
+        );
         let currency = '';
         let currencySign = '';
 
@@ -75,6 +82,7 @@ class App extends React.Component {
         return (
             <div>
                 <Switch>
+                    <Route exact path="/testcal" render={() => <TestCalendar />} />
                     <Route exact path="/" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route path="/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
