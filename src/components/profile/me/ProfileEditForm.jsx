@@ -36,7 +36,17 @@ export default class ProfileEditPage extends React.Component {
 
     componentDidMount() {
         getCurrentLoggedInUserInfo().then((data) => {
-            let birthday = moment.utc(data.birthday);
+            let day = '';
+            let month = '';
+            let year = '';
+
+            if(data.birthday !== null) {
+                let birthday = moment.utc(data.birthday);
+                day = birthday.add(1, 'days').format('D');
+                month = birthday.format('MM');
+                year = birthday.format('YYYY');
+            }
+            
 
             this.setState({
                 firstName: data.firstName !== null ? data.firstName : '',
@@ -49,9 +59,9 @@ export default class ProfileEditPage extends React.Component {
                 city: data.city !== null ? data.city.id : '',
                 countries: data.countries,
                 currencies: data.currencies,
-                day: birthday.add(1, 'days').format('D'),
-                month: birthday.format('MM'),
-                year: birthday.format('YYYY')
+                day: day,
+                month: month,
+                year: year
             });
         }).then(() => {
             this.setState({ loading: false });
