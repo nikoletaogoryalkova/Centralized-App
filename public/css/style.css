@@ -4001,6 +4001,20 @@ li.dropdown {
     padding: 15px 50px;
 }
 
+.my-listings a.create-listing {
+    float: right;
+    margin-bottom: 25px;
+    background-color: #a2c5bf;
+    font-weight: bold;
+}
+
+#profile-mylistings::after {
+    clear: both;
+    display: block;
+    content: '';
+}
+
+
 .home_page h1.home_title {
     text-align: center;
     color: #fff;

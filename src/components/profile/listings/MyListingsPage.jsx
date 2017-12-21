@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import MyListingsActiveItem from './MyListingsActiveItem';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 
-import {getMyListings} from '../../../requester'
+import { getMyListings } from '../../../requester'
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
@@ -21,12 +22,12 @@ export default class MyListingsPage extends React.Component {
 
     componentDidMount() {
         getMyListings().then((data) => {
-            this.setState({listings: data.content, totalListings: data.totalElements, loading: false});
+            this.setState({ listings: data.content, totalListings: data.totalElements, loading: false });
         })
     }
 
     render() {
-        if(this.state.loading) {
+        if (this.state.loading) {
             return <div className="loader"></div>
         }
 
@@ -40,9 +41,13 @@ export default class MyListingsPage extends React.Component {
                         {this.state.listings.map((item, i) => {
                             return <MyListingsActiveItem listing={item} key={i} />
                         })}
-                        
+
                         <br />
+                        <div className="my-listings">
+                            <Link className="btn btn-primary create-listing" to="/listings/create">Add new listing</Link>
+                        </div>
                     </div>
+
                 </section>
                 <Footer />
                 <NotificationContainer />
