@@ -109,7 +109,7 @@ export async function login(user) {
 }
 
 export async function createListing(listingObj) {
-    const res = await fetch(`${host}listingTest`, {
+    const res = await fetch(`${host}listings`, {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),
@@ -118,6 +118,14 @@ export async function createListing(listingObj) {
     })
 
     return res;
+}
+
+export async function getMyListings() {
+    const res = await fetch(`${host}users/me/listings`, {
+        headers: getHeaders()
+    })
+
+    return res.json();
 }
 
 /**

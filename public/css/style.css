@@ -4001,7 +4001,6 @@ li.dropdown {
     padding: 15px 50px;
 }
 
-
 .home_page h1.home_title {
     text-align: center;
     color: #fff;
@@ -4141,17 +4140,17 @@ li.dropdown {
     background-image: none;
 }
 
-.popular-list-data .list-hotel-rating {
+.list-hotel-rating {
     color: #898c8d;
     font-size: 14px;
 }
 
-.popular-list-data .list-hotel-rating div {
+.list-hotel-rating div {
     float: left;
     margin-right: 10px;
 }
 
-.popular-list-data .empty-star {
+.empty-star {
     background: url(../images/icon-star-filter-g.png) no-repeat;
     background-size: cover;
     display: block;
@@ -4161,7 +4160,7 @@ li.dropdown {
     margin-top: 2px;
 }
 
-.popular-list-data .full-star {
+.full-star {
     background: url(../images/icon-star-filter.png) no-repeat;
     background-size: cover;
     display: block;

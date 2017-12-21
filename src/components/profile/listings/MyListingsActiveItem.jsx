@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import ListingRating from '../../listings/ListingRating';
 
 import RatingFeedback from '../RatingFeedback';
 
@@ -8,13 +9,14 @@ export default class MyListingsPage extends React.Component {
         return (
             <ul className="profile-mylistings-active">
                 <li className="toggle off"></li>
-                <li className="thumb"><span></span></li> {/* pls add style="background-image: url(...)" on the span */}
+                <li className="thumb"><span style={{backgroundImage: `url(${this.props.listing.thumbnail})`}}></span></li>
                 <li className="details">
-                    <Link to="#">Heaven - Junior Suite with view</Link>
-                    <RatingFeedback />
+                    <Link to={"/listings/" + this.props.listing.id}>{this.props.listing.name}</Link>
+
+                    <ListingRating  rating={this.props.listing.averageRating} reviewsCount={this.props.listing.reviewsCount} />
                 </li>
                 <li className="price">
-                    <span>$1.050</span>
+                    <span>{this.props.listing.defaultDailyPrice} {this.props.listing.currencyCode}</span>
                 </li>
                 <li className="edit">
                     <Link to="#">Edit Listing</Link>
