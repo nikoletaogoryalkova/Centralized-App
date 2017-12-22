@@ -1,8 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 import MyReservationsTable from './MyReservationsTable';
+import MyReservationsTableRow from './MyReservationsTableRow';
 import { Table } from 'react-bootstrap';
 
 import { getMyReservations } from '../../../requester'
@@ -25,20 +27,24 @@ export default class MyReservationsPage extends React.Component {
     }
 
     render() {
-        
+
         if (this.state.loading) {
             return <div className="loader"></div>
         }
 
         return (
-            <div>
+            <div className="my-reservations">
                 <ProfileHeader />
                 <section id="profile-my-reservations">
                     <div className="container">
                         <h2>Upcoming Reservations ({this.state.totalReservations})</h2>
-                        <hr/>
-                        <MyReservationsTable 
+                        <hr />
+                        <MyReservationsTable
                             reservations={this.state.reservations} />
+
+                        <div className="my-listings">
+                            <Link className="btn btn-primary create-listing" to="#">Print this page</Link>
+                        </div>
                     </div>
                 </section>
                 <Footer />

@@ -123,7 +123,7 @@ export async function createListing(listingObj) {
 export async function getMyListings() {
     const res = await fetch(`${host}users/me/listings`, {
         headers: getHeaders()
-    })
+    });
 
     return res.json();
 }
@@ -133,7 +133,17 @@ export async function getMyReservations() {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),
-    })
+    });
+
+    return res.json();
+}
+
+export async function getMyTrips() {
+    const res = await fetch(`${host}users/me/trips`, {
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        }),
+    });
 
     return res.json();
 }

@@ -551,7 +551,7 @@ ul.session-nav>li.session-nav-user>ul>li>span.info {
     font-weight: bold;
 }
 
-ul.session-nav>li.session-nav-user>span.info .session-nav-user-thumb {
+.session-nav-user-thumb {
     display: inline-block;
     vertical-align: middle;
     border-radius: 5px;
@@ -4005,6 +4005,48 @@ li.dropdown {
     float: right;
     margin-bottom: 25px;
     background-color: #a2c5bf;
+    font-weight: bold;
+}
+
+.my-reservations .reservation-box {
+    background-color: white;
+    padding: 15px 0;
+    margin: 15px 0;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+}
+
+.my-reservations .reservation-box .send-message-icon {
+    background: url(../images/icon-mail.png) center center;
+    display: inline-block;
+    height: 15px;
+    width: 23px;
+    margin-right: 5px;
+}
+
+.my-reservations .reservation-box .reservation-image-box {
+    text-align: center;
+}
+
+.my-reservations .reservation-box .reservation-image-box span {
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.my-reservations .reservation-box i {
+    padding: 0 5px;
+}
+
+.my-reservations .table-header {
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-reservations .table-header span {
     font-weight: bold;
 }
 

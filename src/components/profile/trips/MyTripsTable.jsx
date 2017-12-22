@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import moment from 'moment'
 
-export default class MyReservationsTable extends React.Component {
+export default class MyTripsTable extends React.Component {
 
     render() {
         return (
@@ -12,13 +12,13 @@ export default class MyReservationsTable extends React.Component {
                     <div className="col-md-1">
                     </div>
                     <div className="col-md-2">
-                        <span>Guests</span>
-                    </div>
-                    <div className="col-md-3">
-                        <span>Dates &amp; Location</span>
+                        <span>Host</span>
                     </div>
                     <div className="col-md-2">
-                        <span>Price</span>
+                        <span>Location</span>
+                    </div>
+                    <div className="col-md-3">
+                        <span>Dates</span>
                     </div>
                     <div className="col-md-2">
                         <span>Actions</span>
@@ -27,7 +27,7 @@ export default class MyReservationsTable extends React.Component {
                         <span>Status</span>
                     </div>
                 </div>
-                {this.props.reservations.map(reservation => {
+                {this.props.trips.map(trip => {
                     return (
                         <div className="row reservation-box">
                             <div className="col-md-1">
@@ -36,16 +36,15 @@ export default class MyReservationsTable extends React.Component {
                                 </div>
                             </div>
                             <div className="col-md-2">
-                                <div className="bold">{reservation.guestName}</div>
-                                <div>{reservation.guestPhone}</div>
+                                <div className="bold">{trip.hostName}</div>
+                                <div>{trip.hostPhone}</div>
                                 <div><span className="send-message-icon"></span>Send Message</div>
                             </div>
-                            <div className="col-md-3">
-                                <div>{moment(new Date(reservation.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(reservation.endDate)).format("DD MMM, YYYY")}</div>
-                                <div>{reservation.listingName}</div>
-                            </div>
                             <div className="col-md-2">
-                                <div>{reservation.currencyCode} {reservation.price} total</div>
+                                <div>{trip.listingName}</div>
+                            </div>
+                            <div className="col-md-3">
+                            <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
                             </div>
                             <div className="col-md-2">
                                 <div><Link to="#">Change or Cancel</Link></div>
@@ -53,7 +52,7 @@ export default class MyReservationsTable extends React.Component {
                                 <div><Link to="#">Print Confirmation</Link></div>
                             </div>
                             <div className="col-md-2">
-                                <div className="reservation-status bold">{reservation.accepted ? "Accepted" : "Pending"}</div>
+                                <div className="reservation-status bold">{trip.accepted ? "Accepted" : "Pending"}</div>
                             </div>
                         </div>
                     )

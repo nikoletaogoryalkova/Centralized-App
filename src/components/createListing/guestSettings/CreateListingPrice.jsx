@@ -33,7 +33,7 @@ export default class CreateListingPrice extends React.Component {
                                 <CreateListingGuestSettingsAside />
                             </div>
 
-                            {!this.props.values.loading && <div className="col-md-9">
+                            {!this.props.values.loading ? <div className="col-md-9">
                                 <div className="form-group">
                                     <h2>Default nightly rate</h2>
                                     <hr />
@@ -65,7 +65,7 @@ export default class CreateListingPrice extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>}
+                            </div> : <div className="loader"></div>}
                         </div>
                     </div>
                 </div>
