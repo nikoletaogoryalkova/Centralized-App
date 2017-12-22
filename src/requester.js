@@ -2,52 +2,52 @@ import { Config } from "./config";
 const host = Config.getValue("apiHost");
 
 export async function getListings() {
-    const res = await fetch(`${host}api/listings?projection=singleListing&page=1&size=10`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/listings?projection=singleListing&page=1&size=10`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getCountries() {
-    const res = await fetch(`${host}api/countries?projection=singleCountry`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/countries?projection=singleCountry`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getCities(countryId) {
-    const res = await fetch(`${host}api/countries/${countryId}/cities?projection=cityNameAndId`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/countries/${countryId}/cities?projection=cityNameAndId`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getPropertyTypes() {
-    const res = await fetch(`${host}api/property_types?projection=property_type`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/property_types?projection=property_type`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getAmenitiesByCategory() {
-    const res = await fetch(`${host}api/categories?projection=singleCategory`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/categories?projection=singleCategory`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getCurrencies() {
-    const res = await fetch(`${host}api/currencies?projection=currencyNameAndId`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/currencies?projection=currencyNameAndId`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getPropertyTypesWithIds() {
-    const res = await fetch(`${host}api/property_types?projection=property_type_name_and_id`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/property_types?projection=property_type_name_and_id`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getListingsByFilter(searchTerms) {
-    const res = await fetch(`${host}/api/filter_listings?${searchTerms}&projection=listings`, {headers: getHeaders()});
+    const res = await fetch(`${host}/api/filter_listings?${searchTerms}&projection=listings`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getAmenitiesFilters() {
-    const res = await fetch(`${host}api/amenities?projection=amenity_aggregation`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/amenities?projection=amenity_aggregation`, { headers: getHeaders() });
     return res.json();
 }
 
 export async function getPropertyById(id) {
-    const res = await fetch(`${host}api/listings/${id}?projection=singleListing`, {headers: getHeaders()});
+    const res = await fetch(`${host}api/listings/${id}?projection=singleListing`, { headers: getHeaders() });
     return res.json();
 }
 
@@ -123,6 +123,16 @@ export async function createListing(listingObj) {
 export async function getMyListings() {
     const res = await fetch(`${host}users/me/listings`, {
         headers: getHeaders()
+    })
+
+    return res.json();
+}
+
+export async function getMyReservations() {
+    const res = await fetch(`${host}users/me/reservations`, {
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        }),
     })
 
     return res.json();
