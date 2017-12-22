@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import BigCalendar from "react-big-calendar";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import CreateListingGuestSettingsAside from "../createListing/guestSettings/CreateListingGuestSettingsAside";
-import {getCalendarByListingIdAndDateRange, getPropertyById} from "../../requester";
+import {getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById} from "../../requester";
 
 
 class TestCalendar extends React.Component {
@@ -12,7 +12,8 @@ class TestCalendar extends React.Component {
         super(props);
         this.state = {
             listing: null,
-            events: null
+            events: null,
+            reservations: null
         };
     }
 
@@ -44,17 +45,39 @@ class TestCalendar extends React.Component {
 
             this.setState({events: events});
         });
+
+        getMyReservations()
+            .then(res => {
+                let reservations = res.content.filter(r => r.listingId == this.props.match.params.id);
+                let events = [];
+                for (let reservation of reservations) {
+                    let event = {
+                        "title": <span style={{color: "lightgreen"}}>{reservation.guestName}</span>,
+                        "start": new Date(reservation.startDate),
+                        "end": new Date(reservation.endDate)
+                    };
+                    events.push(event);
+                }
+
+
+                this.setState({
+                    reservations: events
+                });
+            });
+
         getPropertyById(this.props.match.params.id)
             .then(res => {
-                console.log(res);
                 this.setState({listing: res.content});
             });
     }
 
     render() {
-        if (this.state.listing === null || this.state.events === null) {
+        if (this.state.listing === null || this.state.events === null || this.state.reservations === null) {
             return <div>Loading...</div>
         }
+
+        let allEvents = this.state.events.concat(this.state.reservations);
+        console.log(allEvents);
         return (
             <div>
                 <CreateListingGuestSettingsAside />
@@ -63,7 +86,7 @@ class TestCalendar extends React.Component {
                     <hr/>
                     <div>
                         <BigCalendar selectable
-                                     events={this.state.events}
+                                     events={allEvents}
                                      defaultView='month'
                                      step={60}
                                      defaultDate={new Date()}
