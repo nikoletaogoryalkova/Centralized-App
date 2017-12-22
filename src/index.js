@@ -7,7 +7,7 @@ import 'babel-polyfill';
 
 render (
     (
-        <BrowserRouter basename={Config.getValue("basePath")}>
+        <BrowserRouter basename={Config.getValue("routerPrefix")}>
             <App />
         </BrowserRouter>
     ), document.getElementById('app')
