@@ -115,7 +115,7 @@ export async function createListing(listingObj) {
         }),
         method: "POST",
         body: JSON.stringify(listingObj)
-    })
+    });
 
     return res;
 }
@@ -148,6 +148,24 @@ export async function getMyTrips() {
     return res.json();
 }
 
+export async function cancelReservation(id) {
+    const res = await fetch(`${host}reservation/${id}/cancel`, {
+        headers: getHeaders(),
+        method: "POST"
+    });
+
+    return res.json();
+}
+
+export async function acceptReservation(id) {
+    const res = await fetch(`${host}reservation/${id}/accept`, {
+        headers: getHeaders(),
+        method: "POST"
+    });
+
+    return res.json();
+}
+
 /**
  *
  * @param {int} listingId
@@ -157,7 +175,6 @@ export async function getMyTrips() {
  * @param {int} results
  * @returns {Promise.<*>}
  */
-
 export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, page = 0, results = 20) {
     const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth()+1}/${startDate.getUTCFullYear()}`;
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
