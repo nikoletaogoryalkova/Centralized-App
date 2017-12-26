@@ -8,6 +8,7 @@ import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById 
 import moment from 'moment';
 import CalendarAside from './CalendarAside';
 import CalendarAsideStatic from './CalendarAsideStatic';
+import CustomEvent from './CustomEvent';
 
 
 export default class Calendar extends React.Component {
@@ -104,6 +105,7 @@ export default class Calendar extends React.Component {
             <div className={(this.props.selectedDay !== null && this.props.selectedDay !== '') ? "col-md-12 calendar dynamic-aside" : "col-md-12 calendar"}>
                 <div className="col-md-8">
                     <BigCalendar selectable
+                        popup
                         events={this.props.allEvents}
                         defaultView='month'
                         step={60}
@@ -122,6 +124,7 @@ export default class Calendar extends React.Component {
                         components={{
                             toolbar: CustomToolbar,
                             dateCellWrapper: DateCell,
+                            event: CustomEvent
                         }}
                         formats={formats}
                         eventPropGetter={eventStyleGetter}

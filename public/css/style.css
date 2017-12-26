@@ -272,6 +272,10 @@ a.dropdown-toggle {
     display: block;
 }
 
+.text-align-left {
+    text-align: left;
+} 
+
 
 /* END */
 
@@ -4056,7 +4060,6 @@ li.dropdown {
     content: '';
 }
 
-
 .home_page h1.home_title {
     text-align: center;
     color: #fff;
@@ -5469,12 +5472,21 @@ h2+hr {
     font-family: 'FuturaStd-Medium', sans-serif;
 }
 
-.rbc-calendar .rbc-month-view .rbc-header + .rbc-header {
+.rbc-calendar .rbc-month-view .rbc-header+.rbc-header {
     border: none;
 }
 
 .rbc-calendar .rbc-event.rbc-selected {
     background: none;
+}
+
+.rbc-calendar .rbc-month-row,
+.rbc-calendar .rbc-event-content {
+    overflow: visible;
+}
+
+.rbc-calendar .rbc-row-segment {
+    position: relative;
 }
 
 div.calendar {
@@ -5575,6 +5587,55 @@ div.calendar.dynamic-aside {
     width: 106px;
     margin: 10px;
 }
+
+.calendar .popover {
+    padding: 0;
+    border: none;
+}
+
+.calendar .popover-content {
+    padding: 0;
+}
+
+.calendar .event-popup {
+    font-family: 'FuturaStd-Light';
+}
+
+.calendar .event-popup img {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.calendar .event-popup-header {
+    background-color: #223843;
+    color: #FFFFFF;
+    padding: 10px 0;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.calendar .event-popup-body {
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.calendar .event-popup-body .price {
+    color: #87B0A9;
+    font-weight: bold;
+}
+
+.calendar .event-popup-body .price span {
+    font-size: 16px;
+    color: black;
+    font-weight: normal;
+}
+
+.calendar #popover-trigger-click-root-close {
+    width: 240px;
+}
+
 /* 
 FIX FOR MAC OS
 select {

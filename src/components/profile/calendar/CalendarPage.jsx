@@ -107,7 +107,9 @@ class CalendarPage extends React.Component {
                             "title": <span className="calendar-reservation-event">{reservation.guestName}</span>,
                             "start": new Date(reservation.startDate),
                             "end": new Date(reservation.endDate), //.setDate(new Date(reservation.endDate).getDate() + 1)
-                            "isReservation": true
+                            "isReservation": true,
+                            "price": reservation.price,
+                            "guests": reservation.guests
                         };
                         events.push(event);
                     }
