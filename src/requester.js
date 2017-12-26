@@ -200,6 +200,14 @@ export async function acceptReservation(id) {
     return res.json();
 }
 
+export async function getCalendarSlotByListingIdAndStartDate(listingId, startDate) {
+    const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDate?listing=${listingId}&startDate=${startDate}`, {
+        headers: getHeaders()
+    });
+
+    return res.json();
+}
+
 /**
  *
  * @param {int} listingId

@@ -34,12 +34,13 @@ export default class Calendar extends React.Component {
             )
         }
 
-
         const eventStyleGetter = (event) => {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
 
-            let styleNotSelected = {
+            let isPastDate = new Date(event.end).getTime() < now.getTime();
 
-            };
+            let styleNotSelected = {};
 
             let styleSelected = {
                 color: '#FFFFFF',
@@ -48,7 +49,12 @@ export default class Calendar extends React.Component {
                 top: '-20px'
             }
 
-            if (!event.isSelected) {
+            if(isPastDate) {
+                styleNotSelected["opacity"] = '0.5';
+                styleSelected["opacity"] = '0.5';
+            }
+
+            if (!event.isReservation) {
                 return {
                     style: styleNotSelected
                 }
@@ -73,7 +79,7 @@ export default class Calendar extends React.Component {
             )
         }
 
-        let formats = {
+        const formats = {
             weekdayFormat: (date, culture, localizer) =>
                 localizer.format(date, 'dddd', culture)
         }
@@ -95,16 +101,19 @@ export default class Calendar extends React.Component {
                         step={60}
                         defaultDate={new Date()}
                         onSelectSlot={(e) => {
-                            if (e.start.getTime() < new Date().getTime()) {
+                            const now = new Date();
+                            now.setHours(0,0,0,0);
+
+                            if (e.end.getTime() < now.getTime()) {
                                 return;
                             }
+                            this.props.onCancel();
                             this.props.onSelectSlot(e);
                         }}
-                        // onSelectEvent={}
                         views={['month']}
                         components={{
                             toolbar: CustomToolbar,
-                            dateCellWrapper: DateCell
+                            dateCellWrapper: DateCell,
                         }}
                         formats={formats}
                         eventPropGetter={eventStyleGetter}
@@ -113,11 +122,12 @@ export default class Calendar extends React.Component {
                 {this.props.selectedDay !== null && this.props.selectedDay !== '' && <CalendarAside onCancel={this.props.onCancel}
                     day={this.props.selectedDay}
                     date={this.props.selectedDate}
-
+                    
                     price={this.props.price}
                     available={this.props.available}
                     onSubmit={this.props.onSubmit}
-                    onChange={this.props.onChange} />}
+                    onChange={this.props.onChange}
+                    getSlotInfo={this.props.getSlotInfo} />}
             </div>
         )
     }

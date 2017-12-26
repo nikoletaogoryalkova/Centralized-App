@@ -1,6 +1,11 @@
 import React from 'react';
 
+
 export default class CalendarAside extends React.Component {
+    componentDidMount() {
+        this.props.getSlotInfo();
+    }
+
     render() {
         return <div className="col-md-4">
             <div className="calendar-aside">
@@ -17,8 +22,8 @@ export default class CalendarAside extends React.Component {
                         <h3 className="bold">Reservation Settings</h3>
                     </div>
                     <div className="col-md-12">
-                        <label className="radio-label" style={this.props.available === "true" ? {backgroundColor: '#7BAAA2', color: '#FFFFFF'} : {}} htmlFor="available">Available<input type="radio" name="available" onChange={this.props.onChange} value="true" checked={this.props.available === "true"} id="available" />
-                        </label>
+                        <label className="radio-label" style={this.props.available === "true" ? {backgroundColor: '#7BAAA2', color: '#FFFFFF'} : {}} htmlFor="available">Available</label>
+                        <input type="radio" name="available" onChange={this.props.onChange} value="true" checked={this.props.available === "true"} id="available" />
                         <label className="radio-label" style={this.props.available === "false" ? {backgroundColor: '#7BAAA2', color: '#FFFFFF'} : {}} htmlFor="blocked">Blocked</label>
                         <input type="radio" name="available" onChange={this.props.onChange} value="false" checked={this.props.available === "false"} id="blocked" />
                     </div>

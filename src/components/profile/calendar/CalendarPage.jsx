@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import BigCalendar from "react-big-calendar";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById, publishCalendarSlot } from "../../../requester";
+import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById, publishCalendarSlot, getCalendarSlotByListingIdAndStartDate } from "../../../requester";
 import moment from 'moment';
 import CalendarAside from './CalendarAside';
 import Calendar from './Calendar';
@@ -16,7 +16,6 @@ class CalendarPage extends React.Component {
         super(props);
         this.state = {
             listing: null,
-            events: null,
             prices: null,
             reservations: null,
             selectedDay: '',
@@ -29,13 +28,14 @@ class CalendarPage extends React.Component {
         this.onSelectSlot = this.onSelectSlot.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.getSlotInfo = this.getSlotInfo.bind(this);
     }
 
 
     componentDidMount() {
-        let now = new Date();
+        let now = new Date('12-01-2017');
         let end = new Date();
-        const DAY_INTERVAL = 60;
+        const DAY_INTERVAL = 120;
         end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
         getCalendarByListingIdAndDateRange(
             this.props.match.params.id,
@@ -44,10 +44,10 @@ class CalendarPage extends React.Component {
             0,
             DAY_INTERVAL
         ).then(res => {
-            let events = [];
+            let prices = [];
             for (let dateInfo of res.content) {
                 let color = dateInfo.available ? "white" : "lightcoral";
-                events.push(
+                prices.push(
                     {
                         "title": <span className="calendar-price bold">${dateInfo.price}</span>,
                         "start": new Date(dateInfo.date),
@@ -57,7 +57,7 @@ class CalendarPage extends React.Component {
                 )
             }
 
-            this.setState({ prices: events });
+            this.setState({ prices: prices });
         });
 
         getMyReservations()
@@ -68,12 +68,11 @@ class CalendarPage extends React.Component {
                     let event = {
                         "title": <span className="calendar-reservation-event">{reservation.guestName}</span>,
                         "start": new Date(reservation.startDate),
-                        "end": new Date(reservation.endDate).setDate(new Date(reservation.endDate).getDate() + 1),
-                        "isSelected": true
+                        "end": new Date(reservation.endDate), //.setDate(new Date(reservation.endDate).getDate() + 1)
+                        "isReservation": true
                     };
                     events.push(event);
                 }
-
 
                 this.setState({
                     reservations: events
@@ -105,7 +104,7 @@ class CalendarPage extends React.Component {
     }
 
     onCancel() {
-        this.setState({ selectedDay: null, date: null });
+        this.setState({ selectedDay: null, date: null, price: '', available: "true" });
     }
 
     onSelectSlot(e) {
@@ -135,6 +134,16 @@ class CalendarPage extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    getSlotInfo() {
+        let formatedDate = moment(this.state.selectedDate).format('DD/MM/YYYY');
+    
+        getCalendarSlotByListingIdAndStartDate(this.props.match.params.id, formatedDate).then((data) => {
+            if(data.content.length > 0) {
+                this.setState({price: data.content[0].price});
+            }
+        })
+    }
+
     render() {
         if (this.state.listing === null || this.state.prices === null || this.state.reservations === null) {
             return <div>Loading...</div>
@@ -158,7 +167,8 @@ class CalendarPage extends React.Component {
                             price={this.state.price}
                             available={this.state.available}
                             onSubmit={this.onSubmit}
-                            onChange={this.onChange} />
+                            onChange={this.onChange}
+                            getSlotInfo={this.getSlotInfo} />
                     </div>
                 </div>
                 <Footer />
