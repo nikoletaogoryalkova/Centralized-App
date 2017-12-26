@@ -45,9 +45,9 @@ class CalendarPage extends React.Component {
 
 
     componentDidMount() {
-        let now = new Date('12-01-2017');
+        let now = new Date();
         let end = new Date();
-        const DAY_INTERVAL = 120;
+        const DAY_INTERVAL = 90;
         end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
 
         getPropertyById(this.props.match.params.id)
@@ -171,7 +171,18 @@ class CalendarPage extends React.Component {
     }
 
     onListingChange(e) {
-        this.setState({selectedListing: e.target.value});
+        this.setState({
+            listing: null,
+            prices: null,
+            reservations: null,
+            myListings: null,
+            selectedDay: '',
+            selectedDate: '',
+            available: 'true',
+            price: '',
+            currencySign: '',
+            selectedListing: e.target.value
+        });
         this.props.history.push(`/profile/listings/calendar/${e.target.value}`);
         this.componentDidMount();
     }
@@ -181,14 +192,14 @@ class CalendarPage extends React.Component {
 
         getCalendarSlotByListingIdAndStartDate(this.props.match.params.id, formatedDate).then((data) => {
             if (data.content.length > 0) {
-                this.setState({ price: data.content[0].price });
+                this.setState({ price: data.content[0].price, available: `${data.content[0].available}`});
             }
         })
     }
 
     render() {
         if (this.state.listing === null || this.state.prices === null || this.state.reservations === null) {
-            return <div>Loading...</div>
+            return <div className="loader"></div>
         }
 
         this.mergeEvents(this.state.prices, this.state.reservations);
