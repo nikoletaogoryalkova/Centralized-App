@@ -2,12 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import moment from 'moment'
+import {NotificationContainer} from 'react-notifications';
 
 export default class MyReservationsTable extends React.Component {
 
     render() {
         return (
             <div className="container">
+                <NotificationContainer />
                 <div className="table-header bold">
                     <div className="col-md-1">
                     </div>
@@ -48,7 +50,7 @@ export default class MyReservationsTable extends React.Component {
                                 <div>{reservation.currencyCode} {reservation.price} total</div>
                             </div>
                             <div className="col-md-2">
-                                <div><Link to="#">Change or Cancel</Link></div>
+                                {reservation.accepted ? <div><Link to="#" onClick={() => this.props.onReservationCancel(reservation.id)}>Cancel</Link></div> : <div><Link to="#" onClick={() => this.props.onReservationAccept(reservation.id)}>Accept</Link></div>}
                                 <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div>
                             </div>
