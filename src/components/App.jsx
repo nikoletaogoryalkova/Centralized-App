@@ -7,6 +7,7 @@ import PropertyPage from './property/PropertyPage';
 
 import DashboardPage from './profile/dashboard/DashboardPage';
 import MyListingsPage from './profile/listings/MyListingsPage';
+import CalendarPage from './profile/calendar/CalendarPage';
 import MyReservationsPage from './profile/reservations/MyReservationsPage';
 import MyTripsPage from './profile/trips/MyTripsPage';
 import MessagesHostingPage from './profile/messages/MessagesHostingPage';
@@ -21,7 +22,6 @@ import observer from '../services/observer';
 
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import TestCalendar from "./listings/TestCalendar";
 
 class App extends React.Component {
     constructor(props) {
@@ -82,7 +82,6 @@ class App extends React.Component {
         return (
             <div>
                 <Switch>
-                    <Route exact path="/testcal/:id" render={() => <TestCalendar />} />
                     <Route exact path="/" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route path="/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
@@ -90,6 +89,7 @@ class App extends React.Component {
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/dashboard" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <DashboardPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/listings" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyListingsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
                     <Route exact path="/profile/reservations" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyReservationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/trips" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyTripsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/messages/hosting" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesHostingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />

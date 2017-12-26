@@ -2438,7 +2438,7 @@ tspan {
     margin-bottom: 0;
 }
 
-.close {
+button.close {
     opacity: 1;
     margin-top: -10px;
     height: 35px;
@@ -2452,7 +2452,7 @@ tspan {
     user-select: none;
 }
 
-.close:hover {
+button.close:hover {
     opacity: 0.2;
     margin-top: -10px;
     height: 35px;
@@ -3785,7 +3785,7 @@ li.dropdown {
     padding-top: 20px;
 }
 
-#profile-mylistings ul.profile-mylistings-active>li.calendar>input {
+#profile-mylistings ul.profile-mylistings-active>li.calendar>a {
     background-color: #d87a61;
     border: none;
     color: white;
@@ -3793,12 +3793,12 @@ li.dropdown {
     padding: 18px 22px;
     text-align: center;
     text-decoration: none;
-    display: block;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
     letter-spacing: .1em;
-    margin-bottom: 40px;
+    line-height: 3.6;
+    font-family: sans-serif;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.remove {
@@ -5380,4 +5380,176 @@ h2+hr {
 .inactiveLink {
     pointer-events: none;
     cursor: default;
+}
+
+.calendar-price {
+    /* background: none */
+    color: #D87A61;
+}
+
+.rbc-calendar .rbc-event {
+    background: none;
+    text-align: right;
+}
+
+.rbc-calendar .rbc-date-cell {
+    text-align: left;
+    padding: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.rbc-calendar .calendar-reservation-event:parent {
+    background-color: red;
+}
+
+.rbc-calendar .rbc-today {
+    background: none;
+}
+
+.rbc-calendar .rbc-now a {
+    background-color: #D87A61;
+    border-radius: 50%;
+    padding: 5px;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+.rbc-calendar .rbc-month-row {
+    height: 100px;
+    cursor: pointer;
+}
+
+.rbc-calendar .rbc-day-bg {
+    background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.rbc-calendar .rbc-row-segment {
+    position: relative;
+    bottom: -35px;
+    right: 0;
+}
+
+.rbc-calendar .rbc-toolbar .rbc-toolbar-label {
+    text-align: left;
+    font-size: 35px;
+}
+
+.rbc-calendar .rbc-toolbar button {
+    font-size: 32px;
+    padding: 3px 18px 5px 18px;
+    outline: none;
+    color: #C4C4C6;
+}
+
+.rbc-calendar .rbc-toolbar button:hover {
+    color: #C4C4C6;
+}
+
+.rbc-calendar .rbc-month-header {
+    padding: 10px 0;
+    border-bottom: 1px solid #DDD;
+}
+
+.rbc-calendar .rbc-month-header .rbc-header {
+    border: none;
+    font-weight: bold;
+    font-family: 'FuturaStd-Medium', sans-serif;
+}
+
+.rbc-calendar .rbc-month-view .rbc-header + .rbc-header {
+    border: none;
+}
+
+.rbc-calendar .rbc-event.rbc-selected {
+    background: none;
+}
+
+div.calendar {
+    display: flex;
+    align-items: flex-end;
+    margin: 30px;
+}
+
+.calendar-aside-header {
+    border: 1px solid #D7D7D8;
+    border-radius: 3px 3px 0 0;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.calendar-aside-header button.close {
+    margin: 0;
+    width: 25px;
+    height: 25px;
+    border-width: 2px;
+}
+
+.calendar-aside-header h3 {
+    margin: 0;
+}
+
+.calendar-aside-body {
+    border: 1px solid #D7D7D8;
+    border-top: none;
+    background-color: #FFFFFF;
+    text-align: center;
+    padding: 25px 0;
+}
+
+.calendar-aside {
+    width: 85%;
+    margin: 0 auto;
+}
+
+.calendar-aside .input-group-addon {
+    padding: 10px 20px;
+}
+
+.calendar-aside .controls .btn-back {
+    border: 2px solid black;
+    padding: 10px 25px;
+    margin: 10px;
+}
+
+.calendar input[type=radio] {
+    display: none;
+}
+
+.calendar .radio-label {
+    border: 1px solid #D7D7D8;
+    border-radius: 3px;
+    padding: 10px 25px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.calendar .form-group {
+    display: inline-block;
+    width: 75%;
+}
+
+.calendar .form-group input[type=number] {
+    font-size: 28px;
+    color: #79AAA1;
+    border: 1px solid #D7D7D8;
+}
+
+.calendar-aside .controls .btn-next {
+    border: 2px solid #D87A61;
+    padding: 10px 25px;
+    width: 106px;
+    margin: 10px;
+}
+
+select {
+    -webkit-appearance: none
+}
+
+.clearfix {
+    display: block;
+    content: "";
+    clear: both;
 }

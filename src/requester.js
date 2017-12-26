@@ -148,6 +148,18 @@ export async function getMyTrips() {
     return res.json();
 }
 
+export async function publishCalendarSlot(listingId, slotObj) {
+    const res = await fetch(`${host}listings/${listingId}/calendar`, {
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        }),
+        method: "POST",
+        body: JSON.stringify(slotObj)
+    })
+
+    return res;
+}
+
 /**
  *
  * @param {int} listingId

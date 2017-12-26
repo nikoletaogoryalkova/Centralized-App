@@ -22,7 +22,8 @@ export default class MyListingsPage extends React.Component {
                     <Link to="#">Edit Listing</Link>
                 </li>
                 <li className="calendar">
-                <input type="button" className="button" value="View Calendar"/>
+                {/* <input type="button" className="button" value="View Calendar"/> */}
+                <Link to={"/profile/listings/calendar/" + this.props.listing.id}>View Calendar</Link>
                 </li>
                 <li className="remove">
                     <span></span>
