@@ -5467,9 +5467,30 @@ h2+hr {
 }
 
 div.calendar {
-    display: flex;
-    align-items: flex-end;
     margin: 30px;
+    display: flex;
+    align-items: center;
+}
+
+div.calendar.dynamic-aside {
+    align-items: flex-end;
+}
+
+.calendar-aside-static {
+    text-align: center;
+    border: 1px solid #D7D7D8;
+    padding: 40px 0;
+}
+
+.calendar-aside-static img {
+    width: 100%;
+    padding: 30px 15px;
+}
+
+.calendar-aside-static p {
+    padding: 0 35px;
+    text-align: left;
+    font-weight: lighter;
 }
 
 .calendar-aside-header {

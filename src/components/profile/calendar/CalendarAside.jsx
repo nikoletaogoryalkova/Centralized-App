@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export default class CalendarAside extends React.Component {
     componentDidMount() {
         this.props.getSlotInfo();

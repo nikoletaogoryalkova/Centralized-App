@@ -7,6 +7,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById } from "../../../requester";
 import moment from 'moment';
 import CalendarAside from './CalendarAside';
+import CalendarAsideStatic from './CalendarAsideStatic';
+
 
 export default class Calendar extends React.Component {
     render() {
@@ -93,7 +95,7 @@ export default class Calendar extends React.Component {
         BigCalendar.momentLocalizer(moment);
 
         return (
-            <div className="col-md-12 calendar">
+            <div className={(this.props.selectedDay !== null && this.props.selectedDay !== '') ? "col-md-12 calendar dynamic-aside" : "col-md-12 calendar"}>
                 <div className="col-md-8">
                     <BigCalendar selectable
                         events={this.props.allEvents}
@@ -119,7 +121,7 @@ export default class Calendar extends React.Component {
                         eventPropGetter={eventStyleGetter}
                     />
                 </div>
-                {this.props.selectedDay !== null && this.props.selectedDay !== '' && <CalendarAside onCancel={this.props.onCancel}
+                {this.props.selectedDay !== null && this.props.selectedDay !== '' ? <CalendarAside onCancel={this.props.onCancel}
                     day={this.props.selectedDay}
                     date={this.props.selectedDate}
                     
@@ -127,7 +129,7 @@ export default class Calendar extends React.Component {
                     available={this.props.available}
                     onSubmit={this.props.onSubmit}
                     onChange={this.props.onChange}
-                    getSlotInfo={this.props.getSlotInfo} />}
+                    getSlotInfo={this.props.getSlotInfo} /> : <CalendarAsideStatic />}
             </div>
         )
     }
