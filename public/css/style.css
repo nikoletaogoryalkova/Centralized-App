@@ -5447,6 +5447,17 @@ h2+hr {
     color: #C4C4C6;
 }
 
+.rbc-calendar .rbc-toolbar select {
+    width: 180px;
+    overflow: auto;
+    outline: none;
+    padding: 10px;
+    color: #A7AAAB;
+    border: 1px solid #DBDBDB;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
 .rbc-calendar .rbc-month-header {
     padding: 10px 0;
     border-bottom: 1px solid #DDD;
@@ -5564,10 +5575,11 @@ div.calendar.dynamic-aside {
     width: 106px;
     margin: 10px;
 }
-
+/* 
+FIX FOR MAC OS
 select {
     -webkit-appearance: none
-}
+} */
 
 .clearfix {
     display: block;

@@ -3,7 +3,15 @@ import { withRouter } from 'react-router-dom';
 
 import BigCalendar from "react-big-calendar";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById, publishCalendarSlot, getCalendarSlotByListingIdAndStartDate, getListingCurrency } from "../../../requester";
+import {
+    getCalendarByListingIdAndDateRange,
+    getMyReservations,
+    getPropertyById,
+    publishCalendarSlot,
+    getCalendarSlotByListingIdAndStartDate,
+    getListingCurrency,
+    getMyListings
+} from "../../../requester";
 import moment from 'moment';
 import CalendarAside from './CalendarAside';
 import Calendar from './Calendar';
@@ -18,11 +26,13 @@ class CalendarPage extends React.Component {
             listing: null,
             prices: null,
             reservations: null,
+            myListings: null,
             selectedDay: '',
             selectedDate: '',
             available: 'true',
             price: '',
-            currencySign: ''
+            currencySign: '',
+            selectedListing: this.props.match.params.id
         };
 
         this.onCancel = this.onCancel.bind(this);
@@ -30,6 +40,7 @@ class CalendarPage extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.getSlotInfo = this.getSlotInfo.bind(this);
+        this.onListingChange = this.onListingChange.bind(this);
     }
 
 
@@ -43,6 +54,10 @@ class CalendarPage extends React.Component {
             .then(res => {
                 this.setState({ listing: res.content });
             });
+
+        getMyListings().then((data) => {
+            this.setState({ myListings: data.content });
+        })
 
         getListingCurrency(this.props.match.params.id).then((data) => {
             let currencyCode = data.code;
@@ -58,7 +73,7 @@ class CalendarPage extends React.Component {
                     break;
             }
 
-            this.setState({currencySign: currencySign});
+            this.setState({ currencySign: currencySign });
 
             getCalendarByListingIdAndDateRange(
                 this.props.match.params.id,
@@ -72,7 +87,7 @@ class CalendarPage extends React.Component {
                     let availableStyle = dateInfo.available ? 1 : 0.5;
                     prices.push(
                         {
-                            "title": <span className="calendar-price bold" style={{opacity: availableStyle}}>{currencySign}{dateInfo.price}</span>,
+                            "title": <span className="calendar-price bold" style={{ opacity: availableStyle }}>{currencySign}{dateInfo.price}</span>,
                             "start": new Date(dateInfo.date),
                             "end": new Date(dateInfo.date),
                             "allDay": true
@@ -155,6 +170,12 @@ class CalendarPage extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    onListingChange(e) {
+        this.setState({selectedListing: e.target.value});
+        this.props.history.push(`/profile/listings/calendar/${e.target.value}`);
+        this.componentDidMount();
+    }
+
     getSlotInfo() {
         let formatedDate = moment(this.state.selectedDate).format('DD/MM/YYYY');
 
@@ -190,7 +211,10 @@ class CalendarPage extends React.Component {
                             onSubmit={this.onSubmit}
                             onChange={this.onChange}
                             getSlotInfo={this.getSlotInfo}
-                            currencySign={this.state.currencySign} />
+                            currencySign={this.state.currencySign}
+                            myListings={this.state.myListings}
+                            selectedListing={this.state.selectedListing}
+                            onListingChange={this.onListingChange} />
                     </div>
                 </div>
                 <Footer />

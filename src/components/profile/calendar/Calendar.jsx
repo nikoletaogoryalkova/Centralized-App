@@ -32,6 +32,12 @@ export default class Calendar extends React.Component {
                     </div>
 
                     <span className="rbc-toolbar-label">{label()}</span>
+
+                    <select value={this.props.selectedListing} onChange={this.props.onListingChange}>
+                        {this.props.myListings.map((item, i) => {
+                            return <option key={i} value={item.id}>{item.name}</option>
+                        })}
+                    </select>
                 </div>
             )
         }
@@ -51,7 +57,7 @@ export default class Calendar extends React.Component {
                 top: '-20px'
             }
 
-            if(isPastDate) {
+            if (isPastDate) {
                 styleNotSelected["opacity"] = '0.5';
                 styleSelected["opacity"] = '0.5';
             }
@@ -104,7 +110,7 @@ export default class Calendar extends React.Component {
                         defaultDate={new Date()}
                         onSelectSlot={(e) => {
                             const now = new Date();
-                            now.setHours(0,0,0,0);
+                            now.setHours(0, 0, 0, 0);
 
                             if (e.end.getTime() < now.getTime()) {
                                 return;
@@ -124,7 +130,7 @@ export default class Calendar extends React.Component {
                 {this.props.selectedDay !== null && this.props.selectedDay !== '' ? <CalendarAside onCancel={this.props.onCancel}
                     day={this.props.selectedDay}
                     date={this.props.selectedDate}
-                    
+
                     price={this.props.price}
                     available={this.props.available}
                     onSubmit={this.props.onSubmit}
