@@ -69,10 +69,10 @@ class CalendarPage extends React.Component {
             ).then(res => {
                 let prices = [];
                 for (let dateInfo of res.content) {
-                    let color = dateInfo.available ? "white" : "lightcoral";
+                    let availableStyle = dateInfo.available ? 1 : 0.5;
                     prices.push(
                         {
-                            "title": <span className="calendar-price bold">{currencySign}{dateInfo.price}</span>,
+                            "title": <span className="calendar-price bold" style={{opacity: availableStyle}}>{currencySign}{dateInfo.price}</span>,
                             "start": new Date(dateInfo.date),
                             "end": new Date(dateInfo.date),
                             "allDay": true
