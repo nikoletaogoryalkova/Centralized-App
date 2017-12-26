@@ -31,7 +31,7 @@ export default class CalendarAside extends React.Component {
                         <h3 className="bold">Price Setting</h3>
                         <div className="form-group">
                             <div className="input-group">
-                                <span className="input-group-addon bold">$</span>
+                                <span className="input-group-addon bold">{this.props.currencySign}</span>
                                 <input type="number" className="form-control" name="price" onChange={this.props.onChange} value={this.props.price} />
                             </div>
                         </div>

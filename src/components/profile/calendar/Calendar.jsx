@@ -129,7 +129,8 @@ export default class Calendar extends React.Component {
                     available={this.props.available}
                     onSubmit={this.props.onSubmit}
                     onChange={this.props.onChange}
-                    getSlotInfo={this.props.getSlotInfo} /> : <CalendarAsideStatic />}
+                    getSlotInfo={this.props.getSlotInfo}
+                    currencySign={this.props.currencySign} /> : <CalendarAsideStatic />}
             </div>
         )
     }

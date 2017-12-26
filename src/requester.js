@@ -73,6 +73,14 @@ export async function getPropertyById(id) {
     return res.json();
 }
 
+export async function getListingCurrency(listingId) {
+    const res = await fetch(`${host}/api/listings/${listingId}/currency`, {
+        headers: getHeaders()
+    });
+
+    return res.json();
+}
+
 export async function requestBooking(requestInfo) {
     const res = await fetch(`${host}reservation/request`, {
         headers: getHeaders({

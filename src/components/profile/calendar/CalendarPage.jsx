@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import BigCalendar from "react-big-calendar";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById, publishCalendarSlot, getCalendarSlotByListingIdAndStartDate } from "../../../requester";
+import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById, publishCalendarSlot, getCalendarSlotByListingIdAndStartDate, getListingCurrency } from "../../../requester";
 import moment from 'moment';
 import CalendarAside from './CalendarAside';
 import Calendar from './Calendar';
@@ -21,7 +21,8 @@ class CalendarPage extends React.Component {
             selectedDay: '',
             selectedDate: '',
             available: 'true',
-            price: ''
+            price: '',
+            currencySign: ''
         };
 
         this.onCancel = this.onCancel.bind(this);
@@ -37,52 +38,72 @@ class CalendarPage extends React.Component {
         let end = new Date();
         const DAY_INTERVAL = 120;
         end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
-        getCalendarByListingIdAndDateRange(
-            this.props.match.params.id,
-            now,
-            end,
-            0,
-            DAY_INTERVAL
-        ).then(res => {
-            let prices = [];
-            for (let dateInfo of res.content) {
-                let color = dateInfo.available ? "white" : "lightcoral";
-                prices.push(
-                    {
-                        "title": <span className="calendar-price bold">${dateInfo.price}</span>,
-                        "start": new Date(dateInfo.date),
-                        "end": new Date(dateInfo.date),
-                        "allDay": true
-                    }
-                )
-            }
-
-            this.setState({ prices: prices });
-        });
-
-        getMyReservations()
-            .then(res => {
-                let reservations = res.content.filter(r => r.listingId == this.props.match.params.id);
-                let events = [];
-                for (let reservation of reservations) {
-                    let event = {
-                        "title": <span className="calendar-reservation-event">{reservation.guestName}</span>,
-                        "start": new Date(reservation.startDate),
-                        "end": new Date(reservation.endDate), //.setDate(new Date(reservation.endDate).getDate() + 1)
-                        "isReservation": true
-                    };
-                    events.push(event);
-                }
-
-                this.setState({
-                    reservations: events
-                });
-            });
 
         getPropertyById(this.props.match.params.id)
             .then(res => {
                 this.setState({ listing: res.content });
             });
+
+        getListingCurrency(this.props.match.params.id).then((data) => {
+            let currencyCode = data.code;
+
+            let currencySign = '';
+
+            switch (currencyCode) {
+                case "USD": currencySign = '$'
+                    break;
+                case "GBP": currencySign = '£'
+                    break;
+                case "EUR": currencySign = '€'
+                    break;
+            }
+
+            this.setState({currencySign: currencySign});
+
+            getCalendarByListingIdAndDateRange(
+                this.props.match.params.id,
+                now,
+                end,
+                0,
+                DAY_INTERVAL
+            ).then(res => {
+                let prices = [];
+                for (let dateInfo of res.content) {
+                    let color = dateInfo.available ? "white" : "lightcoral";
+                    prices.push(
+                        {
+                            "title": <span className="calendar-price bold">{currencySign}{dateInfo.price}</span>,
+                            "start": new Date(dateInfo.date),
+                            "end": new Date(dateInfo.date),
+                            "allDay": true
+                        }
+                    )
+                }
+
+                this.setState({ prices: prices });
+            });
+
+            getMyReservations()
+                .then(res => {
+                    let reservations = res.content.filter(r => r.listingId == this.props.match.params.id);
+                    let events = [];
+                    for (let reservation of reservations) {
+                        let event = {
+                            "title": <span className="calendar-reservation-event">{reservation.guestName}</span>,
+                            "start": new Date(reservation.startDate),
+                            "end": new Date(reservation.endDate), //.setDate(new Date(reservation.endDate).getDate() + 1)
+                            "isReservation": true
+                        };
+                        events.push(event);
+                    }
+
+                    this.setState({
+                        reservations: events
+                    });
+                });
+        })
+
+
     }
 
     mergeEvents(prices, reservations) {
@@ -136,10 +157,10 @@ class CalendarPage extends React.Component {
 
     getSlotInfo() {
         let formatedDate = moment(this.state.selectedDate).format('DD/MM/YYYY');
-    
+
         getCalendarSlotByListingIdAndStartDate(this.props.match.params.id, formatedDate).then((data) => {
-            if(data.content.length > 0) {
-                this.setState({price: data.content[0].price});
+            if (data.content.length > 0) {
+                this.setState({ price: data.content[0].price });
             }
         })
     }
@@ -168,7 +189,8 @@ class CalendarPage extends React.Component {
                             available={this.state.available}
                             onSubmit={this.onSubmit}
                             onChange={this.onChange}
-                            getSlotInfo={this.getSlotInfo} />
+                            getSlotInfo={this.getSlotInfo}
+                            currencySign={this.state.currencySign} />
                     </div>
                 </div>
                 <Footer />
