@@ -139,7 +139,7 @@ class PropertyReservation extends React.Component {
                             <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary" id="reservation-btn">Request Booking in LOC or FIAT</button>
                             <input required type="checkbox" name="agree-terms" id="agree-terms"
                                 className="checkbox tick" />
-                            <label htmlFor="agree-terms" className="text-ffffff" style={{ marginTop: 10 + 'px' }}>I agree to the <a>Terms &amp; Conditions</a></label>
+                            <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the <a>Terms &amp; Conditions</a></label>
 
                             <ReCAPTCHA
                                 ref="recaptcha"

@@ -35,7 +35,7 @@ class DatePicker extends React.Component {
                     </div>
                 </div>
 
-                <div id="search-nights" style={{width: searchNightsWidth + '%'}}>
+                <div id="search-nights" style={{minWidth: searchNightsWidth + '%'}}>
                     <span>{this.props.nights} nights</span>
                 </div>
             </div>
