@@ -1,0 +1,70 @@
+@media screen and (min-width: 768px) {
+  .myModal .modal-dialog {
+    width: 440px;
+    margin: 30px auto;
+  }
+}
+.myModal .modal-content {
+  padding: 20px;
+  background-color: #f0f1f3;
+}
+.myModal .modal-header {
+  border-bottom: 0;
+  padding: 15px 15px 0;
+}
+.myModal .modal-header button.close {
+  border: 2px solid #213843;
+  border-radius: 50px;
+  color: #213843;
+  font-size: 13px;
+  font-weight: 700;
+  height: 35px;
+  margin-top: 10px;
+  opacity: 1;
+  outline: none;
+  user-select: none;
+  width: 35px;
+}
+.myModal .modal-header button.close:hover {
+  opacity: 0.2;
+}
+.myModal h1 {
+  float: left;
+  font-family: FuturaStd-Light, sans-serif;
+  font-size: 26px;
+  margin-bottom: 0;
+}
+.myModal hr {
+  border-top: 1px solid #ccc;
+}
+.myModal .form-group {
+  position: relative;
+}
+.myModal .form-group input {
+  border: 1px solid #ccc;
+  display: block;
+  min-height: 50px;
+  width: 100%;
+  padding-left: 40px;
+}
+.myModal .form-group img {
+  position: absolute;
+  top: 13px;
+  left: 12px;
+}
+.myModal .btn {
+  margin-top: 15px;
+  width: 100%;
+}
+.myModal .signup-rights {
+  font-size: 13px;
+  margin-top: 10px;
+  max-width: 80%;
+}
+.login-sign {
+  text-align: center;
+}
+.login-sign a {
+  text-decoration: underline;
+  cursor: pointer;
+}

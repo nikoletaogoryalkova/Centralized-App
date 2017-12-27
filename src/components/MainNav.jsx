@@ -125,14 +125,14 @@ class MainNav extends React.Component {
         localStorage.removeItem(".auth.username");
 
         this.setState({ userName: '' })
-        
+
         this.props.history.push('/');
     }
 
     render() {
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
-                <Modal id="myModal_login" show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade">
+                <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Login</h1>
                         <button type="button" className="close" onClick={this.closeLogIn}>&times;</button>
@@ -141,10 +141,12 @@ class MainNav extends React.Component {
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
                         <form onSubmit={this.login}>
                             <div className="form-group">
-                                <input type="mail" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" id="login-mail" placeholder="Email address" />
+                                <img src="/images/login-mail.png" alt="mail" />
+                                <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
                             </div>
                             <div className="form-group">
-                                <input type="password" name="loginPassword" value={this.state.loginPassword} onChange={this.onChange} className="form-control" id="login-password" placeholder="Password" />
+                                <img src="/images/login-pass.png" alt="pass" />
+                                <input type="password" name="loginPassword" value={this.state.loginPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
                             <div className="checkbox login-checkbox pull-left">
                                 <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
@@ -159,7 +161,7 @@ class MainNav extends React.Component {
                     </Modal.Body>
                 </Modal>
 
-                <Modal id="myModal_signup" show={this.state.showSignUpModal} onHide={this.closeSignUp} className="modal fade">
+                <Modal show={this.state.showSignUpModal} onHide={this.closeSignUp} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Sign up</h1>
                         <button type="button" className="close" onClick={this.closeSignUp}>&times;</button>
@@ -168,16 +170,20 @@ class MainNav extends React.Component {
                         {this.state.signUpError !== null ? <div className="error">{this.state.signUpError}</div> : ''}
                         <form onSubmit={this.register}>
                             <div className="form-group">
-                                <input type="mail" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" id="signup-mail" placeholder="Email address" />
+                                <img src="/images/login-mail.png" alt="email" />
+                                <input type="email" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
                             </div>
                             <div className="form-group">
-                                <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" id="signup-firstname" placeholder="First Name" />
+                                <img src="/images/login-user.png" alt="user" />
+                                <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" placeholder="First Name" />
                             </div>
                             <div className="form-group">
-                                <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" id="signup-lastname" placeholder="Last Name" />
+                                <img src="/images/login-user.png" alt="user" />
+                                <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
                             </div>
                             <div className="form-group">
-                                <input type="password" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" id="signup-password" placeholder="Password" />
+                                <img src="/images/login-pass.png" alt="pass" />
+                                <input type="password" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
 
                             <button type="submit" className="btn btn-primary">Sign up</button>

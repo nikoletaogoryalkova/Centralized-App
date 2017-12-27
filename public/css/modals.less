@@ -1,0 +1,78 @@
+@color_1: #54575a;
+@color_2: #213843;
+@font_family_1: FuturaStd-Light,
+sans-serif;
+
+.myModal {
+    .modal-dialog {
+        @media screen and (min-width: 768px) {
+            width: 440px;
+            margin: 30px auto;
+        }
+    }
+    .modal-content {
+        padding: 20px;
+        background-color: #f0f1f3;
+    }
+    .modal-header {
+        border-bottom: 0;
+        padding: 15px 15px 0;
+        button.close {
+            border: 2px solid #213843;
+            border-radius: 50px;
+            color: @color_2;
+            font-size: 13px;
+            font-weight: 700;
+            height: 35px;
+            margin-top: 10px;
+            opacity: 1;
+            outline: none;
+            user-select: none;
+            width: 35px;
+            &:hover {
+                opacity: 0.2;
+            }
+        }
+    }
+    h1 {
+        float: left;
+        font-family: @font_family_1;
+        font-size: 26px;
+        margin-bottom: 0;
+    }
+    hr {
+        border-top: 1px solid #ccc;
+    }
+    .form-group {
+        position: relative;
+        input {
+            border: 1px solid #ccc;
+            display: block;
+            min-height: 50px;
+            width: 100%;
+            padding-left: 40px;
+        }
+        img {
+            position: absolute;
+            top: 13px;
+            left: 12px;
+        }
+    }
+    .btn {
+        margin-top: 15px;
+        width: 100%;
+    }
+    .signup-rights {
+        font-size: 13px;
+        margin-top: 10px;
+        max-width: 80%;
+    }
+}
+
+.login-sign {
+    a {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    text-align: center;
+}

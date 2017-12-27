@@ -1,3 +1,192 @@
-.rbc-date-cell {
-    padding-bottom: 50px;
+.calendar #popover-trigger-click-root-close {
+  width: 240px;
+}
+.calendar .event-popup {
+  font-family: FuturaStd-Light;
+}
+.calendar .event-popup img {
+  border-radius: 50%;
+  width: 40px;
+}
+.calendar .event-popup-body {
+  padding: 10px 20px;
+  text-align: center;
+}
+.calendar .event-popup-body .price {
+  color: #87B0A9;
+  font-weight: 700;
+}
+.calendar .event-popup-body .price span {
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+}
+.calendar .event-popup-header {
+  align-items: center;
+  background: #223843;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  color: #FFF;
+  display: flex;
+  padding: 10px 0;
+}
+.calendar .form-group {
+  display: inline-block;
+  width: 75%;
+}
+.calendar .form-group input[type=number] {
+  border: 1px solid #D7D7D8;
+  color: #79AAA1;
+  font-size: 28px;
+}
+.calendar .popover {
+  border: none;
+  padding: 0;
+}
+.calendar .popover-content {
+  padding: 0;
+}
+.calendar .radio-label {
+  border: 1px solid #D7D7D8;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px 25px;
+  user-select: none;
+}
+.calendar input[type=radio] {
+  display: none;
+}
+.calendar-aside {
+  margin: 0 auto;
+  width: 85%;
+}
+.calendar-aside .controls .btn-back {
+  border: 2px solid #000;
+  margin: 10px;
+  padding: 10px 25px;
+}
+.calendar-aside .controls .btn-next {
+  border: 2px solid #D87A61;
+  margin: 10px;
+  padding: 10px 25px;
+  width: 106px;
+}
+.calendar-aside .input-group-addon {
+  padding: 10px 20px;
+}
+.calendar-aside-body {
+  background: #FFF;
+  border: 1px solid #D7D7D8;
+  border-top: none;
+  padding: 25px 0;
+  text-align: center;
+}
+.calendar-aside-header {
+  align-items: center;
+  border: 1px solid #D7D7D8;
+  border-radius: 3px 3px 0 0;
+  display: flex;
+  padding: 10px 0;
+}
+.calendar-aside-header button.close {
+  border-width: 2px;
+  height: 25px;
+  margin: 0;
+  width: 25px;
+}
+.calendar-aside-header h3 {
+  margin: 0;
+}
+.calendar-aside-static {
+  border: 1px solid #D7D7D8;
+  padding: 40px 0;
+  text-align: center;
+}
+.calendar-aside-static img {
+  padding: 30px 15px;
+  width: 100%;
+}
+.calendar-aside-static p {
+  font-weight: lighter;
+  padding: 0 35px;
+  text-align: left;
+}
+.rbc-calendar .rbc-date-cell {
+  margin-left: 5px;
+  margin-top: 5px;
+  padding: 5px;
+  text-align: left;
+}
+.rbc-calendar .rbc-day-bg {
+  background: #FFF;
+  cursor: pointer;
+}
+.rbc-calendar .rbc-event {
+  text-align: right;
+}
+.rbc-calendar .rbc-month-header {
+  border-bottom: 1px solid #DDD;
+  padding: 10px 0;
+}
+.rbc-calendar .rbc-month-header .rbc-header {
+  border: none;
+  font-family: FuturaStd-Medium, sans-serif;
+  font-weight: 700;
+}
+.rbc-calendar .rbc-month-row {
+  cursor: pointer;
+  height: 100px;
+  overflow: visible;
+}
+.rbc-calendar .rbc-event-content {
+  overflow: visible;
+}
+.rbc-header.rbc-calendar .rbc-month-view + .rbc-header {
+  border: none;
+}
+.rbc-calendar .rbc-now a {
+  background: #D87A61;
+  border-radius: 50%;
+  color: #FFF;
+  font-size: 12px;
+  padding: 5px;
+}
+.rbc-calendar .rbc-row-segment {
+  bottom: -35px;
+  position: relative;
+  right: 0;
+}
+.rbc-calendar .rbc-toolbar .rbc-toolbar-label {
+  font-size: 35px;
+  text-align: left;
+}
+.rbc-calendar .rbc-toolbar button {
+  color: #C4C4C6;
+  font-size: 32px;
+  outline: none;
+  padding: 3px 18px 5px;
+}
+.rbc-calendar .rbc-toolbar button:hover {
+  color: #C4C4C6;
+}
+.rbc-calendar .rbc-toolbar select {
+  border: 1px solid #DBDBDB;
+  border-radius: 5px;
+  color: #A7AAAB;
+  font-size: 12px;
+  outline: none;
+  overflow: auto;
+  padding: 10px;
+  width: 180px;
+}
+.rbc-calendar .slot-selected {
+  border-bottom: 2px solid #D87A61;
+}
+div.calendar {
+  align-items: center;
+  display: flex;
+  margin: 30px;
+}
+div.calendar.dynamic-aside {
+  align-items: flex-end;
 }
