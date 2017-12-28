@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 import { Config } from '../config';
 import { register, login } from '../requester';
@@ -196,50 +196,40 @@ class MainNav extends React.Component {
                     </Modal.Body>
                 </Modal>
 
-                <div className="container">
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                        </button>
-                        <Link className="navbar-brand" to="/">
-                            <img src={Config.getValue("basePath") + "images/logo.png"} alt='logo' />
-                        </Link>
-                    </div>
+                <Navbar collapseOnSelect>
+                    <Navbar.Header>
+                        <Navbar.Brand>
+                            <Link className="navbar-brand" to="/">
+                                <img src={Config.getValue("basePath") + "images/logo.png"} alt='logo' />
+                            </Link>
+                        </Navbar.Brand>
+                        <Navbar.Toggle />
+                    </Navbar.Header>
 
-                    <div className="collapse navbar-collapse pull-right">
+                    <Navbar.Collapse>
                         {localStorage[".auth.lockchain"] ?
-                            <ul className="nav navbar-nav session-nav" id="top-nav">
-                                {/* <li className="session-nav-hosting session-nav-simple"><span><Link to="/listings/create"><i className="icon icon-home"></i>List Your Property</Link></span></li> */}
-                                <li className="session-nav-hosting session-nav-simple"><span><Link to="/profile/reservations">Hosting</Link></span></li>
-                                <li className="session-nav-traveling session-nav-simple"><span><Link to="/profile/trips">Traveling</Link></span></li>
-                                {/* <li className="session-nav-help session-nav-simple"><span>Help</span></li> */}
-                                <li className="session-nav-inbox"><span><img src={Config.getValue("basePath") + "images/mail-notification.png"} alt="mail-notification" /></span></li>
-                                <li className="session-nav-user">
-                                    <span className="info">
-                                        <span className="session-nav-user-thumb"></span>
-                                        <Link to="/profile/dashboard">{localStorage[".auth.username"]}</Link>
-                                    </span>
-                                    <span className="sub">
-                                        <ul>
-                                            <li className="opal profile"><span className="ico"></span><span><Link to="/profile/dashboard">View Profile</Link></span></li>
-                                            <li><span><Link to="/profile/me/edit">Edit Profile</Link></span></li>
-                                            <li><span><Link to="/profile/dashboard/#profile-dashboard-reviews">Reviews</Link></span></li>
-                                            <li onClick={this.logout} className="opal logout"><span className="ico"></span><span>Logout</span></li>
-                                        </ul>
-                                    </span>
-                                </li>
-                            </ul> :
-                            <ul className="nav navbar-nav session-nav" id="top-nav">
-                                <li onClick={this.openLogIn} className="session-nav-simple"><span><a>Login</a></span></li>
-                                <li onClick={this.openSignUp} className="session-nav-simple"><span><a>Register</a></span></li>
-                            </ul>
+                            <Nav>
+                                <NavItem href="/profile/reservations">Hosting</NavItem>
+                                <NavItem href="/profile/trips">Traveling</NavItem>
+                                {/* <NavItem className="session-nav-inbox"><span><img src={Config.getValue("basePath") + "images/mail-notification.png"} alt="mail-notification" /></span></li> */}
+                                <NavDropdown title={localStorage[".auth.username"]} to="/profile/dashboard">
+                                    <MenuItem href="/profile/dashboard">View Profile</MenuItem>
+                                    <MenuItem divider />
+                                    <MenuItem href="/profile/me/edit">Edit Profile</MenuItem>
+                                    <MenuItem divider />
+                                    <MenuItem href="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
+                                    <MenuItem divider />
+                                    <MenuItem onClick={this.logout}>Logout</MenuItem>
+                                </NavDropdown>
+                            </Nav> :
+                            <Nav pullRight>
+                                <NavItem onClick={this.openLogIn}>Login</NavItem>
+                                <NavItem onClick={this.openSignUp}>Register</NavItem>
+                            </Nav>
                         }
-                    </div>
-                </div>
-            </div >
+                    </Navbar.Collapse>
+                </Navbar>
+            </div>
         )
     }
 }

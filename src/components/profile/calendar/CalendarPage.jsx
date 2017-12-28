@@ -106,7 +106,7 @@ class CalendarPage extends React.Component {
                         let event = {
                             "title": <span className="calendar-reservation-event">{reservation.guestName}</span>,
                             "start": new Date(reservation.startDate),
-                            "end": new Date(reservation.endDate), //.setDate(new Date(reservation.endDate).getDate() + 1)
+                            "end": new Date(reservation.endDate),
                             "isReservation": true,
                             "price": reservation.price,
                             "guests": reservation.guests
@@ -189,6 +189,12 @@ class CalendarPage extends React.Component {
         this.componentDidMount();
     }
 
+    onSlotClick(e) {
+        console.log(e.target);
+
+        e.target.className = 'slot-selected';
+    }
+
     getSlotInfo() {
         let formatedDate = moment(this.state.selectedDate).format('DD/MM/YYYY');
 
@@ -227,7 +233,8 @@ class CalendarPage extends React.Component {
                             currencySign={this.state.currencySign}
                             myListings={this.state.myListings}
                             selectedListing={this.state.selectedListing}
-                            onListingChange={this.onListingChange} />
+                            onListingChange={this.onListingChange}
+                            onSlotClick={this.onSlotClick} />
                     </div>
                 </div>
                 <Footer />

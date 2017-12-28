@@ -123,6 +123,11 @@
 }
 .rbc-calendar .rbc-event {
   text-align: right;
+  background: none;
+  cursor: auto;
+}
+.rbc-calendar .rbc-event.rbc-selected {
+  background: none;
 }
 .rbc-calendar .rbc-month-header {
   border-bottom: 1px solid #DDD;

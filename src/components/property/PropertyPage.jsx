@@ -9,7 +9,7 @@ import Footer from '../Footer';
 import Lightbox from 'react-images';
 import moment from 'moment';
 
-import { getPropertyById, getCalendarByListingIdAndDateRange } from '../../requester';
+import { getPropertyById, getCalendarByListingIdAndDateRange, getListingCurrency, getMyReservations } from '../../requester';
 import { parse } from 'query-string';
 
 class PropertyPage extends React.Component {
@@ -35,7 +35,8 @@ class PropertyPage extends React.Component {
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
-            calendar: null
+            currencySign: '',
+            prices: null
         };
 
 
@@ -49,22 +50,54 @@ class PropertyPage extends React.Component {
     };
 
     componentDidMount() {
+        let now = new Date();
+        let end = new Date();
+        const DAY_INTERVAL = 90;
+        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
+
         getPropertyById(this.props.match.params.id).then(res => {
             this.setState({ data: res });
         });
-        let now = new Date();
-        let end = new Date();
-        const DAY_INTERVAL = 60;
-        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
-        getCalendarByListingIdAndDateRange(
-            this.props.match.params.id,
-            now,
-            end,
-            0,
-            DAY_INTERVAL
-        ).then(res => {
-           this.setState({ calendar: res.content });
-        });
+
+        getListingCurrency(this.props.match.params.id).then((data) => {
+            let currencyCode = data.code;
+
+            let currencySign = '';
+
+            switch (currencyCode) {
+                case "USD": currencySign = '$'
+                    break;
+                case "GBP": currencySign = '£'
+                    break;
+                case "EUR": currencySign = '€'
+                    break;
+            }
+
+            this.setState({ currencySign: currencySign });
+
+            getCalendarByListingIdAndDateRange(
+                this.props.match.params.id,
+                now,
+                end,
+                0,
+                DAY_INTERVAL
+            ).then(res => {
+                let prices = [];
+                for (let dateInfo of res.content) {
+                    let price = dateInfo.available ? `${currencySign}${dateInfo.price}` : ``;
+                    prices.push(
+                        {
+                            "title": <span className="calendar-price bold">{price}</span>,
+                            "start": new Date(dateInfo.date),
+                            "end": new Date(dateInfo.date),
+                            "allDay": true
+                        }
+                    )
+                }
+
+                this.setState({ prices: prices, calendar: res.content });
+            });
+        })
 
         if (this.state.startDate && this.state.endDate) {
             this.calculateNights(this.state.startDate, this.state.endDate);
@@ -128,9 +161,12 @@ class PropertyPage extends React.Component {
     }
 
     render() {
-        if (this.state.data === null) {
-            return <div className="loader"></div>;
+
+        if (this.state.data === null || this.state.prices === null || this.state.reservations === null) {
+            return <div className="loader"></div>
         }
+
+        let allEvents = this.state.prices;
 
         const images = this.state.data.pictures.map(x => {
             return { src: x.original };
@@ -207,7 +243,7 @@ class PropertyPage extends React.Component {
                         </ul>
                     </div>
                 </nav>
-                <PropertyInfo calendar={this.state.calendar} nights={this.state.nights} onApply={this.handleApply} startDate={this.state.startDate} endDate={this.state.endDate} data={this.state.data} currency={this.props.currency} currencySign={this.props.currencySign} />
+                <PropertyInfo allEvents={allEvents} calendar={this.state.calendar} nights={this.state.nights} onApply={this.handleApply} startDate={this.state.startDate} endDate={this.state.endDate} data={this.state.data} currency={this.props.currency} currencySign={this.props.currencySign} />
                 <Footer />
             </div>
         );

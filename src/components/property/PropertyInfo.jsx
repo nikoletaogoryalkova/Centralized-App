@@ -6,9 +6,13 @@ import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyReview from './PropertyReview';
 import PropertyReservation from './PropertyReservation';
 
-import Calendar from "react-calendar";
+import PropertyCalendar from "./PropertyCalendar";
 
 class PropertyInfo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     getAmenities(amenities) {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
@@ -50,7 +54,8 @@ class PropertyInfo extends React.Component {
             <section id="hotel-info">
                 <div className="container">
                     <div className="hotel-content" id="overview">
-                        <Calendar value={new Date()} tileContent={contentDecorator} />
+
+                        <PropertyCalendar allEvents={this.props.allEvents} />
                         <h1> {this.props.data.name} </h1>
                         <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
                         <div className="clearfix" />

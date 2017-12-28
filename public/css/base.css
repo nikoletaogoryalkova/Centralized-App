@@ -104,3 +104,19 @@ a:focus {
     text-decoration: none;
     color: #d87a61;
 }
+
+.btn-primary {
+    background: #d77961;
+    color: #fff;
+    outline: none;
+}
+
+.btn-primary:focus {
+    outline: none;
+    background-color: #e98b73;
+}
+
+.btn-primary:hover {
+    background-color: #e98b73;
+    color: #fff;
+}

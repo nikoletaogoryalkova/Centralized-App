@@ -9,8 +9,6 @@ export default class CustomEvent extends React.Component {
 
 
     render() {
-        console.log(this.props);
-
         let popoverClickRootClose = (
             <Popover id="popover-trigger-click-root-close" style={{ zIndex: 10000, color: '#000000' }}>
                 <div className="event-popup">
