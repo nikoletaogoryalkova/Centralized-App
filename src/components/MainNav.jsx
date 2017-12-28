@@ -209,17 +209,13 @@ class MainNav extends React.Component {
                     <Navbar.Collapse>
                         {localStorage[".auth.lockchain"] ?
                             <Nav>
-                                <NavItem href="/profile/reservations">Hosting</NavItem>
-                                <NavItem href="/profile/trips">Traveling</NavItem>
-                                {/* <NavItem className="session-nav-inbox"><span><img src={Config.getValue("basePath") + "images/mail-notification.png"} alt="mail-notification" /></span></li> */}
+                                <MenuItem href="/profile/reservations">Hosting</MenuItem>
+                                <MenuItem href="/profile/trips">Traveling</MenuItem>
                                 <NavDropdown title={localStorage[".auth.username"]} to="/profile/dashboard">
-                                    <MenuItem href="/profile/dashboard">View Profile</MenuItem>
-                                    <MenuItem divider />
+                                    <MenuItem className="header" href="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
                                     <MenuItem href="/profile/me/edit">Edit Profile</MenuItem>
-                                    <MenuItem divider />
                                     <MenuItem href="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
-                                    <MenuItem divider />
-                                    <MenuItem onClick={this.logout}>Logout</MenuItem>
+                                    <MenuItem className="header" onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{top: 25+'px'}} alt="logout" /></MenuItem>
                                 </NavDropdown>
                             </Nav> :
                             <Nav pullRight>
