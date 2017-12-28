@@ -37,7 +37,6 @@ export default class CreateListingLandingPage extends React.Component {
                                             <label className="hotel custom-radio">
                                                 <input
                                                     type="radio"
-                                                    onChange={(e) => this.props.onChange(e)}
                                                     name="type"
                                                     checked={type === '2'}
                                                     value="2" />

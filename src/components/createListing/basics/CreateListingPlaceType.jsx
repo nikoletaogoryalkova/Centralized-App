@@ -48,7 +48,6 @@ export default class CreateListingPlaceType extends React.Component {
                                                 required="required"
                                                 id="listing-type">
                                                 <option value="1">Home</option>
-                                                <option value="2">Hotel</option>
                                             </select>
                                         </div>
                                     </div>
