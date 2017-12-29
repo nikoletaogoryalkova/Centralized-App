@@ -6,6 +6,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 import { parse } from 'query-string';
 import { requestBooking } from '../../requester';
+import {Config} from "../../config";
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -65,11 +66,10 @@ class PropertyReservation extends React.Component {
             }
 
             requestBooking(requestInfo).then((data) => {
-                this.setState({ sending: false })
+                this.setState({ sending: false });
                 if (data.success) {
-                    this.props.history.push('/');
-                }
-                else {
+                    this.props.history.push("/profile/trips");
+                } else {
                     this.setState({ error: data.message });
                 }
             });
