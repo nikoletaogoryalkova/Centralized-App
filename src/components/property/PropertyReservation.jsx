@@ -6,7 +6,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 import { parse } from 'query-string';
 import { requestBooking } from '../../requester';
-import {Config} from "../../config";
+import { Config } from "../../config";
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -65,10 +65,13 @@ class PropertyReservation extends React.Component {
                 captchaToken: captchaToken
             }
 
-            requestBooking(requestInfo).then((data) => {
+            requestBooking(requestInfo).then((res) => {
+                let data = res.json();
                 this.setState({ sending: false });
                 if (data.success) {
                     this.props.history.push("/profile/trips");
+                } else if (res.status === 403) {
+                    this.setState({ error: "Please sign-in/register to able to make bookings" });
                 } else {
                     this.setState({ error: data.message });
                 }
@@ -106,7 +109,7 @@ class PropertyReservation extends React.Component {
                         <div className="loader"></div>
                     }
                     {!this.state.sending &&
-                        <form id="user-form" onSubmit={(e) => {e.preventDefault(); this.captcha.execute()}}>
+                        <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
                             <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice}</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
@@ -152,7 +155,7 @@ class PropertyReservation extends React.Component {
                                 className="checkbox tick" />
                             <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the <a>Terms &amp; Conditions</a></label>
 
-                            
+
                         </form>
                     }
                 </div>

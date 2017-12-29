@@ -10,7 +10,7 @@ import {
     publishCalendarSlot,
     getCalendarSlotByListingIdAndStartDate,
     getListingCurrency,
-    getMyListings
+    getAllMyListings
 } from "../../../requester";
 import moment from 'moment';
 import CalendarAside from './CalendarAside';
@@ -55,7 +55,7 @@ class CalendarPage extends React.Component {
                 this.setState({ listing: res.content });
             });
 
-        getMyListings().then((data) => {
+        getAllMyListings().then((data) => {
             this.setState({ myListings: data.content });
         })
 
@@ -206,7 +206,7 @@ class CalendarPage extends React.Component {
     }
 
     render() {
-        if (this.state.listing === null || this.state.prices === null || this.state.reservations === null) {
+        if (this.state.listing === null || this.state.prices === null || this.state.reservations === null || this.state.myListings === null) {
             return <div className="loader"></div>
         }
 

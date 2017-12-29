@@ -15,7 +15,7 @@ export default class MyTripsTable extends React.Component {
                         <span>Host</span>
                     </div>
                     <div className="col-md-2">
-                        <span>Location</span>
+                        <span>Property</span>
                     </div>
                     <div className="col-md-3">
                         <span>Dates</span>

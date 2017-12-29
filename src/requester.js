@@ -91,7 +91,7 @@ export async function requestBooking(requestInfo) {
         body: JSON.stringify(requestInfo)
     });
 
-    return res.json();
+    return res;
 }
 
 export async function getLocRate() {
@@ -152,6 +152,14 @@ export async function createListing(listingObj) {
 
 export async function getMyListings() {
     const res = await fetch(`${host}users/me/listings`, {
+        headers: getHeaders()
+    });
+
+    return res.json();
+}
+
+export async function getAllMyListings() {
+    const res = await fetch(`${host}users/me/listings?size=1000000`, {
         headers: getHeaders()
     });
 

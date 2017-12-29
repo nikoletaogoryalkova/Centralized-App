@@ -1,13 +1,14 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 import MyReservationsTable from './MyReservationsTable';
 import MyReservationsTableRow from './MyReservationsTableRow';
 import { Table } from 'react-bootstrap';
-import {cancelReservation, acceptReservation} from "../../../requester";
-import {NotificationManager} from 'react-notifications';
+import Pagination from 'rc-pagination';
+import { cancelReservation, acceptReservation } from "../../../requester";
+import { NotificationManager } from 'react-notifications';
 
 import { getMyReservations } from '../../../requester'
 
@@ -18,8 +19,11 @@ export default class MyReservationsPage extends React.Component {
         this.state = {
             reservations: [],
             loading: true,
-            totalReservations: 0
+            totalReservations: 0,
+            currentPage: 1
         }
+
+        this.onPageChange = this.onPageChange.bind(this);
     }
 
 
@@ -39,6 +43,18 @@ export default class MyReservationsPage extends React.Component {
         })
     }
 
+    onPageChange = (page) => {
+        this.setState({
+            currentPage: page,
+        })
+
+        getMyReservations(`?page=${page - 1}`).then(data => {
+            this.setState({ 
+                reservations: data.content, totalReservations: data.totalElements, loading: false
+            })
+        });
+    }
+
     render() {
 
         if (this.state.loading) {
@@ -56,6 +72,10 @@ export default class MyReservationsPage extends React.Component {
                             reservations={this.state.reservations}
                             onReservationCancel={this.cancelReservation.bind(this)}
                             onReservationAccept={this.acceptReservation.bind(this)} />
+
+                        <div className="pagination-box">
+                            {this.state.totalReservations !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalReservations} />}
+                        </div>
 
                         <div className="my-listings">
                             <Link className="btn btn-primary create-listing" to="#">Print this page</Link>
@@ -80,7 +100,7 @@ export default class MyReservationsPage extends React.Component {
                 return r;
             });
 
-            this.setState({reservations: newReservations});
+            this.setState({ reservations: newReservations });
         } else {
             NotificationManager.error(res.message, 'Reservation Operations')
         }
