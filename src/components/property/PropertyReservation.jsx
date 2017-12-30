@@ -79,10 +79,6 @@ class PropertyReservation extends React.Component {
         }
     }
 
-    onResolved(captcha) {
-        console.log(captcha.getResponse());
-    }
-
     render() {
         const calendar = this.props.calendar;
         const invalidDates = calendar.filter(c => !c.available)
@@ -133,6 +129,7 @@ class PropertyReservation extends React.Component {
                             <div className="dropdown select-person">
                                 <input onChange={this.onChange} value={this.state.phone} id="reservation-phone" type="tel" className="form-control" name="phone" required placeholder="Phone" />
                             </div>
+                            
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"

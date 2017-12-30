@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Config } from '../config';
 import { register, login } from '../requester';
@@ -67,14 +68,14 @@ class MainNav extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    register(e) {
-        e.preventDefault();
+    register(captchaToken) {
 
         let user = {
             email: this.state.signUpEmail,
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
-            password: this.state.signUpPassword
+            password: this.state.signUpPassword,
+            captchaToken: captchaToken
         }
 
         register(JSON.stringify(user)).then((res) => {
@@ -130,6 +131,8 @@ class MainNav extends React.Component {
     }
 
     render() {
+        let captcha;
+
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                 <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
@@ -168,7 +171,7 @@ class MainNav extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.signUpError !== null ? <div className="error">{this.state.signUpError}</div> : ''}
-                        <form onSubmit={this.register}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
                                 <input type="email" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
@@ -185,6 +188,13 @@ class MainNav extends React.Component {
                                 <img src={Config.getValue("basePath") + "images/login-pass.png"} alt="pass" />
                                 <input type="password" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
+
+                            <ReCAPTCHA
+                                ref={el => this.captcha = el}
+                                size="invisible"
+                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                onChange={token => this.register(token)}
+                            />
 
                             <button type="submit" className="btn btn-primary">Sign up</button>
                             <div className="clearfix"></div>

@@ -385,22 +385,45 @@ form button {
 }
 
 .pagination-box .pagination>li>a {
-    padding: 8px 14px;
+    padding: 9px 14px;
     color: #54575a;
     background-color: transparent;
     border: 0;
     border-radius: 4px;
     margin-left: 2px;
     margin-right: 2px;
+    outline: none;
 }
 
 .pagination-box .pagination>li:hover,
+.pagination-box .pagination .rc-pagination-item a:hover,
 .pagination-box .pagination>li.active>a,
 .pagination-box li.rc-pagination-item-active a {
     color: #fff;
     background-color: #223843;
-    border: 0;
     border-radius: 4px;
+    outline: none;
+}
+
+.pagination-box .rc-pagination-prev,
+.pagination-box .rc-pagination-next {
+    padding: 8px 14px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 27px;
+}
+
+.pagination-box .rc-pagination-item,
+.pagination-box .rc-pagination-prev,
+.pagination-box .rc-pagination-next {
+    outline: none;
+    cursor: pointer;
+}
+
+.rc-pagination-next, .rc-pagination-jump-next {
+    margin-left: 8px;
 }
 
 .hotel-gallery-bgr {

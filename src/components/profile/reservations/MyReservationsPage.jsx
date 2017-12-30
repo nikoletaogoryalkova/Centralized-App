@@ -38,7 +38,7 @@ export default class MyReservationsPage extends React.Component {
     }
 
     componentDidMount() {
-        getMyReservations().then((data) => {
+        getMyReservations('?page=0').then((data) => {
             this.setState({ reservations: data.content, totalReservations: data.totalElements, loading: false });
         })
     }
@@ -57,6 +57,16 @@ export default class MyReservationsPage extends React.Component {
 
     render() {
 
+        const textItemRender = (current, type, element) => {
+            if (type === 'prev') {
+              return <div className="rc-prev">&lsaquo;</div>;
+            }
+            if (type === 'next') {
+              return <div className="rc-next">&rsaquo;</div>;
+            }
+            return element;
+          };          
+
         if (this.state.loading) {
             return <div className="loader"></div>
         }
@@ -74,7 +84,7 @@ export default class MyReservationsPage extends React.Component {
                             onReservationAccept={this.acceptReservation.bind(this)} />
 
                         <div className="pagination-box">
-                            {this.state.totalReservations !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalReservations} />}
+                            {this.state.totalReservations !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalReservations} />}
                         </div>
 
                         <div className="my-listings">

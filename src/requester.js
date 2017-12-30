@@ -166,8 +166,8 @@ export async function getAllMyListings() {
     return res.json();
 }
 
-export async function getMyReservations() {
-    const res = await fetch(`${host}users/me/reservations`, {
+export async function getMyReservations(searchTerm) {
+    const res = await fetch(`${host}users/me/reservations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),
