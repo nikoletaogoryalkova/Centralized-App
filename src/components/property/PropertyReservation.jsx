@@ -36,7 +36,6 @@ class PropertyReservation extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.captchaChange = this.captchaChange.bind(this);
-        this.onResolved = this.onResolved.bind(this);
     }
 
     onChange(e) {
@@ -129,7 +128,7 @@ class PropertyReservation extends React.Component {
                             <div className="dropdown select-person">
                                 <input onChange={this.onChange} value={this.state.phone} id="reservation-phone" type="tel" className="form-control" name="phone" required placeholder="Phone" />
                             </div>
-                            
+
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"
