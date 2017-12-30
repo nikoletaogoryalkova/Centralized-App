@@ -83,7 +83,7 @@ export default class CreateListingPlaceType extends React.Component {
                                                         name="roomType"
                                                         checked={roomType === 'entire'}
                                                         value="entire" />
-                                                    <span className="button"><img src="/images/icon-check-japonica.png" alt="radio-home" /></span>
+                                                    <span className="button"><img src={Config.getValue("basePath") + "images/icon-check-japonica.png"} alt="radio-home" /></span>
                                                     <span>Entire Place</span>
                                                 </label>
                                             </div>
@@ -96,7 +96,7 @@ export default class CreateListingPlaceType extends React.Component {
                                                         name="roomType"
                                                         checked={roomType === 'private'}
                                                         value="private" />
-                                                    <span className="button"><img src="/images/icon-check-japonica.png" alt="radio-home" /></span>
+                                                    <span className="button"><img src={Config.getValue("basePath") + "images/icon-check-japonica.png"} alt="radio-home" /></span>
                                                     <span>Private Place</span>
                                                 </label>
                                             </div>
@@ -109,7 +109,7 @@ export default class CreateListingPlaceType extends React.Component {
                                                         name="roomType"
                                                         checked={roomType === 'shared'}
                                                         value="shared" />
-                                                    <span className="button"><img src="/images/icon-check-japonica.png" alt="radio-home" /></span>
+                                                    <span className="button"><img src={Config.getValue("basePath") + "images/icon-check-japonica.png"} alt="radio-home" /></span>
                                                     <span>Shared Place</span>
                                                 </label>
                                             </div>

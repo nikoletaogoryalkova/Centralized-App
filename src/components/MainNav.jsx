@@ -141,11 +141,11 @@ class MainNav extends React.Component {
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
                         <form onSubmit={this.login}>
                             <div className="form-group">
-                                <img src="/images/login-mail.png" alt="mail" />
+                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="mail" />
                                 <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
                             </div>
                             <div className="form-group">
-                                <img src="/images/login-pass.png" alt="pass" />
+                                <img src={Config.getValue("basePath") + "images/login-pass.png"} alt="pass" />
                                 <input type="password" name="loginPassword" value={this.state.loginPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
                             <div className="checkbox login-checkbox pull-left">
@@ -170,19 +170,19 @@ class MainNav extends React.Component {
                         {this.state.signUpError !== null ? <div className="error">{this.state.signUpError}</div> : ''}
                         <form onSubmit={this.register}>
                             <div className="form-group">
-                                <img src="/images/login-mail.png" alt="email" />
+                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
                                 <input type="email" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
                             </div>
                             <div className="form-group">
-                                <img src="/images/login-user.png" alt="user" />
+                                <img src={Config.getValue("basePath") + "images/login-user.png"} alt="user" />
                                 <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" placeholder="First Name" />
                             </div>
                             <div className="form-group">
-                                <img src="/images/login-user.png" alt="user" />
+                                <img src={Config.getValue("basePath") + "images/login-user.png"} alt="user" />
                                 <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
                             </div>
                             <div className="form-group">
-                                <img src="/images/login-pass.png" alt="pass" />
+                                <img src={Config.getValue("basePath") + "images/login-pass.png"} alt="pass" />
                                 <input type="password" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
 

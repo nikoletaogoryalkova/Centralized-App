@@ -1,6 +1,7 @@
 import React from 'react';
 import { Popover, OverlayTrigger } from 'react-bootstrap';
 import moment from 'moment';
+import {Config} from '../../../config';
 
 export default class CustomEvent extends React.Component {
     constructor(props) {
@@ -14,7 +15,7 @@ export default class CustomEvent extends React.Component {
                 <div className="event-popup">
                     <div className="col-md-12 event-popup-header">
                         <div className="col-md-3">
-                            <img src="/images/user_img_small.png" alt="guest-profile" />
+                            <img src={Config.getValue("basePath") + "images/user_img_small.png"} alt="guest-profile" />
                         </div>
                         <div className="col-md-9">
                             <span>Guest: <span className="bold">{this.props.event.title}</span></span>

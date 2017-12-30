@@ -39,7 +39,6 @@ class PropertyPage extends React.Component {
             prices: null
         };
 
-
         this.handleApply = this.handleApply.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.gotoNext = this.gotoNext.bind(this);
