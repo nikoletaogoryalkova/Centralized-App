@@ -51,8 +51,8 @@ export default class MyReservationsTable extends React.Component {
                             </div>
                             <div className="col-md-2">
                                 {reservation.accepted ? <div><Link to="#" onClick={() => this.props.onReservationCancel(reservation.id)}>Cancel</Link></div> : <div><Link to="#" onClick={() => this.props.onReservationAccept(reservation.id)}>Accept</Link></div>}
-                                <div><Link to="#">Report a problem</Link></div>
-                                <div><Link to="#">Print Confirmation</Link></div>
+                                {/* <div><Link to="#">Report a problem</Link></div>
+                                <div><Link to="#">Print Confirmation</Link></div> */}
                             </div>
                             <div className="col-md-2">
                                 <div className="reservation-status bold">{reservation.accepted ? "Accepted" : "Pending"}</div>

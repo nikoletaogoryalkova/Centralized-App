@@ -30,7 +30,7 @@ export default class NavLocalization extends React.Component {
                             <span className="name">LOC/EUR</span>
                             <span className="value">{this.state.locRate}EUR</span>
                         </li>
-                        <li className="balance">
+                        {/* <li className="balance">
                             <span className="border">
                                 <span className="name">Balance:</span>
                                 <span className="value">0,000,000.00 LOC</span>
@@ -38,7 +38,7 @@ export default class NavLocalization extends React.Component {
                             <span className="plus">
                                 <span>+</span>
                             </span>
-                        </li>
+                        </li> */}
                         <li className="language">
                             <span className="name">Language:</span>
                             <span className="value">EN</span>
