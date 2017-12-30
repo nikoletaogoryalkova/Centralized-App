@@ -39,8 +39,9 @@ export default class MyReservationsTable extends React.Component {
                             </div>
                             <div className="col-md-2">
                                 <div className="bold">{reservation.guestName}</div>
+                                <div>{reservation.guestEmail}</div>
                                 <div>{reservation.guestPhone}</div>
-                                <div><span className="send-message-icon"></span>Send Message</div>
+                                {/* <div><span className="send-message-icon"></span>Send Message</div> */}
                             </div>
                             <div className="col-md-3">
                                 <div>{moment(new Date(reservation.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(reservation.endDate)).format("DD MMM, YYYY")}</div>
