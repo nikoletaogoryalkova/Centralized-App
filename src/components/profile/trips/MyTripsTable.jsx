@@ -48,9 +48,8 @@ export default class MyTripsTable extends React.Component {
                             <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
                             </div>
                             <div className="col-md-2">
-                                <div>Coming soon</div>
-                                {/* <div><Link to="#">Change or Cancel</Link></div>
-                                <div><Link to="#">Report a problem</Link></div>
+                                {trip.accepted ? <div>More actions coming soon!</div> : <div><Link to="#">Cancel</Link></div>}
+                                {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                             </div>
                             <div className="col-md-2">
