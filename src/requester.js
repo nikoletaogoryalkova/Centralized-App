@@ -4,85 +4,68 @@ import {
 const host = Config.getValue("apiHost");
 
 export async function getListings() {
-    const res = await fetch(`${host}api/listings?projection=singleListing&page=1&size=10`, {
-        headers: getHeaders()
-    });
+    const res = await fetch(`${host}listings?page=1&size=10`);
     return res.json();
 }
 
 export async function getCountries() {
-    const res = await fetch(`${host}api/countries?projection=singleCountry`, {
+    const res = await fetch(`${host}countries`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getCities(countryId) {
-    const res = await fetch(`${host}api/countries/${countryId}/cities?projection=cityNameAndId`, {
+    const res = await fetch(`${host}countries/${countryId}/cities`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getPropertyTypes() {
-    const res = await fetch(`${host}api/property_types?projection=property_type`, {
+    const res = await fetch(`${host}property_types`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getAmenitiesByCategory() {
-    const res = await fetch(`${host}api/categories?projection=singleCategory`, {
+    const res = await fetch(`${host}categories`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getCurrencies() {
-    const res = await fetch(`${host}api/currencies?projection=currencyNameAndId`, {
-        headers: getHeaders()
-    });
-    return res.json();
-}
-
-export async function getPropertyTypesWithIds() {
-    const res = await fetch(`${host}api/property_types?projection=property_type_name_and_id`, {
+    const res = await fetch(`${host}currencies`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getListingsByFilter(searchTerms) {
-    const res = await fetch(`${host}/api/filter_listings?${searchTerms}&projection=listings`, {
+    const res = await fetch(`${host}/api/filter_listings?${searchTerms}`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getAmenitiesFilters() {
-    const res = await fetch(`${host}api/amenities?projection=amenity_aggregation`, {
+    const res = await fetch(`${host}amenities`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getPropertyById(id) {
-    const res = await fetch(`${host}api/listings/${id}?projection=singleListing`, {
+    const res = await fetch(`${host}listings/${id}`, {
         headers: getHeaders()
     });
-    return res.json();
-}
-
-export async function getListingCurrency(listingId) {
-    const res = await fetch(`${host}/api/listings/${listingId}/currency`, {
-        headers: getHeaders()
-    });
-
     return res.json();
 }
 
 export async function requestBooking(requestInfo) {
-    const res = await fetch(`${host}reservation/request`, {
+    const res = await fetch(`${host}reservations/request`, {
         headers: getHeaders({
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -199,7 +182,7 @@ export async function publishCalendarSlot(listingId, slotObj) {
 }
 
 export async function cancelReservation(id) {
-    const res = await fetch(`${host}reservation/${id}/cancel`, {
+    const res = await fetch(`${host}reservations/${id}/cancel`, {
         headers: getHeaders(),
         method: "POST"
     });
@@ -208,7 +191,7 @@ export async function cancelReservation(id) {
 }
 
 export async function acceptReservation(id) {
-    const res = await fetch(`${host}reservation/${id}/accept`, {
+    const res = await fetch(`${host}reservations/${id}/accept`, {
         headers: getHeaders(),
         method: "POST"
     });
@@ -216,8 +199,8 @@ export async function acceptReservation(id) {
     return res.json();
 }
 
-export async function getCalendarSlotByListingIdAndStartDate(listingId, startDate) {
-    const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDate?listing=${listingId}&startDate=${startDate}`, {
+export async function getCalendarSlotByListingIdAndStartDate(listingId) {
+    const res = await fetch(`${host}calendars/search/findAllByListingIdAndDate?listing=${listingId}`, {
         headers: getHeaders()
     });
 
@@ -236,7 +219,7 @@ export async function getCalendarSlotByListingIdAndStartDate(listingId, startDat
 export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, page = 0, results = 20) {
     const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth()+1}/${startDate.getUTCFullYear()}`;
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
-    const res = await fetch(`${host}api/calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}&projection=singlePropertyCalendar`);
+    const res = await fetch(`${host}calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}`);
     return res.json();
 }
 

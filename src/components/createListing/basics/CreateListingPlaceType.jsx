@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 
 import { Config } from '../../../config';
-import { getPropertyTypesWithIds } from '../../../requester';
+import { getPropertyTypes } from '../../../requester';
 
 export default class CreateListingPlaceType extends React.Component {
     constructor(props) {
@@ -16,7 +16,7 @@ export default class CreateListingPlaceType extends React.Component {
     }
 
     componentDidMount() {
-        getPropertyTypesWithIds().then(data => {
+        getPropertyTypes().then(data => {
             this.setState({ propertyTypes: data.content });
         });
     }

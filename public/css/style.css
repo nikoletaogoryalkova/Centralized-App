@@ -1673,21 +1673,25 @@ li.dropdown {
     display: block;
     list-style: none;
     background-color: white;
-    height: 100px;
     margin-bottom: 20px;
 }
 
+#profile-mylistings ul.profile-mylistings-active::after {
+    clear:both;
+    content: '';
+    display: block;
+}
+
 #profile-mylistings ul.profile-mylistings-active>li {
-    height: 100px;
     float: left;
     overflow: hidden;
-    height: 100px;
     position: relative;
     font-size: 18px;
 }
 
 #profile-mylistings ul.profile-mylistings-active>li.toggle {
     width: 50px;
+    height: 100px;
     background-repeat: no-repeat;
     background-position: center 30px;
     background-image: url(../images/arrow-right.png);

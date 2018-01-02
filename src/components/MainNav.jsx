@@ -121,7 +121,9 @@ class MainNav extends React.Component {
         })
     }
 
-    logout() {
+    logout(e) {
+        e.preventDefault();
+
         localStorage.removeItem(".auth.lockchain");
         localStorage.removeItem(".auth.username");
 
@@ -206,7 +208,7 @@ class MainNav extends React.Component {
                     </Modal.Body>
                 </Modal>
 
-                <Navbar collapseOnSelect>
+                <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <Link className="navbar-brand" to="/">
@@ -219,18 +221,18 @@ class MainNav extends React.Component {
                     <Navbar.Collapse>
                         {localStorage[".auth.lockchain"] ?
                             <Nav>
-                                <MenuItem href="/profile/reservations">Hosting</MenuItem>
-                                <MenuItem href="/profile/trips">Traveling</MenuItem>
-                                <NavDropdown title={localStorage[".auth.username"]} to="/profile/dashboard">
-                                    <MenuItem className="header" href="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
-                                    <MenuItem href="/profile/me/edit">Edit Profile</MenuItem>
-                                    <MenuItem href="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
-                                    <MenuItem className="header" onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{top: 25+'px'}} alt="logout" /></MenuItem>
+                                <NavItem href="/profile/reservations">Hosting</NavItem>
+                                <NavItem href="/profile/trips">Traveling</NavItem>
+                                <NavDropdown title={localStorage[".auth.username"]} id="main-nav-dropdown">
+                                    <NavItem className="header" href="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></NavItem>
+                                    <NavItem href="/profile/me/edit">Edit Profile</NavItem>
+                                    <NavItem href="/profile/dashboard/#profile-dashboard-reviews">Reviews</NavItem>
+                                    <NavItem href="/" className="header" eventKey={1} onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{top: 25+'px'}} alt="logout" /></NavItem>
                                 </NavDropdown>
                             </Nav> :
                             <Nav pullRight>
-                                <NavItem onClick={this.openLogIn}>Login</NavItem>
-                                <NavItem onClick={this.openSignUp}>Register</NavItem>
+                                <NavItem href="asd" onClick={this.openLogIn}>Login</NavItem>
+                                <NavItem href="asd" onClick={this.openSignUp}>Register</NavItem>
                             </Nav>
                         }
                     </Navbar.Collapse>

@@ -33,12 +33,12 @@ export default class Calendar extends React.Component {
                     </div>
 
                     <span className="rbc-toolbar-label">{label()}</span>
-
+                    {/* 
                     <select value={this.props.selectedListing} onChange={this.props.onListingChange}>
                         {this.props.myListings.map((item, i) => {
                             return <option key={i} value={item.id}>{item.name}</option>
                         })}
-                    </select>
+                    </select> */}
                 </div>
             )
         }
@@ -77,12 +77,18 @@ export default class Calendar extends React.Component {
 
         const DateCell = ({ range, value, children }) => {
             const now = new Date();
+            const afterDaysConst = 89;
             now.setHours(0, 0, 0, 0);
 
-            let isPastDate = new Date(value).getTime() < now.getTime();
+            let dateAfterDays = new Date();
+            dateAfterDays.setHours(0, 0, 0, 0);
+            dateAfterDays.setDate(dateAfterDays.getDate() + afterDaysConst);
+
+            let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > dateAfterDays);
 
             return (
-                <div onClick={this.props.onSlotClick} className={isPastDate ? "date-in-past" : "rbc-day-bg"} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto'}}>
+                <div className={isPastDate ? "date-in-past" : "rbc-day-bg"} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto' }}>
+                    {/* onClick={this.props.onSlotClick} */}
                     {children}
                 </div>
             )
@@ -110,11 +116,17 @@ export default class Calendar extends React.Component {
                         defaultView='month'
                         step={60}
                         defaultDate={new Date()}
-                        onSelectSlot={(e) => {
+                        onSelectSlot={e => {
                             const now = new Date();
                             now.setHours(0, 0, 0, 0);
 
-                            if (e.end.getTime() < now.getTime()) {
+                            const afterDaysConst = 89;
+
+                            let dateAfterDays = new Date();
+                            dateAfterDays.setHours(0, 0, 0, 0);
+                            dateAfterDays.setDate(dateAfterDays.getDate() + afterDaysConst);
+
+                            if ((e.end.getTime() < now.getTime()) || (e.end.getTime() > dateAfterDays)) {
                                 return;
                             }
                             this.props.onCancel();
@@ -138,7 +150,6 @@ export default class Calendar extends React.Component {
                     available={this.props.available}
                     onSubmit={this.props.onSubmit}
                     onChange={this.props.onChange}
-                    getSlotInfo={this.props.getSlotInfo}
                     currencySign={this.props.currencySign} /> : <CalendarAsideStatic />}
             </div>
         )

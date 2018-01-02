@@ -11,7 +11,7 @@ class HomePage extends React.Component {
     constructor() {
         super();
         this.state = { 
-            listings: [],
+            listings: null,
             locRate: null,
             loading: true
         };
@@ -26,7 +26,7 @@ class HomePage extends React.Component {
         })
     };
     render() {
-        if (this.state.loading) {
+        if (this.state.loading || this.state.listings == null) {
             return <div className="loader"></div>;
         }
 

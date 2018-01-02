@@ -7,6 +7,10 @@ import {NotificationContainer} from 'react-notifications';
 export default class MyReservationsTable extends React.Component {
 
     render() {
+        if(this.props.loadingListing) {
+            return <div className="loader"></div>
+        }
+
         return (
             <div className="container">
                 <NotificationContainer />

@@ -46,11 +46,14 @@ export default class MyReservationsPage extends React.Component {
     onPageChange = (page) => {
         this.setState({
             currentPage: page,
+            loadingListing: true
         })
 
         getMyReservations(`?page=${page - 1}`).then(data => {
             this.setState({ 
-                reservations: data.content, totalReservations: data.totalElements, loading: false
+                reservations: data.content,
+                totalReservations: data.totalElements,
+                loadingListing: false
             })
         });
     }
@@ -79,6 +82,7 @@ export default class MyReservationsPage extends React.Component {
                         <h2>Upcoming Reservations ({this.state.totalReservations})</h2>
                         <hr />
                         <MyReservationsTable
+                            loadingListing={this.state.loadingListing}
                             reservations={this.state.reservations}
                             onReservationCancel={this.cancelReservation.bind(this)}
                             onReservationAccept={this.acceptReservation.bind(this)} />

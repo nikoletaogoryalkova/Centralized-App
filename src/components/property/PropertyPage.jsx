@@ -9,7 +9,7 @@ import Footer from '../Footer';
 import Lightbox from 'react-images';
 import moment from 'moment';
 
-import { getPropertyById, getCalendarByListingIdAndDateRange, getListingCurrency, getMyReservations } from '../../requester';
+import { getPropertyById, getCalendarByListingIdAndDateRange, getMyReservations } from '../../requester';
 import { parse } from 'query-string';
 
 class PropertyPage extends React.Component {
@@ -54,11 +54,7 @@ class PropertyPage extends React.Component {
         const DAY_INTERVAL = 90;
         end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
 
-        getPropertyById(this.props.match.params.id).then(res => {
-            this.setState({ data: res });
-        });
-
-        getListingCurrency(this.props.match.params.id).then((data) => {
+        getPropertyById(this.props.match.params.id).then((data) => {
             let currencyCode = data.code;
 
             let currencySign = '';
@@ -72,7 +68,7 @@ class PropertyPage extends React.Component {
                     break;
             }
 
-            this.setState({ currencySign: currencySign });
+            this.setState({ currencySign: currencySign, data: data });
 
             getCalendarByListingIdAndDateRange(
                 this.props.match.params.id,
