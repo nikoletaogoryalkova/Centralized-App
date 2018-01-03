@@ -221,18 +221,18 @@ class MainNav extends React.Component {
                     <Navbar.Collapse>
                         {localStorage[".auth.lockchain"] ?
                             <Nav>
-                                <NavItem href="/profile/reservations">Hosting</NavItem>
-                                <NavItem href="/profile/trips">Traveling</NavItem>
+                                <MenuItem href="/profile/reservations">Hosting</MenuItem>
+                                <MenuItem href="/profile/trips">Traveling</MenuItem>
                                 <NavDropdown title={localStorage[".auth.username"]} id="main-nav-dropdown">
-                                    <NavItem className="header" href="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></NavItem>
-                                    <NavItem href="/profile/me/edit">Edit Profile</NavItem>
-                                    <NavItem href="/profile/dashboard/#profile-dashboard-reviews">Reviews</NavItem>
-                                    <NavItem href="/" className="header" eventKey={1} onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{top: 25+'px'}} alt="logout" /></NavItem>
+                                    <MenuItem className="header" href="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
+                                    <MenuItem href="/profile/me/edit">Edit Profile</MenuItem>
+                                    <MenuItem href="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
+                                    <MenuItem href="/" className="header" eventKey={1} onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{top: 25+'px'}} alt="logout" /></MenuItem>
                                 </NavDropdown>
                             </Nav> :
                             <Nav pullRight>
-                                <NavItem href="asd" onClick={this.openLogIn}>Login</NavItem>
-                                <NavItem href="asd" onClick={this.openSignUp}>Register</NavItem>
+                                <MenuItem onClick={this.openLogIn}>Login</MenuItem>
+                                <MenuItem onClick={this.openSignUp}>Register</MenuItem>
                             </Nav>
                         }
                     </Navbar.Collapse>
