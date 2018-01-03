@@ -101,8 +101,8 @@ export async function updateUserInfo(userObj) {
     return res;
 }
 
-export async function register(user) {
-    const res = await fetch(`${host}users/signup`, {
+export async function register(user, captchaToken) {
+    const res = await fetch(`${host}users/signup${captchaToken ? "?captchaToken=" + captchaToken : ''}`, {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),

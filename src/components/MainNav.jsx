@@ -74,11 +74,10 @@ class MainNav extends React.Component {
             email: this.state.signUpEmail,
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
-            password: this.state.signUpPassword,
-            captchaToken: captchaToken
+            password: this.state.signUpPassword
         }
 
-        register(JSON.stringify(user)).then((res) => {
+        register(JSON.stringify(user), captchaToken).then((res) => {
             if (res.status === 200) {
                 this.closeSignUp();
                 this.openLogIn();
