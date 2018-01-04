@@ -58,7 +58,7 @@ export default class MyTripsTable extends React.Component {
                                 <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
                             </div>
                             <div className="col-md-2">
-                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: trip.id }); this.captcha.execute() }}>>
+                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: trip.id }); this.captcha.execute() }}>
                                     {trip.accepted ? <div>More actions coming soon!</div> : <div><button type="submit">Cancel</button></div>}
                                 </form>
                                 {/* <div><Link to="#">Report a problem</Link></div>

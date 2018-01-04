@@ -165,7 +165,7 @@ export async function getMyReservations(searchTerm) {
 }
 
 export async function getMyTrips() {
-    const res = await fetch(`${host}users/me/trips`, {
+    const res = await fetch(`${host}users/me/trips?sort=id,desc`, {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),
