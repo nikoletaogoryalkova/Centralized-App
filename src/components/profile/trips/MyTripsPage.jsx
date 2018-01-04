@@ -61,7 +61,7 @@ export default class MyTripsPage extends React.Component {
         if (res.success) {
             NotificationManager.success(res.message, 'Reservation Operations')
 
-            let newReservations = this.state.reservations.map(r => {
+            let newReservations = this.state.trips.map(r => {
                 if (r.id === id) {
                     r.accepted = isAccepted;
                 }
@@ -69,7 +69,7 @@ export default class MyTripsPage extends React.Component {
                 return r;
             });
 
-            this.setState({ reservations: newReservations });
+            this.setState({ trips: newReservations });
         } else {
             NotificationManager.error(res.message, 'Reservation Operations')
         }
