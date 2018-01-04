@@ -91,12 +91,13 @@ export async function getCurrentLoggedInUserInfo() {
     return res.json();
 }
 
-export async function updateUserInfo(userObj) {
+export async function updateUserInfo(userObj, captchaToken) {
     const res = await fetch(`${host}users/me`, {
         headers: getHeaders({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Captcha': captchaToken
         }),
-        method: "PATCH",
+        method: "POST",
         body: JSON.stringify(userObj)
     })
     return res;

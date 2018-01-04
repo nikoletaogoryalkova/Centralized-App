@@ -5,6 +5,7 @@ import { getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
 import 'react-notifications/lib/notifications.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import moment from 'moment';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
@@ -41,13 +42,13 @@ export default class ProfileEditPage extends React.Component {
             let month = '';
             let year = '';
 
-            if(data.birthday !== null) {
+            if (data.birthday !== null) {
                 let birthday = moment.utc(data.birthday);
                 day = birthday.add(1, 'days').format('D');
                 month = birthday.format('MM');
                 year = birthday.format('YYYY');
             }
-            
+
 
             this.setState({
                 firstName: data.firstName !== null ? data.firstName : '',
@@ -79,9 +80,7 @@ export default class ProfileEditPage extends React.Component {
         this.setState({ [stateKey]: event.target.innerText });
     }
 
-    updateUser(e) {
-        e.preventDefault();
-
+    updateUser(captchaToken) {
         let birthday;
         if (this.state.day !== '' && this.state.month !== '' && this.state.year !== '') {
             birthday = `${this.state.day}/${this.state.month}/${this.state.year}`;
@@ -101,7 +100,7 @@ export default class ProfileEditPage extends React.Component {
 
         Object.keys(userInfo).forEach((key) => (userInfo[key] === null || userInfo[key] === '') && delete userInfo[key]);
 
-        updateUserInfo(userInfo).then((res) => {
+        updateUserInfo(userInfo, captchaToken).then((res) => {
             if (res.status === 200 || res.status === 202) {
                 NotificationManager.success('Successfully updated your profile', 'Update user profile');
                 this.componentDidMount();
@@ -110,7 +109,7 @@ export default class ProfileEditPage extends React.Component {
                 NotificationManager.error('Error!', 'Update user profile')
             }
         })
-       
+
     }
 
     render() {
@@ -128,7 +127,7 @@ export default class ProfileEditPage extends React.Component {
             <div id="profile-edit-form">
                 <h2>Edit Profile</h2>
                 <hr />
-                <form onSubmit={this.updateUser}>
+                <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
                     <div className="name">
                         <div className="first">
                             <label htmlFor="fname">First name</label>
@@ -238,6 +237,14 @@ export default class ProfileEditPage extends React.Component {
                         </div>
                         <br className="clear-both" />
                     </div>
+
+                    <ReCAPTCHA
+                        ref={el => this.captcha = el}
+                        size="invisible"
+                        sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                        onChange={token => this.updateUser(token)}
+                    />
+
                     <input type="submit" className="button save" value="Save" />
                 </form>
                 <NotificationContainer />
