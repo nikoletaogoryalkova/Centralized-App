@@ -6,6 +6,14 @@ import { NotificationContainer } from 'react-notifications';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class MyReservationsTable extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedId: '',
+            action: ''
+        }
+    }
 
     render() {
         if (this.props.loadingListing) {
@@ -57,22 +65,10 @@ export default class MyReservationsTable extends React.Component {
                                 <div>{reservation.currencyCode} {reservation.price} total</div>
                             </div>
                             <div className="col-md-2">
-                                <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
-                                {reservation.accepted ? <div><button type="submit" >Cancel</button></div> : <div><Link to="#">Accept</Link></div>}
+                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id, action: reservation.accepted ? 'cancel' : 'accept' });; this.captcha.execute() }}>
+                                    {reservation.accepted ? <div><button type="submit" >Cancel</button></div> : <div><button type="submit">Accept</button></div>}
                                 </form>
-                                <ReCAPTCHA
-                                    ref={el => this.captcha = el}
-                                    size="invisible"
-                                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                    onChange={token => this.props.onReservationCancel(reservation.id, token)}
-                                />
 
-                                {/* <ReCAPTCHA
-                                    ref={el => this.acceptCaptcha = el}
-                                    size="invisible"
-                                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                    onChange={token => this.props.onReservationAccept(reservation.id, token)}
-                                /> */}
                                 {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                             </div>
@@ -82,6 +78,12 @@ export default class MyReservationsTable extends React.Component {
                         </div>
                     )
                 })}
+                <ReCAPTCHA
+                    ref={el => this.captcha = el}
+                    size="invisible"
+                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    onChange={token => { this.state.action === 'cancel' ? this.props.onReservationCancel(this.state.selectedId, token) : this.props.onReservationAccept(this.state.selectedId, token); this.captcha.reset()}}
+                />
             </div>
         );
     }

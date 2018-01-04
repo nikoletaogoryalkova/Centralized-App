@@ -27,13 +27,13 @@ export default class MyReservationsPage extends React.Component {
     }
 
 
-    cancelReservation(id) {
-        cancelReservation(id)
+    cancelReservation(id, captchaToken) {
+        cancelReservation(id, captchaToken)
             .then(res => this._operate(res, id, false));
     }
 
-    acceptReservation(id) {
-        acceptReservation(id)
+    acceptReservation(id, captchaToken) {
+        acceptReservation(id, captchaToken)
             .then(res => this._operate(res, id, true));
     }
 

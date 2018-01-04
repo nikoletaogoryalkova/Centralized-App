@@ -187,18 +187,22 @@ export async function publishCalendarSlot(listingId, slotObj, captchaToken) {
     return res;
 }
 
-export async function cancelReservation(id) {
+export async function cancelReservation(id, captchaToken) {
     const res = await fetch(`${host}reservations/${id}/cancel`, {
-        headers: getHeaders(),
+        headers: getHeaders({
+            'Captcha': captchaToken
+        }),
         method: "POST"
     });
 
     return res.json();
 }
 
-export async function acceptReservation(id) {
+export async function acceptReservation(id, captchaToken) {
     const res = await fetch(`${host}reservations/${id}/accept`, {
-        headers: getHeaders(),
+        headers: getHeaders({
+            'Captcha': captchaToken
+        }),
         method: "POST"
     });
 
