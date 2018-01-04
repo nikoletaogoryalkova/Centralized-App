@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 import moment from 'moment'
 
 export default class MyTripsTable extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedId: ''
+        }
+    }
 
     render() {
         return (
@@ -46,10 +53,12 @@ export default class MyTripsTable extends React.Component {
                                 <div>{trip.listingName}</div>
                             </div>
                             <div className="col-md-3">
-                            <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
+                                <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
                             </div>
                             <div className="col-md-2">
-                                {trip.accepted ? <div>More actions coming soon!</div> : <div><Link to="#">Cancel</Link></div>}
+                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id}); this.captcha.execute() }}>>
+                                    {trip.accepted ? <div>More actions coming soon!</div> : <div><button type="submit">Cancel</button></div>}
+                                </form>
                                 {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                             </div>
@@ -59,6 +68,12 @@ export default class MyTripsTable extends React.Component {
                         </div>
                     )
                 })}
+                <ReCAPTCHA
+                    ref={el => this.captcha = el}
+                    size="invisible"
+                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    onChange={token => { this.props.onTripCancel(this.state.selectedId, token); this.captcha.reset() }}
+                />
             </div>
         );
     }

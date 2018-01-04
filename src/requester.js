@@ -209,9 +209,12 @@ export async function acceptReservation(id, captchaToken) {
     return res.json();
 }
 
-export async function getCalendarSlotByListingIdAndStartDate(listingId) {
-    const res = await fetch(`${host}calendars/search/findAllByListingIdAndDate?listing=${listingId}`, {
-        headers: getHeaders()
+export async function cancelTrip(id, captchaToken) {
+    const res = await fetch(`${host}trips/${id}/cancel`, {
+        headers: getHeaders({
+            'Captcha': captchaToken
+        }),
+        method: "POST"
     });
 
     return res.json();
@@ -226,10 +229,10 @@ export async function getCalendarSlotByListingIdAndStartDate(listingId) {
  * @param {int} results
  * @returns {Promise.<*>}
  */
-export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, page = 0, results = 20) {
+export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, toCode = null, page = 0, results = 20) {
     const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth()+1}/${startDate.getUTCFullYear()}`;
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
-    const res = await fetch(`${host}calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}`);
+    const res = await fetch(`${host}calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}${toCode !== null ? "&toCode=" + toCode : ''}`);
     return res.json();
 }
 

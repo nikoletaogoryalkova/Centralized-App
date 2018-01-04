@@ -36,7 +36,8 @@ class PropertyPage extends React.Component {
             lightboxIsOpen: false,
             currentImage: 0,
             currencySign: '',
-            prices: null
+            prices: null,
+            oldCurrency: this.props.currency
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -46,53 +47,11 @@ class PropertyPage extends React.Component {
         this.gotoImage = this.gotoImage.bind(this);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
+        this.initializeCalendar = this.initializeCalendar.bind(this);
     };
 
     componentDidMount() {
-        let now = new Date();
-        let end = new Date();
-        const DAY_INTERVAL = 90;
-        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
-
-        getPropertyById(this.props.match.params.id).then((data) => {
-            let currencyCode = data.code;
-
-            let currencySign = '';
-
-            switch (currencyCode) {
-                case "USD": currencySign = '$'
-                    break;
-                case "GBP": currencySign = '£'
-                    break;
-                case "EUR": currencySign = '€'
-                    break;
-            }
-
-            this.setState({ currencySign: currencySign, data: data });
-
-            getCalendarByListingIdAndDateRange(
-                this.props.match.params.id,
-                now,
-                end,
-                0,
-                DAY_INTERVAL
-            ).then(res => {
-                let prices = [];
-                for (let dateInfo of res.content) {
-                    let price = dateInfo.available ? `${currencySign}${dateInfo.price}` : ``;
-                    prices.push(
-                        {
-                            "title": <span className="calendar-price bold">{price}</span>,
-                            "start": moment(dateInfo.date, "DD/MM/YYYY"),
-                            "end": moment(dateInfo.date, "DD/MM/YYYY"),
-                            "allDay": true
-                        }
-                    )
-                }
-
-                this.setState({ prices: prices, calendar: res.content });
-            });
-        })
+        this.initializeCalendar();
 
         if (this.state.startDate && this.state.endDate) {
             this.calculateNights(this.state.startDate, this.state.endDate);
@@ -155,6 +114,42 @@ class PropertyPage extends React.Component {
         }
     }
 
+    initializeCalendar() {
+        let now = new Date();
+        let end = new Date();
+        const DAY_INTERVAL = 90;
+        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
+
+        getPropertyById(this.props.match.params.id).then((data) => {
+
+            this.setState({ currencySign: this.props.currencySign, data: data });
+
+            getCalendarByListingIdAndDateRange(
+                this.props.match.params.id,
+                now,
+                end,
+                this.props.currency,
+                0,
+                DAY_INTERVAL
+            ).then(res => {
+                let prices = [];
+                for (let dateInfo of res.content) {
+                    let price = dateInfo.available ? `${this.state.currencySign}${dateInfo.price}` : ``;
+                    prices.push(
+                        {
+                            "title": <span className="calendar-price bold">{price}</span>,
+                            "start": moment(dateInfo.date, "DD/MM/YYYY"),
+                            "end": moment(dateInfo.date, "DD/MM/YYYY"),
+                            "allDay": true
+                        }
+                    )
+                }
+
+                this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.currency });
+            });
+        })
+    }
+
     render() {
 
         if (this.state.data === null || this.state.prices === null || this.state.reservations === null) {
@@ -166,6 +161,12 @@ class PropertyPage extends React.Component {
         const images = this.state.data.pictures.map(x => {
             return { src: x.original };
         });
+        console.log(this.state.oldCurrency);
+        console.log(this.props.currency);
+
+        if(this.state.oldCurrency !== this.props.currency) {
+            this.initializeCalendar();   
+        }
 
         return (
             <div key={1}>

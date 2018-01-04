@@ -24,6 +24,11 @@ export default class MyTripsPage extends React.Component {
         })
     }
 
+    cancelTrip(id, captchaToken) {
+        cancelTrip(id, captchaToken)
+            .then(res => this._operate(res, id, false));
+    }
+
     render() {
         if (this.state.loading) {
             return <div className="loader"></div>
@@ -37,6 +42,7 @@ export default class MyTripsPage extends React.Component {
                         <h2>Upcoming Trips ({this.state.totalTrips})</h2>
                         <hr />
                         <MyTripsTable
+                            onTripCancel={this.cancelTrip.bind(this)}
                             trips={this.state.trips} />
 
                         <div className="my-listings">
@@ -47,5 +53,23 @@ export default class MyTripsPage extends React.Component {
                 <Footer />
             </div>
         );
+    }
+
+    _operate(res, id, isAccepted) {
+        if (res.success) {
+            NotificationManager.success(res.message, 'Reservation Operations')
+
+            let newReservations = this.state.reservations.map(r => {
+                if (r.id === id) {
+                    r.accepted = isAccepted;
+                }
+
+                return r;
+            });
+
+            this.setState({ reservations: newReservations });
+        } else {
+            NotificationManager.error(res.message, 'Reservation Operations')
+        }
     }
 }

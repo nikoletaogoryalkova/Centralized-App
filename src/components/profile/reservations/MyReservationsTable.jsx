@@ -65,7 +65,7 @@ export default class MyReservationsTable extends React.Component {
                                 <div>{reservation.currencyCode} {reservation.price} total</div>
                             </div>
                             <div className="col-md-2">
-                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id, action: reservation.accepted ? 'cancel' : 'accept' });; this.captcha.execute() }}>
+                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id, action: reservation.accepted ? 'cancel' : 'accept' }); this.captcha.execute() }}>
                                     {reservation.accepted ? <div><button type="submit" >Cancel</button></div> : <div><button type="submit">Accept</button></div>}
                                 </form>
 
