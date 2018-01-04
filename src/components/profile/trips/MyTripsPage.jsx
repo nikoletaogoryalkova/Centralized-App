@@ -1,11 +1,13 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ProfileHeader from '../ProfileHeader';
 import MyTripsTable from './MyTripsTable';
 import Footer from '../../Footer';
+import { cancelTrip } from "../../../requester";
+import { NotificationManager } from 'react-notifications';
 
-import {getMyTrips} from '../../../requester';
+import { getMyTrips } from '../../../requester';
 
 export default class MyTripsPage extends React.Component {
     constructor(props) {

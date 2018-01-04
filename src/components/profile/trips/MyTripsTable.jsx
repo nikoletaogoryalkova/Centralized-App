@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { NotificationContainer } from 'react-notifications';
+import ReCAPTCHA from 'react-google-recaptcha';
 import moment from 'moment'
 
 export default class MyTripsTable extends React.Component {
@@ -15,6 +16,7 @@ export default class MyTripsTable extends React.Component {
     render() {
         return (
             <div className="container">
+                <NotificationContainer />
                 <div className="table-header bold">
                     <div className="col-md-1">
                     </div>
@@ -56,7 +58,7 @@ export default class MyTripsTable extends React.Component {
                                 <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
                             </div>
                             <div className="col-md-2">
-                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id}); this.captcha.execute() }}>>
+                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: trip.id }); this.captcha.execute() }}>>
                                     {trip.accepted ? <div>More actions coming soon!</div> : <div><button type="submit">Cancel</button></div>}
                                 </form>
                                 {/* <div><Link to="#">Report a problem</Link></div>

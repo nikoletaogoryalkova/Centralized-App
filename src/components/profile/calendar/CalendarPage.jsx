@@ -70,6 +70,7 @@ class CalendarPage extends React.Component {
                 this.props.match.params.id,
                 now,
                 end,
+                currencyCode,
                 0,
                 DAY_INTERVAL
             ).then(res => {
