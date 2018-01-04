@@ -83,8 +83,8 @@ class PropertyPage extends React.Component {
                     prices.push(
                         {
                             "title": <span className="calendar-price bold">{price}</span>,
-                            "start": new Date(dateInfo.date),
-                            "end": new Date(dateInfo.date),
+                            "start": moment(dateInfo.date, "DD/MM/YYYY"),
+                            "end": moment(dateInfo.date, "DD/MM/YYYY"),
                             "allDay": true
                         }
                     )

@@ -91,15 +91,13 @@ class MainNav extends React.Component {
         });
     }
 
-    login(e) {
-        e.preventDefault();
-
+    login(captchaToken) {
         let user = {
             email: this.state.loginEmail,
             password: this.state.loginPassword
         }
 
-        login(JSON.stringify(user)).then((res) => {
+        login(JSON.stringify(user), captchaToken).then((res) => {
             let responseJson = res.json();
             if (res.status === 200) {
                 responseJson.then((data) => {
@@ -143,7 +141,7 @@ class MainNav extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
-                        <form onSubmit={this.login}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="mail" />
                                 <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
@@ -155,6 +153,13 @@ class MainNav extends React.Component {
                             <div className="checkbox login-checkbox pull-left">
                                 <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
                             </div>
+
+                            <ReCAPTCHA
+                                ref={el => this.captcha = el}
+                                size="invisible"
+                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                onChange={token => this.login(token)}
+                            />
 
                             <button type="submit" className="btn btn-primary">Login</button>
                             <div className="clearfix"></div>

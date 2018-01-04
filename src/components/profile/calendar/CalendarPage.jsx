@@ -148,7 +148,7 @@ class CalendarPage extends React.Component {
         }
     }
 
-    onSubmit() {
+    onSubmit(captchaToken) {
         let listingId = this.props.match.params.id;
 
         let slotInfo = {
@@ -156,7 +156,7 @@ class CalendarPage extends React.Component {
             price: this.state.price,
             available: this.state.available
         }
-        publishCalendarSlot(listingId, slotInfo).then((res) => {
+        publishCalendarSlot(listingId, slotInfo, captchaToken).then((res) => {
             if (res.status === 200) {
                 this.setState({ selectedDay: null, date: null, price: null, available: 'true' });
                 this.componentDidMount();

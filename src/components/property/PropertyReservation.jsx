@@ -61,10 +61,9 @@ class PropertyReservation extends React.Component {
                 name: this.state.name,
                 email: this.state.email,
                 phone: this.state.phone,
-                captchaToken: captchaToken
             }
 
-            requestBooking(requestInfo).then((res) => {
+            requestBooking(requestInfo, captchaToken).then((res) => {
                 let data = res.json();
                 this.setState({ sending: false });
                 if (data.success) {

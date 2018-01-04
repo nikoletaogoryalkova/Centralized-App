@@ -22,6 +22,7 @@ export default class ProfileEditPage extends React.Component {
             gender: '',
             country: '',
             city: '',
+            locAddress: '',
             currencies: [],
             cities: [],
             countries: [],
@@ -57,6 +58,7 @@ export default class ProfileEditPage extends React.Component {
                 gender: data.gender !== null ? data.gender : '',
                 country: data.country !== null ? data.country.id : '',
                 city: data.city !== null ? data.city.id : '',
+                locAddress: data.locAddress !== null ? data.locAddress : '',
                 countries: data.countries,
                 currencies: data.currencies,
                 day: day,
@@ -93,7 +95,8 @@ export default class ProfileEditPage extends React.Component {
             gender: this.state.gender,
             country: parseInt(this.state.country, 10),
             city: parseInt(this.state.city, 10),
-            birthday: birthday
+            birthday: birthday,
+            locAddress: this.state.locAddress
         }
 
         Object.keys(userInfo).forEach((key) => (userInfo[key] === null || userInfo[key] === '') && delete userInfo[key]);
@@ -191,6 +194,11 @@ export default class ProfileEditPage extends React.Component {
                         <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
                     </div>
                     <div className="text"><span>We won't share your phone number with other LockChain users.</span></div>
+
+                    <div className="loc-address">
+                        <label htmlFor="loc-address">Loc address <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                        <input id="loc-address" name="locAddress" value={this.state.locAddress} onChange={this.onChange} type="text" />
+                    </div>
 
                     <div className="language-currency">
                         <div className="language">

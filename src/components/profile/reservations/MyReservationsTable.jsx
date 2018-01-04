@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import moment from 'moment'
-import {NotificationContainer} from 'react-notifications';
+import { NotificationContainer } from 'react-notifications';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class MyReservationsTable extends React.Component {
 
     render() {
-        if(this.props.loadingListing) {
+        if (this.props.loadingListing) {
             return <div className="loader"></div>
         }
 
@@ -45,7 +46,8 @@ export default class MyReservationsTable extends React.Component {
                                 <div className="bold">{reservation.guestName}</div>
                                 <div>{reservation.guestEmail}</div>
                                 <div>{reservation.guestPhone}</div>
-                                {/* <div><span className="send-message-icon"></span>Send Message</div> */}
+                                {reservation.guestLocAddress ? <div><a href={`https://etherscan.io/${reservation.guestLocAddress}`} target="_blank">Loc Address</a></div> : ''}
+                                {reservation.guestEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${reservation.guestEmail}`}>Send Message</a></div> : ''}
                             </div>
                             <div className="col-md-3">
                                 <div>{moment(new Date(reservation.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(reservation.endDate)).format("DD MMM, YYYY")}</div>
@@ -55,7 +57,22 @@ export default class MyReservationsTable extends React.Component {
                                 <div>{reservation.currencyCode} {reservation.price} total</div>
                             </div>
                             <div className="col-md-2">
-                                {reservation.accepted ? <div><Link to="#" onClick={() => this.props.onReservationCancel(reservation.id)}>Cancel</Link></div> : <div><Link to="#" onClick={() => this.props.onReservationAccept(reservation.id)}>Accept</Link></div>}
+                                <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
+                                {reservation.accepted ? <div><button type="submit" >Cancel</button></div> : <div><Link to="#">Accept</Link></div>}
+                                </form>
+                                <ReCAPTCHA
+                                    ref={el => this.captcha = el}
+                                    size="invisible"
+                                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                    onChange={token => this.props.onReservationCancel(reservation.id, token)}
+                                />
+
+                                {/* <ReCAPTCHA
+                                    ref={el => this.acceptCaptcha = el}
+                                    size="invisible"
+                                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                    onChange={token => this.props.onReservationAccept(reservation.id, token)}
+                                /> */}
                                 {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                             </div>

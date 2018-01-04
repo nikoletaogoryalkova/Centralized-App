@@ -130,6 +130,9 @@
 		margin-top: 5px;
 		padding: 5px;
 		text-align: left;
+		a {
+			cursor: default;
+		}
 	}
 	.rbc-day-bg {
 		background: #FFF;
@@ -153,7 +156,6 @@
 		}
 	}
 	.rbc-month-row {
-		cursor: pointer;
 		height: 100px;
 		overflow: visible;
 	}
@@ -172,6 +174,9 @@
 			color: @color_3;
 			font-size: 12px;
 			padding: 5px;
+			&:focus {
+				color: @color_3;
+			}
 		}
 	}
 	.rbc-row-segment {

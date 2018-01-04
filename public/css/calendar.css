@@ -117,6 +117,9 @@
   padding: 5px;
   text-align: left;
 }
+.rbc-calendar .rbc-date-cell a {
+  cursor: default;
+}
 .rbc-calendar .rbc-day-bg {
   background: #FFF;
   cursor: pointer;
@@ -139,7 +142,6 @@
   font-weight: 700;
 }
 .rbc-calendar .rbc-month-row {
-  cursor: pointer;
   height: 100px;
   overflow: visible;
 }
@@ -155,6 +157,9 @@
   color: #FFF;
   font-size: 12px;
   padding: 5px;
+}
+.rbc-calendar .rbc-now a:focus {
+  color: #FFF;
 }
 .rbc-calendar .rbc-row-segment {
   bottom: -35px;

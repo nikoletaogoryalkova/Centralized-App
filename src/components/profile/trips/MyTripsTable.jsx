@@ -39,7 +39,8 @@ export default class MyTripsTable extends React.Component {
                                 <div className="bold">{trip.hostName}</div>
                                 <div>{trip.hostEmail}</div>
                                 <div>{trip.hostPhone}</div>
-                                {/* <div><span className="send-message-icon"></span>Send Message</div> */}
+                                {trip.hostLocAddress ? <div><a href={`https://etherscan.io/${trip.hostLocAddress}`} target="_blank">Loc Address</a></div> : ''}
+                                {trip.hostEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${trip.hostEmail}`}>Send Message</a></div> : ''}
                             </div>
                             <div className="col-md-2">
                                 <div>{trip.listingName}</div>

@@ -64,11 +64,12 @@ export async function getPropertyById(id) {
     return res.json();
 }
 
-export async function requestBooking(requestInfo) {
+export async function requestBooking(requestInfo, captchaToken) {
     const res = await fetch(`${host}reservations/request`, {
         headers: getHeaders({
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Captcha': captchaToken
         }),
         method: "POST",
         body: JSON.stringify(requestInfo)
@@ -102,9 +103,10 @@ export async function updateUserInfo(userObj) {
 }
 
 export async function register(user, captchaToken) {
-    const res = await fetch(`${host}users/signup${captchaToken ? "?captchaToken=" + captchaToken : ''}`, {
+    const res = await fetch(`${host}users/signup`, {
         headers: getHeaders({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Captcha': captchaToken
         }),
         method: "POST",
         body: user
@@ -112,8 +114,9 @@ export async function register(user, captchaToken) {
     return res;
 }
 
-export async function login(user) {
+export async function login(user, captchaToken) {
     const res = await fetch(`${host}login`, {
+        headers: getHeaders(),
         method: "POST",
         body: user
     });
@@ -121,10 +124,11 @@ export async function login(user) {
     return res;
 }
 
-export async function createListing(listingObj) {
+export async function createListing(listingObj, captchaToken) {
     const res = await fetch(`${host}listings`, {
         headers: getHeaders({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Captcha': captchaToken
         }),
         method: "POST",
         body: JSON.stringify(listingObj)
@@ -169,10 +173,11 @@ export async function getMyTrips() {
     return res.json();
 }
 
-export async function publishCalendarSlot(listingId, slotObj) {
+export async function publishCalendarSlot(listingId, slotObj, captchaToken) {
     const res = await fetch(`${host}listings/${listingId}/calendar`, {
         headers: getHeaders({
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Captcha': captchaToken
         }),
         method: "POST",
         body: JSON.stringify(slotObj)
@@ -230,3 +235,4 @@ function getHeaders(headers = null) {
     }
     return headers;
 }
+

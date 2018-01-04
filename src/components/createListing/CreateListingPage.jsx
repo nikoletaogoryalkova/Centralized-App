@@ -243,7 +243,7 @@ class CreateListingPage extends React.Component {
         return photos;
     }
 
-    createListing() {
+    createListing(captchaToken) {
         this.setState({loading: true});
         let listing = {
             listingType: this.state.type,
@@ -327,7 +327,7 @@ class CreateListingPage extends React.Component {
             currency: this.state.currency,
         }
 
-        createListing(listing).then((res) => {
+        createListing(listing, captchaToken).then((res) => {
             if (res.status === 200 || res.status === 202) {
                 this.setState({loading: false});
                 this.props.history.push('/profile/listings');
