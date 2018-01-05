@@ -157,23 +157,23 @@ class PropertyPage extends React.Component {
         }
 
         let allEvents = this.state.prices;
+        let images = null;
+        if (this.state.data.pictures !== undefined) {
+            images = this.state.data.pictures.map(x => {
+                return { src: x.original };
+            });
+        }
 
-        const images = this.state.data.pictures.map(x => {
-            return { src: x.original };
-        });
-        console.log(this.state.oldCurrency);
-        console.log(this.props.currency);
-
-        if(this.state.oldCurrency !== this.props.currency) {
-            this.initializeCalendar();   
+        if (this.state.oldCurrency !== this.props.currency) {
+            this.initializeCalendar();
         }
 
         return (
             <div key={1}>
                 <div>
-                <header id='main-nav' className="navbar"> 
-                    <MainNav />
-                </header>
+                    <header id='main-nav' className="navbar">
+                        <MainNav />
+                    </header>
 
                     <nav id="second-nav">
                         <div className="container">
@@ -195,10 +195,10 @@ class PropertyPage extends React.Component {
                     </section>
                 </div>
                 <section className="hotel-gallery">
-                    <div className="hotel-gallery-bgr" style={{ 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' }}>
+                    <div className="hotel-gallery-bgr" style={this.state.data.pictures !== undefined ? { 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' } : { backgroundColor: '#AAA' }}>
                         <div className="container">
                             <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
-                            <Lightbox
+                            {images !== null && <Lightbox
                                 currentImage={this.state.currentImage}
                                 images={images}
                                 isOpen={this.state.lightboxIsOpen}
@@ -207,7 +207,7 @@ class PropertyPage extends React.Component {
                                 onClickPrev={this.gotoPrevious}
                                 onClickThumbnail={this.gotoImage}
                                 onClose={this.closeLightbox}
-                            />
+                            />}
                         </div>
                     </div>
                 </section>

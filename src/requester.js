@@ -138,9 +138,11 @@ export async function createListing(listingObj, captchaToken) {
     return res;
 }
 
-export async function getMyListings() {
-    const res = await fetch(`${host}users/me/listings`, {
-        headers: getHeaders()
+export async function getMyListings(searchTerm) {
+    const res = await fetch(`${host}users/me/listings${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, {
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        })
     });
 
     return res.json();
@@ -164,8 +166,8 @@ export async function getMyReservations(searchTerm) {
     return res.json();
 }
 
-export async function getMyTrips() {
-    const res = await fetch(`${host}users/me/trips?sort=id,desc`, {
+export async function getMyTrips(searchTerm) {
+    const res = await fetch(`${host}users/me/trips${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),

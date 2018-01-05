@@ -26,6 +26,11 @@ export default class MyReservationsPage extends React.Component {
         this.onPageChange = this.onPageChange.bind(this);
     }
 
+    componentDidMount() {
+        getMyReservations('?page=0').then((data) => {
+            this.setState({ reservations: data.content, totalReservations: data.totalElements, loading: false });
+        })
+    }
 
     cancelReservation(id, captchaToken) {
         cancelReservation(id, captchaToken)
@@ -35,12 +40,6 @@ export default class MyReservationsPage extends React.Component {
     acceptReservation(id, captchaToken) {
         acceptReservation(id, captchaToken)
             .then(res => this._operate(res, id, true));
-    }
-
-    componentDidMount() {
-        getMyReservations('?page=0').then((data) => {
-            this.setState({ reservations: data.content, totalReservations: data.totalElements, loading: false });
-        })
     }
 
     onPageChange = (page) => {
