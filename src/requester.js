@@ -153,7 +153,9 @@ export async function editListing(id, listing, captchaToken) {
 
 export async function getMyListingById(id) {
     const res = await fetch(`${host}/me/listings/${id}`, {
-        headers: getHeaders()
+        headers: getHeaders({
+            'Content-Type': 'application/json'
+        })
     });
 
     return res.json();
