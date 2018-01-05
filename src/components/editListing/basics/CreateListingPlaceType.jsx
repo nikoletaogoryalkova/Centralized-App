@@ -153,10 +153,10 @@ export default class CreateListingPlaceType extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/create/landing" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/edit/landing" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/accommodation" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/edit/accommodation" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
 

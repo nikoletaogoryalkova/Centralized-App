@@ -17,6 +17,7 @@ import ProfileEditPage from './profile/me/ProfileEditPage';
 import AccountNotificationsPage from './profile/account/AccountNotificationsPage';
 
 import CreateListingPage from './createListing/CreateListingPage';
+import EditListingPage from './editListing/EditListingPage';
 
 import observer from '../services/observer';
 
@@ -84,8 +85,6 @@ class App extends React.Component {
                 <Switch>
                     <Route exact path="/" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route path="/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
-                    <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/dashboard" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <DashboardPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/listings" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyListingsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
@@ -97,6 +96,9 @@ class App extends React.Component {
                     <Route exact path="/profile/messages/chat" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesChatPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/me/edit" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfileEditPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
+                    {/* <Route path="/profile/listings/edit/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} /> */}
+                    <Route path="/profile/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                 </Switch>
             </div>
         );
