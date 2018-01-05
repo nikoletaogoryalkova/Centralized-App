@@ -98,7 +98,7 @@ class App extends React.Component {
                     <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
                     {/* <Route path="/profile/listings/edit/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} /> */}
-                    <Route path="/profile/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                 </Switch>
             </div>
         );

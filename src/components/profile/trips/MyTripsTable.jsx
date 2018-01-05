@@ -59,7 +59,7 @@ export default class MyTripsTable extends React.Component {
                             </div>
                             <div className="col-md-2">
                                 <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: trip.id }); this.captcha.execute() }}>
-                                    {trip.accepted ? <div>More actions coming soon!</div> : <div><button type="submit">Cancel</button></div>}
+                                    {trip.accepted ? <div>Reservation is accepted and can't be undone</div> : <div><button type="submit">Cancel</button></div>}
                                 </form>
                                 {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}

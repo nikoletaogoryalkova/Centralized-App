@@ -5,7 +5,7 @@ import Footer from '../../Footer';
 import DashboardPending from './DashboardPending';
 import DashboardReviews from './DashboardReviews';
 import DashboardOverview from './DashboardOverview';
-import {getMyReservations} from "../../../requester";
+import {getMyReservations, getMyTrips} from "../../../requester";
 
 export default class DashboardPage extends React.Component {
     constructor(props) {
@@ -13,14 +13,18 @@ export default class DashboardPage extends React.Component {
         this.state = {
             reservations: null,
             totalReservations: 0,
-            loading: true
+            loading: true,
+            trips: null
         }
     }
 
     componentDidMount() {
-        getMyReservations().then((data) => {
-            this.setState({ reservations: data.content.filter(r => !r.accepted), totalReservations: data.totalElements, loading: false });
+        getMyReservations('?page=0', 5).then((data) => {
+            getMyTrips('?page=0', 5).then((data) => {
+                this.setState({trips: data.content, loading: false, reservations: data.content, totalReservations: data.totalElements})
+            });
         })
+
     }
 
     render() {
@@ -30,9 +34,10 @@ export default class DashboardPage extends React.Component {
         return (
             <div>
                 <ProfileHeader />
-                <DashboardPending reservations={this.state.reservations} totalReservations={this.state.totalReservations} />
+                <DashboardPending reservations={this.state.reservations} trips={this.state.trips} totalReservations={this.state.totalReservations} />
                 {/*<DashboardReviews />*/}
                 {/*<DashboardOverview />*/}
+                <br />
                 <Footer />
             </div>
         );

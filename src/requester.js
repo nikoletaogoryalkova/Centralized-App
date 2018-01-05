@@ -9,14 +9,14 @@ export async function getListings() {
 }
 
 export async function getCountries() {
-    const res = await fetch(`${host}countries`, {
+    const res = await fetch(`${host}countries?size=10000&sort=name,asc`, {
         headers: getHeaders()
     });
     return res.json();
 }
 
 export async function getCities(countryId) {
-    const res = await fetch(`${host}countries/${countryId}/cities`, {
+    const res = await fetch(`${host}countries/${countryId}/cities?size=10000&sort=name,asc`, {
         headers: getHeaders()
     });
     return res.json();
@@ -177,8 +177,8 @@ export async function getAllMyListings() {
     return res.json();
 }
 
-export async function getMyReservations(searchTerm) {
-    const res = await fetch(`${host}users/me/reservations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, {
+export async function getMyReservations(searchTerm, size = 20) {
+    const res = await fetch(`${host}users/me/reservations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),
@@ -187,8 +187,8 @@ export async function getMyReservations(searchTerm) {
     return res.json();
 }
 
-export async function getMyTrips(searchTerm) {
-    const res = await fetch(`${host}users/me/trips${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, {
+export async function getMyTrips(searchTerm, size = 20) {
+    const res = await fetch(`${host}users/me/trips${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, {
         headers: getHeaders({
             'Content-Type': 'application/json'
         }),
