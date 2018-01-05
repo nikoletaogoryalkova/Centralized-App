@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Modal, Navbar, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Config } from '../config';
@@ -45,7 +45,8 @@ class MainNav extends React.Component {
         })
     }
 
-    openSignUp() {
+    openSignUp(e) {
+        e.preventDefault();
         this.setState({ showSignUpModal: true });
     }
 
@@ -60,7 +61,8 @@ class MainNav extends React.Component {
         })
     }
 
-    openLogIn() {
+    openLogIn(e) {
+        e.preventDefault();
         this.setState({ showLoginModal: true })
     }
 
@@ -223,18 +225,18 @@ class MainNav extends React.Component {
                     <Navbar.Collapse>
                         {localStorage[".auth.lockchain"] ?
                             <Nav>
-                                <MenuItem href="/profile/reservations">Hosting</MenuItem>
-                                <MenuItem href="/profile/trips">Traveling</MenuItem>
+                                <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
+                                <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
                                 <NavDropdown title={localStorage[".auth.username"]} id="main-nav-dropdown">
-                                    <MenuItem className="header" href="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
-                                    <MenuItem href="/profile/me/edit">Edit Profile</MenuItem>
-                                    <MenuItem href="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
-                                    <MenuItem href="/" className="header" eventKey={1} onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{top: 25+'px'}} alt="logout" /></MenuItem>
+                                    <MenuItem componentClass={Link} className="header" href="/profile/dashboard" to="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
+                                    <MenuItem componentClass={Link} href="/profile/me/edit" to="/profile/me/edit">Edit Profile</MenuItem>
+                                    <MenuItem componentClass={Link} href="/profile/dashboard/#profile-dashboard-reviews" to="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
+                                    <MenuItem componentClass={Link} className="header" href="/" to="/" onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{ top: 25 + 'px' }} alt="logout" /></MenuItem>
                                 </NavDropdown>
                             </Nav> :
                             <Nav pullRight>
-                                <MenuItem onClick={this.openLogIn}>Login</MenuItem>
-                                <MenuItem onClick={this.openSignUp}>Register</MenuItem>
+                                <NavItem componentClass={Link} href="/login" to="/login" onClick={this.openLogIn}>Login</NavItem>
+                                <NavItem componentClass={Link} href="/signup" to="/signup" onClick={this.openSignUp}>Register</NavItem>
                             </Nav>
                         }
                     </Navbar.Collapse>
