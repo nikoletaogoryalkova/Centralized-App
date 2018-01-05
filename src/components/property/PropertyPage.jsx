@@ -140,7 +140,9 @@ class PropertyPage extends React.Component {
                             "title": <span className="calendar-price bold">{price}</span>,
                             "start": moment(dateInfo.date, "DD/MM/YYYY"),
                             "end": moment(dateInfo.date, "DD/MM/YYYY"),
-                            "allDay": true
+                            "allDay": true,
+                            "price": dateInfo.price,
+                            "available": dateInfo.available
                         }
                     )
                 }
@@ -239,7 +241,16 @@ class PropertyPage extends React.Component {
                         </ul>
                     </div>
                 </nav>
-                <PropertyInfo allEvents={allEvents} calendar={this.state.calendar} nights={this.state.nights} onApply={this.handleApply} startDate={this.state.startDate} endDate={this.state.endDate} data={this.state.data} currency={this.props.currency} currencySign={this.props.currencySign} />
+                <PropertyInfo allEvents={allEvents}
+                              calendar={this.state.calendar}
+                              nights={this.state.nights}
+                              onApply={this.handleApply}
+                              startDate={this.state.startDate}
+                              endDate={this.state.endDate}
+                              data={this.state.data}
+                              currency={this.props.currency}
+                              currencySign={this.props.currencySign}
+                              prices={this.state.prices} />
                 <Footer />
             </div>
         );

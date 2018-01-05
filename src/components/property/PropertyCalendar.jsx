@@ -72,6 +72,11 @@ export default class PropertyCalendar extends React.Component {
 
             let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > moment().add(89, 'days'));
 
+            let currentDay = this.props.prices.find(p => p.start.diff(value) == 0);
+            if((currentDay && !currentDay.available) || currentDay === undefined) {
+                isPastDate = true;
+            }
+
             return (
                 <div className={isPastDate ? "date-in-past" : "rbc-day-bg"} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto'}}>
                     {children}

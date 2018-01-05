@@ -55,7 +55,7 @@ class PropertyInfo extends React.Component {
                 <div className="container">
                     <div className="hotel-content" id="overview">
 
-                        <PropertyCalendar allEvents={this.props.allEvents} />
+                        <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
                         <h1> {this.props.data.name} </h1>
                         <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
                         <div className="clearfix" />
