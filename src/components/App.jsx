@@ -90,7 +90,7 @@ class App extends React.Component {
                     <Route exact path="/profile/listings" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyListingsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
                     <Route exact path="/profile/reservations" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyReservationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/profile/trips" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyTripsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/trips" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MyTripsPage location={this.props.location} currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/messages/hosting" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesHostingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/messages/traveling" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesTravelingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
                     <Route exact path="/profile/messages/chat" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <MessagesChatPage currency={this.state.currency} currencySign={this.state.currencySign} />} />

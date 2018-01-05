@@ -64,14 +64,21 @@ class PropertyReservation extends React.Component {
             }
 
             requestBooking(requestInfo, captchaToken).then((res) => {
-                let data = res.json();
                 this.setState({ sending: false });
-                if (data.success) {
-                    this.props.history.push("/profile/trips");
-                } else if (res.status === 403) {
+                if (res.status === 403) {
                     this.setState({ error: "Please sign-in/register to able to make bookings" });
                 } else {
-                    this.setState({ error: data.message });
+                    res.body.then(data => {
+                        console.log(data);
+                        if (data.success) {
+                            console.log(data);
+                            console.log(this.props);
+                            console.log(this.props.history);
+                            this.props.history.push("/profile/trips?id=" + data.id);
+                        }else {
+                            this.setState({ error: data.message });
+                        }
+                    })
                 }
             });
         }

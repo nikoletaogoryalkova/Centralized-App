@@ -38,7 +38,7 @@ export default class MyTripsTable extends React.Component {
                 </div>
                 {this.props.trips.map(trip => {
                     return (
-                        <div className="row reservation-box">
+                        <div style={trip.id === this.props.currentTrip ? {backgroundColor: "lightgreen"} : {}} className="row reservation-box">
                             <div className="col-md-1">
                                 <div className="reservation-image-box">
                                     <span className="session-nav-user-thumb"></span>

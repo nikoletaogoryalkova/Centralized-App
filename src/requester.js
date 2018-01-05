@@ -75,7 +75,7 @@ export async function requestBooking(requestInfo, captchaToken) {
         body: JSON.stringify(requestInfo)
     });
 
-    return res;
+    return {status: res.status, body: res.json()};
 }
 
 export async function getLocRate() {
@@ -253,8 +253,8 @@ export async function cancelTrip(id, captchaToken) {
  * @returns {Promise.<*>}
  */
 export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, toCode = null, page = 0, results = 20) {
-    const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth()+1}/${startDate.getUTCFullYear()}`;
-    const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth()+1}/${endDate.getUTCFullYear()}`;
+    const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth() + 1}/${startDate.getUTCFullYear()}`;
+    const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth() + 1}/${endDate.getUTCFullYear()}`;
     const res = await fetch(`${host}calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}${toCode !== null ? "&toCode=" + toCode : ''}`);
     return res.json();
 }

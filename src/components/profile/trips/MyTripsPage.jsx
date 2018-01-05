@@ -18,13 +18,29 @@ export default class MyTripsPage extends React.Component {
             trips: [],
             loading: true,
             totalTrips: 0,
-            currentPage: 1
+            currentPage: 1,
+            currentTrip: null
         }
     }
 
     componentDidMount() {
+        let search = this.props.location.search.split('?');
+        let id = null;
+        if (search.length > 1) {
+            let pairs = search[1].split('&');
+            for (let pair of pairs) {
+                let tokens = pair.split('=');
+                if (tokens[0] === 'id') {
+                    id = Number(tokens[1]);
+                    break;
+                }
+            }
+        }
         getMyTrips('?page=0').then((data) => {
-            this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false });
+            this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTrip: id });
+            if (id) {
+                NotificationManager.success("Booking Request Sent Successfully, your host will get back to you with additional questions.", 'Reservation Operations')
+            }
         })
     }
 
@@ -72,6 +88,7 @@ export default class MyTripsPage extends React.Component {
                         <h2>Upcoming Trips ({this.state.totalTrips})</h2>
                         <hr />
                         <MyTripsTable
+                            currentTrip={this.state.currentTrip}
                             onTripCancel={this.cancelTrip.bind(this)}
                             trips={this.state.trips} />
 
