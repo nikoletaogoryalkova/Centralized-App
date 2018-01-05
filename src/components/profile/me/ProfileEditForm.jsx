@@ -101,7 +101,7 @@ export default class ProfileEditPage extends React.Component {
         Object.keys(userInfo).forEach((key) => (userInfo[key] === null || userInfo[key] === '') && delete userInfo[key]);
 
         updateUserInfo(userInfo, captchaToken).then((res) => {
-            if (res.status === 200 || res.status === 202) {
+            if (res.success) {
                 NotificationManager.success('Successfully updated your profile', 'Update user profile');
                 this.componentDidMount();
             }

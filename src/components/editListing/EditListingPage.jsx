@@ -357,7 +357,7 @@ class EditListingPage extends React.Component {
         }
 
         editListing(this.state.listingId, listing, captchaToken).then((res) => {
-            if (res.status === 200 || res.status === 202) {
+            if (res.success) {
                 this.setState({loading: false});
                 this.props.history.push('/profile/listings');
                 NotificationManager.success('Successfully updated your profile', 'Create new listing');

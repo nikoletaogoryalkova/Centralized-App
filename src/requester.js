@@ -3,244 +3,220 @@ import {
 } from "./config";
 const host = Config.getValue("apiHost");
 
-export async function getListings() {
-    const res = await fetch(`${host}listings?page=1&size=10`);
-    return res.json();
+const RequestMethod = {
+    GET: 0,
+    POST: 1
+}
+
+function getHeaders(headers = null) {
+    headers = headers || {};
+    if (localStorage.getItem('.auth.lockchain')) {
+        headers["Authorization"] = localStorage[".auth.lockchain"];
+    }
+    return headers;
+}
+
+async function sendRequest(endpoint, method, postObj = null, captchaToken = null, headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Captcha': captchaToken
+}) {
+    let allHeaders = getHeaders(headers);
+
+    let getParams = {
+        headers: getHeaders()
+    }
+
+    let postParams = {
+        headers: allHeaders,
+        method: "POST",
+        body: JSON.stringify(postObj)
+    }
+
+    return fetch(endpoint, RequestMethod.GET === method ? getParams : postParams)
+        .then(res => {
+            return {
+                response: res,
+                success: true
+            }
+        })
+        .catch(err => {
+            return {
+                response: err,
+                success: false
+            }
+        });
+}
+
+export function getListings() {
+    return sendRequest(`${host}listings?page=1&size=10`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
 }
 
 export async function getCountries() {
-    const res = await fetch(`${host}countries?size=10000&sort=name,asc`, {
-        headers: getHeaders()
+    return sendRequest(`${host}countries?size=10000&sort=name,asc`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function getCities(countryId) {
-    const res = await fetch(`${host}countries/${countryId}/cities?size=10000&sort=name,asc`, {
-        headers: getHeaders()
+    return sendRequest(`${host}countries/${countryId}/cities?size=10000&sort=name,asc`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function getPropertyTypes() {
-    const res = await fetch(`${host}property_types`, {
-        headers: getHeaders()
+    return sendRequest(`${host}property_types`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function getAmenitiesByCategory() {
-    const res = await fetch(`${host}categories`, {
-        headers: getHeaders()
+    return sendRequest(`${host}categories`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function getCurrencies() {
-    const res = await fetch(`${host}currencies`, {
-        headers: getHeaders()
+    return sendRequest(`${host}currencies`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function getListingsByFilter(searchTerms) {
-    const res = await fetch(`${host}/api/filter_listings?${searchTerms}`, {
-        headers: getHeaders()
+    return sendRequest(`${host}/api/filter_listings?${searchTerms}`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function getAmenitiesFilters() {
-    const res = await fetch(`${host}amenities`, {
-        headers: getHeaders()
+    return sendRequest(`${host}amenities`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function getPropertyById(id) {
-    const res = await fetch(`${host}listings/${id}`, {
-        headers: getHeaders()
+    return sendRequest(`${host}listings/${id}`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-    return res.json();
 }
 
 export async function requestBooking(requestInfo, captchaToken) {
-    const res = await fetch(`${host}reservations/request`, {
-        headers: getHeaders({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Captcha': captchaToken
-        }),
-        method: "POST",
-        body: JSON.stringify(requestInfo)
+    return sendRequest(`${host}reservations/request`, RequestMethod.POST, requestInfo, captchaToken).then(res => {
+        return {
+            status: res.status,
+            body: res.response.json()
+        }
     });
-
-    return {status: res.status, body: res.json()};
 }
 
 export async function getLocRate() {
-    const res = await fetch('https://lockchain.co/marketplace/internal_api/loc_price.php');
-    return res.json();
+    return sendRequest('https://lockchain.co/marketplace/internal_api/loc_price.php', RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
 }
 
 export async function getCurrentLoggedInUserInfo() {
-    const res = await fetch(`${host}users/me/edit`, {
-        headers: getHeaders()
+    return sendRequest(`${host}users/me/edit`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function updateUserInfo(userObj, captchaToken) {
-    const res = await fetch(`${host}users/me`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json',
-            'Captcha': captchaToken
-        }),
-        method: "POST",
-        body: JSON.stringify(userObj)
-    })
-    return res;
+    return sendRequest(`${host}users/me`, RequestMethod.POST, userObj, captchaToken).then(res => {
+        return {
+            success: res.success
+        };
+    });
 }
 
-export async function register(user, captchaToken) {
-    const res = await fetch(`${host}users/signup`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json',
-            'Captcha': captchaToken
-        }),
-        method: "POST",
-        body: user
+export async function register(userObj, captchaToken) {
+    return sendRequest(`${host}users/signup`, RequestMethod.POST, userObj, captchaToken).then(res => {
+        return {
+            success: res.success
+        };
     });
-    return res;
 }
 
-export async function login(user, captchaToken) {
-    const res = await fetch(`${host}login`, {
-        headers: getHeaders(),
-        method: "POST",
-        body: user
+export async function login(userObj, captchaToken) {
+    return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken).then(res => {
+        return {
+            success: res.success
+        };
     });
-
-    return res;
 }
 
 export async function createListing(listingObj, captchaToken) {
-    const res = await fetch(`${host}listings`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json',
-            'Captcha': captchaToken
-        }),
-        method: "POST",
-        body: JSON.stringify(listingObj)
+    return sendRequest(`${host}listings`, RequestMethod.POST, listingObj, captchaToken).then(res => {
+        return {
+            success: res.success
+        };
     });
-
-    return res;
 }
 
-export async function editListing(id, listing, captchaToken) {
-    const res = await fetch(`${host}/me/listings/${id}/edit`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json',
-            'Captcha': captchaToken
-        }),
-        method: "POST",
-        body: JSON.stringify(listing)
+export async function editListing(id, listingObj, captchaToken) {
+    return sendRequest(`${host}/me/listings/${id}/edit`, RequestMethod.POST, listingObj, captchaToken).then(res => {
+        return {
+            success: res.success
+        };
     });
-
-    return res;
 }
 
 export async function getMyListingById(id) {
-    const res = await fetch(`${host}/me/listings/${id}`, {
-        headers: getHeaders()
+    return sendRequest(`${host}/me/listings/${id}`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function getMyListings(searchTerm) {
-    const res = await fetch(`${host}users/me/listings${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json'
-        })
+    return sendRequest(`${host}users/me/listings${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function getAllMyListings() {
-    const res = await fetch(`${host}users/me/listings?size=1000000`, {
-        headers: getHeaders()
+    return sendRequest(`${host}users/me/listings?size=1000000`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function getMyReservations(searchTerm, size = 20) {
-    const res = await fetch(`${host}users/me/reservations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json'
-        }),
+    return sendRequest(`${host}users/me/reservations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function getMyTrips(searchTerm, size = 20) {
-    const res = await fetch(`${host}users/me/trips${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json'
-        }),
+    return sendRequest(`${host}users/me/trips${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, RequestMethod.GET).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function publishCalendarSlot(listingId, slotObj, captchaToken) {
-    const res = await fetch(`${host}listings/${listingId}/calendar`, {
-        headers: getHeaders({
-            'Content-Type': 'application/json',
-            'Captcha': captchaToken
-        }),
-        method: "POST",
-        body: JSON.stringify(slotObj)
-    })
-
-    return res;
+    return sendRequest(`${host}listings/${listingId}/calendar`, RequestMethod.POST, slotObj, captchaToken).then(res => {
+        return {
+            success: res.success
+        }
+    });
 }
 
 export async function cancelReservation(id, captchaToken) {
-    const res = await fetch(`${host}reservations/${id}/cancel`, {
-        headers: getHeaders({
-            'Captcha': captchaToken
-        }),
-        method: "POST"
+    return sendRequest(`${host}reservations/${id}/cancel`, RequestMethod.POST, '', captchaToken).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function acceptReservation(id, captchaToken) {
-    const res = await fetch(`${host}reservations/${id}/accept`, {
-        headers: getHeaders({
-            'Captcha': captchaToken
-        }),
-        method: "POST"
+    return sendRequest(`${host}reservations/${id}/accept`, RequestMethod.POST, '', captchaToken).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 export async function cancelTrip(id, captchaToken) {
-    const res = await fetch(`${host}trips/${id}/cancel`, {
-        headers: getHeaders({
-            'Captcha': captchaToken
-        }),
-        method: "POST"
+    return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, '', captchaToken).then(res => {
+        return res.response.json();
     });
-
-    return res.json();
 }
 
 /**
@@ -255,14 +231,7 @@ export async function cancelTrip(id, captchaToken) {
 export async function getCalendarByListingIdAndDateRange(listingId, startDate, endDate, toCode = null, page = 0, results = 20) {
     const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth() + 1}/${startDate.getUTCFullYear()}`;
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth() + 1}/${endDate.getUTCFullYear()}`;
-    const res = await fetch(`${host}calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}${toCode !== null ? "&toCode=" + toCode : ''}`);
-    return res.json();
-}
-
-function getHeaders(headers = null) {
-    headers = headers || {};
-    if (localStorage.getItem('.auth.lockchain')) {
-        headers["Authorization"] = localStorage[".auth.lockchain"];
-    }
-    return headers;
+    return sendRequest(`${host}calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}${toCode !== null ? "&toCode=" + toCode : ''}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
 }

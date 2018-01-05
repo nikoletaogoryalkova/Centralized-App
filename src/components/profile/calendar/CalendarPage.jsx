@@ -154,7 +154,7 @@ class CalendarPage extends React.Component {
             available: this.state.available
         }
         publishCalendarSlot(listingId, slotInfo, captchaToken).then((res) => {
-            if (res.status === 200) {
+            if (res.success) {
                 this.setState({ selectedDay: null, date: null, price: null, available: 'true' });
                 this.componentDidMount();
             }

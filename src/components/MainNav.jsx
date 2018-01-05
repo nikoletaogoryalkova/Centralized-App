@@ -79,8 +79,8 @@ class MainNav extends React.Component {
             password: this.state.signUpPassword
         }
 
-        register(JSON.stringify(user), captchaToken).then((res) => {
-            if (res.status === 200) {
+        register(user, captchaToken).then((res) => {
+            if (res.success) {
                 this.closeSignUp();
                 this.openLogIn();
             }
@@ -99,9 +99,9 @@ class MainNav extends React.Component {
             password: this.state.loginPassword
         }
 
-        login(JSON.stringify(user), captchaToken).then((res) => {
+        login(user, captchaToken).then((res) => {
             let responseJson = res.json();
-            if (res.status === 200) {
+            if (res.success) {
                 responseJson.then((data) => {
                     localStorage[".auth.lockchain"] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
