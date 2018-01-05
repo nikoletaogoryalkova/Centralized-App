@@ -9,7 +9,7 @@ import Footer from '../Footer';
 import Lightbox from 'react-images';
 import moment from 'moment';
 
-import { getPropertyById, getCalendarByListingIdAndDateRange, getMyReservations } from '../../requester';
+import { getPropertyById, getCalendarByListingIdAndDateRange } from '../../requester';
 import { parse } from 'query-string';
 
 class PropertyPage extends React.Component {

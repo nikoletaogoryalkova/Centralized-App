@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 import MyReservationsTable from './MyReservationsTable';
-import MyReservationsTableRow from './MyReservationsTableRow';
-import { Table } from 'react-bootstrap';
 import Pagination from 'rc-pagination';
 import { cancelReservation, acceptReservation } from "../../../requester";
 import { NotificationManager } from 'react-notifications';

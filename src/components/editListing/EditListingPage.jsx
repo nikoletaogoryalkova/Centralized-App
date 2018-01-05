@@ -15,7 +15,6 @@ import CreateListingDescription from './placeDescription/CreateListingDescriptio
 import CreateListingPhotos from './placeDescription/CreateListingPhotos';
 import CreateListingHouseRules from './guestSettings/CreateListingHouseRules';
 import CreateListingChecking from './guestSettings/CreateListingChecking';
-import CreateListingCancellation from './guestSettings/CreateListingCancellation';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
@@ -126,7 +125,6 @@ class EditListingPage extends React.Component {
 
         this.setState({listingId: this.props.match.params.id})
 
-        console.log(this.props.match.params.id);
         getMyListingById(this.props.match.params.id).then(data => {
             this.setState({
                 type: data.listingType.toString(),
@@ -162,7 +160,6 @@ class EditListingPage extends React.Component {
                 defaultDailyPrice: data.defaultDailyPrice,
                 currency: data.currency,
             })
-            console.log(data);
         });
     };
 

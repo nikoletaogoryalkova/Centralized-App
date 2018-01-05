@@ -9,10 +9,6 @@ import PropertyReservation from './PropertyReservation';
 import PropertyCalendar from "./PropertyCalendar";
 
 class PropertyInfo extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     getAmenities(amenities) {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
@@ -40,16 +36,6 @@ class PropertyInfo extends React.Component {
         if (calendar === null) {
             return <div>Loading...</div>
         }
-        const contentDecorator = ({date, view}) => {
-            if (view !== 'month') return null;
-            for (let dayInfo of calendar) {
-                let dateCandidate = new Date(dayInfo.date);
-                if (dateCandidate - date === 0) {
-                    if (!dayInfo.available) return null;
-                    return <p style={{color: "blue" }}>{localStorage["currencySign"]} {dayInfo.prices[localStorage["currency"]]}</p>;
-                }
-            }
-        };
         return (
             <section id="hotel-info">
                 <div className="container">

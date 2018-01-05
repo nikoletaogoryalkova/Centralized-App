@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Modal, Navbar, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Config } from '../config';
@@ -130,8 +130,6 @@ class MainNav extends React.Component {
     }
 
     render() {
-        let captcha;
-
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                 <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">

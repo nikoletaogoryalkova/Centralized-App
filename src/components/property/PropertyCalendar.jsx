@@ -1,10 +1,7 @@
 import React from 'react';
 
-import { withRouter } from 'react-router-dom';
-
 import BigCalendar from "react-big-calendar";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById } from "../../requester";
 import moment from 'moment';
 
 
@@ -13,7 +10,6 @@ export default class PropertyCalendar extends React.Component {
         const CustomToolbar = (toolbar) => {
             const goToBack = () => { toolbar.onNavigate('PREV'); };
             const goToNext = () => { toolbar.onNavigate('NEXT'); };
-            const goToCurrent = () => { toolbar.onNavigate('TODAY'); };
 
             const label = () => {
                 const date = moment(toolbar.date);
@@ -72,7 +68,7 @@ export default class PropertyCalendar extends React.Component {
 
             let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > moment().add(89, 'days'));
 
-            let currentDay = this.props.prices.find(p => p.start.diff(value) == 0);
+            let currentDay = this.props.prices.find(p => p.start.diff(value) === 0);
             if((currentDay && !currentDay.available) || currentDay === undefined) {
                 isPastDate = true;
             }

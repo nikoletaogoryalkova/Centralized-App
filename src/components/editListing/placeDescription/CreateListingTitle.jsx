@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
-import Textbox from '../Textbox';
 
 export default class CreateListingTitle extends React.Component {
     render() {

@@ -8,7 +8,7 @@ import Footer from '../../Footer';
 
 import { getMyListings } from '../../../requester'
 
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationContainer } from 'react-notifications';
 
 export default class MyListingsPage extends React.Component {
     constructor(props) {

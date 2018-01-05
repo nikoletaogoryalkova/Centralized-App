@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { withRouter } from 'react-router-dom';
-
-import BigCalendar from "react-big-calendar";
+import BigCalendar from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { getCalendarByListingIdAndDateRange, getMyReservations, getPropertyById } from "../../../requester";
 import moment from 'moment';
 import CalendarAside from './CalendarAside';
+
 import CalendarAsideStatic from './CalendarAsideStatic';
 import CustomEvent from './CustomEvent';
 
@@ -16,7 +14,6 @@ export default class Calendar extends React.Component {
         const CustomToolbar = (toolbar) => {
             const goToBack = () => { toolbar.onNavigate('PREV'); };
             const goToNext = () => { toolbar.onNavigate('NEXT'); };
-            const goToCurrent = () => { toolbar.onNavigate('TODAY'); };
 
             const label = () => {
                 const date = moment(toolbar.date);

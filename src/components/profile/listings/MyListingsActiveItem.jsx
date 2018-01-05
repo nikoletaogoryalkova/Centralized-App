@@ -2,9 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import ListingRating from '../../listings/ListingRating';
 
-import RatingFeedback from '../RatingFeedback';
-
-export default class MyListingsPage extends React.Component {
+export default class MyListingsActiveItem extends React.Component {
     render() {
         return (
             <ul className="profile-mylistings-active">

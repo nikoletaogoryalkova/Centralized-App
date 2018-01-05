@@ -15,7 +15,6 @@ import CreateListingDescription from './placeDescription/CreateListingDescriptio
 import CreateListingPhotos from './placeDescription/CreateListingPhotos';
 import CreateListingHouseRules from './guestSettings/CreateListingHouseRules';
 import CreateListingChecking from './guestSettings/CreateListingChecking';
-import CreateListingCancellation from './guestSettings/CreateListingCancellation';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 

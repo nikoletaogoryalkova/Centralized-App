@@ -1,18 +1,14 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-import BigCalendar from "react-big-calendar";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {
     getCalendarByListingIdAndDateRange,
     getMyReservations,
     getPropertyById,
-    publishCalendarSlot,
-    getCalendarSlotByListingIdAndStartDate,
-    getAllMyListings
+    publishCalendarSlot
 } from "../../../requester";
 import moment from 'moment';
-import CalendarAside from './CalendarAside';
 import Calendar from './Calendar';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
@@ -93,7 +89,7 @@ class CalendarPage extends React.Component {
 
             getMyReservations()
                 .then(res => {
-                    let reservations = res.content.filter(r => r.listingId == this.props.match.params.id);
+                    let reservations = res.content.filter(r => r.listingId === this.props.match.params.id);
                     let events = [];
                     for (let reservation of reservations) {
                         let event = {

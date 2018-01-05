@@ -3,8 +3,6 @@ import React from 'react';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 import DashboardPending from './DashboardPending';
-import DashboardReviews from './DashboardReviews';
-import DashboardOverview from './DashboardOverview';
 import {getMyReservations, getMyTrips} from "../../../requester";
 
 export default class DashboardPage extends React.Component {

@@ -3,7 +3,6 @@ import moment from "moment";
 
 export default class DashboardPending extends React.Component {
     render() {
-        console.log(this.props.reservations);
         return (
             <section id="profile-dashboard-pending">
                 <div className="container">
@@ -31,7 +30,7 @@ export default class DashboardPending extends React.Component {
                                     <span className="cnt block">{moment(new Date(reservation.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(reservation.endDate)).format("DD MMM, YYYY")}</span>
                                 </li>
                                 <li>
-                                    <span className="cnt block">{parseInt((new Date(reservation.endDate) - new Date(reservation.startDate)) / (1000 * 60 * 60 * 24))} nights &bull; {reservation.guests} guests</span>
+                                    <span className="cnt block">{parseInt((new Date(reservation.endDate) - new Date(reservation.startDate)) / (1000 * 60 * 60 * 24), 10)} nights &bull; {reservation.guests} guests</span>
                                 </li>
                                 <li>
                                     <span className="cnt block">

@@ -6,7 +6,6 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 import { parse } from 'query-string';
 import { requestBooking } from '../../requester';
-import { Config } from "../../config";
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -69,11 +68,7 @@ class PropertyReservation extends React.Component {
                     this.setState({ error: "Please sign-in/register to able to make bookings" });
                 } else {
                     res.body.then(data => {
-                        console.log(data);
                         if (data.success) {
-                            console.log(data);
-                            console.log(this.props);
-                            console.log(this.props.history);
                             this.props.history.push("/profile/trips?id=" + data.id);
                         }else {
                             this.setState({ error: data.message });
@@ -98,8 +93,6 @@ class PropertyReservation extends React.Component {
 
             return false;
         };
-
-        let captcha;
 
         const cleaningFee = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees[this.props.currency], 10) : 0;
         const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);

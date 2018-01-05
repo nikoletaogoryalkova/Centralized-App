@@ -4,11 +4,6 @@ import moment from 'moment';
 import {Config} from '../../../config';
 
 export default class CustomEvent extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
-
     render() {
         let popoverClickRootClose = (
             <Popover id="popover-trigger-click-root-close" style={{ zIndex: 10000, color: '#000000' }}>

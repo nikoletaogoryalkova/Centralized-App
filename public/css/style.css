@@ -724,8 +724,8 @@ footer .select-curency .caret {
 }
 
 #main-nav.home_page {
-    background-size: cover;
     background: transparent url(../images/bgr-home.jpg) no-repeat top center;
+    background-size: cover;
     min-height: 500px;
 }
 

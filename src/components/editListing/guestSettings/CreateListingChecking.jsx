@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
-import Dropdown from '../Dropdown';
 
 export default class CreateListingChecking extends React.Component {
     render() {

@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
-import Textbox from '../Textbox';
 
 import { getCities } from '../../../requester';
 
