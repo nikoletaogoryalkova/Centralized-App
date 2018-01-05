@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
 import Textbox from '../Textbox';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 import { getCurrencies } from '../../../requester.js';
 
@@ -74,17 +73,10 @@ export default class CreateListingPrice extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/create/checking" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/edit/checking" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => { e.preventDefault(); this.captcha.execute() }} id="btn-continue">Finish</NavLink>
-                        
-                        <ReCAPTCHA
-                                ref={el => this.captcha = el}
-                                size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.props.createListing(token)}
-                            />
+                        <NavLink to="/profile/listings/edit/price" className="btn btn-primary btn-next" onClick={this.props.createListing} id="btn-continue">Finish</NavLink>
                     </div>
                 </div>
             </div >

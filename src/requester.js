@@ -138,6 +138,27 @@ export async function createListing(listingObj, captchaToken) {
     return res;
 }
 
+export async function editListing(id, listing, captchaToken) {
+    const res = await fetch(`${host}/me/listings/${id}/edit`, {
+        headers: getHeaders({
+            'Content-Type': 'application/json',
+            'Captcha': captchaToken
+        }),
+        method: "POST",
+        body: JSON.stringify(listing)
+    });
+
+    return res;
+}
+
+export async function getMyListingById(id) {
+    const res = await fetch(`${host}/me/listings/${id}`, {
+        headers: getHeaders()
+    });
+
+    return res.json();
+}
+
 export async function getMyListings() {
     const res = await fetch(`${host}users/me/listings`, {
         headers: getHeaders()
@@ -243,4 +264,3 @@ function getHeaders(headers = null) {
     }
     return headers;
 }
-

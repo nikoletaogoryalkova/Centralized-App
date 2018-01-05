@@ -44,7 +44,7 @@ export default class MyListingsPage extends React.Component {
 
                         <br />
                         <div className="my-listings">
-                            <Link className="btn btn-primary create-listing" to="/listings/create">Add new listing</Link>
+                            <Link className="btn btn-primary create-listing" to="/profile/listings/create">Add new listing</Link>
                         </div>
                     </div>
 

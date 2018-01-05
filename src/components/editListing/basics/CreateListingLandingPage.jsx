@@ -57,7 +57,7 @@ export default class CreateListingLandingPage extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <NavLink to="/profile/listings/create/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                                <NavLink to="/profile/listings/edit/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
                             </div>
                         </div>
                     </div>

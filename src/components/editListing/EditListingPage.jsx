@@ -19,7 +19,7 @@ import CreateListingCancellation from './guestSettings/CreateListingCancellation
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory, createListing } from '../../requester';
+import { getCountries, getAmenitiesByCategory, editListing, getMyListingById } from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -28,11 +28,13 @@ import update from 'react-addons-update';
 const host = Config.getValue("apiHost");
 const LOCKCHAIN_UPLOAD_URL = `${host}images/upload`;
 
-class CreateListingPage extends React.Component {
+class EditListingPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+
+            listingId: 0,
 
             countries: [],
             categories: [],
@@ -56,14 +58,6 @@ class CreateListingPage extends React.Component {
 
             // facilities
             facilities: new Set(),
-
-            // safety amenities
-            smokeDetector: false,
-            carbonMonoxideDetector: false,
-            firstAidKit: false,
-            safetyCard: false,
-            fireExtinguisher: false,
-            lockOnBedroomDoor: false,
 
             // location
             billingCountry: '1',
@@ -128,6 +122,47 @@ class CreateListingPage extends React.Component {
 
         getAmenitiesByCategory().then(data => {
             this.setState({ categories: data.content });
+        });
+
+        this.setState({listingId: this.props.match.params.id})
+
+        console.log(this.props.match.params.id);
+        getMyListingById(this.props.match.params.id).then(data => {
+            this.setState({
+                type: data.listingType.toString(),
+                country: data.country,
+                propertyType: data.propertyType.toString(),
+                // roomType: no room type,
+                dedicatedSpace: data.details.dedicatedSpace,
+                propertySize: data.details.size,
+                guestsIncluded: data.guestsIncluded,
+                bedroomCount: data.details.bedroomsCount,
+                // bedrooms: no bedrooms,
+                // bathrooms: no bathrooms,
+                facilities: new Set(data.amenities),
+                billingCountry: data.details.billingCountry,
+                streetAddress: data.description.street,
+                city: data.city,
+                apartment: data.details.apartment,
+                // zipCode: no zip code,
+                name: data.title,
+                // description: method for split,
+                // neighborhood: method for split,
+                // photos: "",
+                suitableForChildren: data.details.suitableForChildren,
+                suitableForInfants: data.details.suitableForInfants,
+                suitableForPets: data.details.suitableForPets,
+                smokingAllowed: data.details.smokingAllowed,
+                eventsAllowed: data.details.eventsAllowed,
+                // otherRules: method - house rules,
+                checkinFrom: data.checkinStart,
+                checkinTo: data.checkinEnd,
+                checkoutFrom: data.checkoutStart,
+                checkoutTo: data.checkoutEnd,
+                defaultDailyPrice: data.defaultDailyPrice,
+                currency: data.currency,
+            })
+            console.log(data);
         });
     };
 
@@ -324,7 +359,7 @@ class CreateListingPage extends React.Component {
             currency: this.state.currency,
         }
 
-        createListing(listing, captchaToken).then((res) => {
+        editListing(this.state.listingId, listing, captchaToken).then((res) => {
             if (res.status === 200 || res.status === 202) {
                 this.setState({loading: false});
                 this.props.history.push('/profile/listings');
@@ -389,27 +424,28 @@ class CreateListingPage extends React.Component {
                     <MainNav />
                 </nav>
 
-                {this.props.location.pathname !== "/profile/listings/create" && this.props.location.pathname !== "/profile/listings/create/landing" &&
+                {this.props.location.pathname !== "/profile/listings/edit/landing" &&
                     <NavCreateListing />
                 }
 
-                <Switch>
-                    <Redirect exact path="/profile/listings/create/" to="/profile/listings/create/landing" />
+                <Redirect exact path="/profile/listings/edit/:id" to="/profile/listings/edit/landing"/>
 
-                    <Route exact path="/profile/listings/create/landing" render={() =>
+                <Switch>
+
+                    <Route exact path={`/profile/listings/edit/landing`} render={() =>
                         <CreateListingLandingPage
                             values={this.state}
                             onChange={this.onChange} />}
                     />
 
-                    <Route exact path="/profile/listings/create/placetype" render={() =>
+                    <Route exact path="/profile/listings/edit/placetype" render={() =>
                         <CreateListingPlaceType
                             values={this.state}
                             toggleCheckbox={this.toggleCheckbox}
                             onChange={this.onChange} />}
                     />
 
-                    <Route exact path="/profile/listings/create/accommodation" render={() =>
+                    <Route exact path="/profile/listings/edit/accommodation" render={() =>
                         <CreateListingAccommodation
                             values={this.state}
                             updateCounter={this.updateCounter}
@@ -417,48 +453,48 @@ class CreateListingPage extends React.Component {
                             updateBedCount={this.updateBedCount}
                         />} />
 
-                    <Route exact path="/profile/listings/create/facilities" render={() =>
+                    <Route exact path="/profile/listings/edit/facilities" render={() =>
                         <CreateListingFacilities
                             values={this.state}
                             toggle={this.toggleFacility} />} />
 
-                    <Route exact path="/profile/listings/create/safetyamenities" render={() =>
+                    <Route exact path="/profile/listings/edit/safetyamenities" render={() =>
                         <CreateListingSafetyAmenities
                             values={this.state}
                             toggle={this.toggleFacility} />} />
 
-                    <Route exact path="/profile/listings/create/location" render={() =>
+                    <Route exact path="/profile/listings/edit/location" render={() =>
                         <CreateListingLocation
                             values={this.state}
                             updateDropdown={this.onChange}
                             updateTextbox={this.onChange}
                             resetCity={this.resetCity} />} />
 
-                    <Route exact path="/profile/listings/create/title" render={() =>
+                    <Route exact path="/profile/listings/edit/title" render={() =>
                         <CreateListingTitle
                             values={this.state}
                             updateTextbox={this.onChange} />} />
 
-                    <Route exact path="/profile/listings/create/description" render={() =>
+                    <Route exact path="/profile/listings/edit/description" render={() =>
                         <CreateListingDescription
                             values={this.state}
                             updateTextarea={this.onChange} />} />
 
-                    <Route exact path="/profile/listings/create/photos" render={() =>
+                    <Route exact path="/profile/listings/edit/photos" render={() =>
                         <CreateListingPhotos
                             values={this.state}
                             onImageDrop={this.onImageDrop}
                             removePhoto={this.removePhoto}
                         />} />
 
-                    <Route exact path="/profile/listings/create/houserules" render={() =>
+                    <Route exact path="/profile/listings/edit/houserules" render={() =>
                         <CreateListingHouseRules
                             values={this.state}
                             onChange={this.onChange}
                             addRule={this.addHouseRule}
                             removeRule={this.removeHouseRule} />} />
 
-                    <Route exact path="/profile/listings/create/checking" render={() =>
+                    <Route exact path="/profile/listings/edit/checking" render={() =>
                         <CreateListingChecking
                             values={this.state}
                             updateDropdown={this.onChange} />} />
@@ -466,7 +502,7 @@ class CreateListingPage extends React.Component {
                     {/* <Route exact path="/listings/create/cancellation" render={() =>
                         <CreateListingCancellation />} /> */}
 
-                    <Route exact path="/profile/listings/create/price" render={() =>
+                    <Route exact path="/profile/listings/edit/price" render={() =>
                         <CreateListingPrice
                             values={this.state}
                             updateNumber={this.onChange}
@@ -481,4 +517,4 @@ class CreateListingPage extends React.Component {
     }
 }
 
-export default withRouter(CreateListingPage);
+export default withRouter(EditListingPage);
