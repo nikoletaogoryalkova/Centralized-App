@@ -74,7 +74,7 @@ export default class MyTripsTable extends React.Component {
                     ref={el => this.captcha = el}
                     size="invisible"
                     sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                    onChange={token => { this.props.onTripCancel(this.state.selectedId, token); this.captcha.reset() }}
+                    onChange={token => { this.props.onTripCancel(this.state.selectedId, token);}}
                 />
             </div>
         );
