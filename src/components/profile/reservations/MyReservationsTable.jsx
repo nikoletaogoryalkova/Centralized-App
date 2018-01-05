@@ -43,7 +43,7 @@ export default class MyReservationsTable extends React.Component {
                 </div>
                 {this.props.reservations.map(reservation => {
                     return (
-                        <div className="row reservation-box">
+                        <div key={reservation.id} className="row reservation-box">
                             <div className="col-md-1">
                                 <div className="reservation-image-box">
                                     <span className="session-nav-user-thumb"></span>

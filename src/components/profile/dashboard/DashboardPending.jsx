@@ -18,7 +18,7 @@ export default class DashboardPending extends React.Component {
                     </ul>
                     {this.props.reservations.map(reservation => {
                         return (
-                            <ul className="profile-pending-list profile-pending-item">
+                            <ul key={reservation.id} className="profile-pending-list profile-pending-item">
                                 <span className="session-nav-user-thumb"></span>
                                 <li>
                                     <span className="cnt block">
@@ -60,7 +60,7 @@ export default class DashboardPending extends React.Component {
                     </ul>
                     {this.props.trips.map(trip => {
                         return (
-                            <ul className="profile-pending-list profile-pending-item">
+                            <ul key={trip.id} className="profile-pending-list profile-pending-item">
                                 <span className="session-nav-user-thumb"></span>
                                 <li>
                                     <span className="cnt block">
