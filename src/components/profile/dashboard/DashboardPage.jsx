@@ -17,9 +17,15 @@ export default class DashboardPage extends React.Component {
     }
 
     componentDidMount() {
-        getMyReservations('?page=0', 5).then((data) => {
-            getMyTrips('?page=0', 5).then((data) => {
-                this.setState({trips: data.content, loading: false, reservations: data.content, totalReservations: data.totalElements})
+        getMyReservations('?page=0', 5).then((dataReservations) => {
+            getMyTrips('?page=0', 5).then((dataTrips) => {
+                this.setState({
+                        trips: dataTrips.content,
+                        loading: false,
+                        reservations: dataReservations.content,
+                        totalReservations: dataReservations.totalElements
+                    }
+                )
             });
         })
 
@@ -32,7 +38,8 @@ export default class DashboardPage extends React.Component {
         return (
             <div>
                 <ProfileHeader />
-                <DashboardPending reservations={this.state.reservations} trips={this.state.trips} totalReservations={this.state.totalReservations} />
+                <DashboardPending reservations={this.state.reservations} trips={this.state.trips}
+                                  totalReservations={this.state.totalReservations}/>
                 {/*<DashboardReviews />*/}
                 {/*<DashboardOverview />*/}
                 <br />
