@@ -44,7 +44,7 @@ class ListingSearch extends React.Component {
     }
 
     componentDidMount() {
-        getCountries().then(data => {
+        getCountries(true).then(data => {
             this.setState({ countries: data.content })
         });
 

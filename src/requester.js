@@ -54,14 +54,26 @@ export function getListings() {
     });
 }
 
-export async function getCountries() {
-    return sendRequest(`${host}countries?size=10000&sort=name,asc`, RequestMethod.GET).then(res => {
+export async function getCountries(hasListings = false) {
+    let url = `${host}countries?`;
+    if (hasListings) {
+        url += "hasListings=true&";
+    }
+    url += "size=10000&sort=name,asc";
+
+    return sendRequest(url, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
 
-export async function getCities(countryId) {
-    return sendRequest(`${host}countries/${countryId}/cities?size=10000&sort=name,asc`, RequestMethod.GET).then(res => {
+export async function getCities(countryId, hasListings = false) {
+    let url = `${host}countries/${countryId}/cities?`;
+    if (hasListings) {
+        url += "hasListings=true&";
+    }
+    url += "size=10000&sort=name,asc";
+
+    return sendRequest(url, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
