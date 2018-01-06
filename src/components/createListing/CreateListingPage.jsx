@@ -328,7 +328,6 @@ class CreateListingPage extends React.Component {
                 this.setState({loading: false});
                 this.props.history.push('/profile/listings');
                 NotificationManager.success('Successfully updated your profile', 'Create new listing');
-                
             }
             else {
                 this.setState({loading: false});

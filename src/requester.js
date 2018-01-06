@@ -10,8 +10,8 @@ const RequestMethod = {
 
 function getHeaders(headers = null) {
     headers = headers || {};
-    if (localStorage.getItem('.auth.lockchain')) {
-        headers["Authorization"] = localStorage[".auth.lockchain"];
+    if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
+        headers["Authorization"] = localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"];
     }
     return headers;
 }
@@ -140,9 +140,11 @@ export async function register(userObj, captchaToken) {
 }
 
 export async function login(userObj, captchaToken) {
-    return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken).then(res => {
+    return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {
+    }).then(res => {
         return {
-            success: res.success
+            body: res.response,
+            success: (""+res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -150,7 +152,7 @@ export async function login(userObj, captchaToken) {
 export async function createListing(listingObj, captchaToken) {
     return sendRequest(`${host}listings`, RequestMethod.POST, listingObj, captchaToken).then(res => {
         return {
-            success: res.success
+            success: (""+res.response.status).indexOf("20") === 0
         };
     });
 }

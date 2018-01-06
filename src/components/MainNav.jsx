@@ -62,7 +62,10 @@ class MainNav extends React.Component {
     }
 
     openLogIn(e) {
-        e.preventDefault();
+        if (e) {
+            e.preventDefault();
+        }
+
         this.setState({ showLoginModal: true })
     }
 
@@ -100,22 +103,18 @@ class MainNav extends React.Component {
         }
 
         login(user, captchaToken).then((res) => {
-            let responseJson = res.json();
             if (res.success) {
-                responseJson.then((data) => {
-                    localStorage[".auth.lockchain"] = data.Authorization;
+                res.body.json().then((data) => {
+                    localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
-                    localStorage[".auth.username"] = user.email;
+                    localStorage[Config.getValue("domainPrefix") + ".auth.username"] = user.email;
                     this.setState({ userName: user.email });
 
                     this.closeLogIn();
                 })
-            }
-            else {
-                responseJson.then((data) => {
-                    this.setState({ loginError: data.message });
-                })
+            } else {
+                this.setState({ loginError: "Invalid username or password" });
             }
         })
     }
@@ -123,8 +122,8 @@ class MainNav extends React.Component {
     logout(e) {
         e.preventDefault();
 
-        localStorage.removeItem(".auth.lockchain");
-        localStorage.removeItem(".auth.username");
+        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
+        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
 
         this.setState({ userName: '' })
 
@@ -141,7 +140,7 @@ class MainNav extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
-                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.login(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="mail" />
                                 <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
@@ -154,12 +153,12 @@ class MainNav extends React.Component {
                                 <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
                             </div>
 
-                            <ReCAPTCHA
-                                ref={el => this.captcha = el}
-                                size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.login(token)}
-                            />
+                            {/*<ReCAPTCHA*/}
+                                {/*ref={el => this.captcha = el}*/}
+                                {/*size="invisible"*/}
+                                {/*sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"*/}
+                                {/*onChange={token => this.login(token)}*/}
+                            {/*/>*/}
 
                             <button type="submit" className="btn btn-primary">Login</button>
                             <div className="clearfix"></div>
@@ -223,11 +222,11 @@ class MainNav extends React.Component {
                     </Navbar.Header>
 
                     <Navbar.Collapse>
-                        {localStorage[".auth.lockchain"] ?
+                        {localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"] ?
                             <Nav>
                                 <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                 <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
-                                <NavDropdown title={localStorage[".auth.username"]} id="main-nav-dropdown">
+                                <NavDropdown title={localStorage[Config.getValue("domainPrefix") + ".auth.username"]} id="main-nav-dropdown">
                                     <MenuItem componentClass={Link} className="header" href="/profile/dashboard" to="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
                                     <MenuItem componentClass={Link} href="/profile/me/edit" to="/profile/me/edit">Edit Profile</MenuItem>
                                     <MenuItem componentClass={Link} href="/profile/dashboard/#profile-dashboard-reviews" to="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>

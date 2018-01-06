@@ -23,6 +23,7 @@ import observer from '../services/observer';
 
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
+import {Config} from "../config";
 
 class App extends React.Component {
     constructor(props) {
@@ -72,7 +73,7 @@ class App extends React.Component {
     }
 
     isAuthenticated() {
-        let token = localStorage.getItem('.auth.lockchain');
+        let token = localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain');
         if(token) {
             return true;
         }
