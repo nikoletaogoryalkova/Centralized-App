@@ -1,0 +1,42 @@
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-nav > .open > a:hover {
+  background: none;
+}
+.navbar-default .navbar-nav .open .dropdown-menu > li.header > a {
+  color: #FFFFFF;
+}
+.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.dropdown-menu li a {
+  display: block;
+  padding: 20px 10em 20px 20px;
+  font-size: 18px;
+}
+.dropdown-menu li a:focus {
+  background: none;
+}
+.dropdown-menu li.header {
+  background-color: #A2C5BF;
+  position: relative;
+}
+.dropdown-menu li.header a {
+  color: #FFFFFF;
+}
+.dropdown-menu li.header a:hover {
+  background-color: #A2C5BF;
+}
+.dropdown-menu li.header img {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #FFFFFF;
+}
+@media screen and (max-width: 768px) {
+  .dropdown-menu li.header img {
+    display: none;
+  }
+}

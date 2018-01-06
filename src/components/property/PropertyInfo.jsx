@@ -6,7 +6,7 @@ import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyReview from './PropertyReview';
 import PropertyReservation from './PropertyReservation';
 
-import Calendar from "react-calendar";
+import PropertyCalendar from "./PropertyCalendar";
 
 class PropertyInfo extends React.Component {
     getAmenities(amenities) {
@@ -36,21 +36,12 @@ class PropertyInfo extends React.Component {
         if (calendar === null) {
             return <div>Loading...</div>
         }
-        const contentDecorator = ({date, view}) => {
-            if (view !== 'month') return null;
-            for (let dayInfo of calendar) {
-                let dateCandidate = new Date(dayInfo.date);
-                if (dateCandidate - date === 0) {
-                    if (!dayInfo.available) return null;
-                    return <p style={{color: "blue" }}>{localStorage["currencySign"]} {dayInfo.prices[localStorage["currency"]]}</p>;
-                }
-            }
-        };
         return (
             <section id="hotel-info">
                 <div className="container">
                     <div className="hotel-content" id="overview">
-                        <Calendar value={new Date()} tileContent={contentDecorator} />
+
+                        <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
                         <h1> {this.props.data.name} </h1>
                         <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
                         <div className="clearfix" />

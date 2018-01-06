@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Config } from '../config';
 import { register, login } from '../requester';
@@ -44,7 +45,8 @@ class MainNav extends React.Component {
         })
     }
 
-    openSignUp() {
+    openSignUp(e) {
+        e.preventDefault();
         this.setState({ showSignUpModal: true });
     }
 
@@ -59,7 +61,11 @@ class MainNav extends React.Component {
         })
     }
 
-    openLogIn() {
+    openLogIn(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
         this.setState({ showLoginModal: true })
     }
 
@@ -67,8 +73,7 @@ class MainNav extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    register(e) {
-        e.preventDefault();
+    register(captchaToken) {
 
         let user = {
             email: this.state.signUpEmail,
@@ -77,8 +82,8 @@ class MainNav extends React.Component {
             password: this.state.signUpPassword
         }
 
-        register(JSON.stringify(user)).then((res) => {
-            if (res.status === 200) {
+        register(user, captchaToken).then((res) => {
+            if (res.success) {
                 this.closeSignUp();
                 this.openLogIn();
             }
@@ -91,64 +96,69 @@ class MainNav extends React.Component {
         });
     }
 
-    login(e) {
-        e.preventDefault();
-
+    login(captchaToken) {
         let user = {
             email: this.state.loginEmail,
             password: this.state.loginPassword
         }
 
-        login(JSON.stringify(user)).then((res) => {
-            let responseJson = res.json();
-            if (res.status === 200) {
-                responseJson.then((data) => {
-                    localStorage[".auth.lockchain"] = data.Authorization;
+        login(user, captchaToken).then((res) => {
+            if (res.success) {
+                res.body.json().then((data) => {
+                    localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
-                    localStorage[".auth.username"] = user.email;
+                    localStorage[Config.getValue("domainPrefix") + ".auth.username"] = user.email;
                     this.setState({ userName: user.email });
 
                     this.closeLogIn();
                 })
-            }
-            else {
-                responseJson.then((data) => {
-                    this.setState({ loginError: data.message });
-                })
+            } else {
+                this.setState({ loginError: "Invalid username or password" });
             }
         })
     }
 
-    logout() {
-        localStorage.removeItem(".auth.lockchain");
-        localStorage.removeItem(".auth.username");
+    logout(e) {
+        e.preventDefault();
+
+        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
+        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
 
         this.setState({ userName: '' })
-        
+
         this.props.history.push('/');
     }
 
     render() {
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
-                <Modal id="myModal_login" show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade">
+                <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Login</h1>
                         <button type="button" className="close" onClick={this.closeLogIn}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
-                        <form onSubmit={this.login}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.login(); }}>
                             <div className="form-group">
-                                <input type="mail" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" id="login-mail" placeholder="Email address" />
+                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="mail" />
+                                <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
                             </div>
                             <div className="form-group">
-                                <input type="password" name="loginPassword" value={this.state.loginPassword} onChange={this.onChange} className="form-control" id="login-password" placeholder="Password" />
+                                <img src={Config.getValue("basePath") + "images/login-pass.png"} alt="pass" />
+                                <input type="password" name="loginPassword" value={this.state.loginPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
                             <div className="checkbox login-checkbox pull-left">
                                 <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
                             </div>
+
+                            {/*<ReCAPTCHA*/}
+                                {/*ref={el => this.captcha = el}*/}
+                                {/*size="invisible"*/}
+                                {/*sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"*/}
+                                {/*onChange={token => this.login(token)}*/}
+                            {/*/>*/}
 
                             <button type="submit" className="btn btn-primary">Login</button>
                             <div className="clearfix"></div>
@@ -159,26 +169,37 @@ class MainNav extends React.Component {
                     </Modal.Body>
                 </Modal>
 
-                <Modal id="myModal_signup" show={this.state.showSignUpModal} onHide={this.closeSignUp} className="modal fade">
+                <Modal show={this.state.showSignUpModal} onHide={this.closeSignUp} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Sign up</h1>
                         <button type="button" className="close" onClick={this.closeSignUp}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.signUpError !== null ? <div className="error">{this.state.signUpError}</div> : ''}
-                        <form onSubmit={this.register}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
                             <div className="form-group">
-                                <input type="mail" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" id="signup-mail" placeholder="Email address" />
+                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
+                                <input type="email" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
                             </div>
                             <div className="form-group">
-                                <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" id="signup-firstname" placeholder="First Name" />
+                                <img src={Config.getValue("basePath") + "images/login-user.png"} alt="user" />
+                                <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" placeholder="First Name" />
                             </div>
                             <div className="form-group">
-                                <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" id="signup-lastname" placeholder="Last Name" />
+                                <img src={Config.getValue("basePath") + "images/login-user.png"} alt="user" />
+                                <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
                             </div>
                             <div className="form-group">
-                                <input type="password" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" id="signup-password" placeholder="Password" />
+                                <img src={Config.getValue("basePath") + "images/login-pass.png"} alt="pass" />
+                                <input type="password" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
+
+                            <ReCAPTCHA
+                                ref={el => this.captcha = el}
+                                size="invisible"
+                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                onChange={token => this.register(token)}
+                            />
 
                             <button type="submit" className="btn btn-primary">Sign up</button>
                             <div className="clearfix"></div>
@@ -190,50 +211,36 @@ class MainNav extends React.Component {
                     </Modal.Body>
                 </Modal>
 
-                <div className="container">
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                        </button>
-                        <Link className="navbar-brand" to="/">
-                            <img src={Config.getValue("basePath") + "images/logo.png"} alt='logo' />
-                        </Link>
-                    </div>
+                <Navbar>
+                    <Navbar.Header>
+                        <Navbar.Brand>
+                            <Link className="navbar-brand" to="/">
+                                <img src={Config.getValue("basePath") + "images/logo.png"} alt='logo' />
+                            </Link>
+                        </Navbar.Brand>
+                        <Navbar.Toggle />
+                    </Navbar.Header>
 
-                    <div className="collapse navbar-collapse pull-right">
-                        {localStorage[".auth.lockchain"] ?
-                            <ul className="nav navbar-nav session-nav" id="top-nav">
-                                {/* <li className="session-nav-hosting session-nav-simple"><span><Link to="/listings/create"><i className="icon icon-home"></i>List Your Property</Link></span></li> */}
-                                <li className="session-nav-hosting session-nav-simple"><span><Link to="/profile/reservations">Hosting</Link></span></li>
-                                <li className="session-nav-traveling session-nav-simple"><span><Link to="/profile/trips">Traveling</Link></span></li>
-                                {/* <li className="session-nav-help session-nav-simple"><span>Help</span></li> */}
-                                <li className="session-nav-inbox"><span><img src={Config.getValue("basePath") + "images/mail-notification.png"} alt="mail-notification" /></span></li>
-                                <li className="session-nav-user">
-                                    <span className="info">
-                                        <span className="session-nav-user-thumb"></span>
-                                        <Link to="/profile/dashboard">{localStorage[".auth.username"]}</Link>
-                                    </span>
-                                    <span className="sub">
-                                        <ul>
-                                            <li className="opal profile"><span className="ico"></span><span><Link to="/profile/dashboard">View Profile</Link></span></li>
-                                            <li><span><Link to="/profile/me/edit">Edit Profile</Link></span></li>
-                                            <li><span><Link to="/profile/dashboard/#profile-dashboard-reviews">Reviews</Link></span></li>
-                                            <li onClick={this.logout} className="opal logout"><span className="ico"></span><span>Logout</span></li>
-                                        </ul>
-                                    </span>
-                                </li>
-                            </ul> :
-                            <ul className="nav navbar-nav session-nav" id="top-nav">
-                                <li onClick={this.openLogIn} className="session-nav-simple"><span><a>Login</a></span></li>
-                                <li onClick={this.openSignUp} className="session-nav-simple"><span><a>Register</a></span></li>
-                            </ul>
+                    <Navbar.Collapse>
+                        {localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"] ?
+                            <Nav>
+                                <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
+                                <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
+                                <NavDropdown title={localStorage[Config.getValue("domainPrefix") + ".auth.username"]} id="main-nav-dropdown">
+                                    <MenuItem componentClass={Link} className="header" href="/profile/dashboard" to="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
+                                    <MenuItem componentClass={Link} href="/profile/me/edit" to="/profile/me/edit">Edit Profile</MenuItem>
+                                    <MenuItem componentClass={Link} href="/profile/dashboard/#profile-dashboard-reviews" to="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
+                                    <MenuItem componentClass={Link} className="header" href="/" to="/" onClick={this.logout}>Logout<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-logout.png"} style={{ top: 25 + 'px' }} alt="logout" /></MenuItem>
+                                </NavDropdown>
+                            </Nav> :
+                            <Nav pullRight>
+                                <NavItem componentClass={Link} href="/login" to="/login" onClick={this.openLogIn}>Login</NavItem>
+                                <NavItem componentClass={Link} href="/signup" to="/signup" onClick={this.openSignUp}>Register</NavItem>
+                            </Nav>
                         }
-                    </div>
-                </div>
-            </div >
+                    </Navbar.Collapse>
+                </Navbar>
+            </div>
         )
     }
 }

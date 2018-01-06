@@ -5,7 +5,7 @@ class StarCheckbox extends React.Component {
     render() {
         return (
             <div>
-                <span className={`star${this.props.checked ? ' active' : ''}`}>
+                <span className={`star ${this.props.checked ? 'active' : ''}`}>
                     {this.props.text}
                 </span>
             </div>

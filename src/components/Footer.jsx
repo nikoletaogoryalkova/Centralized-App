@@ -10,7 +10,7 @@ export default class Footer extends React.Component {
 
     render() {
         return (
-            <footer id="main-footer">
+            <footer id="main-footer" className="clearfix">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-3">
@@ -37,8 +37,7 @@ export default class Footer extends React.Component {
                         <div className="col-md-2">
 
                             <div className="dropdown select-language">
-                                <a className="dropdown-toggle" data-toggle="dropdown">English newest <span
-                                    className="caret"></span></a>
+                                <a className="dropdown-toggle" data-toggle="dropdown">English newest</a>
                                 <ul className="navbar-dropdown dropdown-menu">
                                     <li><a >English</a></li>
                                     <li><a >English</a></li>
@@ -46,7 +45,7 @@ export default class Footer extends React.Component {
                             </div>
 
                             <DropdownButton block={true} title={localStorage["currency"] ? localStorage["currency"] : 'USD'} id="bg-nested-dropdown">
-                                <MenuItem  onClick={() => this.toggleCurrency('GBP')}>£ GBP</MenuItem>
+                                <MenuItem onClick={() => this.toggleCurrency('GBP')}>£ GBP</MenuItem>
                                 <MenuItem onClick={() => this.toggleCurrency('EUR')}>€ EUR</MenuItem>
                                 <MenuItem onClick={() => this.toggleCurrency('USD')}>$ USD</MenuItem>
                             </DropdownButton>

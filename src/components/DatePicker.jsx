@@ -25,6 +25,7 @@ class DatePicker extends React.Component {
                             startDate={this.props.startDate}
                             endDate={this.props.endDate}
                             minDate={moment().format('DD/MM/YYYY')}
+                            maxDate={moment().add(90, 'days').format('DD/MM/YYYY')}
                             locale={{format: 'DD/MM/YYYY'}}>
                             <input className="form-control"
                                    required="required"
@@ -35,7 +36,7 @@ class DatePicker extends React.Component {
                     </div>
                 </div>
 
-                <div id="search-nights" style={{width: searchNightsWidth + '%'}}>
+                <div id="search-nights" style={{minWidth: searchNightsWidth + '%'}}>
                     <span>{this.props.nights} nights</span>
                 </div>
             </div>

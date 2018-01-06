@@ -9,7 +9,7 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
 
-        let guests = '';
+        let guests = 2;
         let countryId = '';
         let startDate = moment();
         let endDate = moment().add(1, 'days');
@@ -127,7 +127,6 @@ class Search extends React.Component {
                 <div className="form-group has-feedback has-feedback-left" id="guests">
                     <i className="icon icon-guest form-control-feedback"></i>
                     <input type="text"
-                        id="guests-input"
                         name="guests"
                         className="form-control"
                         onChange={this.onChange}
@@ -136,7 +135,7 @@ class Search extends React.Component {
                         value={this.state.guests} />
                 </div>
 
-                <button className="btn btn-primary" id="btn-home">Search</button>
+                <button className="btn btn-primary">Search</button>
 
             </form>
         )

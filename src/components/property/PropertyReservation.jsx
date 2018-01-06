@@ -45,8 +45,7 @@ class PropertyReservation extends React.Component {
         this.setState({ captcha: value });
     }
 
-    onSubmit(e) {
-        e.preventDefault();
+    onSubmit(captchaToken) {
         this.setState({ sending: true });
 
         if (this.state.name === '') {
@@ -61,16 +60,20 @@ class PropertyReservation extends React.Component {
                 name: this.state.name,
                 email: this.state.email,
                 phone: this.state.phone,
-                captchaToken: this.state.captcha
             }
 
-            requestBooking(requestInfo).then((data) => {
-                this.setState({ sending: false })
-                if (data.success) {
-                    this.props.history.push('/');
-                }
-                else {
-                    this.setState({ error: data.message });
+            requestBooking(requestInfo, captchaToken).then((res) => {
+                this.setState({ sending: false });
+                if (res.status === 403) {
+                    this.setState({ error: "Please sign-in/register to able to make bookings" });
+                } else {
+                    res.body.then(data => {
+                        if (data.success) {
+                            this.props.history.push("/profile/trips?id=" + data.id);
+                        }else {
+                            this.setState({ error: data.message });
+                        }
+                    })
                 }
             });
         }
@@ -100,7 +103,7 @@ class PropertyReservation extends React.Component {
                         <div className="loader"></div>
                     }
                     {!this.state.sending &&
-                        <form id="user-form" onSubmit={this.onSubmit}>
+                        <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
                             <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice}</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
@@ -124,6 +127,13 @@ class PropertyReservation extends React.Component {
                             <div className="dropdown select-person">
                                 <input onChange={this.onChange} value={this.state.phone} id="reservation-phone" type="tel" className="form-control" name="phone" required placeholder="Phone" />
                             </div>
+
+                            <ReCAPTCHA
+                                ref={el => this.captcha = el}
+                                size="invisible"
+                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                onChange={token => this.onSubmit(token)}
+                            />
                             <br />
 
                             <div>
@@ -135,17 +145,12 @@ class PropertyReservation extends React.Component {
                             </div>
 
                             <div className="nonev"></div>
-
                             <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary" id="reservation-btn">Request Booking in LOC or FIAT</button>
                             <input required type="checkbox" name="agree-terms" id="agree-terms"
                                 className="checkbox tick" />
-                            <label htmlFor="agree-terms" className="text-ffffff" style={{ marginTop: 10 + 'px' }}>I agree to the <a>Terms &amp; Conditions</a></label>
+                            <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the <a>Terms &amp; Conditions</a></label>
 
-                            <ReCAPTCHA
-                                ref="recaptcha"
-                                sitekey="6LfoyToUAAAAADzX1Us8dT7qmvrbdWqEL1IMz217"
-                                onChange={this.captchaChange}
-                            />
+
                         </form>
                     }
                 </div>

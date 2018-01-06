@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import MainNav from '../MainNav';
@@ -15,19 +15,19 @@ import CreateListingDescription from './placeDescription/CreateListingDescriptio
 import CreateListingPhotos from './placeDescription/CreateListingPhotos';
 import CreateListingHouseRules from './guestSettings/CreateListingHouseRules';
 import CreateListingChecking from './guestSettings/CreateListingChecking';
-import CreateListingCancellation from './guestSettings/CreateListingCancellation';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory } from '../../requester';
+import { getCountries, getAmenitiesByCategory, createListing } from '../../requester';
 
 import { Config } from "../../config";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import request from 'superagent';
 import update from 'react-addons-update';
 const host = Config.getValue("apiHost");
 const LOCKCHAIN_UPLOAD_URL = `${host}images/upload`;
 
-export default class CreateListingPage extends React.Component {
+class CreateListingPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -81,14 +81,14 @@ export default class CreateListingPage extends React.Component {
             uploadedFiles: [],
             uploadedFilesUrls: [],
             uploadedFilesThumbUrls: [],
-            
+
             // step 3
-                // house rules
-            suitableForChildren: 'false', 
-            suitableForInfants: 'false', 
+            // house rules
+            suitableForChildren: 'false',
+            suitableForInfants: 'false',
             suitableForPets: 'false',
-            smokingAllowed: 'false', 
-            eventsAllowed: 'false', 
+            smokingAllowed: 'false',
+            eventsAllowed: 'false',
             otherRuleText: '',
             otherHouseRules: new Set(),
 
@@ -101,6 +101,8 @@ export default class CreateListingPage extends React.Component {
             // price
             defaultDailyPrice: '0',
             currency: '2', // USD
+
+            loading: false
         };
 
         this.onChange = this.onChange.bind(this);
@@ -111,7 +113,7 @@ export default class CreateListingPage extends React.Component {
         this.toggleFacility = this.toggleFacility.bind(this);
         this.addHouseRule = this.addHouseRule.bind(this);
         this.removeHouseRule = this.removeHouseRule.bind(this);
-        this.submitPost = this.submitPost.bind(this);
+        this.createListing = this.createListing.bind(this);
         this.resetCity = this.resetCity.bind(this);
         this.onImageDrop = this.onImageDrop.bind(this);
         this.handleImageUpload = this.handleImageUpload.bind(this);
@@ -215,23 +217,14 @@ export default class CreateListingPage extends React.Component {
 
     createBedroom() {
         return {
-            singleBed: 0,
-            doubleBed: 0,
-            kingBed: 0,
+            singleBedCount: 0,
+            doubleBedCount: 0,
+            kingBedCount: 0,
         };
     }
 
     resetCity() {
         this.setState({ city: '' });
-    }
-
-    getFacilities() {
-        const facilities = [];
-        this.state.facilities.forEach(item => {
-            facilities.push(`${host}api/amenities/${item}`);
-        });
-
-        return facilities;
     }
 
     getPhotos() {
@@ -246,90 +239,100 @@ export default class CreateListingPage extends React.Component {
             photos.push(photo);
         }
 
-        let photosToUpload = [];
-        photos.forEach((photo, i) => {
-            fetch('http://localhost:8080/api/pictures', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': localStorage['.auth.lockchain'],
-                },
-                body: JSON.stringify(photo),
-            }).then((res) => {
-                return res.json();
-            }).then((data) => {
-                photosToUpload.push(data.links[0].href);
-            });
-        });
-        return photosToUpload;
+        return photos;
     }
 
-    createListing() {
-        let photos = this.getPhotos();
-
+    createListing(captchaToken) {
+        this.setState({loading: true});
         let listing = {
-            checkinStart: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mmZ"),
-            checkinEnd: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mmZ"),
-            checkout: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mmZ"),
-            defaultDailyPrice: this.state.defaultDailyPrice.toString(),
-            guestsIncluded: this.state.guestsIncluded.toString(),
-            name: this.state.name,
-            // city: `${host}api/cities/${this.state.city}`,
-            country: `${host}api/countries/${this.state.country}`,
-            currency: `${host}api/currencies/${this.state.currency}`,
-            type: `${host}api/property_types/${this.state.type}`,
-            pictures: photos,
-        }
-
-        return listing;
-    }
-
-    submitPost() {       
-        let l = {
-            property_type: this.state.propertyType.toString(),
-            // type: this.state.type,
-            // country: `${host}api/countries/${this.state.country}`,
-            room_type: this.state.roomType,
-            size: this.state.propertySize.toString(),
-            // guests_included: this.state.guestsIncluded.toString(),
-            bedroomsCount: this.state.bedroomCount.toString(),
-            rooms: [], // TODO:
-            bathrooms: this.state.bathrooms,
-            facilities: this.getFacilities(),
-            billing_country: `${host}api/countries/${this.state.billingCountry}`,
-            address: this.state.streetAddress,
-            // city: `${host}api/cities/${this.state.city}`,
-            apartment: this.state.apartment,
-            zipCode: this.state.zipCode,
-            // name: this.state.name,
-            description: this.state.description, // TODO: link to description entity
-            neighborhood: this.state.description, // TODO: link to description entity
-            // photos: [], // TODO:
-            // photos_thumbnails: [], // TODO:
-            suitableForChildren: this.state.suitableForChildren, 
-            suitableForInfants: this.state.suitableForInfants, 
-            suitableForPets: this.state.suitableForPets,
-            smokingAllowed: this.state.smokingAllowed, 
-            eventsAllowed: this.state.eventsAllowed, 
-            otherHouseRules: Array.from(this.state.otherHouseRules).join("\n"),
-            // checkin_start: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            // checkin_end: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            // checkout: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            // default_daily_price: this.state.defaultDailyPrice.toString(),
-            // currency_id: this.state.currency.toString(),
-        }
-
-        let listing = this.createListing();
-
-        fetch('http://localhost:8080/api/listings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': localStorage['.auth.lockchain'],
+            listingType: this.state.type,
+            type: this.state.propertyType,
+            country: this.state.country,
+            details: [
+                {
+                    value: this.state.roomType,
+                    datail: { name: "roomType" }
+                },
+                {
+                    value: this.state.propertySize,
+                    detail: { name: "size" }
+                },
+                {
+                    value: this.state.bedroomCount,
+                    detail: { name: "bedroomsCount" }
+                },
+                {
+                    value: this.state.bathrooms,
+                    detail: { name: "bathrooms" }
+                },
+                {
+                    value: this.state.apartment,
+                    detail: { name: "apartment" }
+                }
+                ,
+                {
+                    value: this.state.zipCode,
+                    detail: { name: "zipCode" }
+                },
+                {
+                    value: this.state.suitableForChildren,
+                    detail: { name: "suitableForChildren" }
+                },
+                {
+                    value: this.state.suitableForInfants,
+                    detail: { name: "suitableForInfants" }
+                },
+                {
+                    value: this.state.suitableForPets,
+                    detail: { name: "suitableForPets" }
+                },
+                {
+                    value: this.state.smokingAllowed,
+                    detail: { name: "smokingAllowed" }
+                },
+                {
+                    value: this.state.eventsAllowed,
+                    detail: { name: "eventsAllowed" }
+                },
+                {
+                    value: this.state.dedicatedSpace,
+                    detail: { name: "dedicatedSpace" }
+                },
+                {
+                    value: this.state.billingCountry,
+                    detail: { name: "billingCountry" }
+                }
+            ],
+            description: {
+                street: this.state.streetAddress,
+                text: this.state.description,
+                interaction: this.state.neighborhood,
+                houseRules: Array.from(this.state.otherHouseRules).join("\r\n"),
             },
-            body: JSON.stringify(listing),
-        }).then((res) => {
-            return res.json();
+            guestsIncluded: this.state.guestsIncluded,
+            rooms: this.state.bedrooms,
+            amenities: this.state.facilities,
+            city: this.state.city,
+            name: this.state.name,
+            pictures: this.getPhotos(),
+            checkinStart: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinEnd: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutStart: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutEnd: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            defaultDailyPrice: this.state.defaultDailyPrice,
+            currency: this.state.currency,
+        }
+
+        createListing(listing, captchaToken).then((res) => {
+            if (res.success) {
+                this.setState({loading: false});
+                this.props.history.push('/profile/listings');
+                NotificationManager.success('Successfully updated your profile', 'Create new listing');
+            }
+            else {
+                this.setState({loading: false});
+                NotificationManager.error('Something went wrong!', 'Create new listing');
+            }
         });
     }
 
@@ -383,95 +386,97 @@ export default class CreateListingPage extends React.Component {
                 <nav id="main-nav" className="navbar">
                     <MainNav />
                 </nav>
-                <NavCreateListing />
 
-                <div className="container">
-                    <div className="row">
-                        <Switch>
-                            <Redirect exact path="/listings/create/" to="/listings/create/landing" />
+                {this.props.location.pathname !== "/profile/listings/create" && this.props.location.pathname !== "/profile/listings/create/landing" &&
+                    <NavCreateListing />
+                }
 
-                            <Route exact path="/listings/create/landing" render={() =>
-                                <CreateListingLandingPage
-                                    values={this.state}
-                                    onChange={this.onChange} />}
-                            />
+                <Switch>
+                    <Redirect exact path="/profile/listings/create/" to="/profile/listings/create/landing" />
 
-                            <Route exact path="/listings/create/placetype" render={() =>
-                                <CreateListingPlaceType
-                                    values={this.state}
-                                    toggleCheckbox={this.toggleCheckbox}
-                                    onChange={this.onChange} />}
-                            />
+                    <Route exact path="/profile/listings/create/landing" render={() =>
+                        <CreateListingLandingPage
+                            values={this.state}
+                            onChange={this.onChange} />}
+                    />
 
-                            <Route exact path="/listings/create/accommodation" render={() =>
-                                <CreateListingAccommodation
-                                    values={this.state}
-                                    updateCounter={this.updateCounter}
-                                    updateBedrooms={this.updateBedrooms}
-                                    updateBedCount={this.updateBedCount}
-                                />} />
+                    <Route exact path="/profile/listings/create/placetype" render={() =>
+                        <CreateListingPlaceType
+                            values={this.state}
+                            toggleCheckbox={this.toggleCheckbox}
+                            onChange={this.onChange} />}
+                    />
 
-                            <Route exact path="/listings/create/facilities" render={() =>
-                                <CreateListingFacilities
-                                    values={this.state}
-                                    toggle={this.toggleFacility} />} />
+                    <Route exact path="/profile/listings/create/accommodation" render={() =>
+                        <CreateListingAccommodation
+                            values={this.state}
+                            updateCounter={this.updateCounter}
+                            updateBedrooms={this.updateBedrooms}
+                            updateBedCount={this.updateBedCount}
+                        />} />
 
-                            <Route exact path="/listings/create/safetyamenities" render={() =>
-                                <CreateListingSafetyAmenities
-                                    values={this.state}
-                                    toggle={this.toggleFacility} />} />
+                    <Route exact path="/profile/listings/create/facilities" render={() =>
+                        <CreateListingFacilities
+                            values={this.state}
+                            toggle={this.toggleFacility} />} />
 
-                            <Route exact path="/listings/create/location" render={() =>
-                                <CreateListingLocation
-                                    values={this.state}
-                                    updateDropdown={this.onChange}
-                                    updateTextbox={this.onChange}
-                                    resetCity={this.resetCity} />} />
+                    <Route exact path="/profile/listings/create/safetyamenities" render={() =>
+                        <CreateListingSafetyAmenities
+                            values={this.state}
+                            toggle={this.toggleFacility} />} />
 
-                            <Route exact path="/listings/create/title" render={() =>
-                                <CreateListingTitle
-                                    values={this.state}
-                                    updateTextbox={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/location" render={() =>
+                        <CreateListingLocation
+                            values={this.state}
+                            updateDropdown={this.onChange}
+                            updateTextbox={this.onChange}
+                            resetCity={this.resetCity} />} />
 
-                            <Route exact path="/listings/create/description" render={() =>
-                                <CreateListingDescription
-                                    values={this.state}
-                                    updateTextarea={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/title" render={() =>
+                        <CreateListingTitle
+                            values={this.state}
+                            updateTextbox={this.onChange} />} />
 
-                            <Route exact path="/listings/create/photos" render={() =>
-                                <CreateListingPhotos
-                                    values={this.state}
-                                    onImageDrop={this.onImageDrop}
-                                    removePhoto={this.removePhoto}
-                                />} />
+                    <Route exact path="/profile/listings/create/description" render={() =>
+                        <CreateListingDescription
+                            values={this.state}
+                            updateTextarea={this.onChange} />} />
 
-                            <Route exact path="/listings/create/houserules" render={() =>
-                                <CreateListingHouseRules
-                                    values={this.state}
-                                    onChange={this.onChange}
-                                    addRule={this.addHouseRule}
-                                    removeRule={this.removeHouseRule} />} />
+                    <Route exact path="/profile/listings/create/photos" render={() =>
+                        <CreateListingPhotos
+                            values={this.state}
+                            onImageDrop={this.onImageDrop}
+                            removePhoto={this.removePhoto}
+                        />} />
 
-                            <Route exact path="/listings/create/checking" render={() =>
-                                <CreateListingChecking
-                                    values={this.state}
-                                    updateDropdown={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/houserules" render={() =>
+                        <CreateListingHouseRules
+                            values={this.state}
+                            onChange={this.onChange}
+                            addRule={this.addHouseRule}
+                            removeRule={this.removeHouseRule} />} />
 
-                            <Route exact path="/listings/create/cancellation" render={() =>
-                                <CreateListingCancellation />} />
+                    <Route exact path="/profile/listings/create/checking" render={() =>
+                        <CreateListingChecking
+                            values={this.state}
+                            updateDropdown={this.onChange} />} />
 
-                            <Route exact path="/listings/create/price" render={() =>
-                                <CreateListingPrice
-                                    values={this.state}
-                                    updateNumber={this.onChange}
-                                    updateDropdown={this.onChange}
-                                    submitPost={this.submitPost} />} />
-                        </Switch>
-                    </div>
-                </div>
+                    {/* <Route exact path="/listings/create/cancellation" render={() =>
+                        <CreateListingCancellation />} /> */}
+
+                    <Route exact path="/profile/listings/create/price" render={() =>
+                        <CreateListingPrice
+                            values={this.state}
+                            updateNumber={this.onChange}
+                            updateDropdown={this.onChange}
+                            createListing={this.createListing} />} />
+                </Switch>
 
                 <Footer />
+                <NotificationContainer />
             </div>
         );
     }
 }
+
+export default withRouter(CreateListingPage);

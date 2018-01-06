@@ -178,8 +178,7 @@ class Filters extends React.Component {
 
         return (
             <div className="filter-box">
-
-                <div className="form-group" id="filter-star">
+                <div className="form-group">
                     <label>Star Rating</label>
 
                     <div className="filter-stars">
@@ -197,7 +196,7 @@ class Filters extends React.Component {
                 </div>
                 <div className="clearfix" />
 
-                <div className="form-group" id="filter-price">
+                <div className="form-group">
                     <label>Pricing</label>
 
                     <div className="filter-price-box">
@@ -211,14 +210,12 @@ class Filters extends React.Component {
                             range={true} />
                         <div className="clearfix" />
                     </div>
-
-                    <div id="slider-range" />
                 </div>
                 <div className="clearfix" />
 
-                <div className="form-group" id="filter-type">
+                <div className="form-group">
                     <label>Property Type</label>
-                    <div className="filter-check-box" id="filter-propertyType">
+                    <div className="filter-check-box">
                         {this.state.propertyTypeFilters.map((item, i) => {
                             return (
                                 <div key={i} onClick={() => this.togglePropertyType(item.name)}>
@@ -233,9 +230,9 @@ class Filters extends React.Component {
                     </div>
                 </div>
 
-                <div className="form-group" id="filter-amenities">
+                <div className="form-group">
                     <label>Facility</label>
-                    <div className="filter-check-box" id="filter-amenity">
+                    <div className="filter-check-box">
                         {this.state.amenitiesFilters.map((item, i) => {
                             return (
                                 <div key={i} onClick={() => this.toggleAmenity(item.name)}>
@@ -251,11 +248,11 @@ class Filters extends React.Component {
                 </div>
                 <div className="clearfix" />
 
-                <div className="clearfix" />
-                <div className="form-group" id="clear-filter-button">
+                <div className="form-group">
                     <button type="submit" onClick={this.clearFilters} className="btn btn">Clear Filters</button>
                 </div>
-                <div className="form-group submit-search-button" id="filter-button">
+
+                <div className="form-group">
                     <button type="submit" onClick={this.props.handleSearch} className="btn btn-primary">See Hotels</button>
                 </div>
             </div>

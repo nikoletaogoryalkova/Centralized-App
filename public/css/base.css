@@ -1,0 +1,122 @@
+@font-face {
+    font-family: 'FuturaStd-Light';
+    src: url('../font_futura/FuturaStd-Light.eot');
+    src: local('☺'), url('../font_futura/FuturaStd-Light.woff') format('woff'), url('../font_futura/FuturaStd-Light.ttf') format('truetype'), url('../font_futura/FuturaStd-Light.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FuturaStd-Medium';
+    src: url('../font_futura/FuturaStd-Medium.eot');
+    src: local('☺'), url('../font_futura/FuturaStd-Medium.woff') format('woff'), url('../font_futura/FuturaStd-Medium.ttf') format('truetype'), url('../font_futura/FuturaStd-Medium.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'FuturaStd-Light', sans-serif;
+    background: #f0f1f3;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+strong,
+b {
+    font-family: 'FuturaStd-Medium', sans-serif;
+    font-weight: normal;
+}
+
+h1 {
+    font-family: 'FuturaStd-Medium', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    color: #1f2427;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-family: 'FuturaStd-Medium', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #1f2427;
+}
+
+h3 {
+    font-family: 'FuturaStd-Medium', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #1f2427;
+}
+
+h4 {
+    font-family: 'FuturaStd-Light', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #54575a;
+}
+
+h5 {
+    font-family: 'FuturaStd-Light', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #54575a;
+}
+
+h5 {
+    font-family: 'FuturaStd-Light', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #898c8d;
+}
+
+p {
+    font-family: 'FuturaStd-Light', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: #54575a;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #1f2427;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #d87a61;
+    text-decoration: none;
+}
+
+a:focus {
+    outline: none;
+    background-color: transparent;
+    text-decoration: none;
+    color: #d87a61;
+}
+
+.btn-primary {
+    background: #d77961;
+    color: #fff;
+    outline: none;
+}
+
+.btn-primary:focus {
+    outline: none;
+    background-color: #e98b73;
+}
+
+.btn-primary:hover {
+    background-color: #e98b73;
+    color: #fff;
+}

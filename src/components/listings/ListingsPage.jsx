@@ -30,7 +30,7 @@ class ListingsPage extends React.Component {
         if (this.props.location.search) {
             let searchTerms = this.getSearchTerms();
             getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-                this.setState({ listings: data.content, listingLoading: false, totalItems: data.page.totalElements })
+                this.setState({ listings: data.content, listingLoading: false, totalItems: data.totalElements })
             });
         }
         else {
@@ -51,7 +51,7 @@ class ListingsPage extends React.Component {
             this.setState({ 
                 listings: data.content, 
                 listingLoading: false,
-                totalItems: data.page.totalElements,
+                totalItems: data.totalElements,
             })
         });
 
@@ -114,7 +114,7 @@ class ListingsPage extends React.Component {
             this.setState({ 
                 listings: data.content, 
                 listingLoading: false, 
-                totalItems: data.page.totalElements 
+                totalItems: data.totalElements 
             })
         });
     }

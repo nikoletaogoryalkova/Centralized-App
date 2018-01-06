@@ -14,8 +14,8 @@ export default class CreateListingCancellation extends React.Component {
                         <hr/>
                     </div>
                 </div>
-                <NavLink to="/listings/create/checking" className="btn btn-default" id="btn-continue">Back</NavLink>
-                <NavLink to="/listings/create/price" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                <NavLink to="/profile/listings/create/checking" className="btn btn-default" id="btn-continue">Back</NavLink>
+                <NavLink to="/profile/listings/create/price" className="btn btn-primary" id="btn-continue">Continue</NavLink>
             </div>
         );
     }

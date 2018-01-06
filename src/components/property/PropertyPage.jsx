@@ -35,9 +35,10 @@ class PropertyPage extends React.Component {
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
-            calendar: null
+            currencySign: '',
+            prices: null,
+            oldCurrency: this.props.currency
         };
-
 
         this.handleApply = this.handleApply.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
@@ -46,25 +47,11 @@ class PropertyPage extends React.Component {
         this.gotoImage = this.gotoImage.bind(this);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
+        this.initializeCalendar = this.initializeCalendar.bind(this);
     };
 
     componentDidMount() {
-        getPropertyById(this.props.match.params.id).then(res => {
-            this.setState({ data: res });
-        });
-        let now = new Date();
-        let end = new Date();
-        const DAY_INTERVAL = 60;
-        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
-        getCalendarByListingIdAndDateRange(
-            this.props.match.params.id,
-            now,
-            end,
-            0,
-            DAY_INTERVAL
-        ).then(res => {
-           this.setState({ calendar: res.content });
-        });
+        this.initializeCalendar();
 
         if (this.state.startDate && this.state.endDate) {
             this.calculateNights(this.state.startDate, this.state.endDate);
@@ -127,21 +114,68 @@ class PropertyPage extends React.Component {
         }
     }
 
+    initializeCalendar() {
+        let now = new Date();
+        let end = new Date();
+        const DAY_INTERVAL = 90;
+        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
+
+        getPropertyById(this.props.match.params.id).then((data) => {
+
+            this.setState({ currencySign: this.props.currencySign, data: data });
+
+            getCalendarByListingIdAndDateRange(
+                this.props.match.params.id,
+                now,
+                end,
+                this.props.currency,
+                0,
+                DAY_INTERVAL
+            ).then(res => {
+                let prices = [];
+                for (let dateInfo of res.content) {
+                    let price = dateInfo.available ? `${this.state.currencySign}${dateInfo.price}` : ``;
+                    prices.push(
+                        {
+                            "title": <span className="calendar-price bold">{price}</span>,
+                            "start": moment(dateInfo.date, "DD/MM/YYYY"),
+                            "end": moment(dateInfo.date, "DD/MM/YYYY"),
+                            "allDay": true,
+                            "price": dateInfo.price,
+                            "available": dateInfo.available
+                        }
+                    )
+                }
+
+                this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.currency });
+            });
+        })
+    }
+
     render() {
-        if (this.state.data === null) {
-            return <div className="loader"></div>;
+
+        if (this.state.data === null || this.state.prices === null || this.state.reservations === null) {
+            return <div className="loader"></div>
         }
 
-        const images = this.state.data.pictures.map(x => {
-            return { src: x.original };
-        });
+        let allEvents = this.state.prices;
+        let images = null;
+        if (this.state.data.pictures !== undefined) {
+            images = this.state.data.pictures.map(x => {
+                return { src: x.original };
+            });
+        }
+
+        if (this.state.oldCurrency !== this.props.currency) {
+            this.initializeCalendar();
+        }
 
         return (
             <div key={1}>
                 <div>
-                <header id='main-nav' className="navbar"> 
-                    <MainNav />
-                </header>
+                    <header id='main-nav' className="navbar">
+                        <MainNav />
+                    </header>
 
                     <nav id="second-nav">
                         <div className="container">
@@ -163,10 +197,10 @@ class PropertyPage extends React.Component {
                     </section>
                 </div>
                 <section className="hotel-gallery">
-                    <div className="hotel-gallery-bgr" style={{ 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' }}>
+                    <div className="hotel-gallery-bgr" style={this.state.data.pictures !== undefined ? { 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' } : { backgroundColor: '#AAA' }}>
                         <div className="container">
                             <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
-                            <Lightbox
+                            {images !== null && <Lightbox
                                 currentImage={this.state.currentImage}
                                 images={images}
                                 isOpen={this.state.lightboxIsOpen}
@@ -175,7 +209,7 @@ class PropertyPage extends React.Component {
                                 onClickPrev={this.gotoPrevious}
                                 onClickThumbnail={this.gotoImage}
                                 onClose={this.closeLightbox}
-                            />
+                            />}
                         </div>
                     </div>
                 </section>
@@ -207,7 +241,16 @@ class PropertyPage extends React.Component {
                         </ul>
                     </div>
                 </nav>
-                <PropertyInfo calendar={this.state.calendar} nights={this.state.nights} onApply={this.handleApply} startDate={this.state.startDate} endDate={this.state.endDate} data={this.state.data} currency={this.props.currency} currencySign={this.props.currencySign} />
+                <PropertyInfo allEvents={allEvents}
+                              calendar={this.state.calendar}
+                              nights={this.state.nights}
+                              onApply={this.handleApply}
+                              startDate={this.state.startDate}
+                              endDate={this.state.endDate}
+                              data={this.state.data}
+                              currency={this.props.currency}
+                              currencySign={this.props.currencySign}
+                              prices={this.state.prices} />
                 <Footer />
             </div>
         );
