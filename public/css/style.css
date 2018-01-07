@@ -633,7 +633,7 @@ header form button {
     color: #d87a61;
 }
 
-.hotel-second-price span#total-price {
+.hotel-second-price span.total-price {
     font-size: 30px;
     font-family: 'FuturaStd-Medium', sans-serif;
 }

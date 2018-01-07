@@ -9,8 +9,12 @@ import Footer from '../Footer';
 import Lightbox from 'react-images';
 import moment from 'moment';
 
-import { getPropertyById, getCalendarByListingIdAndDateRange } from '../../requester';
+import {
+    getPropertyById, getCalendarByListingIdAndDateRange, getCurrentLoggedInUserInfo,
+    getLocRate
+} from '../../requester';
 import { parse } from 'query-string';
+import {Config} from "../../config";
 
 class PropertyPage extends React.Component {
     constructor(props) {
@@ -37,7 +41,11 @@ class PropertyPage extends React.Component {
             currentImage: 0,
             currencySign: '',
             prices: null,
-            oldCurrency: this.props.currency
+            oldCurrency: this.props.currency,
+            loaded: false,
+            isLogged: false,
+            userInfo: null,
+            locRate: null
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -56,6 +64,24 @@ class PropertyPage extends React.Component {
         if (this.state.startDate && this.state.endDate) {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
+
+        getLocRate().then((data) => {
+            this.setState({locRate: data.loc});
+            if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
+                getCurrentLoggedInUserInfo()
+                    .then(res => {
+                        console.log(res);
+                        this.setState({
+                            loaded: true,
+                            isLogged: true,
+                            userInfo: res
+                        });
+                    })
+            } else {
+                this.setState({loaded: true});
+            }
+        });
+
     }
 
     handleApply(event, picker) {
@@ -154,7 +180,7 @@ class PropertyPage extends React.Component {
 
     render() {
 
-        if (this.state.data === null || this.state.prices === null || this.state.reservations === null) {
+        if (this.state.data === null || this.state.prices === null || this.state.reservations === null || this.state.loaded === false) {
             return <div className="loader"></div>
         }
 
@@ -250,7 +276,10 @@ class PropertyPage extends React.Component {
                               data={this.state.data}
                               currency={this.props.currency}
                               currencySign={this.props.currencySign}
-                              prices={this.state.prices} />
+                              prices={this.state.prices}
+                              isLogged={this.state.isLogged}
+                              userInfo={this.state.userInfo}
+                              locRate={this.state.locRate} />
                 <Footer />
             </div>
         );

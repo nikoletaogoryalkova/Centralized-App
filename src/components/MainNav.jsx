@@ -12,11 +12,11 @@ class MainNav extends React.Component {
 
         this.state = {
             showSignUpModal: false,
-            showLoginModal: false,
             signUpEmail: '',
             signUpFirstName: '',
             signUpLastName: '',
             signUpPassword: '',
+            signUpLocAddress: '',
             signUpError: null,
             loginEmail: '',
             loginPassword: '',
@@ -66,7 +66,7 @@ class MainNav extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({ showLoginModal: true })
+        this.setState({ showLoginModal: true });
     }
 
     onChange(e) {
@@ -79,8 +79,9 @@ class MainNav extends React.Component {
             email: this.state.signUpEmail,
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
-            password: this.state.signUpPassword
-        }
+            password: this.state.signUpPassword,
+            locAddress: this.state.signUpLocAddress
+        };
 
         register(user, captchaToken).then((res) => {
             if (res.success) {
@@ -110,6 +111,7 @@ class MainNav extends React.Component {
 
                     localStorage[Config.getValue("domainPrefix") + ".auth.username"] = user.email;
                     this.setState({ userName: user.email });
+                    window.location.reload();
 
                     this.closeLogIn();
                 })
@@ -188,6 +190,10 @@ class MainNav extends React.Component {
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-user.png"} alt="user" />
                                 <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
+                            </div>
+                            <div className="form-group">
+                                <img src={Config.getValue("basePath") + "images/login-wallet.png"} alt="ETH wallet" />
+                                <input type="text" name="signUpLocAddress" value={this.state.signUpLocAddress} onChange={this.onChange} className="form-control" placeholder="Your LOC/ETH Wallet Address" />
                             </div>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-pass.png"} alt="pass" />
