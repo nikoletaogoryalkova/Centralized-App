@@ -19,7 +19,14 @@ export default class MyListingsPage extends React.Component {
             totalListings: 0,
             loading: true,
             currentPage: 1
-        }
+        };
+
+        this.filterListings = this.filterListings.bind(this);
+    }
+
+    filterListings(id) {
+        let newListings = this.state.listings.filter(l => l.id !== id);
+        this.setState({listings: newListings});
     }
 
     componentDidMount() {
@@ -67,7 +74,7 @@ export default class MyListingsPage extends React.Component {
                         <h2>Active ({this.state.totalListings})</h2>
                         <hr className="profile-line" />
                         {this.state.listings.map((item, i) => {
-                            return <MyListingsActiveItem listing={item} key={i} />
+                            return <MyListingsActiveItem filterListings={this.filterListings} listing={item} key={i} />
                         })}
 
                         <div className="pagination-box">

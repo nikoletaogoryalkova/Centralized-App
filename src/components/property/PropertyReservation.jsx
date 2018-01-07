@@ -22,9 +22,9 @@ class PropertyReservation extends React.Component {
 
         this.state = {
             guests: guests,
-            name: '',
-            email: '',
-            phone: '',
+            name: !props.isLogged ? '' : props.userInfo.firstName + " " + props.userInfo.lastName,
+            email: !props.isLogged ? '' : props.userInfo.email,
+            phone: !props.isLogged ? '' : props.userInfo.phoneNumber,
             captcha: '',
             error: '',
             startDate: this.props.startDate,
@@ -95,7 +95,12 @@ class PropertyReservation extends React.Component {
         };
 
         const cleaningFee = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees[this.props.currency], 10) : 0;
+        const cleaningFeeEur = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees["EUR"], 10) : 0;
+        const cleaningFeeLoc = Number((cleaningFeeEur / this.props.locRate).toFixed(4));
         const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
+        const listingPriceEur = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
+        const listingPriceLoc = Number((listingPriceEur / this.props.locRate).toFixed(4));
+        const totalLoc = (this.props.nights * listingPriceLoc + cleaningFeeLoc).toFixed(4);
         return (
             <div className="hotel-chekin">
                 <div className="hotel-chekin-box">
@@ -104,7 +109,7 @@ class PropertyReservation extends React.Component {
                     }
                     {!this.state.sending &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
-                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice}</span> /per night</p>
+                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc} LOC)</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
@@ -120,9 +125,9 @@ class PropertyReservation extends React.Component {
                                 <input onChange={this.onChange} value={this.state.name} id="reservation-name" type="text" className="form-control" name="name" required placeholder="Name" />
                             </div>
 
-                            <div className="dropdown select-person">
-                                <input onChange={this.onChange} value={this.state.email} id="reservation-email" type="email" className="form-control" name="email" required placeholder="E-mail" />
-                            </div>
+                            {/*<div className="dropdown select-person">*/}
+                                {/*<input onChange={this.onChange} value={this.state.email} id="reservation-email" type="email" className="form-control" name="email" required placeholder="E-mail" />*/}
+                            {/*</div>*/}
 
                             <div className="dropdown select-person">
                                 <input onChange={this.onChange} value={this.state.phone} id="reservation-phone" type="tel" className="form-control" name="phone" required placeholder="Phone" />
@@ -137,19 +142,37 @@ class PropertyReservation extends React.Component {
                             <br />
 
                             <div>
-                                <p style={{ color: 'white' }}>Cleaning Fee: {this.props.currencySign}{cleaningFee.toFixed(2)}</p>
+                                <p style={{ color: 'white' }}>Cleaning Fee: {this.props.currencySign}{cleaningFee.toFixed(2)} ({cleaningFeeLoc} LOC)</p>
                             </div>
 
-                            <div className="hotel-second-price">total <span id="total-price">{this.props.currencySign}{((this.props.nights * listingPrice) + cleaningFee).toFixed(2)}</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span className="total-price">{this.props.currencySign}{((this.props.nights * listingPrice) + cleaningFee).toFixed(2)}</span> / for&nbsp;
                                 <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
-
+                            <div>
+                                <p style={{ color: 'white' }}><b>or</b></p>
+                            </div>
+                            <div className="hotel-second-price">total <span className="total-price">{totalLoc} LOC</span> / for&nbsp;
+                                <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
+                            </div>
                             <div className="nonev"></div>
-                            <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary" id="reservation-btn">Request Booking in LOC or FIAT</button>
-                            <input required type="checkbox" name="agree-terms" id="agree-terms"
-                                className="checkbox tick" />
-                            <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the <a>Terms &amp; Conditions</a></label>
 
+                            {this.props.isLogged &&
+                                <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary"
+                                        id="reservation-btn">Request Booking in LOC or FIAT</button>
+                            }
+                            {this.props.isLogged &&
+                                <input required type="checkbox" name="agree-terms" id="agree-terms"
+                                       className="checkbox tick"/>
+                            }
+                            {this.props.isLogged &&
+                                <label htmlFor="agree-terms" style={{marginTop: 10 + 'px', color: '#FFFFFF'}}>I agree to the
+                                    <a>Terms &amp; Conditions</a></label>
+                            }
+                            {this.props.isLogged === false &&
+                                <div className="hotel-second-price" style={{textAlign: "center"}}>
+                                    <span className="total-price">Sign-in to reserve this awesome property.</span>
+                                </div>
+                            }
 
                         </form>
                     }
