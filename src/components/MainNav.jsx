@@ -4,6 +4,7 @@ import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootst
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
+import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
 
 import { Config } from '../config';
 import { register, login } from '../requester';
@@ -25,6 +26,7 @@ class MainNav extends React.Component {
             loginError: null,
             userName: '',
             sendRecoveryEmail: false,
+            enterRecoveryToken: false,
         }
 
         this.closeSignUp = this.closeSignUp.bind(this);
@@ -139,7 +141,7 @@ class MainNav extends React.Component {
         this.props.history.push('/');
     }
 
-    openModal(e, modal) {
+    openModal(modal, e) {
         if (e) {
             e.preventDefault();
         }
@@ -149,7 +151,7 @@ class MainNav extends React.Component {
         });
     }
 
-    closeModal(e, modal) {
+    closeModal(modal, e) {
         if (e) {
             e.preventDefault();
         }
@@ -195,7 +197,7 @@ class MainNav extends React.Component {
 
                         <hr />
                         <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.closeLogIn(e); this.openSignUp(e) }}>Sign up</a></div>
-                        <div className="login-sign"><a onClick={(e) => { this.closeLogIn(e); this.openModal(e, "sendRecoveryEmail") }}>Recover</a></div>
+                        <div className="login-sign"><a onClick={(e) => { this.closeLogIn(e); this.openModal("sendRecoveryEmail", e) }}>Recover</a></div>
                     </Modal.Body>
                 </Modal>
 
@@ -245,7 +247,8 @@ class MainNav extends React.Component {
                     </Modal.Body>
                 </Modal>
 
-                <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} closeModal={this.closeModal} />
+                <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
+                <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} />
 
                 <Navbar>
                     <Navbar.Header>

@@ -254,6 +254,18 @@ export async function postRecoveryEmail(email) {
 
 /**
  *
+ * @param {obj} email
+ */
+export async function sendRecoveryToken(token) {
+    return sendRequest(`${host}users/resetPassword/confirm`, RequestMethod.GET, token).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
+    });
+}
+
+/**
+ *
  * @param {int} listingId
  * @param {Date} startDate
  * @param {date} endDate
