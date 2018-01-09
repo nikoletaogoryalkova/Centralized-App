@@ -1,5 +1,6 @@
 import React from 'react';
 import { NotificationContainer } from 'react-notifications';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ReCAPTCHA from 'react-google-recaptcha';
 import moment from 'moment'
 
@@ -13,6 +14,7 @@ export default class MyTripsTable extends React.Component {
     }
 
     render() {
+        console.log(this.props.trips);
         return (
             <div className="container">
                 <NotificationContainer />
@@ -47,7 +49,6 @@ export default class MyTripsTable extends React.Component {
                                 <div className="bold">{trip.hostName}</div>
                                 <div>{trip.hostEmail}</div>
                                 <div>{trip.hostPhone}</div>
-                                {trip.hostLocAddress ? <div><a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">Loc Address</a></div> : ''}
                                 {trip.hostEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${trip.hostEmail}`}>Send Message</a></div> : ''}
                             </div>
                             <div className="col-md-2">
@@ -65,6 +66,18 @@ export default class MyTripsTable extends React.Component {
                             </div>
                             <div className="col-md-2">
                                 <div className="reservation-status bold">{trip.accepted ? "Accepted" : "Pending"}</div>
+                            </div>
+                            <div className="reservation-box-pending col-md-12">
+                                {trip.hostLocAddress && !trip.accepted ? 
+                                    <div>
+                                        Please pay {trip.price} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(7)}</a>
+                                        
+                                        <CopyToClipboard text={trip.hostLocAddress}>
+                                            <button><i class="fa fa-link" aria-hidden="true" title="Copy LOC Address"></i></button>
+                                        </CopyToClipboard>
+
+                                        Click <a href="https://medium.com/@LockChainCo/how-to-create-a-personal-wallet-with-myetherwallet-com-and-buy-loc-with-eth-for-beginners-c395fd303d1" target="_blank">here</a> for more instructions.
+                                    </div> : ''}
                             </div>
                         </div>
                     )

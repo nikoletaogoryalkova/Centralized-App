@@ -1984,6 +1984,21 @@ li.dropdown {
     border-radius: 3px;
 }
 
+.my-reservations .reservation-box-pending {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.my-reservations .reservation-box-pending a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.my-reservations .reservation-box-pending .fa-link {
+    cursor: pointer;
+}
+
 .my-reservations .reservation-box .send-message-icon {
     background: url(../images/icon-mail.png) center center;
     display: inline-block;
