@@ -22,8 +22,8 @@ class Listing extends React.Component {
     }
 
     render() {
-        const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
-
+        const listingPrice = (this.props.listing.prices) && this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed() : parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);        
+        
         if (this.state.locRate === null) {
             return null;
         }

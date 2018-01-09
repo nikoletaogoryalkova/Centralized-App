@@ -74,11 +74,11 @@ class CalendarPage extends React.Component {
                 for (let dateInfo of res.content) {
                     let availableStyle = dateInfo.available ? 1 : 0.5;
                     let price = {
-                        "title": <span className="calendar-price bold" style={{ opacity: availableStyle }}>{currencySign}{dateInfo.price}</span>,
+                        "title": <span className="calendar-price bold" style={{ opacity: availableStyle }}>{currencySign}{Math.round(dateInfo.price)}</span>,
                         "start": moment(dateInfo.date, "DD/MM/YYYY"),
                         "end": moment(dateInfo.date, "DD/MM/YYYY"),
                         "allDay": true,
-                        "price": dateInfo.price,
+                        "price": Math.round(dateInfo.price),
                         "available": dateInfo.available
                     }
                     prices.push(price);
