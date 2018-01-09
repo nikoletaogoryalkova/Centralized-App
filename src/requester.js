@@ -254,10 +254,23 @@ export async function postRecoveryEmail(email) {
 
 /**
  *
- * @param {obj} email
+ * @param {String} token
  */
 export async function sendRecoveryToken(token) {
-    return sendRequest(`${host}users/resetPassword/confirm`, RequestMethod.GET, token).then(res => {
+    return sendRequest(`${host}users/resetPassword/confirm?token=${token}`, RequestMethod.GET).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
+    });
+}
+
+/**
+ * 
+ * Object should contain password and token
+ * @param {obj} postObj
+ */
+export async function postNewPassword(postObj) {
+    return sendRequest(`${host}users/resetPassword/change`, RequestMethod.POST, postObj).then(res => {
         return {
             success: (""+res.response.status).indexOf("20") === 0
         };

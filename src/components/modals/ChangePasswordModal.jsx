@@ -3,19 +3,19 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 
 import { Config } from '../../config';
-import { postRecoveryEmail } from '../../requester.js';
+import { postNewPassword } from '../../requester.js';
 
 const modal = {
-    current: 'sendRecoveryEmail',
-    next: 'enterRecoveryToken',
+    current: 'changePassword',
+    next: '',
 }
 
-export default class SendRecoveryEmailModal extends React.Component {
+export default class ChangePasswordModal extends React.Component {
     constructor(props){
         super(props);
 
         this.state = {
-            recoveryEmail: '',
+            password: '',
             error: null,
         }
 
@@ -29,11 +29,22 @@ export default class SendRecoveryEmailModal extends React.Component {
     }
 
     onSubmit() {
-        postRecoveryEmail({email: this.state.recoveryEmail}).then((res) => {
-            console.log(res);
+        if (this.state.password !== this.state.confirmPassword) {
+            alert("failiure");
+            return;
+        }
+
+        
+        const postObj = {
+            token: this.props.recoveryToken,
+            password: this.state.password,
+        }
+        console.log(postObj);
+
+        postNewPassword(postObj).then((res) => {
             if (res.success) {
                 this.props.closeModal(modal.current);
-                this.props.openModal(modal.next);
+                alert("success");
             }
             else {
                 alert("failure");
@@ -46,7 +57,7 @@ export default class SendRecoveryEmailModal extends React.Component {
             <div>
                 <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
                     <Modal.Header>
-                        <h1>Recover your password</h1>
+                        <h1>Recover your password (3)</h1>
                         <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
@@ -56,11 +67,12 @@ export default class SendRecoveryEmailModal extends React.Component {
                             }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
-                                <input type="email" name="recoveryEmail" value={this.state.recoveryEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
+                                <input type="password" name="password" value={this.state.password} onChange={this.onChange} className="form-control" placeholder="New password" />
                             </div>
 
-                            <div className="login-sign">
-                                <p>Already sent an email? Enter your security <a onClick={(e) => { e.preventDefault(); this.props.closeModal(modal.current); this.props.openModal(modal.next) }}>token</a>.</p>
+                            <div className="form-group">
+                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
+                                <input type="password" name="confirmPassword" value={this.state.confirmPassword} onChange={this.onChange} className="form-control" placeholder="Confirm password" />
                             </div>
 
                             <button type="submit" className="btn btn-primary">Send email</button>

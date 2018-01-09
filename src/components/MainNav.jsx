@@ -5,6 +5,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
 import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
+import ChangePasswordModal from './modals/ChangePasswordModal';
 
 import { Config } from '../config';
 import { register, login } from '../requester';
@@ -27,6 +28,8 @@ class MainNav extends React.Component {
             userName: '',
             sendRecoveryEmail: false,
             enterRecoveryToken: false,
+            changePassword: false,
+            recoveryToken: '',
         }
 
         this.closeSignUp = this.closeSignUp.bind(this);
@@ -40,6 +43,17 @@ class MainNav extends React.Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+    }
+
+    componentDidMount() {
+        const search = this.props.location.search;
+        const searchParams = search.split('=');
+        if (searchParams[0] === '?token') {
+            this.setState({
+                recoveryToken: searchParams[1],
+                enterRecoveryToken: true,
+            });
+        }
     }
 
     closeSignUp() {
@@ -248,7 +262,8 @@ class MainNav extends React.Component {
                 </Modal>
 
                 <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
-                <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} />
+                <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
+                <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
 
                 <Navbar>
                     <Navbar.Header>
@@ -275,7 +290,9 @@ class MainNav extends React.Component {
                             <Nav pullRight>
                                 <NavItem componentClass={Link} href="/login" to="/login" onClick={this.openLogIn}>Login</NavItem>
                                 <NavItem componentClass={Link} href="/signup" to="/signup" onClick={this.openSignUp}>Register</NavItem>
-                                {/* <NavItem componentClass={Link} href="/recover" to="/recover" onClick={(e) => this.openModal(e, "sendRecoveryEmail")}>Recover</NavItem> */}
+                                {/* <NavItem componentClass={Link} href="/recover" to="/recover" onClick={(e) => this.openModal("sendRecoveryEmail", e)}>Recover</NavItem>
+                                <NavItem componentClass={Link} href="/recover" to="/recover" onClick={(e) => this.openModal("enterRecoveryToken", e)}>Token</NavItem>
+                                <NavItem componentClass={Link} href="/changePassword" to="/changePassword" onClick={(e) => this.openModal("changePassword", e)}>Change</NavItem> */}
                             </Nav>
                         }
                     </Navbar.Collapse>
