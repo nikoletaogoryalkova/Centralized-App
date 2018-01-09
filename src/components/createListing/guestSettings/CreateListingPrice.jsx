@@ -82,7 +82,7 @@ export default class CreateListingPrice extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.props.createListing(token)}
+                                onChange={token => {this.props.createListing(token); this.captcha.reset();}}
                             />
                     </div>
                 </div>
