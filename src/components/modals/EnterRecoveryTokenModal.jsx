@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Modal } from 'react-bootstrap';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 import { Config } from '../../config';
 import { sendRecoveryToken } from '../../requester.js';
@@ -28,7 +29,7 @@ export default class EnterRecoveryTokenModal extends React.Component {
                 this.props.openModal(modal.next);
             }
             else {
-                alert("Failiure");
+                NotificationManager.warning('Invalid token', 'Token');
             }
         });
     }
@@ -44,9 +45,7 @@ export default class EnterRecoveryTokenModal extends React.Component {
                     <Modal.Body>
                         <p>A confirmation email has been sent. To enter a new password open the link from your email or enter the token in the field below. </p>
                         {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
-                        <form onSubmit={(e) => { e.preventDefault(); this.onSubmit();
-                            {/* this.captcha.execute()  */}
-                            }}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.onSubmit(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
                                 <input type="text" name="recoveryToken" value={this.props.recoveryToken} onChange={this.props.onChange} className="form-control" placeholder="Token" />
@@ -57,6 +56,7 @@ export default class EnterRecoveryTokenModal extends React.Component {
                         </form>
                     </Modal.Body>
                 </Modal>
+                <NotificationContainer />
             </div>
         );
     }
