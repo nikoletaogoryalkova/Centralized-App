@@ -244,8 +244,8 @@ export async function cancelTrip(id, captchaToken) {
  *
  * @param {obj} email
  */
-export async function postRecoveryEmail(email) {
-    return sendRequest(`${host}users/resetPassword/token`, RequestMethod.POST, email).then(res => {
+export async function postRecoveryEmail(email, captchaToken) {
+    return sendRequest(`${host}users/resetPassword/token`, RequestMethod.POST, email, captchaToken).then(res => {
         return {
             success: (""+res.response.status).indexOf("20") === 0
         };
@@ -254,10 +254,23 @@ export async function postRecoveryEmail(email) {
 
 /**
  *
- * @param {obj} email
+ * @param {String} token
  */
 export async function sendRecoveryToken(token) {
-    return sendRequest(`${host}users/resetPassword/confirm`, RequestMethod.GET, token).then(res => {
+    return sendRequest(`${host}users/resetPassword/confirm?token=${token}`, RequestMethod.GET).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
+    });
+}
+
+/**
+ * 
+ * Object should contain password and token
+ * @param {obj} postObj
+ */
+export async function postNewPassword(postObj, captchaToken) {
+    return sendRequest(`${host}users/resetPassword/change`, RequestMethod.POST, postObj, captchaToken).then(res => {
         return {
             success: (""+res.response.status).indexOf("20") === 0
         };
