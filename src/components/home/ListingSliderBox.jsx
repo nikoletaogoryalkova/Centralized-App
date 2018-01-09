@@ -6,7 +6,7 @@ import ListingPictures from '../listings/ListingPictures';
 
 export default class ListingSliderBox extends React.Component {
     render() {
-        const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
+        const listingPrice = (this.props.listing.prices) && this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed(2) : parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
 
         return (
             <div className="item active">

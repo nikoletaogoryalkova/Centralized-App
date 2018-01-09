@@ -16,6 +16,7 @@ class MainNav extends React.Component {
 
         this.state = {
             showSignUpModal: false,
+            showLoginModal: false,
             signUpEmail: '',
             signUpFirstName: '',
             signUpLastName: '',
@@ -191,7 +192,7 @@ class MainNav extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
-                        <form onSubmit={(e) => { e.preventDefault(); this.login(); }}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="mail" />
                                 <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
