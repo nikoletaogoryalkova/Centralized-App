@@ -3,6 +3,10 @@ import { Link, withRouter } from 'react-router-dom';
 import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
 
+import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
+import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
+import ChangePasswordModal from './modals/ChangePasswordModal';
+
 import { Config } from '../config';
 import { register, login } from '../requester';
 
@@ -21,7 +25,11 @@ class MainNav extends React.Component {
             loginEmail: '',
             loginPassword: '',
             loginError: null,
-            userName: ''
+            userName: '',
+            sendRecoveryEmail: false,
+            enterRecoveryToken: false,
+            changePassword: false,
+            recoveryToken: '',
         }
 
         this.closeSignUp = this.closeSignUp.bind(this);
@@ -32,6 +40,20 @@ class MainNav extends React.Component {
         this.register = this.register.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    componentDidMount() {
+        const search = this.props.location.search;
+        const searchParams = search.split('=');
+        if (searchParams[0] === '?token') {
+            this.setState({
+                recoveryToken: searchParams[1],
+                enterRecoveryToken: true,
+            });
+        }
     }
 
     closeSignUp() {
@@ -46,6 +68,7 @@ class MainNav extends React.Component {
     }
 
     openSignUp(e) {
+        console.log(e);
         e.preventDefault();
         this.setState({ showSignUpModal: true });
     }
@@ -111,7 +134,13 @@ class MainNav extends React.Component {
 
                     localStorage[Config.getValue("domainPrefix") + ".auth.username"] = user.email;
                     this.setState({ userName: user.email });
-                    window.location.reload();
+                    
+                    if (this.state.recoveryToken !== '') {
+                        this.props.history.push('/');
+                    } else {
+                        this.props.history.push(window.location.pathname + window.location.search);
+                        // window.location.reload();
+                    }
 
                     this.closeLogIn();
                 })
@@ -130,6 +159,26 @@ class MainNav extends React.Component {
         this.setState({ userName: '' })
 
         this.props.history.push('/');
+    }
+
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     render() {
@@ -155,12 +204,12 @@ class MainNav extends React.Component {
                                 <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
                             </div>
 
-                            {/*<ReCAPTCHA*/}
-                                {/*ref={el => this.captcha = el}*/}
-                                {/*size="invisible"*/}
-                                {/*sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"*/}
-                                {/*onChange={token => this.login(token)}*/}
-                            {/*/>*/}
+                            <ReCAPTCHA
+                                ref={el => this.captcha = el}
+                                size="invisible"
+                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                onChange={token => this.login(token)}
+                            />
 
                             <button type="submit" className="btn btn-primary">Login</button>
                             <div className="clearfix"></div>
@@ -168,6 +217,7 @@ class MainNav extends React.Component {
 
                         <hr />
                         <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.closeLogIn(e); this.openSignUp(e) }}>Sign up</a></div>
+                        <div className="login-sign"><a onClick={(e) => { this.closeLogIn(e); this.openModal("sendRecoveryEmail", e) }}>Recover</a></div>
                     </Modal.Body>
                 </Modal>
 
@@ -217,6 +267,10 @@ class MainNav extends React.Component {
                     </Modal.Body>
                 </Modal>
 
+                <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
+                <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
+                <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
+
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
@@ -242,6 +296,9 @@ class MainNav extends React.Component {
                             <Nav pullRight>
                                 <NavItem componentClass={Link} href="/login" to="/login" onClick={this.openLogIn}>Login</NavItem>
                                 <NavItem componentClass={Link} href="/signup" to="/signup" onClick={this.openSignUp}>Register</NavItem>
+                                {/* <NavItem componentClass={Link} href="/recover" to="/recover" onClick={(e) => this.openModal("sendRecoveryEmail", e)}>Recover</NavItem>
+                                <NavItem componentClass={Link} href="/recover" to="/recover" onClick={(e) => this.openModal("enterRecoveryToken", e)}>Token</NavItem>
+                                <NavItem componentClass={Link} href="/changePassword" to="/changePassword" onClick={(e) => this.openModal("changePassword", e)}>Change</NavItem> */}
                             </Nav>
                         }
                     </Navbar.Collapse>

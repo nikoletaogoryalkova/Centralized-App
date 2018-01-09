@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { React_Bootstrap_Carousel } from 'react-bootstrap-carousel';
 
@@ -16,7 +17,7 @@ export default class ListingPictures extends React.Component {
         return (
             <React_Bootstrap_Carousel
                 animation={true}
-                slideshowSpeed={7000}
+                autoplay={false}
                 leftIcon={this.state.leftIcon}
                 rightIcon={this.state.rightIcon}
                 indicators={false}
@@ -24,7 +25,7 @@ export default class ListingPictures extends React.Component {
                 {this.props.pictures.map((item, i) => {
                     return (
                         <div className="item" key={i}>
-                            <img src={item.thumbnail} alt="" />
+                            <Link to={`/listings/${this.props.id}`}><img src={item.thumbnail} alt="" /></Link>
                         </div>
                     )
                 })}

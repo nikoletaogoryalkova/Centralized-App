@@ -124,8 +124,8 @@ export async function requestBooking(requestInfo, captchaToken) {
 }
 
 export async function getLocRate() {
-    return sendRequest('https://lockchain.co/marketplace/internal_api/loc_price.php', RequestMethod.GET).then(res => {
-        return res.response.json();
+    return fetch('https://lockchain.co/marketplace/internal_api/loc_price.php').then(res => {
+        return res.json();
     });
 }
 
@@ -152,11 +152,10 @@ export async function register(userObj, captchaToken) {
 }
 
 export async function login(userObj, captchaToken) {
-    return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {
-    }).then(res => {
+    return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {}).then(res => {
         return {
             body: res.response,
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -164,7 +163,7 @@ export async function login(userObj, captchaToken) {
 export async function createListing(listingObj, captchaToken) {
     return sendRequest(`${host}listings`, RequestMethod.POST, listingObj, captchaToken).then(res => {
         return {
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -172,7 +171,7 @@ export async function createListing(listingObj, captchaToken) {
 export async function editListing(id, listingObj, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/edit`, RequestMethod.POST, listingObj, captchaToken).then(res => {
         return {
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -180,7 +179,7 @@ export async function editListing(id, listingObj, captchaToken) {
 export async function deleteListing(id, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/delete`, RequestMethod.POST, {}, captchaToken).then(res => {
         return {
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -238,6 +237,43 @@ export async function acceptReservation(id, captchaToken) {
 export async function cancelTrip(id, captchaToken) {
     return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, '', captchaToken).then(res => {
         return res.response.json();
+    });
+}
+
+/**
+ *
+ * @param {obj} email
+ */
+export async function postRecoveryEmail(email) {
+    return sendRequest(`${host}users/resetPassword/token`, RequestMethod.POST, email).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
+    });
+}
+
+/**
+ *
+ * @param {String} token
+ */
+export async function sendRecoveryToken(token) {
+    return sendRequest(`${host}users/resetPassword/confirm?token=${token}`, RequestMethod.GET).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
+    });
+}
+
+/**
+ * 
+ * Object should contain password and token
+ * @param {obj} postObj
+ */
+export async function postNewPassword(postObj) {
+    return sendRequest(`${host}users/resetPassword/change`, RequestMethod.POST, postObj).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
     });
 }
 

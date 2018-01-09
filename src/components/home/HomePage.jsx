@@ -63,6 +63,8 @@ class HomePage extends React.Component {
                     <OwlCarousel
                         className="owl-theme"
                         loop
+                        mouseDrag={false}
+                        autoplay={false}
                         margin={30}
                         nav
                         navText={["<span class='left_carusel'></span>", "<span class='right_carusel'></span>"]}
