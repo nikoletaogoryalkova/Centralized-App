@@ -134,7 +134,13 @@ class MainNav extends React.Component {
 
                     localStorage[Config.getValue("domainPrefix") + ".auth.username"] = user.email;
                     this.setState({ userName: user.email });
-                    window.location.reload();
+                    
+                    if (this.state.recoveryToken !== '') {
+                        this.props.history.push('/');
+                    } else {
+                        this.props.history.push(window.location.pathname + window.location.search);
+                        // window.location.reload();
+                    }
 
                     this.closeLogIn();
                 })
@@ -198,12 +204,12 @@ class MainNav extends React.Component {
                                 <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
                             </div>
 
-                            {/*<ReCAPTCHA*/}
-                                {/*ref={el => this.captcha = el}*/}
-                                {/*size="invisible"*/}
-                                {/*sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"*/}
-                                {/*onChange={token => this.login(token)}*/}
-                            {/*/>*/}
+                            <ReCAPTCHA
+                                ref={el => this.captcha = el}
+                                size="invisible"
+                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                onChange={token => this.login(token)}
+                            />
 
                             <button type="submit" className="btn btn-primary">Login</button>
                             <div className="clearfix"></div>
