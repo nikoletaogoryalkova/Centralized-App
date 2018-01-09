@@ -66,7 +66,7 @@ class PropertyPage extends React.Component {
         }
 
         getLocRate().then((data) => {
-            this.setState({locRate: data.loc});
+            this.setState({locRate: data[0].price_eur});
             if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
                 getCurrentLoggedInUserInfo()
                     .then(res => {

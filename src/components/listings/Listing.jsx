@@ -17,7 +17,7 @@ class Listing extends React.Component {
 
     componentDidMount() {
         getLocRate().then((data) => {
-            this.setState({ locRate: data.loc });
+            this.setState({ locRate: data[0].price_eur });
         })
     }
 

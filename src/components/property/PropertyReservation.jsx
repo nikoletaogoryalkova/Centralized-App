@@ -93,7 +93,7 @@ class PropertyReservation extends React.Component {
 
             return false;
         };
-        debugger;
+        
         const cleaningFee = this.props.nights > 0 ? (this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.cleaningFee, 10) : parseInt(this.props.listing.cleaningFees[this.props.currency], 10)) : 0;
         const cleaningFeeEur = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees["EUR"], 10) : 0;
         const cleaningFeeLoc = Number((cleaningFeeEur / this.props.locRate).toFixed(4));

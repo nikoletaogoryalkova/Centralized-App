@@ -22,7 +22,7 @@ class HomePage extends React.Component {
             this.setState({ listings: data.content })
         });
         getLocRate().then((data) => {
-            this.setState({ locRate: data.loc, loading: false });
+            this.setState({ locRate: data[0].price_eur, loading: false });
         })
     };
     render() {

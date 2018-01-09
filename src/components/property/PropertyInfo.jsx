@@ -85,7 +85,7 @@ class PropertyInfo extends React.Component {
                                 <div id="reviews">
                                     <h2>User Rating &amp; Reviews</h2>
                                     {this.props.data.reviews.map((item, i) => {
-                                        return <PropertyReview key={i} rating={item.rating} reviewText={item.comments} />
+                                        return <PropertyReview key={i} rating={item.average} reviewText={item.comments} />
                                     })}
                                     <hr />
                                 </div>

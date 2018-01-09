@@ -124,7 +124,7 @@ export async function requestBooking(requestInfo, captchaToken) {
 }
 
 export async function getLocRate() {
-    return fetch('https://lockchain.co/marketplace/internal_api/loc_price.php').then(res => {
+    return fetch('https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=EUR').then(res => {
         return res.json();
     });
 }
