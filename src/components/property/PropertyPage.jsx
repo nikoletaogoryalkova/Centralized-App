@@ -160,7 +160,7 @@ class PropertyPage extends React.Component {
             ).then(res => {
                 let prices = [];
                 for (let dateInfo of res.content) {
-                    let price = dateInfo.available ? `${this.state.currencySign}${dateInfo.price}` : ``;
+                    let price = dateInfo.available ? `${this.state.currencySign}${Math.round(dateInfo.price)}` : ``;
                     prices.push(
                         {
                             "title": <span className="calendar-price bold">{price}</span>,
