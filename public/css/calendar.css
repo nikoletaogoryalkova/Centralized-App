@@ -145,6 +145,12 @@
   height: 100px;
   overflow: visible;
 }
+.rbc-calendar .rbc-month-row .rbc-row-bg {
+  height: 100px;
+}
+.rbc-calendar .rbc-month-row .rbc-row-content {
+  height: 100px;
+}
 .rbc-calendar .rbc-event-content {
   overflow: visible;
 }

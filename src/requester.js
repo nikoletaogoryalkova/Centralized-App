@@ -124,8 +124,8 @@ export async function requestBooking(requestInfo, captchaToken) {
 }
 
 export async function getLocRate() {
-    return sendRequest('https://lockchain.co/marketplace/internal_api/loc_price.php', RequestMethod.GET).then(res => {
-        return res.response.json();
+    return fetch('https://lockchain.co/marketplace/internal_api/loc_price.php').then(res => {
+        return res.json();
     });
 }
 
