@@ -139,7 +139,8 @@ class MainNav extends React.Component {
                     if (this.state.recoveryToken !== '') {
                         this.props.history.push('/');
                     } else {
-                        // this.props.history.push(window.location.pathname + window.location.search); // this won't reload components in the <main>
+                        // this won't reload components in <main>
+                        // this.props.history.push(window.location.pathname + window.location.search); 
                         window.location.reload();
                     }
 
@@ -217,8 +218,7 @@ class MainNav extends React.Component {
                         </form>
 
                         <hr />
-                        <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.closeLogIn(e); this.openSignUp(e) }}>Sign up</a></div>
-                        <div className="login-sign"><a onClick={(e) => { this.closeLogIn(e); this.openModal("sendRecoveryEmail", e) }}>Recover</a></div>
+                        <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.closeLogIn(e); this.openSignUp(e) }}>Sign up</a>. Forgot your password? <a onClick={(e) => { this.closeLogIn(e); this.openModal("sendRecoveryEmail", e) }}>Recover</a></div>
                     </Modal.Body>
                 </Modal>
 
