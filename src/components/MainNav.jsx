@@ -139,8 +139,8 @@ class MainNav extends React.Component {
                     if (this.state.recoveryToken !== '') {
                         this.props.history.push('/');
                     } else {
-                        this.props.history.push(window.location.pathname + window.location.search);
-                        // window.location.reload();
+                        // this.props.history.push(window.location.pathname + window.location.search); // this won't reload components in the <main>
+                        window.location.reload();
                     }
 
                     this.closeLogIn();
