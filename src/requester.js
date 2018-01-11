@@ -35,12 +35,27 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
 
     return fetch(endpoint, RequestMethod.GET === method ? getParams : postParams)
         .then(res => {
+            if (!res.ok) {
+                res.json().then(r => {
+                    if (r.errors["ExpiredJwt"]) {
+                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
+                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
+                        window.location.reload();
+                    }
+                });
+            }
             return {
                 response: res,
-                success: true
+                success: res.ok,
             }
         })
         .catch(err => {
+            console.log(err)
+
+
+            // console.log(data)
+            // if (data.errors && data.errors["ExpiredJwt"]) {
+            // }
             return {
                 response: err,
                 success: false
@@ -124,8 +139,8 @@ export async function requestBooking(requestInfo, captchaToken) {
 }
 
 export async function getLocRate() {
-    return sendRequest('https://lockchain.co/marketplace/internal_api/loc_price.php', RequestMethod.GET).then(res => {
-        return res.response.json();
+    return fetch('https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=EUR').then(res => {
+        return res.json();
     });
 }
 
@@ -152,11 +167,10 @@ export async function register(userObj, captchaToken) {
 }
 
 export async function login(userObj, captchaToken) {
-    return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {
-    }).then(res => {
+    return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {}).then(res => {
         return {
             body: res.response,
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -164,7 +178,7 @@ export async function login(userObj, captchaToken) {
 export async function createListing(listingObj, captchaToken) {
     return sendRequest(`${host}listings`, RequestMethod.POST, listingObj, captchaToken).then(res => {
         return {
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -172,7 +186,7 @@ export async function createListing(listingObj, captchaToken) {
 export async function editListing(id, listingObj, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/edit`, RequestMethod.POST, listingObj, captchaToken).then(res => {
         return {
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -180,7 +194,7 @@ export async function editListing(id, listingObj, captchaToken) {
 export async function deleteListing(id, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/delete`, RequestMethod.POST, {}, captchaToken).then(res => {
         return {
-            success: (""+res.response.status).indexOf("20") === 0
+            success: ("" + res.response.status).indexOf("20") === 0
         };
     });
 }
@@ -238,6 +252,43 @@ export async function acceptReservation(id, captchaToken) {
 export async function cancelTrip(id, captchaToken) {
     return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, '', captchaToken).then(res => {
         return res.response.json();
+    });
+}
+
+/**
+ *
+ * @param {obj} email
+ */
+export async function postRecoveryEmail(email, captchaToken) {
+    return sendRequest(`${host}users/resetPassword/token`, RequestMethod.POST, email, captchaToken).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
+    });
+}
+
+/**
+ *
+ * @param {String} token
+ */
+export async function sendRecoveryToken(token) {
+    return sendRequest(`${host}users/resetPassword/confirm?token=${token}`, RequestMethod.GET).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
+    });
+}
+
+/**
+ * 
+ * Object should contain password and token
+ * @param {obj} postObj
+ */
+export async function postNewPassword(postObj, captchaToken) {
+    return sendRequest(`${host}users/resetPassword/change`, RequestMethod.POST, postObj, captchaToken).then(res => {
+        return {
+            success: (""+res.response.status).indexOf("20") === 0
+        };
     });
 }
 

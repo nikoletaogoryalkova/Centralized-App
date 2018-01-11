@@ -93,12 +93,13 @@ class PropertyReservation extends React.Component {
 
             return false;
         };
-
-        const cleaningFee = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees[this.props.currency], 10) : 0;
+        
+        const cleaningFee = this.props.nights > 0 ? (this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.cleaningFee, 10) : parseInt(this.props.listing.cleaningFees[this.props.currency], 10)) : 0;
         const cleaningFeeEur = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees["EUR"], 10) : 0;
         const cleaningFeeLoc = Number((cleaningFeeEur / this.props.locRate).toFixed(4));
-        const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
-        const listingPriceEur = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
+        const listingPrice = (this.props.listing.prices) && this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed() : parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);        
+
+        const listingPriceEur = this.props.listing.prices && parseInt(this.props.listing.prices["EUR"], 10).toFixed(2);
         const listingPriceLoc = Number((listingPriceEur / this.props.locRate).toFixed(4));
         const totalLoc = (this.props.nights * listingPriceLoc + cleaningFeeLoc).toFixed(4);
         return (
@@ -109,7 +110,7 @@ class PropertyReservation extends React.Component {
                     }
                     {!this.state.sending &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
-                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc} LOC)</span> /per night</p>
+                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc.toFixed(4)} LOC)</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }

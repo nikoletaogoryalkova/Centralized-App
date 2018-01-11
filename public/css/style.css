@@ -125,16 +125,13 @@ header form button {
     background: #fff;
 }
 
-.session-nav-user-thumb {
+.session-nav-user-thumb img {
     display: inline-block;
     vertical-align: middle;
     border-radius: 5px;
-    background-position: center center;
-    background-size: contain;
-    background-image: url(../images/user_img_small.png);
     width: 45px;
     height: 45px;
-    margin-right: 15px;
+    margin-right: -15px;
 }
 
 #main-nav .navbar-nav a {
@@ -995,13 +992,6 @@ ul.profile-pending-item>li>span.cnt {
     bottom: 20px;
     left: 0;
     position: absolute;
-}
-
-ul.profile-pending-item>li:nth-child(1) {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url(../images/user_img_small.png);
-    border-radius: 50%;
 }
 
 ul.profile-pending-item>li:nth-child(2) span.name {
@@ -1982,6 +1972,24 @@ li.dropdown {
     margin: 15px 0;
     border: 1px solid #CCCCCC;
     border-radius: 3px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.my-reservations .reservation-box-pending {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.my-reservations .reservation-box-pending a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.my-reservations .reservation-box-pending .fa-link {
+    cursor: pointer;
 }
 
 .my-reservations .reservation-box .send-message-icon {
@@ -2536,6 +2544,20 @@ input[type="checkbox"].tick:checked+label:after {
 
 .dropdown.btn-group {
     width: 100%;
+}
+
+#profile-photos .pictures-upload {
+    width: 30%;
+    padding: 70px 0;
+    margin: 0;
+}
+
+#profile-photos .pictures-upload p {
+    font-size: 17px;
+}
+
+#profile-photos .uploaded-small-picture>img {
+    margin: 0;
 }
 
 .pictures-upload {

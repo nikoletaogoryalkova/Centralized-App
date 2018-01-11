@@ -17,13 +17,13 @@ class Listing extends React.Component {
 
     componentDidMount() {
         getLocRate().then((data) => {
-            this.setState({ locRate: data.loc });
+            this.setState({ locRate: data[0].price_eur });
         })
     }
 
     render() {
-        const listingPrice = this.props.listing.prices && parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);
-
+        const listingPrice = (this.props.listing.prices) && this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed() : parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);        
+        
         if (this.state.locRate === null) {
             return null;
         }

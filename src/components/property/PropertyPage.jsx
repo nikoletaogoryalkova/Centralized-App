@@ -66,7 +66,7 @@ class PropertyPage extends React.Component {
         }
 
         getLocRate().then((data) => {
-            this.setState({locRate: data.loc});
+            this.setState({locRate: data[0].price_eur});
             if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
                 getCurrentLoggedInUserInfo()
                     .then(res => {
@@ -160,7 +160,7 @@ class PropertyPage extends React.Component {
             ).then(res => {
                 let prices = [];
                 for (let dateInfo of res.content) {
-                    let price = dateInfo.available ? `${this.state.currencySign}${dateInfo.price}` : ``;
+                    let price = dateInfo.available ? `${this.state.currencySign}${Math.round(dateInfo.price)}` : ``;
                     prices.push(
                         {
                             "title": <span className="calendar-price bold">{price}</span>,
@@ -223,7 +223,7 @@ class PropertyPage extends React.Component {
                     </section>
                 </div>
                 <section className="hotel-gallery">
-                    <div className="hotel-gallery-bgr" style={this.state.data.pictures !== undefined ? { 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' } : { backgroundColor: '#AAA' }}>
+                    <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' } : { backgroundColor: '#AAA' }}>
                         <div className="container">
                             <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
                             {images !== null && <Lightbox

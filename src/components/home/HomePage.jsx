@@ -22,7 +22,7 @@ class HomePage extends React.Component {
             this.setState({ listings: data.content })
         });
         getLocRate().then((data) => {
-            this.setState({ locRate: data.loc, loading: false });
+            this.setState({ locRate: data[0].price_eur, loading: false });
         })
     };
     render() {
@@ -63,6 +63,8 @@ class HomePage extends React.Component {
                     <OwlCarousel
                         className="owl-theme"
                         loop
+                        mouseDrag={false}
+                        autoplay={false}
                         margin={30}
                         nav
                         navText={["<span class='left_carusel'></span>", "<span class='right_carusel'></span>"]}

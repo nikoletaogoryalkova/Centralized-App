@@ -8,6 +8,18 @@ import Dropzone from 'react-dropzone';
 import { Config } from '../../../config';
 
 export default class CreateListingPhotos extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            error: null
+        }
+
+        this.onDropRejected = this.onDropRejected.bind(this);
+    }
+    onDropRejected() {
+        this.setState({error: 'Maximum file upload size is 10MB. Supported media formats are jpg, jpeg, png'})
+    }
 
     render() {
         return (
@@ -25,8 +37,10 @@ export default class CreateListingPhotos extends React.Component {
                                 <Dropzone
                                     className="pictures-upload"
                                     multiple={true}
-                                    accept="image/*"
-                                    onDrop={this.props.onImageDrop}>
+                                    maxSize={10485760}
+                                    accept="image/jpg, image/jpeg, image/png"
+                                    onDrop={this.props.onImageDrop}
+                                    onDropRejected={this.onDropRejected}>
                                     <p>Drop files to upload</p>
                                     <button className="btn btn-primary">Choose file</button>
                                 </Dropzone>
@@ -43,6 +57,7 @@ export default class CreateListingPhotos extends React.Component {
                                         )
                                     }
                                 </div>
+                                {this.state.error ? <div className="error">{this.state.error}</div> : null}
                             </div>
                         </div>
                     </div>
