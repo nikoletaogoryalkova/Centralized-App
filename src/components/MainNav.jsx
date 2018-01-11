@@ -104,7 +104,8 @@ class MainNav extends React.Component {
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
             password: this.state.signUpPassword,
-            locAddress: this.state.signUpLocAddress
+            locAddress: this.state.signUpLocAddress,
+            image: Config.getValue("basePath") + "images/default.png"
         };
 
         register(user, captchaToken).then((res) => {
@@ -210,7 +211,7 @@ class MainNav extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.login(token)}
+                                onChange={token => {this.login(token); this.captcha.reset(); }}
                             />
 
                             <button type="submit" className="btn btn-primary">Login</button>
@@ -255,7 +256,7 @@ class MainNav extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.register(token)}
+                                onChange={token => {this.register(token); this.captcha.reset(); }}
                             />
 
                             <button type="submit" className="btn btn-primary">Sign up</button>
