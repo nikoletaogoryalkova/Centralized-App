@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -69,7 +70,6 @@ class MainNav extends React.Component {
     }
 
     openSignUp(e) {
-        console.log(e);
         e.preventDefault();
         this.setState({ showSignUpModal: true });
     }
@@ -98,7 +98,6 @@ class MainNav extends React.Component {
     }
 
     register(captchaToken) {
-
         let user = {
             email: this.state.signUpEmail,
             firstName: this.state.signUpFirstName,
@@ -113,10 +112,16 @@ class MainNav extends React.Component {
                 this.openLogIn();
             }
             else {
-                let responseJson = res.json();
-                responseJson.then((data) => {
-                    this.setState({ signUpError: data.message });
-                })
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors){
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
+
+                this.captcha.reset();
             }
         });
     }
@@ -186,6 +191,7 @@ class MainNav extends React.Component {
     render() {
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
+                <NotificationContainer />
                 <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Login</h1>
