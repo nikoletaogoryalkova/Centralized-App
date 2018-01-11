@@ -1,23 +1,53 @@
 import React from 'react';
 import { NotificationContainer } from 'react-notifications';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import ReCAPTCHA from 'react-google-recaptcha';
-import moment from 'moment'
+import moment from 'moment';
+
+import CancelTripModal from './modals/CancelTripModal';
 
 export default class MyTripsTable extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            selectedId: ''
+            selectedId: '',
+            selectedTripId: '',
+            showCancelTripModal: false,
         }
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    selectTrip(id) {
+        this.setState({selectedTripId: id});
+    }
+    
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     render() {
-        console.log(this.props.trips);
         return (
             <div className="container">
                 <NotificationContainer />
+                <CancelTripModal isActive={this.state.showCancelTripModal} closeModal={this.closeModal} cancelTrip={this.props.cancelTrip} tripId={this.state.selectedTripId}/>
                 <div className="table-header bold">
                     <div className="col-md-1">
                     </div>
@@ -58,9 +88,7 @@ export default class MyTripsTable extends React.Component {
                                 <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
                             </div>
                             <div className="col-md-2">
-                                <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: trip.id }); this.captcha.execute() }}>
-                                    {trip.accepted ? <div>Reservation is accepted and can't be undone</div> : <div><button type="submit">Cancel</button></div>}
-                                </form>
+                            {trip.accepted ? <div>Reservation is accepted and can't be undone</div> : <div><button type="submit" onClick={e => {e.preventDefault(); this.selectTrip(trip.id); this.openModal("showCancelTripModal"); }}>Cancel</button></div>}
                                 {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                             </div>
@@ -71,23 +99,15 @@ export default class MyTripsTable extends React.Component {
                                 {trip.hostLocAddress && !trip.accepted ? 
                                     <div>
                                         Please pay {trip.price} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(7)}</a>
-                                        
                                         <CopyToClipboard text={trip.hostLocAddress}>
                                             <button><i class="fa fa-link" aria-hidden="true" title="Copy LOC Address"></i></button>
                                         </CopyToClipboard>
-
                                         Click <a href="https://medium.com/@LockChainCo/how-to-create-a-personal-wallet-with-myetherwallet-com-and-buy-loc-with-eth-for-beginners-c395fd303d1" target="_blank">here</a> for more instructions.
                                     </div> : ''}
                             </div>
                         </div>
                     )
                 })}
-                <ReCAPTCHA
-                    ref={el => this.captcha = el}
-                    size="invisible"
-                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                    onChange={token => { this.props.onTripCancel(this.state.selectedId, token);}}
-                />
             </div>
         );
     }

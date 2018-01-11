@@ -6,7 +6,7 @@ import MyTripsTable from './MyTripsTable';
 import Pagination from 'rc-pagination';
 import Footer from '../../Footer';
 import { cancelTrip } from "../../../requester";
-import { NotificationManager } from 'react-notifications';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import { getMyTrips } from '../../../requester';
 
@@ -19,7 +19,7 @@ export default class MyTripsPage extends React.Component {
             loading: true,
             totalTrips: 0,
             currentPage: 1,
-            currentTrip: null
+            currentTrip: null,
         }
     }
 
@@ -47,7 +47,10 @@ export default class MyTripsPage extends React.Component {
     cancelTrip(id, captchaToken) {
         this.setState({ loading: true });
         cancelTrip(id, captchaToken)
-            .then(res => { this.componentDidMount(); this._operate(res, id, false) });
+            .then(res => { 
+                this.componentDidMount(); 
+                this._operate(res, id, false) 
+            });
     }
 
     onPageChange = (page) => {
@@ -89,7 +92,7 @@ export default class MyTripsPage extends React.Component {
                         <hr />
                         <MyTripsTable
                             currentTrip={this.state.currentTrip}
-                            onTripCancel={this.cancelTrip.bind(this)}
+                            cancelTrip={this.cancelTrip.bind(this)}
                             trips={this.state.trips} />
 
                         <div className="pagination-box">

@@ -5,7 +5,7 @@ class PropertyReview extends React.Component {
     getRatingString(rating) {
         let result = "";
         let ratingRoundedNumber = Math.round(rating);
-
+        
         if (ratingRoundedNumber === 5) {
             result += "Excellent";
         }

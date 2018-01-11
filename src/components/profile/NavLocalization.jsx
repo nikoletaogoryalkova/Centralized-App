@@ -13,7 +13,7 @@ export default class NavLocalization extends React.Component {
 
     componentDidMount() {
         getLocRate().then((data) => {
-            this.setState({locRate: data.loc, loading: false})
+            this.setState({locRate: data[0].price_eur, loading: false})
         })
     }
 
