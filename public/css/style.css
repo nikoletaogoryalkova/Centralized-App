@@ -994,13 +994,6 @@ ul.profile-pending-item>li>span.cnt {
     position: absolute;
 }
 
-ul.profile-pending-item>li:nth-child(1) {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url(../images/user_img_small.png);
-    border-radius: 50%;
-}
-
 ul.profile-pending-item>li:nth-child(2) span.name {
     font-weight: bold;
 }
