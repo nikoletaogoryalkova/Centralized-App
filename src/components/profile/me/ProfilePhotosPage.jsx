@@ -3,26 +3,33 @@ import React from 'react';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 import ProfileNav from './ProfileNav';
-import {Config} from '../../../config';
+import { Config } from '../../../config';
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
 import update from 'react-addons-update';
+import { getCurrentLoggedInUserInfo } from '../../../requester';
 
 const host = Config.getValue("apiHost");
 const LOCKCHAIN_UPLOAD_URL = `${host}users/me/images/upload`;
 
 export default class ProfilePhotosPage extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             uploadedFiles: [],
-            uploadedFilesUrls: [],
-            uploadedFilesThumbUrls: []
+            uploadedFilesThumbUrls: [],
+            loading: true
         }
 
         this.onImageDrop = this.onImageDrop.bind(this);
         this.handleImageUpload = this.handleImageUpload.bind(this);
+    }
+
+    componentDidMount() {
+        getCurrentLoggedInUserInfo().then((data) => {
+            this.setState({ uploadedFilesThumbUrls: [data.image], loading: false });
+        });
     }
 
     onImageDrop(files) {
@@ -37,28 +44,30 @@ export default class ProfilePhotosPage extends React.Component {
         files.forEach((file) => {
             let upload = request.post(LOCKCHAIN_UPLOAD_URL)
                 .field('image', file)
-                .set('Authorization', localStorage["local.auth.lockchain"])
-                .set('Accept', 'application/json')
-                .set('Content-Type', 'application/json');
+                .set('Authorization', localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"]);
 
 
             upload.end((err, response) => {
                 if (err) {
                     console.error(err);
                 }
-                if (response.body.secure_url !== '') {
-                    this.setState(previousState => ({
-                        uploadedFilesUrls: [...previousState.uploadedFilesUrls, response.body.original],
-                        uploadedFilesThumbUrls: [...previousState.uploadedFilesThumbUrls, response.body.thumbnail]
-                    }));
+                else {
+                    console.log(response.body.thumbnail);
+                    this.setState({
+                        uploadedFilesThumbUrls: [response.body.thumbnail]
+                    });
                 }
             });
         });
 
 
-    }    
+    }
 
     render() {
+        if(this.state.loading) {
+            return <div className="loader"></div>
+        }
+
         return (
             <div>
                 <ProfileHeader />
@@ -71,12 +80,9 @@ export default class ProfilePhotosPage extends React.Component {
                             </div>
                             <div className="col-md-8">
                                 <div className="pictures-preview col-md-12">
-                                    {this.state.uploadedFilesUrls.length === 0 ? null :
-                                        this.state.uploadedFilesUrls.map((imageUrl, i) =>
+                                    {this.state.uploadedFilesThumbUrls.length === 0 ? null :
+                                        this.state.uploadedFilesThumbUrls.map((imageUrl, i) =>
                                             <div key={i} className="uploaded-small-picture col-md-4">
-                                                <button className="close">
-                                                    <img className="inactiveLink" src={Config.getValue("basePath") + "images/icon-delete.png"} alt="remove" />
-                                                </button>
                                                 <img src={imageUrl} height={200} alt={`uploaded-${i}`} />
                                             </div>
                                         )

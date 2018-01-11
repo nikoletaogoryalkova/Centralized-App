@@ -125,16 +125,13 @@ header form button {
     background: #fff;
 }
 
-.session-nav-user-thumb {
+.session-nav-user-thumb img {
     display: inline-block;
     vertical-align: middle;
     border-radius: 5px;
-    background-position: center center;
-    background-size: contain;
-    background-image: url(../images/user_img_small.png);
     width: 45px;
     height: 45px;
-    margin-right: 15px;
+    margin-right: -15px;
 }
 
 #main-nav .navbar-nav a {
@@ -1982,6 +1979,9 @@ li.dropdown {
     margin: 15px 0;
     border: 1px solid #CCCCCC;
     border-radius: 3px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .my-reservations .reservation-box-pending {
