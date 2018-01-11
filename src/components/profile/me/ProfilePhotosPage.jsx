@@ -19,11 +19,13 @@ export default class ProfilePhotosPage extends React.Component {
         this.state = {
             uploadedFiles: [],
             uploadedFilesThumbUrls: [],
-            loading: true
+            loading: true,
+            error: null
         }
 
         this.onImageDrop = this.onImageDrop.bind(this);
         this.handleImageUpload = this.handleImageUpload.bind(this);
+        this.onDropRejected = this.onDropRejected.bind(this);
     }
 
     componentDidMount() {
@@ -38,6 +40,10 @@ export default class ProfilePhotosPage extends React.Component {
         this.setState({
             uploadedFiles: files
         });
+    }
+
+    onDropRejected() {
+        this.setState({error: 'Maximum file upload size is 10MB. Supported media formats are jpg, jpeg, png'})
     }
 
     handleImageUpload(files) {
@@ -90,11 +96,14 @@ export default class ProfilePhotosPage extends React.Component {
                                     <Dropzone
                                         className="pictures-upload col-md-4"
                                         multiple={false}
-                                        accept="image/*"
-                                        onDrop={this.onImageDrop}>
+                                        maxSize={10485760}
+                                        accept="image/jpg, image/jpeg, image/png"
+                                        onDrop={this.onImageDrop}
+                                        onDropRejected={this.onDropRejected} >
                                         <p>Upload a file from your computer</p>
                                     </Dropzone>
                                 </div>
+                            {this.state.error ? <div className="error">{this.state.error}</div> : null}
                             </div>
                             <div className="before-footer clear-both" />
                         </div>
