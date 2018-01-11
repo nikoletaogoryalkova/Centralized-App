@@ -20,9 +20,9 @@ export default class MyTripsTable extends React.Component {
     }
 
     selectTrip(id) {
-        this.setState({selectedTripId: id});
+        this.setState({ selectedTripId: id });
     }
-    
+
     openModal(modal, e) {
         if (e) {
             e.preventDefault();
@@ -47,7 +47,7 @@ export default class MyTripsTable extends React.Component {
         return (
             <div className="container">
                 <NotificationContainer />
-                <CancelTripModal isActive={this.state.showCancelTripModal} closeModal={this.closeModal} cancelTrip={this.props.cancelTrip} tripId={this.state.selectedTripId}/>
+                <CancelTripModal isActive={this.state.showCancelTripModal} closeModal={this.closeModal} cancelTrip={this.props.cancelTrip} tripId={this.state.selectedTripId} />
                 <div className="table-header bold">
                     <div className="col-md-1">
                     </div>
@@ -69,34 +69,36 @@ export default class MyTripsTable extends React.Component {
                 </div>
                 {this.props.trips.map(trip => {
                     return (
-                        <div key={trip.id} style={trip.id === this.props.currentTrip ? {backgroundColor: "lightgreen"} : {}} className="row reservation-box">
-                            <div className="col-md-1">
-                                <div className="reservation-image-box">
-                                    <span className="session-nav-user-thumb"></span>
+                        <div key={trip.id} style={trip.id === this.props.currentTrip ? { backgroundColor: "lightgreen" } : {}} className="row reservation-box">
+                            <div className="col-md-12">
+                                <div className="col-md-1">
+                                    <div className="reservation-image-box">
+                                        <span className="session-nav-user-thumb"><img src={trip.userImage} alt="host-profile" /></span>
+                                    </div>
+                                </div>
+                                <div className="col-md-2">
+                                    <div className="bold">{trip.hostName}</div>
+                                    <div>{trip.hostEmail}</div>
+                                    <div>{trip.hostPhone}</div>
+                                    {trip.hostEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${trip.hostEmail}`}>Send Message</a></div> : ''}
+                                </div>
+                                <div className="col-md-2">
+                                    <div>{trip.listingName}</div>
+                                </div>
+                                <div className="col-md-3">
+                                    <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
+                                </div>
+                                <div className="col-md-2">
+                                    {trip.accepted ? <div>Reservation is accepted and can't be undone</div> : <div><button type="submit" onClick={e => { e.preventDefault(); this.selectTrip(trip.id); this.openModal("showCancelTripModal"); }}>Cancel</button></div>}
+                                    {/* <div><Link to="#">Report a problem</Link></div>
+                                <div><Link to="#">Print Confirmation</Link></div> */}
+                                </div>
+                                <div className="col-md-2">
+                                    <div className="reservation-status bold">{trip.accepted ? "Accepted" : "Pending"}</div>
                                 </div>
                             </div>
-                            <div className="col-md-2">
-                                <div className="bold">{trip.hostName}</div>
-                                <div>{trip.hostEmail}</div>
-                                <div>{trip.hostPhone}</div>
-                                {trip.hostEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${trip.hostEmail}`}>Send Message</a></div> : ''}
-                            </div>
-                            <div className="col-md-2">
-                                <div>{trip.listingName}</div>
-                            </div>
-                            <div className="col-md-3">
-                                <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
-                            </div>
-                            <div className="col-md-2">
-                            {trip.accepted ? <div>Reservation is accepted and can't be undone</div> : <div><button type="submit" onClick={e => {e.preventDefault(); this.selectTrip(trip.id); this.openModal("showCancelTripModal"); }}>Cancel</button></div>}
-                                {/* <div><Link to="#">Report a problem</Link></div>
-                                <div><Link to="#">Print Confirmation</Link></div> */}
-                            </div>
-                            <div className="col-md-2">
-                                <div className="reservation-status bold">{trip.accepted ? "Accepted" : "Pending"}</div>
-                            </div>
                             <div className="reservation-box-pending col-md-12">
-                                {trip.hostLocAddress && !trip.accepted ? 
+                                {trip.hostLocAddress && !trip.accepted ?
                                     <div>
                                         Please pay {trip.price} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(7)}</a>
                                         <CopyToClipboard text={trip.hostLocAddress}>
