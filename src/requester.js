@@ -35,17 +35,27 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
 
     return fetch(endpoint, RequestMethod.GET === method ? getParams : postParams)
         .then(res => {
-            if (res.status === 403 || res.status >= 500) {
-                localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
-                localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
-                window.location.reload();
+            if (!res.ok) {
+                res.json().then(r => {
+                    if (r.errors["ExpiredJwt"]) {
+                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
+                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
+                        window.location.reload();
+                    }
+                });
             }
             return {
                 response: res,
-                success: true
+                success: res.ok,
             }
         })
         .catch(err => {
+            console.log(err)
+
+
+            // console.log(data)
+            // if (data.errors && data.errors["ExpiredJwt"]) {
+            // }
             return {
                 response: err,
                 success: false
