@@ -135,7 +135,7 @@ class MainNav extends React.Component {
 
         login(user, captchaToken).then((res) => {
             if (res.success) {
-                res.body.json().then((data) => {
+                res.response.json().then((data) => {
                     localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
@@ -155,7 +155,6 @@ class MainNav extends React.Component {
             } else {
                 res.response.then(res => {
                     const errors = res.errors;
-                    console.log(errors);
                     for (let key in errors){
                         if (typeof errors[key] !== 'function') {
                             NotificationManager.warning(errors[key].message);
@@ -212,8 +211,8 @@ class MainNav extends React.Component {
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
                         <form onSubmit={(e) => { 
                             e.preventDefault(); 
-                            this.login(null);
-                            {/* this.captcha.execute();  */}
+                            {/* this.login(null); */}
+                            this.captcha.execute(); 
                             }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="mail" />
