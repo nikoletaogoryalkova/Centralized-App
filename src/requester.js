@@ -38,7 +38,7 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
             if (!res.ok) {
                 return {
                     response: res.json().then(r => {
-                        if (r.errors["ExpiredJwt"]) {
+                        if (r.errors && r.errors["ExpiredJwt"]) {
                             localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
                             localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
                             window.location.reload();
@@ -159,10 +159,7 @@ export async function register(userObj, captchaToken) {
 
 export async function login(userObj, captchaToken) {
     return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {}).then(res => {
-        return {
-            body: res.response,
-            success: ("" + res.response.status).indexOf("20") === 0
-        };
+        return res;
     });
 }
 
