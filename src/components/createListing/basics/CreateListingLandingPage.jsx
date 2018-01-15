@@ -9,10 +9,28 @@ export default class CreateListingLandingPage extends React.Component {
         super(props);
 
         this.showComingSoonNotification = this.showComingSoonNotification.bind(this);
+        this.validateInput = this.validateInput.bind(this);
+        this.showErrors = this.showErrors.bind(this);
     }
 
     showComingSoonNotification() {
         NotificationManager.warning("Coming Soon...");
+    }
+
+    validateInput() {
+        const { name } = this.props.values;
+        if (name.length < 2) {
+            return false;
+        }
+
+        return true;
+    }
+
+    showErrors() {
+        const { name } = this.props.values;
+        if (name.length < 2) {
+            NotificationManager.warning("Title should be at least 2 characters")
+        }
     }
 
     render() {
@@ -74,7 +92,11 @@ export default class CreateListingLandingPage extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <NavLink to="/profile/listings/create/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                                
+                                {this.validateInput() 
+                                    ? <NavLink to="/profile/listings/create/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                                    : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
+                                }
                             </div>
                         </div>
                     </div>

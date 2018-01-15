@@ -93,10 +93,10 @@ class CreateListingPage extends React.Component {
             otherHouseRules: new Set(),
 
             // checkin
-            checkinStart: '2:00 PM',
-            checkinEnd: '8:00 PM',
-            checkoutStart: '12:00 PM',
-            checkoutEnd: '1:00 PM',
+            checkinStart: '14:00',
+            checkinEnd: '20:00',
+            checkoutStart: '00:00',
+            checkoutEnd: '13:00',
 
             // price
             defaultDailyPrice: '0',
