@@ -1,14 +1,14 @@
 import {
     Config
 } from "./config";
-const host = Config.getValue("apiHost");
+export const host = Config.getValue("apiHost");
 
-const RequestMethod = {
+export const RequestMethod = {
     GET: 0,
     POST: 1
 }
 
-function getHeaders(headers = null) {
+export function getHeaders(headers = null) {
     headers = headers || {};
     if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
         headers["Authorization"] = localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"];
@@ -16,7 +16,7 @@ function getHeaders(headers = null) {
     return headers;
 }
 
-async function sendRequest(endpoint, method, postObj = null, captchaToken = null, headers = {
+export async function sendRequest(endpoint, method, postObj = null, captchaToken = null, headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
     'Captcha': captchaToken

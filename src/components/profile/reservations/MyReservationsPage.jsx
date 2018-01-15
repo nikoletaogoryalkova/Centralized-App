@@ -7,16 +7,18 @@ import MyReservationsTable from './MyReservationsTable';
 import Pagination from 'rc-pagination';
 import { cancelReservation, acceptReservation } from "../../../requester";
 import { NotificationManager } from 'react-notifications';
-
+import { connect } from 'react-redux';
+import * as reservationActions from '../../../actions/reservationActions';
 import { getMyReservations } from '../../../requester'
+import {bindActionCreators} from 'redux';
 
-export default class MyReservationsPage extends React.Component {
+class MyReservationsPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             reservations: [],
-            loading: true,
+            loading: false,
             totalReservations: 0,
             currentPage: 1
         }
@@ -25,9 +27,9 @@ export default class MyReservationsPage extends React.Component {
     }
 
     componentDidMount() {
-        getMyReservations('?page=0').then((data) => {
-            this.setState({ reservations: data.content, totalReservations: data.totalElements, loading: false });
-        })
+        // getMyReservations('?page=0').then((data) => {
+        //     this.setState({ reservations: data.content, totalReservations: data.totalElements, loading: false });
+        // })
     }
 
     cancelReservation(id, captchaToken) {
@@ -47,7 +49,7 @@ export default class MyReservationsPage extends React.Component {
         })
 
         getMyReservations(`?page=${page - 1}`).then(data => {
-            this.setState({ 
+            this.setState({
                 reservations: data.content,
                 totalReservations: data.totalElements,
                 loadingListing: false
@@ -59,13 +61,13 @@ export default class MyReservationsPage extends React.Component {
 
         const textItemRender = (current, type, element) => {
             if (type === 'prev') {
-              return <div className="rc-prev">&lsaquo;</div>;
+                return <div className="rc-prev">&lsaquo;</div>;
             }
             if (type === 'next') {
-              return <div className="rc-next">&rsaquo;</div>;
+                return <div className="rc-next">&rsaquo;</div>;
             }
             return element;
-          };          
+        };
 
         if (this.state.loading) {
             return <div className="loader"></div>
@@ -76,6 +78,9 @@ export default class MyReservationsPage extends React.Component {
                 <ProfileHeader />
                 <section id="profile-my-reservations">
                     <div className="container">
+                        {this.props.reservations.map(reservation=> {
+                            return <div>{reservation.listingName}</div>
+                        })}
                         <h2>Upcoming Reservations ({this.state.totalReservations})</h2>
                         <hr />
                         <MyReservationsTable
@@ -117,3 +122,17 @@ export default class MyReservationsPage extends React.Component {
         }
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        reservations: state.reservations
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(reservationActions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyReservationsPage);
