@@ -61,7 +61,7 @@ export default class CreateListingDescription extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/create/title" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/create/location" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         <NavLink to="/profile/listings/create/photos" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>

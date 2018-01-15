@@ -125,7 +125,7 @@ export default class CreateListingLocation extends React.Component {
                         <NavLink to="/profile/listings/create/safetyamenities" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/title" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div >

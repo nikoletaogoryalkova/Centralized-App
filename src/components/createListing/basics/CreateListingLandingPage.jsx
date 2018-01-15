@@ -1,16 +1,26 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import { Config } from '../../../config';
 
 export default class CreateListingLandingPage extends React.Component {
+    constructor(props) {
+        super(props);
 
+        this.showComingSoonNotification = this.showComingSoonNotification.bind(this);
+    }
+
+    showComingSoonNotification() {
+        NotificationManager.warning("Coming Soon...");
+    }
 
     render() {
-        const { type, country, countries } = this.props.values;
+        const { type, name } = this.props.values;
 
         return (
             <div className="container">
+                <NotificationContainer />
                 <div className="row">
                     <div className="listings create landing">
                         <div className="col-md-6">
@@ -18,9 +28,26 @@ export default class CreateListingLandingPage extends React.Component {
                         </div>
                         <div className="col-md-6">
                             <div className="column-container">
-                                <h4>STEP ONE</h4>
-                                <h3>What kind of place do you want to list?</h3>
-                                <hr />
+                                <div>
+                                    <h4>STEP ONE</h4>
+                                </div>
+                                
+                                <div>
+                                    <h3>Give your place a name</h3>
+                                    <hr />
+                                </div>
+
+                                <div className="col-md-12">
+                                    <div className="form-group">
+                                        <input onChange={this.props.onChange} placeholder="Listing Title" className="form-control" name="name" value={name} />
+                                        <br/>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3>What kind of place do you want to list?</h3>
+                                    <hr />
+                                </div>
                                 <div className="form-group">
                                     <div className="row">
                                         <div className="col-md-12">
@@ -34,26 +61,16 @@ export default class CreateListingLandingPage extends React.Component {
                                                 <span className="button"><img src={Config.getValue("basePath") + "images/icon-check-japonica.png"} alt="radio-home" /></span>
                                                 <span>Home</span>
                                             </label>
-                                            <label className="hotel custom-radio">
+                                            <label className="hotel custom-radio" >
                                                 <input
                                                     type="radio"
                                                     name="type"
                                                     checked={type === '2'}
-                                                    value="2" />
+                                                    value="2"
+                                                    onClick={this.showComingSoonNotification} />
                                                 <span className="button"><img src={Config.getValue("basePath") + "images/icon-check-japonica.png"} alt="radio-hotel" /></span>
                                                 <span>Hotel</span>
                                             </label>
-                                            <br />
-                                            <select
-                                                value={country}
-                                                name="country"
-                                                required="required"
-                                                onChange={(e) => this.props.onChange(e)}>
-                                                <option disabled value="">Location</option>
-                                                {countries.map((item, i) => {
-                                                    return <option key={i} value={item.id}>{item.name}</option>
-                                                })}
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
