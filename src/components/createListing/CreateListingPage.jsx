@@ -18,7 +18,7 @@ import CreateListingChecking from './guestSettings/CreateListingChecking';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory, createListing } from '../../requester';
+import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes } from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -41,8 +41,8 @@ class CreateListingPage extends React.Component {
             type: '1',
             country: '1',
             propertyType: '1',
-            roomType: '',
-            dedicatedSpace: '',
+            roomType: 'entire',
+            dedicatedSpace: 'true',
             propertySize: '',
 
             // accommodations
@@ -102,7 +102,8 @@ class CreateListingPage extends React.Component {
             defaultDailyPrice: '0',
             currency: '2', // USD
 
-            loading: false
+            loading: false,
+            propertyTypes: [],
         };
 
         this.onChange = this.onChange.bind(this);
@@ -127,6 +128,10 @@ class CreateListingPage extends React.Component {
 
         getAmenitiesByCategory().then(data => {
             this.setState({ categories: data.content });
+        });
+
+        getPropertyTypes().then(data => {
+            this.setState({ propertyTypes: data.content });
         });
     };
 
