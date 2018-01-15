@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 
@@ -8,34 +9,43 @@ import { getCities } from '../../../requester';
 export default class CreateListingLocation extends React.Component {
     constructor(props) {
         super(props);
+        
+        this.validateInput = this.validateInput.bind(this);
+        this.showErrors = this.showErrors.bind(this);
+    }
 
-        this.state = {
-            cities: [],
+    async updateCountry(e) {
+        await this.props.onChange(e);
+        this.props.updateCountries();
+        this.props.updateCities();
+    }    
+    
+    validateInput() {
+        const { street, city } = this.props.values;
+        if (street.length < 6) {
+            return false;
         }
+
+        if (!city || city === '') {
+            return false;
+        }
+
+        return true;
     }
 
-    componentDidMount() {
-        getCities(this.props.values.billingCountry).then(data => {
-            this.setState({ cities: data.content });
-        });
-    }
+    showErrors() {
+        const { street, city } = this.props.values;
+        if (street.length < 6) {
+            NotificationManager.warning("Address should be at least 6 characters long");
+        }
 
-    updateBillingCountry(e) {
-        const countryId = e.target.value;
-        getCities(countryId).then(data => {
-            this.setState({ cities: data.content });
-        });
-
-        this.props.updateDropdown(e);
-        this.props.resetCity();
+        if (!city || city === '') {
+            NotificationManager.warning("City is required");
+        }
     }
 
     render() {
-        if (!this.state.cities) {
-            return null;
-        }
-
-        const { billingCountry, streetAddress, city, apartment, zipCode, countries } = this.props.values;
+        const { country, countries, city, cities, street } = this.props.values;
         return (
             <div>
                 <div className="container">
@@ -51,14 +61,14 @@ export default class CreateListingLocation extends React.Component {
                                     <div className="col-md-12">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="billingCountry">Billing Country</label>
+                                                <label htmlFor="country">Country</label>
                                                 <select
-                                                    onChange={(e) => this.updateBillingCountry(e)}
+                                                    onChange={(e) => this.updateCountry(e)}
                                                     className="form-control"
-                                                    name="billingCountry"
-                                                    value={billingCountry}
+                                                    name="country"
+                                                    value={country}
                                                     required="required"
-                                                    id="billingCountry">
+                                                    id="country">
                                                     <option disabled value="">Location</option>
                                                     {countries.map((item, i) => {
                                                         return <option key={i} value={item.id}>{item.name}</option>
@@ -66,45 +76,33 @@ export default class CreateListingLocation extends React.Component {
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <div className="col-md-6">
-                                            <div className="form-group">
-                                                <label htmlFor="streetAddress">Street Address</label>
-                                                <input onChange={this.props.updateTextbox} className="form-control" id="streetAddress" name="streetAddress" value={streetAddress} />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="form-group">
-                                                <label htmlFor="apartment">Apt, Suite, Bldg. (optional)</label>
-                                                <input onChange={this.props.updateTextbox} className="form-control" id="apartment" name="apartment" value={apartment} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12">
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label htmlFor="city">City</label>
                                                 <select
-                                                    onChange={this.props.updateDropdown}
+                                                    onChange={this.props.onChange}
                                                     className="form-control"
                                                     name="city"
                                                     value={city}
                                                     required="required"
                                                     id="city">
                                                     <option disabled value="">City</option>
-                                                    {this.state.cities.map((item, i) => {
+                                                    {cities.map((item, i) => {
                                                         return <option key={i} value={item.id}>{item.name}</option>
                                                     })}
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-md-12">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="zipCode">ZIP Code</label>
-                                                <input onChange={this.props.updateTextbox} className="form-control" id="zipCode" name="zipCode" value={zipCode} />
+                                                <label htmlFor="street">Address</label>
+                                                <input onChange={this.props.onChange} className="form-control" id="street" name="street" value={street} />
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-md-12">
                                     </div>
                                     <div className="col-md-12">
                                         <div className="col-md-12">
@@ -125,7 +123,11 @@ export default class CreateListingLocation extends React.Component {
                         <NavLink to="/profile/listings/create/safetyamenities" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        
+                        {this.validateInput() 
+                            ? <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
+                        }
                     </div>
                 </div>
             </div >

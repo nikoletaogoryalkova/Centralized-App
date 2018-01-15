@@ -348,6 +348,14 @@ header form button {
     min-height: 60px;
 }
 
+button.disabled {
+    opacity: 50%;
+}
+
+button.disabled:hover {
+    cursor: no-drop;
+}
+
 #bs-example-navbar-collapse-1.navbar-collapse {
     padding-right: 0;
     padding-left: 15px;

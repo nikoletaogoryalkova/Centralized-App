@@ -18,7 +18,7 @@ import CreateListingChecking from './guestSettings/CreateListingChecking';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes } from '../../requester';
+import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes, getCities } from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -66,16 +66,16 @@ class CreateListingPage extends React.Component {
 
             // location
             billingCountry: '1',
-            streetAddress: '',
-            city: '',
+            street: '',
+            city: '1',
             apartment: '',
             zipCode: '',
 
             // step 2
             // title
             name: '',
-            description: '',
-            neighborhood: '',
+            text: '',
+            interaction: '',
 
             // photos
             uploadedFiles: [],
@@ -104,6 +104,7 @@ class CreateListingPage extends React.Component {
 
             loading: false,
             propertyTypes: [],
+            cities: [],
         };
 
         this.onChange = this.onChange.bind(this);
@@ -115,7 +116,8 @@ class CreateListingPage extends React.Component {
         this.addHouseRule = this.addHouseRule.bind(this);
         this.removeHouseRule = this.removeHouseRule.bind(this);
         this.createListing = this.createListing.bind(this);
-        this.resetCity = this.resetCity.bind(this);
+        this.updateCountries = this.updateCountries.bind(this);
+        this.updateCities = this.updateCities.bind(this);
         this.onImageDrop = this.onImageDrop.bind(this);
         this.handleImageUpload = this.handleImageUpload.bind(this);
         this.removePhoto = this.removePhoto.bind(this);
@@ -132,6 +134,10 @@ class CreateListingPage extends React.Component {
 
         getPropertyTypes().then(data => {
             this.setState({ propertyTypes: data.content });
+        });
+
+        getCities(this.state.country).then(data => {
+            this.setState({ cities: data.content });
         });
     };
 
@@ -228,8 +234,19 @@ class CreateListingPage extends React.Component {
         };
     }
 
-    resetCity() {
-        this.setState({ city: '' });
+    updateCities() {
+        getCities(this.state.country).then(data => {
+            this.setState({
+                city: '1',
+                cities: data.content,
+            });
+        });
+    }
+
+    updateCountries() {
+        getCountries().then(data => {
+            this.setState({ countries: data.content });
+        });
     }
 
     getPhotos() {
@@ -309,9 +326,9 @@ class CreateListingPage extends React.Component {
                 }
             ],
             description: {
-                street: this.state.streetAddress,
-                text: this.state.description,
-                interaction: this.state.neighborhood,
+                street: this.state.street,
+                text: this.state.text,
+                interaction: this.state.interaction,
                 houseRules: Array.from(this.state.otherHouseRules).join("\r\n"),
             },
             guestsIncluded: this.state.guestsIncluded,
@@ -433,9 +450,9 @@ class CreateListingPage extends React.Component {
                     <Route exact path="/profile/listings/create/location" render={() =>
                         <CreateListingLocation
                             values={this.state}
-                            updateDropdown={this.onChange}
-                            updateTextbox={this.onChange}
-                            resetCity={this.resetCity} />} />
+                            onChange={this.onChange}
+                            updateCountries={this.updateCountries}
+                            updateCities={this.updateCities} />} />
 
                     <Route exact path="/profile/listings/create/title" render={() =>
                         <CreateListingTitle
@@ -445,7 +462,7 @@ class CreateListingPage extends React.Component {
                     <Route exact path="/profile/listings/create/description" render={() =>
                         <CreateListingDescription
                             values={this.state}
-                            updateTextarea={this.onChange} />} />
+                            onChange={this.onChange} />} />
 
                     <Route exact path="/profile/listings/create/photos" render={() =>
                         <CreateListingPhotos
