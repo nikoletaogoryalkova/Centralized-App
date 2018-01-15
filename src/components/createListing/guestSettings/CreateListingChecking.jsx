@@ -5,7 +5,7 @@ import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
 
 export default class CreateListingChecking extends React.Component {
     render() {
-        const { checkinFrom, checkinTo, checkoutFrom, checkoutTo } = this.props.values;
+        const { checkinStart, checkinEnd, checkoutStart, checkoutEnd } = this.props.values;
         return (
             <div>
                 <div className="container">
@@ -25,7 +25,7 @@ export default class CreateListingChecking extends React.Component {
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
                                                 name="checkinFrom"
-                                                value={checkinFrom}
+                                                value={checkinStart}
                                                 required="required"
                                                 id="checkinFrom">
                                                 {CreateListingChecking.hours.map((item, i) => {
@@ -41,7 +41,7 @@ export default class CreateListingChecking extends React.Component {
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
                                                 name="checkinTo"
-                                                value={checkinTo}
+                                                value={checkinEnd}
                                                 required="required"
                                                 id="checkinTo">
                                                 {CreateListingChecking.hours.map((item, i) => {
@@ -62,7 +62,7 @@ export default class CreateListingChecking extends React.Component {
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
                                                 name="checkoutFrom"
-                                                value={checkoutFrom}
+                                                value={checkoutStart}
                                                 required="required"
                                                 id="checkoutFrom">
                                                 {CreateListingChecking.hours.map((item, i) => {
@@ -78,7 +78,7 @@ export default class CreateListingChecking extends React.Component {
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
                                                 name="checkoutTo"
-                                                value={checkoutTo}
+                                                value={checkoutEnd}
                                                 required="required"
                                                 id="checkoutTo">
                                                 {CreateListingChecking.hours.map((item, i) => {

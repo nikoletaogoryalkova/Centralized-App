@@ -18,7 +18,7 @@ import CreateListingChecking from './guestSettings/CreateListingChecking';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes, getCities } from '../../requester';
+import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes, getCities, getCurrencies } from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -93,18 +93,21 @@ class CreateListingPage extends React.Component {
             otherHouseRules: new Set(),
 
             // checkin
-            checkinFrom: '1:00 AM',
-            checkinTo: '1:00 AM',
-            checkoutFrom: '1:00 AM',
-            checkoutTo: '1:00 AM',
+            checkinStart: '2:00 PM',
+            checkinEnd: '8:00 PM',
+            checkoutStart: '12:00 PM',
+            checkoutEnd: '1:00 PM',
 
             // price
             defaultDailyPrice: '0',
+            cleaningFee: '0',
+            securityDeposit: '0',
             currency: '2', // USD
 
             loading: false,
             propertyTypes: [],
             cities: [],
+            currencies: [],
         };
 
         this.onChange = this.onChange.bind(this);
@@ -138,6 +141,10 @@ class CreateListingPage extends React.Component {
 
         getCities(this.state.country).then(data => {
             this.setState({ cities: data.content });
+        });
+
+        getCurrencies().then(data => {
+            this.setState({ currencies: data.content });
         });
     };
 
@@ -337,11 +344,13 @@ class CreateListingPage extends React.Component {
             city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
-            checkinStart: moment(this.state.checkinFrom, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkinEnd: moment(this.state.checkinTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutStart: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutEnd: moment(this.state.checkoutTo, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinStart: moment(this.state.checkinStart, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinEnd: moment(this.state.checkinEnd, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutStart: moment(this.state.checkoutStart, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutEnd: moment(this.state.checkoutEnd, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
             defaultDailyPrice: this.state.defaultDailyPrice,
+            cleaningFee: this.state.cleaningFee,
+            securityDeposit: this.state.securityDeposit,
             currency: this.state.currency,
         }
 
@@ -489,8 +498,7 @@ class CreateListingPage extends React.Component {
                     <Route exact path="/profile/listings/create/price" render={() =>
                         <CreateListingPrice
                             values={this.state}
-                            updateNumber={this.onChange}
-                            updateDropdown={this.onChange}
+                            onChange={this.onChange}
                             createListing={this.createListing} />} />
                 </Switch>
 

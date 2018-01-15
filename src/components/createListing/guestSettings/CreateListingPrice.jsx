@@ -9,20 +9,10 @@ import { getCurrencies } from '../../../requester.js';
 export default class CreateListingPrice extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            currencies: []
-        }
-    }
-
-    componentDidMount() {
-        getCurrencies().then(data => {
-            this.setState({ currencies: data.content });
-        });
     }
 
     render() {
-        const { defaultDailyPrice, currency } = this.props.values;
+        const { currency, defaultDailyPrice, cleaningFee, securityDeposit, currencies } = this.props.values;
 
         return (
             <div>
@@ -40,27 +30,43 @@ export default class CreateListingPrice extends React.Component {
                                     <div className="col-md-12">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="defaultDailyPrice">Base price</label>
-                                                <input onChange={this.props.updateNumber} type="number" id="defaultDailyPrice" className="form-control" name="defaultDailyPrice" value={defaultDailyPrice} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <div className="col-md-6">
-                                            <div className="form-group">
                                                 <label htmlFor="city">Currency</label>
                                                 <select
-                                                    onChange={this.props.updateDropdown}
+                                                    onChange={this.props.onChange}
                                                     className="form-control"
                                                     name="currency"
                                                     value={currency}
                                                     required="required"
                                                     id="currency">
                                                     <option disabled value="">Currency</option>
-                                                    {this.state.currencies.map((item, i) => {
+                                                    {currencies.map((item, i) => {
                                                         return <option key={i} value={item.id}>{item.code}</option>
                                                     })}
                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="defaultDailyPrice">Price per Night</label>
+                                                <input onChange={this.props.onChange} type="number" id="defaultDailyPrice" className="form-control" name="defaultDailyPrice" value={defaultDailyPrice} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="cleaningFee">Cleaning Fee (optional)</label>
+                                                <input onChange={this.props.onChange} type="number" id="cleaningFee" className="form-control" name="cleaningFee" value={cleaningFee} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label htmlFor="securityDeposit">Deposit Required (optional)</label>
+                                                <input onChange={this.props.onChange} type="number" id="securityDeposit" className="form-control" name="securityDeposit" value={securityDeposit} />
                                             </div>
                                         </div>
                                     </div>
