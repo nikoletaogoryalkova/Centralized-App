@@ -20,14 +20,14 @@ export default class CreateListingChecking extends React.Component {
                                 <div className="col-md-12">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkinFrom">from:</label>
+                                            <label htmlFor="checkinStart">from:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkinFrom"
+                                                name="checkinStart"
                                                 value={checkinStart}
                                                 required="required"
-                                                id="checkinFrom">
+                                                id="checkinStart">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}
@@ -36,14 +36,14 @@ export default class CreateListingChecking extends React.Component {
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkinTo">to:</label>
+                                            <label htmlFor="checkinEnd">to:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkinTo"
+                                                name="checkinEnd"
                                                 value={checkinEnd}
                                                 required="required"
-                                                id="checkinTo">
+                                                id="checkinEnd">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}
@@ -57,14 +57,14 @@ export default class CreateListingChecking extends React.Component {
                                 <div className="col-md-12">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkoutFrom">from:</label>
+                                            <label htmlFor="checkoutStart">from:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkoutFrom"
+                                                name="checkoutStart"
                                                 value={checkoutStart}
                                                 required="required"
-                                                id="checkoutFrom">
+                                                id="checkoutStart">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}
@@ -73,14 +73,14 @@ export default class CreateListingChecking extends React.Component {
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkoutTo">to:</label>
+                                            <label htmlFor="checkoutEnd">to:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkoutTo"
+                                                name="checkoutEnd"
                                                 value={checkoutEnd}
                                                 required="required"
-                                                id="checkoutTo">
+                                                id="checkoutEnd">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}

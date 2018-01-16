@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 
@@ -12,13 +14,26 @@ export default class CreateListingLocation extends React.Component {
         
         this.validateInput = this.validateInput.bind(this);
         this.showErrors = this.showErrors.bind(this);
+        this.updateCountry = this.updateCountry.bind(this);
     }
 
-    async updateCountry(e) {
-        await this.props.onChange(e);
-        this.props.updateCountries();
+    async updateCountry(option) {
+        if (!option) {
+            return;
+        }
+
+        await this.props.onSelect('country', option);
+        // this.props.updateCountries();
         this.props.updateCities();
-    }    
+    }
+
+    async updateCity(option) {
+        if (!option) {
+            return;
+        }
+
+        await this.props.onSelect('city', option);
+    }
     
     validateInput() {
         const { street, city } = this.props.values;
@@ -34,7 +49,7 @@ export default class CreateListingLocation extends React.Component {
     }
 
     showErrors() {
-        const { street, city } = this.props.values;
+        const { street, city, country } = this.props.values;
         if (street.length < 6) {
             NotificationManager.warning("Address should be at least 6 characters long");
         }
@@ -42,12 +57,31 @@ export default class CreateListingLocation extends React.Component {
         if (!city || city === '') {
             NotificationManager.warning("City is required");
         }
+
+        if (!country || country === '') {
+            NotificationManager.warning("Country is required");
+        }
     }
+
+    test(option) {
+        if (!option) {
+            return;
+        }
+
+        this.props.onSelect('country', option);
+    } 
 
     render() {
         const { country, countries, city, cities, street } = this.props.values;
+        const renderCountries = countries.map((item, i) => {
+            return { value: item.id, label: item.name }
+        });
+        const renderCities = cities.map((item, i) => {
+            return { value: item.id, label: item.name }
+        });
         return (
             <div>
+                <NotificationContainer />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
@@ -61,37 +95,33 @@ export default class CreateListingLocation extends React.Component {
                                     <div className="col-md-12">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="country">Country</label>
-                                                <select
-                                                    onChange={(e) => this.updateCountry(e)}
-                                                    className="form-control"
+                                                <Select
                                                     name="country"
+                                                    placeholder="Country"
+                                                    className="form-control form-control-select"
+                                                    clearable={false}
+                                                    style={{border: 'none'}}
                                                     value={country}
-                                                    required="required"
-                                                    id="country">
-                                                    <option disabled value="">Location</option>
-                                                    {countries.map((item, i) => {
-                                                        return <option key={i} value={item.id}>{item.name}</option>
-                                                    })}
-                                                </select>
+                                                    onChange={this.updateCountry}
+                                                    options={renderCountries}
+                                                />
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="city">City</label>
-                                                <select
-                                                    onChange={this.props.onChange}
-                                                    className="form-control"
+                                                <Select
                                                     name="city"
+                                                    placeholder="City"
+                                                    className="form-control form-control-select"
+                                                    clearable={false}
+                                                    style={{border: 'none'}}
                                                     value={city}
-                                                    required="required"
-                                                    id="city">
-                                                    <option disabled value="">City</option>
-                                                    {cities.map((item, i) => {
-                                                        return <option key={i} value={item.id}>{item.name}</option>
-                                                    })}
-                                                </select>
+                                                    onChange={option => this.props.onSelect('city', option)}
+                                                    options={renderCities}
+                                                />
                                             </div>
+                                        </div>
+                                        <div className="col-md-6">
                                         </div>
                                     </div>
                                     <div className="col-md-12">

@@ -39,7 +39,7 @@ class CreateListingPage extends React.Component {
             // step 1
             // landing page and place type
             type: '1',
-            country: '1',
+            country: '',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
@@ -67,7 +67,7 @@ class CreateListingPage extends React.Component {
             // location
             billingCountry: '1',
             street: '',
-            city: '1',
+            city: '',
             apartment: '',
             zipCode: '',
 
@@ -111,6 +111,7 @@ class CreateListingPage extends React.Component {
         };
 
         this.onChange = this.onChange.bind(this);
+        this.onSelect = this.onSelect.bind(this);
         this.toggleCheckbox = this.toggleCheckbox.bind(this);
         this.updateCounter = this.updateCounter.bind(this);
         this.updateBedrooms = this.updateBedrooms.bind(this);
@@ -244,7 +245,7 @@ class CreateListingPage extends React.Component {
     updateCities() {
         getCities(this.state.country).then(data => {
             this.setState({
-                city: '1',
+                city: '',
                 cities: data.content,
             });
         });
@@ -254,6 +255,12 @@ class CreateListingPage extends React.Component {
         getCountries().then(data => {
             this.setState({ countries: data.content });
         });
+    }
+    
+    onSelect(name, option) {
+        this.setState({
+            [name]: option.value
+        })
     }
 
     getPhotos() {
@@ -460,6 +467,7 @@ class CreateListingPage extends React.Component {
                         <CreateListingLocation
                             values={this.state}
                             onChange={this.onChange}
+                            onSelect={this.onSelect}
                             updateCountries={this.updateCountries}
                             updateCities={this.updateCities} />} />
 
