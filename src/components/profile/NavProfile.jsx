@@ -12,7 +12,7 @@ export default class NavProfile extends React.Component {
                         <li><Link to="/profile/listings">My Listings</Link></li>
                         <li><Link to="/profile/reservations">My Reservations</Link></li>
                         <li><Link to="/profile/trips">My Trips</Link></li>
-                        {/* <li><Link to="/profile/messages/hosting">Messages</Link></li> */}
+                        <li><Link to="/profile/messages">Messages</Link></li>
                         <li><Link to="/profile/me/edit">Profile</Link></li>
                         {/* <li><Link to="/profile/account/notifications">Account</Link></li> */}
                     </ul>
