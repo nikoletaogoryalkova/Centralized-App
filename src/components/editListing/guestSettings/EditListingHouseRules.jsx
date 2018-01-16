@@ -1,8 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
-export default class CreateListingHouseRules extends React.Component {
+import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
+
+export default class EditListingHouseRules extends React.Component {
 
     render() {
         const { suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText } = this.props.values;
@@ -12,7 +13,7 @@ export default class CreateListingHouseRules extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingGuestSettingsAside />
+                                <EditListingGuestSettingsAside />
                             </div>
                             <div className="col-md-9">
                                 <h2>House Rules</h2>

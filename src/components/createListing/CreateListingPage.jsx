@@ -32,58 +32,33 @@ class CreateListingPage extends React.Component {
         super(props);
 
         this.state = {
-
-            countries: [],
-            categories: [],
-
-            // step 1
-            // landing page and place type
             type: '1',
             country: '',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
             propertySize: '',
-
-            // accommodations
             guestsIncluded: 1,
             bedroomCount: 1,
-            bedrooms: [
-                this.createBedroom(),
-            ],
+            bedrooms: [ this.createBedroom(), ],
             bathrooms: 1,
-
-            // facilities
             facilities: new Set(),
-
-            // safety amenities
             smokeDetector: false,
             carbonMonoxideDetector: false,
             firstAidKit: false,
             safetyCard: false,
             fireExtinguisher: false,
             lockOnBedroomDoor: false,
-
-            // location
-            billingCountry: '1',
             street: '',
             city: '',
             apartment: '',
             zipCode: '',
-
-            // step 2
-            // title
             name: '',
             text: '',
             interaction: '',
-
-            // photos
             uploadedFiles: [],
             uploadedFilesUrls: [],
             uploadedFilesThumbUrls: [],
-
-            // step 3
-            // house rules
             suitableForChildren: 'false',
             suitableForInfants: 'false',
             suitableForPets: 'false',
@@ -91,20 +66,17 @@ class CreateListingPage extends React.Component {
             eventsAllowed: 'false',
             otherRuleText: '',
             otherHouseRules: new Set(),
-
-            // checkin
             checkinStart: '14:00',
             checkinEnd: '20:00',
             checkoutStart: '00:00',
             checkoutEnd: '13:00',
-
-            // price
             defaultDailyPrice: '0',
             cleaningFee: '0',
             securityDeposit: '0',
             currency: '2', // USD
-
             loading: false,
+            countries: [],
+            categories: [],
             propertyTypes: [],
             cities: [],
             currencies: [],
