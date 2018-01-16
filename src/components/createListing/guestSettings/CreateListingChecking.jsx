@@ -5,7 +5,7 @@ import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
 
 export default class CreateListingChecking extends React.Component {
     render() {
-        const { checkinFrom, checkinTo, checkoutFrom, checkoutTo } = this.props.values;
+        const { checkinStart, checkinEnd, checkoutStart, checkoutEnd } = this.props.values;
         return (
             <div>
                 <div className="container">
@@ -20,14 +20,14 @@ export default class CreateListingChecking extends React.Component {
                                 <div className="col-md-12">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkinFrom">from:</label>
+                                            <label htmlFor="checkinStart">from:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkinFrom"
-                                                value={checkinFrom}
+                                                name="checkinStart"
+                                                value={checkinStart}
                                                 required="required"
-                                                id="checkinFrom">
+                                                id="checkinStart">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}
@@ -36,14 +36,14 @@ export default class CreateListingChecking extends React.Component {
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkinTo">to:</label>
+                                            <label htmlFor="checkinEnd">to:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkinTo"
-                                                value={checkinTo}
+                                                name="checkinEnd"
+                                                value={checkinEnd}
                                                 required="required"
-                                                id="checkinTo">
+                                                id="checkinEnd">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}
@@ -57,14 +57,14 @@ export default class CreateListingChecking extends React.Component {
                                 <div className="col-md-12">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkoutFrom">from:</label>
+                                            <label htmlFor="checkoutStart">from:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkoutFrom"
-                                                value={checkoutFrom}
+                                                name="checkoutStart"
+                                                value={checkoutStart}
                                                 required="required"
-                                                id="checkoutFrom">
+                                                id="checkoutStart">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}
@@ -73,14 +73,14 @@ export default class CreateListingChecking extends React.Component {
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="checkoutTo">to:</label>
+                                            <label htmlFor="checkoutEnd">to:</label>
                                             <select
                                                 onChange={this.props.updateDropdown}
                                                 className="form-control"
-                                                name="checkoutTo"
-                                                value={checkoutTo}
+                                                name="checkoutEnd"
+                                                value={checkoutEnd}
                                                 required="required"
-                                                id="checkoutTo">
+                                                id="checkoutEnd">
                                                 {CreateListingChecking.hours.map((item, i) => {
                                                     return <option key={i} value={item}>{item}</option>
                                                 })}
@@ -108,28 +108,28 @@ export default class CreateListingChecking extends React.Component {
 }
 
 CreateListingChecking.hours = [
-    "1:00 AM",
-    "2:00 AM",
-    "3:00 AM",
-    "4:00 AM",
-    "5:00 AM",
-    "6:00 AM",
-    "7:00 AM",
-    "8:00 AM",
-    "9:00 AM",
-    "10:00 AM",
-    "11:00 AM",
-    "12:00 AM",
-    "1:00 PM",
-    "2:00 PM",
-    "3:00 PM",
-    "4:00 PM",
-    "5:00 PM",
-    "6:00 PM",
-    "7:00 PM",
-    "8:00 PM",
-    "9:00 PM",
-    "10:00 PM",
-    "11:00 PM",
-    "12:00 PM",
+    "00:00",
+    "01:00",
+    "02:00",
+    "03:00",
+    "04:00",
+    "05:00",
+    "06:00",
+    "07:00",
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
+    "22:00",
+    "23:00",
 ]

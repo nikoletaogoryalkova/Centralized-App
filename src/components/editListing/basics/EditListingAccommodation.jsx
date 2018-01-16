@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingBasicsAside from './CreateListingBasicsAside';
+import EditListingBasicsAside from './EditListingBasicsAside';
 import Counter from '../Counter';
 import Dropdown from '../Dropdown';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
 
-export default class CreateListingAccommodation extends React.Component {
+export default class EditListingAccommodation extends React.Component {
 
     render() {
         const { guestsIncluded, bedroomCount, bedrooms, bathrooms } = this.props.values;
@@ -45,7 +45,7 @@ export default class CreateListingAccommodation extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingBasicsAside />
+                                <EditListingBasicsAside />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
 

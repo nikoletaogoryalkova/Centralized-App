@@ -36,29 +36,22 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
     return fetch(endpoint, RequestMethod.GET === method ? getParams : postParams)
         .then(res => {
             if (!res.ok) {
-                res.json().then(r => {
-                    if (r.errors["ExpiredJwt"]) {
-                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
-                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
-                        window.location.reload();
-                    }
-                });
-            }
-            return {
-                response: res,
-                success: res.ok,
-            }
-        })
-        .catch(err => {
-            console.log(err)
-
-
-            // console.log(data)
-            // if (data.errors && data.errors["ExpiredJwt"]) {
-            // }
-            return {
-                response: err,
-                success: false
+                return {
+                    response: res.json().then(r => {
+                        if (r.errors && r.errors["ExpiredJwt"]) {
+                            localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
+                            localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
+                            window.location.reload();
+                        }
+                        return r;
+                    }),
+                    success: res.ok
+                }
+            } else {
+                return {
+                    response: res,
+                    success: res.ok
+                }
             }
         });
 }
@@ -184,18 +177,13 @@ export async function updateUserInfo(userObj, captchaToken) {
 
 export async function register(userObj, captchaToken) {
     return sendRequest(`${host}users/signup`, RequestMethod.POST, userObj, captchaToken).then(res => {
-        return {
-            success: res.success
-        };
+        return res;
     });
 }
 
 export async function login(userObj, captchaToken) {
     return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {}).then(res => {
-        return {
-            body: res.response,
-            success: ("" + res.response.status).indexOf("20") === 0
-        };
+        return res;
     });
 }
 

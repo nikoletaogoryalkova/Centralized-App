@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 
-class CreateListingGuestSettingsAside extends React.Component {
+class EditListingGuestSettingsAside extends React.Component {
     render() {
         return (
             <div>
@@ -14,4 +14,4 @@ class CreateListingGuestSettingsAside extends React.Component {
     }
 }
 
-export default withRouter(CreateListingGuestSettingsAside);
+export default withRouter(EditListingGuestSettingsAside);

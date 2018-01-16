@@ -2,9 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import FiltersCheckbox from '../../listings/FiltersCheckbox';
-import CreateListingBasicsAside from './CreateListingBasicsAside';
+import EditListingBasicsAside from './EditListingBasicsAside';
 
-export default class CreateListingSafetyAmenities extends React.Component {
+export default class EditListingSafetyAmenities extends React.Component {
 
     render() {
         const category = this.props.values.categories.filter(category => category.name === "Safety Amenities");
@@ -34,7 +34,7 @@ export default class CreateListingSafetyAmenities extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingBasicsAside />
+                                <EditListingBasicsAside />
                             </div>
 
                             <div className="col-md-9">

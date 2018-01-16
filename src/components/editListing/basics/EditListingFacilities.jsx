@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingBasicsAside from './CreateListingBasicsAside';
+import EditListingBasicsAside from './EditListingBasicsAside';
 import FiltersCheckbox from '../../listings/FiltersCheckbox';
 
-export default class CreateListingFacilities extends React.Component {
+export default class EditListingFacilities extends React.Component {
     render() {
         if (!this.props) {
             return null;
@@ -41,7 +41,7 @@ export default class CreateListingFacilities extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingBasicsAside />
+                                <EditListingBasicsAside />
                             </div>
                             <div className="col-md-9">
                                 <div className="form-group">

@@ -272,6 +272,17 @@ header form button {
     box-shadow: none;
 }
 
+.form-control-select {
+    height: 34px;
+    padding: 12px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: none;
+}
+
 .icon {
     content: "";
     display: block;
@@ -346,6 +357,14 @@ header form button {
     width: 13%;
     float: left;
     min-height: 60px;
+}
+
+button.disabled {
+    opacity: 50%;
+}
+
+button.disabled:hover {
+    cursor: no-drop;
 }
 
 #bs-example-navbar-collapse-1.navbar-collapse {
