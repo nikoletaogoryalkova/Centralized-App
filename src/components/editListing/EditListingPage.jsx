@@ -18,7 +18,7 @@ import EditListingChecking from './guestSettings/EditListingChecking';
 import EditListingPrice from './guestSettings/EditListingPrice';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory, getMyListingById, createListing, getPropertyTypes, getCities, getCurrencies } from '../../requester';
+import { getCountries, getAmenitiesByCategory, getMyListingById, editListing, getPropertyTypes, getCities, getCurrencies } from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -32,28 +32,28 @@ class EditListingPage extends React.Component {
         super(props);
 
         this.state = {
+            listingId: 0,
             type: '1',
             country: '',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
-            propertySize: '',
+            propertySize: '0',
             guestsIncluded: 1,
             bedroomCount: 1,
             bedrooms: [ this.createBedroom(), ],
             bathrooms: 1,
             facilities: new Set(),
-            smokeDetector: false,
-            carbonMonoxideDetector: false,
-            firstAidKit: false,
-            safetyCard: false,
-            fireExtinguisher: false,
-            lockOnBedroomDoor: false,
-            billingCountry: '1',
+            // smokeDetector: false,
+            // carbonMonoxideDetector: false,
+            // firstAidKit: false,
+            // safetyCard: false,
+            // fireExtinguisher: false,
+            // lockOnBedroomDoor: false,
             street: '',
             city: '',
-            apartment: '',
-            zipCode: '',
+            // apartment: '',
+            // zipCode: '',
             name: '',
             text: '',
             interaction: '',
@@ -101,20 +101,22 @@ class EditListingPage extends React.Component {
     }
 
     componentWillMount() {
-        console.log(this.props.match.params.id)
+        const id = this.props.match.params.id;
+        console.log(id)
         getMyListingById(this.props.match.params.id).then(data => {
-            console.log(data)
+            console.log(data);
             this.setState({
+                listingId: id,
                 type: data.listingType.toString(),
                 country: data.country,
                 propertyType: data.propertyType.toString(),
                 // roomType: no room type,
                 dedicatedSpace: data.details.dedicatedSpace, // details not loaded properly
-                propertySize: data.details.size,
-                guestsIncluded: data.guestsIncluded,
-                bedroomCount: data.details.bedrooms,
+                propertySize: data.details.size ? data.details.size : '0',
+                guestsIncluded: data.guestsIncluded ? data.guestsIncluded : 0,
+                bedroomCount: data.details.bedrooms ? data.details.bedrooms : 0,
                 // bedrooms: data.details.bedrooms,
-                bathrooms: data.details.bathrooms,
+                bathrooms: data.details.bathrooms ? data.details.bathrooms : 0,
                 facilities: new Set(data.amenities.map(a => a.id)),
                 street: data.description.street,
                 city: data.city,
@@ -122,11 +124,11 @@ class EditListingPage extends React.Component {
                 text: this.getText(data.description.text),
                 interaction: data.description.interaction,
                 // photos: getPhotos(data),
-                suitableForChildren: data.details.suitableForChildren,
-                suitableForInfants: data.details.suitableForInfants,
-                suitableForPets: data.details.suitableForPets,
-                smokingAllowed: data.details.smokingAllowed,
-                eventsAllowed: data.details.eventsAllowed,
+                suitableForChildren: data.details.suitableForChildren ? data.details.suitableForChildren : 'false',
+                suitableForInfants: data.details.suitableForInfants ? data.details.suitableForInfants : 'false',
+                suitableForPets: data.details.suitableForPets ? data.details.suitableForPets : 'false',
+                smokingAllowed: data.details.smokingAllowed ? data.details.smokingAllowed : 'false',
+                eventsAllowed: data.details.eventsAllowed ? data.details.eventsAllowed : 'false',
                 // otherRules: method - house rules,
                 checkinStart: moment(data.checkinStart, "HH:mm:ss").format("HH:mm"),
                 checkinEnd: moment(data.checkinEnd, "HH:mm:ss").format("HH:mm"),
@@ -137,9 +139,10 @@ class EditListingPage extends React.Component {
                 // securityDeposit: data.securityDeposit,
                 currency: data.currency,
             });
+            
+            console.log(this.state);
         });
 
-        console.log(this.state)
     }
 
     componentDidMount() {
@@ -323,15 +326,15 @@ class EditListingPage extends React.Component {
                     value: this.state.bathrooms,
                     detail: { name: "bathrooms" }
                 },
-                {
-                    value: this.state.apartment,
-                    detail: { name: "apartment" }
-                }
-                ,
-                {
-                    value: this.state.zipCode,
-                    detail: { name: "zipCode" }
-                },
+                // {
+                //     value: this.state.apartment,
+                //     detail: { name: "apartment" }
+                // }
+                // ,
+                // {
+                //     value: this.state.zipCode,
+                //     detail: { name: "zipCode" }
+                // },
                 {
                     value: this.state.suitableForChildren,
                     detail: { name: "suitableForChildren" }
@@ -356,10 +359,10 @@ class EditListingPage extends React.Component {
                     value: this.state.dedicatedSpace,
                     detail: { name: "dedicatedSpace" }
                 },
-                {
-                    value: this.state.billingCountry,
-                    detail: { name: "billingCountry" }
-                }
+                // {
+                //     value: this.state.billingCountry,
+                //     detail: { name: "billingCountry" }
+                // }
             ],
             description: {
                 street: this.state.street,
@@ -383,11 +386,13 @@ class EditListingPage extends React.Component {
             currency: this.state.currency,
         }
 
-        createListing(listing, captchaToken).then((res) => {
+        console.log(this.state.listingId);
+        editListing(this.state.listingId, listing, captchaToken).then((res) => {
             if (res.success) {
                 this.setState({loading: false});
                 this.props.history.push('/profile/listings');
-                NotificationManager.success('Successfully updated your profile', 'Create new listing');
+                NotificationManager.success('Successfully updated your profile', 'Edit new listing');
+                
             }
             else {
                 this.setState({loading: false});
@@ -448,7 +453,7 @@ class EditListingPage extends React.Component {
                     <MainNav />
                 </nav>
 
-                {this.props.location.pathname !== this.props.location.pathname !== "/profile/listings/edit/landing" &&
+                {this.props.location.pathname !== "/profile/listings/edit/landing" &&
                     <NavEditListing />
                 }
 
