@@ -82,7 +82,11 @@ export default class EditListingPrice extends React.Component {
                         <NavLink to="/profile/listings/edit/checking" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/price" className="btn btn-primary btn-next" onClick={(e) => { e.preventDefault(); this.captcha.execute() }} id="btn-continue">Finish</NavLink>
+                        <NavLink to="/profile/listings/edit/price" className="btn btn-primary btn-next" onClick={(e) => { 
+                                e.preventDefault(); 
+                                {/* this.props.createListing(); */}
+                                this.captcha.execute() 
+                            }} id="btn-continue">Finish</NavLink>
                         
                         <ReCAPTCHA
                                 ref={el => this.captcha = el}

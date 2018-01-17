@@ -12,7 +12,7 @@ export default class CreateListingPrice extends React.Component {
     }
 
     render() {
-        const { currency, defaultDailyPrice, cleaningFee, securityDeposit, currencies } = this.props.values;
+        const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = this.props.values;
 
         return (
             <div>
@@ -57,7 +57,7 @@ export default class CreateListingPrice extends React.Component {
                                     <div className="col-md-12">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="cleaningFee">Cleaning Fee (optional)</label>
+                                                <label htmlFor="cleaningFee">Cleaning Fee</label>
                                                 <input onChange={this.props.onChange} type="number" id="cleaningFee" className="form-control" name="cleaningFee" value={cleaningFee} />
                                             </div>
                                         </div>
@@ -65,8 +65,8 @@ export default class CreateListingPrice extends React.Component {
                                     <div className="col-md-12">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label htmlFor="securityDeposit">Deposit Required (optional)</label>
-                                                <input onChange={this.props.onChange} type="number" id="securityDeposit" className="form-control" name="securityDeposit" value={securityDeposit} />
+                                                <label htmlFor="depositRate">Deposit Required</label>
+                                                <input onChange={this.props.onChange} type="number" id="depositRate" className="form-control" name="depositRate" value={depositRate} />
                                             </div>
                                         </div>
                                     </div>
@@ -82,7 +82,12 @@ export default class CreateListingPrice extends React.Component {
                         <NavLink to="/profile/listings/create/checking" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => { e.preventDefault(); this.captcha.execute() }} id="btn-continue">Finish</NavLink>
+                        <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => { 
+                                e.preventDefault(); 
+                                this.captcha.execute() 
+                                {/* this.props.createListing(); */}
+                            }} 
+                            id="btn-continue">Finish</NavLink>
                         
                         <ReCAPTCHA
                                 ref={el => this.captcha = el}
