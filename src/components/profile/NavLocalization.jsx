@@ -28,7 +28,7 @@ export default class NavLocalization extends React.Component {
                     <ul className="navbar-localization">
                         <li className="conversion">
                             <span className="name">LOC/EUR</span>
-                            <span className="value">{this.state.locRate}EUR</span>
+                            <span className="value">{this.state.locRate} EUR</span>
                         </li>
                         {/* <li className="balance">
                             <span className="border">
@@ -43,10 +43,10 @@ export default class NavLocalization extends React.Component {
                             <span className="name">Language:</span>
                             <span className="value">EN</span>
                         </li>
-                        <li className="currency">
+                        {/* <li className="currency">
                             <span className="name">Currency:</span>
                             <span className="value">USD</span>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </nav>

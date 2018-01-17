@@ -61,6 +61,7 @@ class MainNav extends React.Component {
             });
         }
 
+
         this.messageListener();
     }
 
@@ -213,9 +214,11 @@ class MainNav extends React.Component {
     }
 
     getCountOfMessages() {
-        getCountOfUnreadMessages().then(data => {
-            this.setState({ unreadMessages: data.count });
-        })
+        if (localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"]) {
+            getCountOfUnreadMessages().then(data => {
+                this.setState({ unreadMessages: data.count });
+            })
+        }
     }
 
     render() {
@@ -328,8 +331,8 @@ class MainNav extends React.Component {
                                 <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                 <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
                                 <NavItem componentClass={Link} href="/profile/messages" to="/profile/messages">
-                                    <div className="unread-messages-box">
-                                        <span className="bold" style={{right: this.state.unreadMessages.toString().split('').length === 2 ? '2px' : '4px'}}>{this.state.unreadMessages}</span>
+                                    <div className={(this.state.unreadMessages == 0 ? "not " : "") + "unread-messages-box"}>
+                                        {this.state.unreadMessages > 0 && <span className="bold unread" style={{ right: this.state.unreadMessages.toString().split('').length === 2 ? '2px' : '4px' }}>{this.state.unreadMessages}</span>}
                                     </div>
                                 </NavItem>
                                 <NavDropdown title={localStorage[Config.getValue("domainPrefix") + ".auth.username"]} id="main-nav-dropdown">

@@ -20,7 +20,7 @@ class MessagesItem extends React.Component {
             <div className="message-box">
                 <div className="col-md-1">
                     <a href="#" onClick={() => this.props.changeMessageFlag(this.props.message.id, this.props.message.unread)}>
-                        {this.props.message.unread === "true" ? <img src={Config.getValue("basePath") + "images/icon-star-filter.png"} alt="read-flag" /> : <img src={Config.getValue("basePath") + "images/icon-star-filter-g.png"} alt="unread-flag" />}
+                        {this.props.message.unread === "true" ? <img src={Config.getValue("basePath") + "images/icon-star-message.png"} alt="read-flag" /> : <img src={Config.getValue("basePath") + "images/icon-star-filter-g.png"} alt="unread-flag" />}
                     </a>
                 </div>
                 <div className="col-md-1 user-image">

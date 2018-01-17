@@ -40,3 +40,6 @@
   position: absolute;
   color: white;
 }
+.unread-messages-box.not {
+  background: url('../images/not-mail-unread.png');
+}
