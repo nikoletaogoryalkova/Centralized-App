@@ -329,7 +329,7 @@ class EditListingPage extends React.Component {
             details: [
                 {
                     value: this.state.roomType,
-                    datail: { name: "roomType" }
+                    detail: { name: "roomType" }
                 },
                 {
                     value: this.state.propertySize,
