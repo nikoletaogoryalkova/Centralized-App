@@ -40,7 +40,7 @@ class EditListingPage extends React.Component {
             dedicatedSpace: 'true',
             propertySize: '0',
             guestsIncluded: 1,
-            bedroomCount: 1,
+            bedroomsCount: 1,
             bedrooms: [ this.createBedroom(), ],
             bathrooms: 1,
             facilities: new Set(),
@@ -98,6 +98,8 @@ class EditListingPage extends React.Component {
         this.onImageDrop = this.onImageDrop.bind(this);
         this.handleImageUpload = this.handleImageUpload.bind(this);
         this.removePhoto = this.removePhoto.bind(this);
+        this.populateFileUrls = this.populateFileUrls.bind(this);
+        this.populateFileThumbUrls = this.populateFileThumbUrls.bind(this);
     }
 
     componentWillMount() {
@@ -110,12 +112,12 @@ class EditListingPage extends React.Component {
                 type: data.listingType.toString(),
                 country: data.country,
                 propertyType: data.propertyType.toString(),
-                // roomType: no room type,
+                roomType: data.details.roomType ? data.details.roomType : 'entire',
                 dedicatedSpace: data.details.dedicatedSpace, // details not loaded properly
                 propertySize: data.details.size ? data.details.size : '0',
                 guestsIncluded: data.guestsIncluded ? data.guestsIncluded : 0,
-                bedroomCount: data.details.bedrooms ? data.details.bedrooms : 0,
-                // bedrooms: data.details.bedrooms,
+                bedroomsCount: data.details.bedroomsCount ? data.details.bedroomsCount : 0,
+                bedrooms: data.rooms,
                 bathrooms: data.details.bathrooms ? data.details.bathrooms : 0,
                 facilities: new Set(data.amenities.map(a => a.id)),
                 street: data.description.street,
@@ -123,7 +125,8 @@ class EditListingPage extends React.Component {
                 name: data.name,
                 text: this.getText(data.description.text),
                 interaction: data.description.interaction,
-                // photos: getPhotos(data),
+                uploadedFilesUrls: this.populateFileUrls(data.pictures),
+                uploadedFilesThumbUrls: this.populateFileThumbUrls(data.pictures),
                 suitableForChildren: data.details.suitableForChildren ? data.details.suitableForChildren : 'false',
                 suitableForInfants: data.details.suitableForInfants ? data.details.suitableForInfants : 'false',
                 suitableForPets: data.details.suitableForPets ? data.details.suitableForPets : 'false',
@@ -187,14 +190,14 @@ class EditListingPage extends React.Component {
     }
 
     updateBedrooms(event) {
-        let bedroomCount = this.state.bedroomCount;
+        let bedroomsCount = this.state.bedroomsCount;
         let value = Number(event.target.value);
         if (value < 0) { value = 0; }
         if (value > 9) { value = 9; }
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
 
-        if (value > bedroomCount) {
-            for (let i = bedroomCount; i < value; i++) {
+        if (value > bedroomsCount) {
+            for (let i = bedroomsCount; i < value; i++) {
                 newBedrooms.push(this.createBedroom());
             }
         } else {
@@ -202,7 +205,7 @@ class EditListingPage extends React.Component {
         }
 
         this.setState({
-            bedroomCount: value,
+            bedroomsCount: value,
             bedrooms: newBedrooms,
         });
     }
@@ -303,6 +306,28 @@ class EditListingPage extends React.Component {
         return photos;
     }
 
+    populateFileUrls(data) {
+        const fileUrls = [];
+        if (data) {
+            for (let i = 0; i < data.length; i++) {
+                fileUrls.push(data[i].original);
+            }
+        }
+
+        return fileUrls;
+    }
+
+    populateFileThumbUrls(data) {
+        const fileThumbUrls = [];
+        if (data) {
+            for (let i = 0; i < data.length; i++) {
+                fileThumbUrls.push(data[i].thumbnail);
+            }
+        }
+
+        return fileThumbUrls;
+    }
+
     createListing(captchaToken) {
         this.setState({loading: true});
         let listing = {
@@ -319,22 +344,13 @@ class EditListingPage extends React.Component {
                     detail: { name: "size" }
                 },
                 {
-                    value: this.state.bedroomCount,
+                    value: this.state.bedroomsCount,
                     detail: { name: "bedroomsCount" }
                 },
                 {
                     value: this.state.bathrooms,
                     detail: { name: "bathrooms" }
                 },
-                // {
-                //     value: this.state.apartment,
-                //     detail: { name: "apartment" }
-                // }
-                // ,
-                // {
-                //     value: this.state.zipCode,
-                //     detail: { name: "zipCode" }
-                // },
                 {
                     value: this.state.suitableForChildren,
                     detail: { name: "suitableForChildren" }
@@ -359,10 +375,6 @@ class EditListingPage extends React.Component {
                     value: this.state.dedicatedSpace,
                     detail: { name: "dedicatedSpace" }
                 },
-                // {
-                //     value: this.state.billingCountry,
-                //     detail: { name: "billingCountry" }
-                // }
             ],
             description: {
                 street: this.state.street,
@@ -382,7 +394,7 @@ class EditListingPage extends React.Component {
             checkoutEnd: moment(this.state.checkoutEnd, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
             defaultDailyPrice: this.state.defaultDailyPrice,
             cleaningFee: this.state.cleaningFee,
-            securityDeposit: this.state.securityDeposit,
+            depositRate: this.state.depositRate,
             currency: this.state.currency,
         }
 

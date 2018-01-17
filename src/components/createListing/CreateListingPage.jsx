@@ -39,7 +39,7 @@ class CreateListingPage extends React.Component {
             dedicatedSpace: 'true',
             propertySize: '',
             guestsIncluded: 1,
-            bedroomCount: 1,
+            bedroomsCount: 1,
             bedrooms: [ this.createBedroom(), ],
             bathrooms: 1,
             facilities: new Set(),
@@ -141,14 +141,14 @@ class CreateListingPage extends React.Component {
     }
 
     updateBedrooms(event) {
-        let bedroomCount = this.state.bedroomCount;
+        let bedroomsCount = this.state.bedroomsCount;
         let value = Number(event.target.value);
         if (value < 0) { value = 0; }
         if (value > 9) { value = 9; }
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
 
-        if (value > bedroomCount) {
-            for (let i = bedroomCount; i < value; i++) {
+        if (value > bedroomsCount) {
+            for (let i = bedroomsCount; i < value; i++) {
                 newBedrooms.push(this.createBedroom());
             }
         } else {
@@ -156,7 +156,7 @@ class CreateListingPage extends React.Component {
         }
 
         this.setState({
-            bedroomCount: value,
+            bedroomsCount: value,
             bedrooms: newBedrooms,
         });
     }
@@ -266,7 +266,7 @@ class CreateListingPage extends React.Component {
                     detail: { name: "size" }
                 },
                 {
-                    value: this.state.bedroomCount,
+                    value: this.state.bedroomsCount,
                     detail: { name: "bedroomsCount" }
                 },
                 {
@@ -323,10 +323,10 @@ class CreateListingPage extends React.Component {
             city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
-            checkinStart: moment(this.state.checkinStart, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkinEnd: moment(this.state.checkinEnd, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutStart: moment(this.state.checkoutStart, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutEnd: moment(this.state.checkoutEnd, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinStart: moment(this.state.checkinStart, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinEnd: moment(this.state.checkinEnd, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutStart: moment(this.state.checkoutStart, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutEnd: moment(this.state.checkoutEnd, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
             defaultDailyPrice: this.state.defaultDailyPrice,
             cleaningFee: this.state.cleaningFee,
             depositRate: this.state.depositRate,
