@@ -261,8 +261,8 @@ export async function acceptReservation(id, captchaToken) {
     });
 }
 
-export async function cancelTrip(id, captchaToken) {
-    return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, '', captchaToken).then(res => {
+export async function cancelTrip(id, cancelTripObj, captchaToken) {
+    return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, cancelTripObj, captchaToken).then(res => {
         return res.response.json();
     });
 }

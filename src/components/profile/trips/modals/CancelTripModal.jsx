@@ -38,8 +38,7 @@ export default class CancelTripModal extends React.Component {
                         <p>Tell your host why do you want to cancel your trip.</p>
                         <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                             <div className="form-group">
-                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
-                                <input type="textarea" rows="4" name="cancellationText" value={this.state.cancellationText} onChange={this.onChange} className="form-control text-area" placeholder="Message." />
+                                <textarea rows="4" name="cancellationText" value={this.state.cancellationText} onChange={this.onChange} className="form-control text-area"></textarea>
                             </div>
 
                             
@@ -47,7 +46,7 @@ export default class CancelTripModal extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => { this.props.cancelTrip(this.props.tripId, token);}}
+                                onChange={token => { this.props.cancelTrip(this.props.tripId, this.state.cancellationText, token);}}
                             />
 
                             <button type="submit" className="btn btn-primary">Send message</button>
