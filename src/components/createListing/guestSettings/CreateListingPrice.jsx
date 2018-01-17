@@ -4,13 +4,7 @@ import { NavLink } from 'react-router-dom';
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import { getCurrencies } from '../../../requester.js';
-
 export default class CreateListingPrice extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = this.props.values;
 
@@ -84,7 +78,7 @@ export default class CreateListingPrice extends React.Component {
                             &nbsp;Back</NavLink>
                         <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => { 
                                 e.preventDefault(); 
-                                this.captcha.execute()
+                                this.captcha.execute();
                                 {/* this.props.createListing(); */}
                             }} 
                             id="btn-continue">Finish</NavLink>

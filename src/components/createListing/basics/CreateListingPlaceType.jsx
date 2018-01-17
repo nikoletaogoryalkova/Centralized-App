@@ -6,10 +6,6 @@ import CreateListingBasicsAside from './CreateListingBasicsAside';
 import { Config } from '../../../config';
 
 export default class CreateListingPlaceType extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
         return (

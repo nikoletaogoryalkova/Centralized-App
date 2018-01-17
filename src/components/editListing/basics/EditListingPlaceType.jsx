@@ -6,10 +6,6 @@ import EditListingBasicsAside from './EditListingBasicsAside';
 import { Config } from '../../../config';
 
 export default class EditListingPlaceType extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
         return (
@@ -149,7 +145,6 @@ export default class EditListingPlaceType extends React.Component {
                         <NavLink to="/profile/listings/edit/accommodation" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
-
             </div>
         )
     }

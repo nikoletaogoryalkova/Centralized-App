@@ -14,7 +14,7 @@ export default class CreateListingDescription extends React.Component {
     }
 
     validateInput() {
-        const { text, interaction } = this.props.values;
+        const { text } = this.props.values;
         if (text.length < 6) {
             return false;
         }
@@ -23,7 +23,7 @@ export default class CreateListingDescription extends React.Component {
     }
 
     showErrors() {
-        const { text, interaction } = this.props.values;
+        const { text } = this.props.values;
         if (text.length < 6) {
             NotificationManager.warning("Summary should be at least 6 characters long")
         }
@@ -33,6 +33,7 @@ export default class CreateListingDescription extends React.Component {
         const { text, interaction } = this.props.values;
         return (
             <div>
+                <NotificationContainer />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

@@ -6,8 +6,6 @@ import 'react-select/dist/react-select.css';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 
-import { getCities } from '../../../requester';
-
 export default class CreateListingLocation extends React.Component {
     constructor(props) {
         super(props);
@@ -23,7 +21,6 @@ export default class CreateListingLocation extends React.Component {
         }
 
         await this.props.onSelect('country', option);
-        // this.props.updateCountries();
         this.props.updateCities();
     }
 
@@ -62,14 +59,6 @@ export default class CreateListingLocation extends React.Component {
             NotificationManager.warning("Country is required");
         }
     }
-
-    test(option) {
-        if (!option) {
-            return;
-        }
-
-        this.props.onSelect('country', option);
-    } 
 
     render() {
         const { country, countries, city, cities, street } = this.props.values;

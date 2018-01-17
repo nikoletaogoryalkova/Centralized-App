@@ -4,13 +4,7 @@ import { NavLink } from 'react-router-dom';
 import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import { getCurrencies } from '../../../requester.js';
-
 export default class EditListingPrice extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = this.props.values;
 
