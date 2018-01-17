@@ -84,7 +84,7 @@ export default class CreateListingPrice extends React.Component {
                             &nbsp;Back</NavLink>
                         <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => { 
                                 e.preventDefault(); 
-                                this.captcha.execute() 
+                                this.captcha.execute()
                                 {/* this.props.createListing(); */}
                             }} 
                             id="btn-continue">Finish</NavLink>

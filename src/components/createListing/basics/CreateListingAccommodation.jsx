@@ -9,7 +9,7 @@ import LabeledBedroomCounter from '../LabeledBedroomCounter';
 export default class CreateListingAccommodation extends React.Component {
 
     render() {
-        const { guestsIncluded, bedroomCount, bedrooms, bathrooms } = this.props.values;
+        const { guestsIncluded, bedroomsCount, bedrooms, bathrooms } = this.props.values;
         const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
@@ -70,7 +70,7 @@ export default class CreateListingAccommodation extends React.Component {
                                     <Dropdown
                                         name="bedroomCount"
                                         options={[1, 2, 3, 4, 5]}
-                                        value={bedroomCount}
+                                        value={bedroomsCount}
                                         onChange={this.props.updateBedrooms} />
                                 </div>
 

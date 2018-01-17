@@ -32,7 +32,7 @@ export default class EditListingPhotos extends React.Component {
 
     showErrors() {
         const { uploadedFilesUrls } = this.props.values;
-        if (uploadedFilesUrls.length < 6) {
+        if (uploadedFilesUrls.length < 1) {
             NotificationManager.warning("At least 1 picture is required");
         }
     }
