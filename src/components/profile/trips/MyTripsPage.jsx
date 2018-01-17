@@ -44,9 +44,13 @@ export default class MyTripsPage extends React.Component {
         })
     }
 
-    cancelTrip(id, captchaToken) {
+    cancelTrip(id, cancellationText, captchaToken) {
         this.setState({ loading: true });
-        cancelTrip(id, captchaToken)
+        let cancelTripObj = {
+            message: cancellationText
+        };
+
+        cancelTrip(id, cancelTripObj, captchaToken)
             .then(res => { 
                 this.componentDidMount(); 
                 this._operate(res, id, false) 
