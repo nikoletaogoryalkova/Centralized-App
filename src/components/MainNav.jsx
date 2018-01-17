@@ -327,8 +327,10 @@ class MainNav extends React.Component {
                             <Nav>
                                 <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                 <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
-                                <NavItem componentClass={Link} className="message-icon" href="/profile/messages" to="/profile/messages">
-                                    {this.state.unreadMessages}
+                                <NavItem componentClass={Link} href="/profile/messages" to="/profile/messages">
+                                    <div className="unread-messages-box">
+                                        <span className="bold" style={{right: this.state.unreadMessages.toString().split('').length === 2 ? '2px' : '4px'}}>{this.state.unreadMessages}</span>
+                                    </div>
                                 </NavItem>
                                 <NavDropdown title={localStorage[Config.getValue("domainPrefix") + ".auth.username"]} id="main-nav-dropdown">
                                     <MenuItem componentClass={Link} className="header" href="/profile/dashboard" to="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
