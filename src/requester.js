@@ -134,6 +134,12 @@ export async function sendMessage(messageObj, id) {
     })
 }
 
+export async function getCountOfUnreadMessages() {
+    return sendRequest(`${host}users/me/messages/count`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    })
+}
+
 export async function getAmenitiesFilters() {
     return sendRequest(`${host}amenities`, RequestMethod.GET).then(res => {
         return res.response.json();
