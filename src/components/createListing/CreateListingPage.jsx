@@ -72,7 +72,7 @@ class CreateListingPage extends React.Component {
             checkoutEnd: '13:00',
             defaultDailyPrice: '0',
             cleaningFee: '0',
-            securityDeposit: '0',
+            depositRate: '0',
             currency: '2', // USD
             loading: false,
             countries: [],
@@ -329,7 +329,7 @@ class CreateListingPage extends React.Component {
             checkoutEnd: moment(this.state.checkoutEnd, "h:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
             defaultDailyPrice: this.state.defaultDailyPrice,
             cleaningFee: this.state.cleaningFee,
-            securityDeposit: this.state.securityDeposit,
+            depositRate: this.state.depositRate,
             currency: this.state.currency,
         }
 

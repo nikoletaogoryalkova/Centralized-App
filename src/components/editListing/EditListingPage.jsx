@@ -135,8 +135,8 @@ class EditListingPage extends React.Component {
                 checkoutStart: moment(data.checkoutStart, "HH:mm:ss").format("HH:mm"),
                 checkoutEnd: moment(data.checkoutEnd, "HH:mm:ss").format("HH:mm"),
                 defaultDailyPrice: data.defaultDailyPrice,
-                // cleaningFee: data.cleaningFee,
-                // securityDeposit: data.securityDeposit,
+                cleaningFee: data.cleaningFee,
+                depositRate: data.depositRate,
                 currency: data.currency,
             });
             
