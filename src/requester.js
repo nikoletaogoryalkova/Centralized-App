@@ -105,9 +105,33 @@ export async function getCurrencies() {
 }
 
 export async function getListingsByFilter(searchTerms) {
-    return sendRequest(`${host}/api/filter_listings?${searchTerms}`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}api/filter_listings?${searchTerms}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
+}
+
+export async function getMyConversations() {
+    return sendRequest(`${host}users/me/conversations`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getChatMessages(id, page = 0) {
+    return sendRequest(`${host}users/me/conversations/${id}?page=${page}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    })
+}
+
+export async function changeMessageStatus(conversationObj) {
+    return sendRequest(`${host}users/me/conversations`, RequestMethod.POST, conversationObj).then(res => {
+        return res.response.json();
+    })
+}
+
+export async function sendMessage(messageObj, id) {
+    return sendRequest(`${host}users/me/conversations/${id}`, RequestMethod.POST, messageObj).then(res => {
+        return res.response.json();
+    })
 }
 
 export async function getAmenitiesFilters() {
