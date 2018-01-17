@@ -124,7 +124,7 @@ class EditListingPage extends React.Component {
                 suitableForPets: data.details.suitableForPets ? data.details.suitableForPets : 'false',
                 smokingAllowed: data.details.smokingAllowed ? data.details.smokingAllowed : 'false',
                 eventsAllowed: data.details.eventsAllowed ? data.details.eventsAllowed : 'false',
-                // otherRules: method - house rules,
+                otherHouseRules: data.houseRules && data.houseRules.length > 0 ? new Set(data.houseRules.split('\r\n')) : new Set(),
                 checkinStart: moment(data.checkinStart, "HH:mm:ss").format("HH:mm"),
                 checkinEnd: moment(data.checkinEnd, "HH:mm:ss").format("HH:mm"),
                 checkoutStart: moment(data.checkoutStart, "HH:mm:ss").format("HH:mm"),
