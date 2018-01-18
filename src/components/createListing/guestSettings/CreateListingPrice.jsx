@@ -2,20 +2,16 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
+import NavCreateListing from '../NavCreateListing';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import { getCurrencies } from '../../../requester.js';
-
 export default class CreateListingPrice extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = this.props.values;
 
         return (
             <div>
+                <NavCreateListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
@@ -84,7 +80,7 @@ export default class CreateListingPrice extends React.Component {
                             &nbsp;Back</NavLink>
                         <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => { 
                                 e.preventDefault(); 
-                                this.captcha.execute()
+                                this.captcha.execute();
                                 {/* this.props.createListing(); */}
                             }} 
                             id="btn-continue">Finish</NavLink>

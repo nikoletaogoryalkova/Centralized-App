@@ -3,7 +3,6 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import MainNav from '../MainNav';
-import NavCreateListing from './NavCreateListing';
 import CreateListingLandingPage from './basics/CreateListingLandingPage';
 import CreateListingPlaceType from './basics/CreateListingPlaceType';
 import CreateListingAccommodation from './basics/CreateListingAccommodation';
@@ -43,12 +42,6 @@ class CreateListingPage extends React.Component {
             bedrooms: [ this.createBedroom(), ],
             bathrooms: 1,
             facilities: new Set(),
-            smokeDetector: false,
-            carbonMonoxideDetector: false,
-            firstAidKit: false,
-            safetyCard: false,
-            fireExtinguisher: false,
-            lockOnBedroomDoor: false,
             street: '',
             city: '',
             apartment: '',
@@ -73,7 +66,7 @@ class CreateListingPage extends React.Component {
             defaultDailyPrice: '0',
             cleaningFee: '0',
             depositRate: '0',
-            currency: '2', // USD
+            currency: '2',
             loading: false,
             countries: [],
             categories: [],
@@ -259,7 +252,7 @@ class CreateListingPage extends React.Component {
             details: [
                 {
                     value: this.state.roomType,
-                    datail: { name: "roomType" }
+                    detail: { name: "roomType" }
                 },
                 {
                     value: this.state.propertySize,
@@ -272,15 +265,6 @@ class CreateListingPage extends React.Component {
                 {
                     value: this.state.bathrooms,
                     detail: { name: "bathrooms" }
-                },
-                {
-                    value: this.state.apartment,
-                    detail: { name: "apartment" }
-                }
-                ,
-                {
-                    value: this.state.zipCode,
-                    detail: { name: "zipCode" }
                 },
                 {
                     value: this.state.suitableForChildren,
@@ -306,10 +290,6 @@ class CreateListingPage extends React.Component {
                     value: this.state.dedicatedSpace,
                     detail: { name: "dedicatedSpace" }
                 },
-                {
-                    value: this.state.billingCountry,
-                    detail: { name: "billingCountry" }
-                }
             ],
             description: {
                 street: this.state.street,
@@ -323,10 +303,10 @@ class CreateListingPage extends React.Component {
             city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
-            checkinStart: moment(this.state.checkinStart, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkinEnd: moment(this.state.checkinEnd, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutStart: moment(this.state.checkoutStart, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutEnd: moment(this.state.checkoutEnd, "HH:mm A").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinStart: moment(this.state.checkinStart, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinEnd: moment(this.state.checkinEnd, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutStart: moment(this.state.checkoutStart, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkoutEnd: moment(this.state.checkoutEnd, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
             defaultDailyPrice: this.state.defaultDailyPrice,
             cleaningFee: this.state.cleaningFee,
             depositRate: this.state.depositRate,
@@ -341,7 +321,14 @@ class CreateListingPage extends React.Component {
             }
             else {
                 this.setState({loading: false});
-                NotificationManager.error('Something went wrong!', 'Create new listing');
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
             }
         });
     }
@@ -359,7 +346,6 @@ class CreateListingPage extends React.Component {
         files.forEach((file) => {
             let upload = request.post(LOCKCHAIN_UPLOAD_URL)
                 .field('image', file);
-
 
             upload.end((err, response) => {
                 if (err) {
@@ -393,95 +379,56 @@ class CreateListingPage extends React.Component {
     render() {
         return (
             <div>
-                <nav id="main-nav" className="navbar">
-                    <MainNav />
-                </nav>
-
-                {this.props.location.pathname !== "/profile/listings/create" && this.props.location.pathname !== "/profile/listings/create/landing" &&
-                    <NavCreateListing />
-                }
-
+                <nav id="main-nav" className="navbar"><MainNav /></nav>
+                <Redirect exact path="/profile/listings/create/" to="/profile/listings/create/landing" />
                 <Switch>
-                    <Redirect exact path="/profile/listings/create/" to="/profile/listings/create/landing" />
-
-                    <Route exact path="/profile/listings/create/landing" render={() =>
-                        <CreateListingLandingPage
-                            values={this.state}
-                            onChange={this.onChange} />}
-                    />
-
-                    <Route exact path="/profile/listings/create/placetype" render={() =>
-                        <CreateListingPlaceType
-                            values={this.state}
-                            toggleCheckbox={this.toggleCheckbox}
-                            onChange={this.onChange} />}
-                    />
-
-                    <Route exact path="/profile/listings/create/accommodation" render={() =>
-                        <CreateListingAccommodation
-                            values={this.state}
-                            updateCounter={this.updateCounter}
-                            updateBedrooms={this.updateBedrooms}
-                            updateBedCount={this.updateBedCount}
-                        />} />
-
-                    <Route exact path="/profile/listings/create/facilities" render={() =>
-                        <CreateListingFacilities
-                            values={this.state}
-                            toggle={this.toggleFacility} />} />
-
-                    <Route exact path="/profile/listings/create/safetyamenities" render={() =>
-                        <CreateListingSafetyAmenities
-                            values={this.state}
-                            toggle={this.toggleFacility} />} />
-
-                    <Route exact path="/profile/listings/create/location" render={() =>
-                        <CreateListingLocation
-                            values={this.state}
-                            onChange={this.onChange}
-                            onSelect={this.onSelect}
-                            updateCountries={this.updateCountries}
-                            updateCities={this.updateCities} />} />
-
-                    <Route exact path="/profile/listings/create/title" render={() =>
-                        <CreateListingTitle
-                            values={this.state}
-                            updateTextbox={this.onChange} />} />
-
-                    <Route exact path="/profile/listings/create/description" render={() =>
-                        <CreateListingDescription
-                            values={this.state}
-                            onChange={this.onChange} />} />
-
-                    <Route exact path="/profile/listings/create/photos" render={() =>
-                        <CreateListingPhotos
-                            values={this.state}
-                            onImageDrop={this.onImageDrop}
-                            removePhoto={this.removePhoto}
-                        />} />
-
-                    <Route exact path="/profile/listings/create/houserules" render={() =>
-                        <CreateListingHouseRules
-                            values={this.state}
-                            onChange={this.onChange}
-                            addRule={this.addHouseRule}
-                            removeRule={this.removeHouseRule} />} />
-
-                    <Route exact path="/profile/listings/create/checking" render={() =>
-                        <CreateListingChecking
-                            values={this.state}
-                            updateDropdown={this.onChange} />} />
-
-                    {/* <Route exact path="/listings/create/cancellation" render={() =>
-                        <CreateListingCancellation />} /> */}
-
-                    <Route exact path="/profile/listings/create/price" render={() =>
-                        <CreateListingPrice
-                            values={this.state}
-                            onChange={this.onChange}
-                            createListing={this.createListing} />} />
+                    <Route exact path="/profile/listings/create/landing" render={() => <CreateListingLandingPage
+                        values={this.state}
+                        onChange={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/placetype" render={() => <CreateListingPlaceType
+                        values={this.state}
+                        toggleCheckbox={this.toggleCheckbox}
+                        onChange={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/accommodation" render={() => <CreateListingAccommodation
+                        values={this.state}
+                        updateCounter={this.updateCounter}
+                        updateBedrooms={this.updateBedrooms}
+                        updateBedCount={this.updateBedCount} />} />
+                    <Route exact path="/profile/listings/create/facilities" render={() => <CreateListingFacilities
+                        values={this.state}
+                        toggle={this.toggleFacility} />} />
+                    <Route exact path="/profile/listings/create/safetyamenities" render={() => <CreateListingSafetyAmenities
+                        values={this.state}
+                        toggle={this.toggleFacility} />} />
+                    <Route exact path="/profile/listings/create/location" render={() => <CreateListingLocation
+                        values={this.state}
+                        onChange={this.onChange}
+                        onSelect={this.onSelect}
+                        updateCountries={this.updateCountries}
+                        updateCities={this.updateCities} />} />
+                    <Route exact path="/profile/listings/create/title" render={() => <CreateListingTitle
+                        values={this.state}
+                        updateTextbox={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/description" render={() => <CreateListingDescription
+                        values={this.state}
+                        onChange={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/photos" render={() => <CreateListingPhotos
+                        values={this.state}
+                        onImageDrop={this.onImageDrop}
+                        removePhoto={this.removePhoto} />} />
+                    <Route exact path="/profile/listings/create/houserules" render={() => <CreateListingHouseRules
+                        values={this.state}
+                        onChange={this.onChange}
+                        addRule={this.addHouseRule}
+                        removeRule={this.removeHouseRule} />} />
+                    <Route exact path="/profile/listings/create/checking" render={() => <CreateListingChecking
+                        values={this.state}
+                        updateDropdown={this.onChange} />} />
+                    <Route exact path="/profile/listings/create/price" render={() => <CreateListingPrice
+                        values={this.state}
+                        onChange={this.onChange}
+                        createListing={this.createListing} />} />
                 </Switch>
-
                 <Footer />
                 <NotificationContainer />
             </div>

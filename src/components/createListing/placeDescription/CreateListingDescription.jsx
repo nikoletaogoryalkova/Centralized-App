@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import NavCreateListing from '../NavCreateListing';
 import Textarea from '../Textarea';
 
 export default class CreateListingDescription extends React.Component {
@@ -14,7 +15,7 @@ export default class CreateListingDescription extends React.Component {
     }
 
     validateInput() {
-        const { text, interaction } = this.props.values;
+        const { text } = this.props.values;
         if (text.length < 6) {
             return false;
         }
@@ -23,7 +24,7 @@ export default class CreateListingDescription extends React.Component {
     }
 
     showErrors() {
-        const { text, interaction } = this.props.values;
+        const { text } = this.props.values;
         if (text.length < 6) {
             NotificationManager.warning("Summary should be at least 6 characters long")
         }
@@ -33,6 +34,8 @@ export default class CreateListingDescription extends React.Component {
         const { text, interaction } = this.props.values;
         return (
             <div>
+                <NavCreateListing progress='66%' />
+                <NotificationContainer />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

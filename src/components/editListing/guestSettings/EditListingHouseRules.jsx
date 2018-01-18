@@ -2,18 +2,20 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
+import NavEditListing from '../NavEditListing';
 
 export default class EditListingHouseRules extends React.Component {
 
     render() {
-        const { suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText } = this.props.values;
+        const { listingId, suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingGuestSettingsAside />
+                                <EditListingGuestSettingsAside listingId={listingId} />
                             </div>
                             <div className="col-md-9">
                                 <h2>House Rules</h2>
@@ -173,10 +175,10 @@ export default class EditListingHouseRules extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/photos" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/photos/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/checking" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/checking/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

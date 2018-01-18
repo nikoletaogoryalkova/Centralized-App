@@ -1,16 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import EditListingBasicsAside from './EditListingBasicsAside';
-import NavEditListing from '../NavEditListing';
+import CreateListingBasicsAside from './CreateListingBasicsAside';
+import NavCreateListing from '../NavCreateListing';
 import Counter from '../Counter';
 import Dropdown from '../Dropdown';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
 
-export default class EditListingAccommodation extends React.Component {
+export default class CreateListingAccommodation extends React.Component {
 
     render() {
-        const { listingId, guestsIncluded, bedroomsCount, bedrooms, bathrooms } = this.props.values;
+        const { guestsIncluded, bedroomsCount, bedrooms, bathrooms } = this.props.values;
         const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
@@ -42,12 +42,12 @@ export default class EditListingAccommodation extends React.Component {
 
         return (
             <div>
-                <NavEditListing progress='33%' />
+                <NavCreateListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingBasicsAside listingId={listingId} />
+                                <CreateListingBasicsAside />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
 
@@ -70,7 +70,7 @@ export default class EditListingAccommodation extends React.Component {
                                 <div>
                                     <h3>How many bedrooms can your guests use?</h3>
                                     <Dropdown
-                                        name="bedroomsCount"
+                                        name="bedroomCount"
                                         options={[1, 2, 3, 4, 5]}
                                         value={bedroomsCount}
                                         onChange={this.props.updateBedrooms} />
@@ -104,10 +104,10 @@ export default class EditListingAccommodation extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to={`/profile/listings/edit/placetype/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/create/placetype" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/facilities/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/create/facilities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

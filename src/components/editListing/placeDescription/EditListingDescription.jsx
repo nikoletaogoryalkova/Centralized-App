@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
+import NavEditListing from '../NavEditListing';
 import Textarea from '../Textarea';
 
 export default class EditListingDescription extends React.Component {
@@ -30,14 +31,15 @@ export default class EditListingDescription extends React.Component {
     }
 
     render() {
-        const { text, interaction } = this.props.values;
+        const { listingId, text, interaction } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingPlaceDescriptionAside />
+                                <EditListingPlaceDescriptionAside listingId={listingId} />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
                                 <h2>Tell your guests about your place</h2>
@@ -85,11 +87,11 @@ export default class EditListingDescription extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/location" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/location/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         {this.validateInput() 
-                            ? <NavLink to="/profile/listings/edit/photos" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            ? <NavLink to={`/profile/listings/edit/photos/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

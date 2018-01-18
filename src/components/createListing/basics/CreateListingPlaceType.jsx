@@ -2,18 +2,16 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
+import NavCreateListing from '../NavCreateListing';
 
 import { Config } from '../../../config';
 
 export default class CreateListingPlaceType extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
         return (
             <div>
+                <NavCreateListing progress='33%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
