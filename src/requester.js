@@ -195,9 +195,7 @@ export async function login(userObj, captchaToken) {
 
 export async function createListing(listingObj, captchaToken) {
     return sendRequest(`${host}listings`, RequestMethod.POST, listingObj, captchaToken).then(res => {
-        return {
-            success: ("" + res.response.status).indexOf("20") === 0
-        };
+        return res;
     });
 }
 
