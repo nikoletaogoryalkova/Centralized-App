@@ -33,6 +33,7 @@ class PropertyInfo extends React.Component {
         const calendar = this.props.calendar;
         const mostPopularFacilities = allAmenities.slice(0, 5);
         const amenities = this.getAmenities(allAmenities.slice(5));
+        const { street, city, country } = this.props.data;
         if (calendar === null) {
             return <div>Loading...</div>
         }
@@ -44,7 +45,9 @@ class PropertyInfo extends React.Component {
                         <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
                         <h1> {this.props.data.name} </h1>
                         <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
+                        
                         <div className="clearfix" />
+                        <p>{street}, {city.name}, {country.name}</p>
                         <div className="list-hotel-description">
                             {this.props.descriptionText}
                         </div>

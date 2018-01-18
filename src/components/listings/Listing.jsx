@@ -23,7 +23,8 @@ class Listing extends React.Component {
 
     render() {
         const listingPrice = (this.props.listing.prices) && this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed() : parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);        
-        
+        const { street, city, country } = this.props.listing;
+        console.log(this.props.listing);
         if (this.state.locRate === null) {
             return null;
         }
@@ -37,8 +38,9 @@ class Listing extends React.Component {
                     <h2><Link to={`/listings/${this.props.listing.id}${this.props.location.search}`}>{this.props.listing.name}</Link></h2>
                     <ListingRating rating={this.props.listing.averageRating} reviewsCount={this.props.listing.reviewsCount} />
                     <div className="clearfix"></div>
+                    <p>{street}, {city.name}, {country.name}</p>
                     <div className="list-hotel-text">
-                        {this.props.listing.description.substr(0, 400)}
+                        {this.props.listing.description.substr(0, 190)}...
                     </div>
                     <div className="list-hotel-comfort">
                         <div className="icon-hotel-4"></div>
