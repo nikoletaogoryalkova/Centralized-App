@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
+import NavCreateListing from '../NavCreateListing';
 import Counter from '../Counter';
 import Dropdown from '../Dropdown';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
@@ -9,7 +10,7 @@ import LabeledBedroomCounter from '../LabeledBedroomCounter';
 export default class CreateListingAccommodation extends React.Component {
 
     render() {
-        const { guestsIncluded, bedroomCount, bedrooms, bathrooms } = this.props.values;
+        const { guestsIncluded, bedroomsCount, bedrooms, bathrooms } = this.props.values;
         const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
@@ -41,6 +42,7 @@ export default class CreateListingAccommodation extends React.Component {
 
         return (
             <div>
+                <NavCreateListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
@@ -70,7 +72,7 @@ export default class CreateListingAccommodation extends React.Component {
                                     <Dropdown
                                         name="bedroomCount"
                                         options={[1, 2, 3, 4, 5]}
-                                        value={bedroomCount}
+                                        value={bedroomsCount}
                                         onChange={this.props.updateBedrooms} />
                                 </div>
 
@@ -102,10 +104,10 @@ export default class CreateListingAccommodation extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/placetype" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/create/placetype" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/facilities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/create/facilities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

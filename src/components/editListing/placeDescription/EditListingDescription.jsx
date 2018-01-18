@@ -1,19 +1,45 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 
-import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
+import NavEditListing from '../NavEditListing';
 import Textarea from '../Textarea';
 
-export default class CreateListingDescription extends React.Component {
+export default class EditListingDescription extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.validateInput = this.validateInput.bind(this);
+        this.showErrors = this.showErrors.bind(this);
+    }
+
+    validateInput() {
+        const { text, interaction } = this.props.values;
+        if (text.length < 6) {
+            return false;
+        }
+
+        return true;
+    }
+
+    showErrors() {
+        const { text, interaction } = this.props.values;
+        if (text.length < 6) {
+            NotificationManager.warning("Summary should be at least 6 characters long")
+        }
+    }
+
     render() {
-        const { description, neighborhood } = this.props.values;
+        const { text, interaction } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingPlaceDescriptionAside />
+                                <EditListingPlaceDescriptionAside />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
                                 <h2>Tell your guests about your place</h2>
@@ -24,11 +50,11 @@ export default class CreateListingDescription extends React.Component {
                                         <div className="form-group">
                                             <label>Summary</label>
                                             <Textarea
-                                                name="description"
-                                                value={description}
+                                                name="text"
+                                                value={text}
                                                 placeholder="Describe your place..."
                                                 rows={5}
-                                                onChange={this.props.updateTextarea}
+                                                onChange={this.props.onChange}
                                             />
                                         </div>
                                     </div>
@@ -43,11 +69,11 @@ export default class CreateListingDescription extends React.Component {
                                         <div className="form-group">
                                             <label>The neighborhood (optional)</label>
                                             <Textarea
-                                                name="neighborhood"
-                                                value={neighborhood}
+                                                name="interaction"
+                                                value={interaction}
                                                 placeholder="Describe what's near by, how to get around, etc..."
                                                 rows={5}
-                                                onChange={this.props.updateTextarea}
+                                                onChange={this.props.onChange}
                                             />
                                         </div>
                                     </div>
@@ -61,10 +87,13 @@ export default class CreateListingDescription extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/title" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/edit/location" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/photos" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        {this.validateInput() 
+                            ? <NavLink to="/profile/listings/edit/photos" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
+                        }
                     </div>
                 </div>
             </div>

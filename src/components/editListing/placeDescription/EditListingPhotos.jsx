@@ -1,22 +1,53 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 
-import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
+import NavEditListing from '../NavEditListing';
 
 import Dropzone from 'react-dropzone';
 
 import { Config } from '../../../config';
 
-export default class CreateListingPhotos extends React.Component {
+export default class EditListingPhotos extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.onDropRejected = this.onDropRejected.bind(this);        
+        this.validateInput = this.validateInput.bind(this);
+        this.showErrors = this.showErrors.bind(this);
+    }
+
+    onDropRejected() {
+        NotificationManager.warning('Maximum file upload size is 10MB. Supported media formats are jpg, jpeg, png');
+    }
+
+    validateInput() {
+        const { uploadedFilesUrls } = this.props.values;
+        if (uploadedFilesUrls.length < 1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    showErrors() {
+        const { uploadedFilesUrls } = this.props.values;
+        if (uploadedFilesUrls.length < 1) {
+            NotificationManager.warning("At least 1 picture is required");
+        }
+    }
 
     render() {
         return (
             <div>
+                <NavEditListing progress='66%' />
+                <NotificationContainer />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingPlaceDescriptionAside />
+                                <EditListingPlaceDescriptionAside />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
                                 <h2>Upload photos of your place</h2>
@@ -25,8 +56,10 @@ export default class CreateListingPhotos extends React.Component {
                                 <Dropzone
                                     className="pictures-upload"
                                     multiple={true}
-                                    accept="image/*"
-                                    onDrop={this.props.onImageDrop}>
+                                    maxSize={10485760}
+                                    accept="image/jpg, image/jpeg, image/png"
+                                    onDrop={this.props.onImageDrop}
+                                    onDropRejected={this.onDropRejected}>
                                     <p>Drop files to upload</p>
                                     <button className="btn btn-primary">Choose file</button>
                                 </Dropzone>
@@ -54,7 +87,10 @@ export default class CreateListingPhotos extends React.Component {
                         <NavLink to="/profile/listings/edit/description" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/houserules" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        {this.validateInput() 
+                            ? <NavLink to="/profile/listings/edit/houserules" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
+                        }
                     </div>
                 </div>
             </div>

@@ -1,20 +1,23 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import EditListingBasicsAside from './EditListingBasicsAside';
+import NavEditListing from '../NavEditListing';
 import FiltersCheckbox from '../../listings/FiltersCheckbox';
-import CreateListingBasicsAside from './CreateListingBasicsAside';
 
-export default class CreateListingSafetyAmenities extends React.Component {
-
+export default class EditListingFacilities extends React.Component {
     render() {
-        const category = this.props.values.categories.filter(category => category.name === "Safety Amenities");
-        const safetyAmenities = [];
-        category.forEach((c, j) => {
-            if (c.amenities.length > 0) {
-                safetyAmenities.push(
+        if (!this.props) {
+            return null;
+        }
+
+        const facilities = [];
+        this.props.values.categories.forEach((category, j) => {
+            if (category.amenities.length > 0 && category.name !== "Safety Amenities") {
+                facilities.push(
                     <div key={j} className="filter-box">
-                        <h3>{c.name}</h3>
-                        {c.amenities.map((item, i) => {
+                        <h3>{category.name}</h3>
+                        {category.amenities.map((item, i) => {
                             return <div key={i} onClick={() => this.props.toggle(item.id)}>
                                 <FiltersCheckbox
                                     key={i}
@@ -28,22 +31,35 @@ export default class CreateListingSafetyAmenities extends React.Component {
             }
         });
 
+        const columns = [[], [], []];
+        facilities.forEach((item, i) => {
+            columns[i % 3].push(item);
+        });
+
         return (
             <div>
+                <NavEditListing progress='33%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingBasicsAside />
+                                <EditListingBasicsAside />
                             </div>
-
                             <div className="col-md-9">
-                                <h2>What safety amenities do you offer to your guests?</h2>
-                                <hr />
-                                
                                 <div className="form-group">
-                                    <div className="filter-check-box">
-                                        {safetyAmenities}
+                                    <h2>What facilities do you offer to your guests</h2>
+                                    <hr />
+
+                                    <div className="col-md-4">
+                                        {columns[0]}
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        {columns[1]}
+                                    </div>
+
+                                    <div className="col-md-4">
+                                        {columns[2]}
                                     </div>
                                 </div>
                             </div>
@@ -54,10 +70,10 @@ export default class CreateListingSafetyAmenities extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/facilities" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/edit/accommodation" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/location" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/edit/safetyamenities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

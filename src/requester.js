@@ -36,29 +36,22 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
     return fetch(endpoint, RequestMethod.GET === method ? getParams : postParams)
         .then(res => {
             if (!res.ok) {
-                res.json().then(r => {
-                    if (r.errors["ExpiredJwt"]) {
-                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
-                        localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
-                        window.location.reload();
-                    }
-                });
-            }
-            return {
-                response: res,
-                success: res.ok,
-            }
-        })
-        .catch(err => {
-            console.log(err)
-
-
-            // console.log(data)
-            // if (data.errors && data.errors["ExpiredJwt"]) {
-            // }
-            return {
-                response: err,
-                success: false
+                return {
+                    response: res.json().then(r => {
+                        if (r.errors && r.errors["ExpiredJwt"]) {
+                            localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.lockchain");
+                            localStorage.removeItem(Config.getValue("domainPrefix") + ".auth.username");
+                            window.location.reload();
+                        }
+                        return r;
+                    }),
+                    success: res.ok
+                }
+            } else {
+                return {
+                    response: res,
+                    success: res.ok
+                }
             }
         });
 }
@@ -112,9 +105,39 @@ export async function getCurrencies() {
 }
 
 export async function getListingsByFilter(searchTerms) {
-    return sendRequest(`${host}/api/filter_listings?${searchTerms}`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}api/filter_listings?${searchTerms}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
+}
+
+export async function getMyConversations() {
+    return sendRequest(`${host}users/me/conversations`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getChatMessages(id, page = 0) {
+    return sendRequest(`${host}users/me/conversations/${id}?page=${page}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    })
+}
+
+export async function changeMessageStatus(conversationObj) {
+    return sendRequest(`${host}users/me/conversations`, RequestMethod.POST, conversationObj).then(res => {
+        return res.response.json();
+    })
+}
+
+export async function sendMessage(messageObj, id) {
+    return sendRequest(`${host}users/me/conversations/${id}`, RequestMethod.POST, messageObj).then(res => {
+        return res.response.json();
+    })
+}
+
+export async function getCountOfUnreadMessages() {
+    return sendRequest(`${host}users/me/messages/count`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    })
 }
 
 export async function getAmenitiesFilters() {
@@ -160,18 +183,13 @@ export async function updateUserInfo(userObj, captchaToken) {
 
 export async function register(userObj, captchaToken) {
     return sendRequest(`${host}users/signup`, RequestMethod.POST, userObj, captchaToken).then(res => {
-        return {
-            success: res.success
-        };
+        return res;
     });
 }
 
 export async function login(userObj, captchaToken) {
     return sendRequest(`${host}login`, RequestMethod.POST, userObj, captchaToken, {}).then(res => {
-        return {
-            body: res.response,
-            success: ("" + res.response.status).indexOf("20") === 0
-        };
+        return res;
     });
 }
 
@@ -249,8 +267,8 @@ export async function acceptReservation(id, captchaToken) {
     });
 }
 
-export async function cancelTrip(id, captchaToken) {
-    return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, '', captchaToken).then(res => {
+export async function cancelTrip(id, cancelTripObj, captchaToken) {
+    return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, cancelTripObj, captchaToken).then(res => {
         return res.response.json();
     });
 }

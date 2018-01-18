@@ -100,7 +100,7 @@ export default class MyTripsTable extends React.Component {
                             <div className="reservation-box-pending col-md-12">
                                 {trip.hostLocAddress && !trip.accepted ?
                                     <div>
-                                        Please pay {trip.price} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(7)}</a>
+                                        Please pay {trip.price} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(0, 7)}</a>
                                         <CopyToClipboard text={trip.hostLocAddress}>
                                             <button><i class="fa fa-link" aria-hidden="true" title="Copy LOC Address"></i></button>
                                         </CopyToClipboard>

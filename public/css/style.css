@@ -272,6 +272,17 @@ header form button {
     box-shadow: none;
 }
 
+.form-control-select {
+    height: 34px;
+    padding: 12px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: none;
+}
+
 .icon {
     content: "";
     display: block;
@@ -346,6 +357,14 @@ header form button {
     width: 13%;
     float: left;
     min-height: 60px;
+}
+
+button.disabled {
+    opacity: 50%;
+}
+
+button.disabled:hover {
+    cursor: no-drop;
 }
 
 #bs-example-navbar-collapse-1.navbar-collapse {
@@ -1280,7 +1299,7 @@ ul.profile-messages-item>li:nth-child(5)>span {
     margin-left: 60px;
 }
 
-#chat>textarea {
+#chat textarea {
     width: 100%;
     height: 120px;
     border-radius: 5px;
@@ -1290,7 +1309,7 @@ ul.profile-messages-item>li:nth-child(5)>span {
     margin-bottom: 15px;
 }
 
-#chat>input.button {
+#chat input.button {
     background-color: #d87a61;
     border: none;
     color: white;
@@ -1307,42 +1326,41 @@ ul.profile-messages-item>li:nth-child(5)>span {
     margin-bottom: 40px;
 }
 
-#chat>.day {
+#chat div {
     clear: both;
-    padding-bottom: 20px;
 }
 
-#chat>.day>.stamp {
+#chat .stamp {
     text-align: center;
 }
 
-#chat>.day>.stamp>hr {
+#chat .stamp>hr {
     border-top: 1px solid #ced0cf;
     margin: 0;
 }
 
-#chat>.day>.stamp>span {
+#chat .stamp>span {
     background-color: #f0f1f3;
     padding: 0 12px;
     position: relative;
     top: -12px;
 }
 
-#chat>.day>.message>ul.user {
+#chat .message>ul.user {
     list-style: none;
     display: block;
 }
 
-#chat>.day>.message>ul.user>li {
+#chat .message>ul.user>li {
     vertical-align: middle;
     display: inline-block;
 }
 
-#chat>.day>.message.to>ul.user {
+#chat .message.to>ul.user {
     text-align: right;
 }
 
-#chat>.day>.message>ul.user>li.thumb {
+#chat .message>ul.user>li.thumb {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -1354,26 +1372,26 @@ ul.profile-messages-item>li:nth-child(5)>span {
     top: -2px
 }
 
-#chat>.day>.message.from>ul.user>li.thumb {
+#chat .message.from>ul.user>li.thumb {
     margin-right: 12px;
 }
 
-#chat>.day>.message.to>ul.user>li.thumb {
+#chat .message.to>ul.user>li.thumb {
     margin-left: 12px;
 }
 
-#chat>.day>.message>ul.user>li.name {
+#chat .message>ul.user>li.name {
     font-size: 18px;
     font-family: 'FuturaStd-Medium', sans-serif;
     margin-right: 8px;
 }
 
-#chat>.day>.message>ul.user>li.when {
+#chat .message>ul.user>li.when {
     font-size: 18px;
     color: #919294;
 }
 
-#chat>.day>.message>.body {
+#chat .message>.body {
     width: 640px;
     background-color: white;
     border-radius: 5px;
@@ -1383,7 +1401,7 @@ ul.profile-messages-item>li:nth-child(5)>span {
     margin: 10px 0 15px 0;
 }
 
-#chat>.day>.message.from>.body {
+#chat .message.from>.body {
     float: right;
 }
 

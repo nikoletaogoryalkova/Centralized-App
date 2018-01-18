@@ -1,30 +1,43 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class MessagesItem extends React.Component {
+import { Config } from '../../../config';
+import moment from 'moment';
+
+class MessagesItem extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
 
     handleClick = (e) => {
-        e.preventDefault();
-        window.location.href= 'chat';
+        this.props.history.push('/profile/messages/chat/' + this.props.message.id);
     };
 
     render() {
         return (
-            <ul className="profile-messages-item" onClick={this.handleClick}>
-                <li></li>
-                <li><span className="thumb"></span></li> {/* pls add on span.thumb style backgound-image the user's thumb */}
-                <li>
-                    <span className="cnt block">
-                        <span className="block bold">Jaine Davidson</span>
-                        <span className="where block">Heaven - Junior Suite with view</span>
-                    </span>
-                </li>
-                <li>
-                    <span className="cnt block">Hello! It is a long established fact that a reader will be distrtacted by the readable contnet of a page when looking at its layout</span>
-                </li>
-                <li>
-                    <span className="cnt block bold">22 Nov, 2017<br />&nbsp;</span>
-                </li>
-            </ul>
+            <div className="message-box">
+                <div className="col-md-1">
+                    <a href="#" onClick={() => this.props.changeMessageFlag(this.props.message.id, this.props.message.unread)}>
+                        {this.props.message.unread === "true" ? <img src={Config.getValue("basePath") + "images/icon-star-filter.png"} alt="read-flag" /> : <img src={Config.getValue("basePath") + "images/icon-star-filter-g.png"} alt="unread-flag" />}
+                    </a>
+                </div>
+                <div className="col-md-1 user-image">
+                    <span className="session-nav-user-thumb"><img src={this.props.message.userInfo.image} alt="user-profile" /></span>
+                </div>
+                <div className="col-md-2">
+                    <h4 className="bold">{this.props.message.userInfo.fullName}</h4>
+                </div>
+                <div className="col-md-7 message-content" onClick={this.handleClick}>
+                    <p>{this.props.message.lastMessage && this.props.message.lastMessage.message}</p>
+                </div>
+                <div className="col-md-2">
+                    <p className="bold">{this.props.message.lastMessage && moment(this.props.message.lastMessage.createdAt, "DD/MM/YYYY").format('DD MMM, YYYY')}</p>
+                </div>
+            </div>
         );
     }
 }
+
+export default withRouter(MessagesItem);

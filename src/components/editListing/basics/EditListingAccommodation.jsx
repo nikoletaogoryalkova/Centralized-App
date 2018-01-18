@@ -1,13 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingBasicsAside from './CreateListingBasicsAside';
-import NavCreateListing from '../NavCreateListing';
+import EditListingBasicsAside from './EditListingBasicsAside';
+import NavEditListing from '../NavEditListing';
 import Counter from '../Counter';
 import Dropdown from '../Dropdown';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
 
-export default class CreateListingAccommodation extends React.Component {
+export default class EditListingAccommodation extends React.Component {
 
     render() {
         const { guestsIncluded, bedroomsCount, bedrooms, bathrooms } = this.props.values;
@@ -42,12 +42,12 @@ export default class CreateListingAccommodation extends React.Component {
 
         return (
             <div>
-                <NavCreateListing progress='33%' />
+                <NavEditListing progress='33%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingBasicsAside />
+                                <EditListingBasicsAside />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
 
@@ -70,7 +70,7 @@ export default class CreateListingAccommodation extends React.Component {
                                 <div>
                                     <h3>How many bedrooms can your guests use?</h3>
                                     <Dropdown
-                                        name="bedroomCount"
+                                        name="bedroomsCount"
                                         options={[1, 2, 3, 4, 5]}
                                         value={bedroomsCount}
                                         onChange={this.props.updateBedrooms} />
@@ -104,10 +104,10 @@ export default class CreateListingAccommodation extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/create/placetype" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/edit/placetype" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/facilities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/edit/facilities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

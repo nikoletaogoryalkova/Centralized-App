@@ -2,12 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import NavCreateListing from '../NavCreateListing';
 
 export default class CreateListingTitle extends React.Component {
     render() {
         const { name } = this.props.values;
         return (
             <div>
+                <NavCreateListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

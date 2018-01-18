@@ -2,11 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 
-import NavCreateListing from '../NavCreateListing';
+import NavEditListing from '../NavEditListing';
 
 import { Config } from '../../../config';
 
-export default class CreateListingLandingPage extends React.Component {
+export default class EditListingLandingPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -40,7 +40,7 @@ export default class CreateListingLandingPage extends React.Component {
 
         return (
             <div>
-                <NavCreateListing progress='33%'/>
+                <NavEditListing progress='33%' />
                 <div className="container">
                     <NotificationContainer />
                     <div className="row">
@@ -96,11 +96,11 @@ export default class CreateListingLandingPage extends React.Component {
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    {this.validateInput() 
-                                        ? <NavLink to="/profile/listings/create/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                                    <NavLink to="/profile/listings/edit/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                                    {/* {this.validateInput() 
+                                        ? <NavLink to="/profile/listings/edit/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
                                         : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
-                                    }
+                                    } */}
                                 </div>
                             </div>
                         </div>

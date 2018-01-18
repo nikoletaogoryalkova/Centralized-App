@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Modal, Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -8,7 +9,7 @@ import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
 import ChangePasswordModal from './modals/ChangePasswordModal';
 
 import { Config } from '../config';
-import { register, login } from '../requester';
+import { register, login, getCountOfUnreadMessages } from '../requester';
 
 class MainNav extends React.Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class MainNav extends React.Component {
             enterRecoveryToken: false,
             changePassword: false,
             recoveryToken: '',
+            unreadMessages: ''
         }
 
         this.closeSignUp = this.closeSignUp.bind(this);
@@ -44,6 +46,9 @@ class MainNav extends React.Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+
+        this.messageListener = this.messageListener.bind(this);
+        this.getCountOfMessages = this.getCountOfMessages.bind(this);
     }
 
     componentDidMount() {
@@ -55,6 +60,8 @@ class MainNav extends React.Component {
                 enterRecoveryToken: true,
             });
         }
+
+        this.messageListener();
     }
 
     closeSignUp() {
@@ -69,7 +76,6 @@ class MainNav extends React.Component {
     }
 
     openSignUp(e) {
-        console.log(e);
         e.preventDefault();
         this.setState({ showSignUpModal: true });
     }
@@ -98,7 +104,6 @@ class MainNav extends React.Component {
     }
 
     register(captchaToken) {
-
         let user = {
             email: this.state.signUpEmail,
             firstName: this.state.signUpFirstName,
@@ -114,10 +119,16 @@ class MainNav extends React.Component {
                 this.openLogIn();
             }
             else {
-                let responseJson = res.json();
-                responseJson.then((data) => {
-                    this.setState({ signUpError: data.message });
-                })
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
+
+                this.captcha.reset();
             }
         });
     }
@@ -130,13 +141,13 @@ class MainNav extends React.Component {
 
         login(user, captchaToken).then((res) => {
             if (res.success) {
-                res.body.json().then((data) => {
+                res.response.json().then((data) => {
                     localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
                     localStorage[Config.getValue("domainPrefix") + ".auth.username"] = user.email;
                     this.setState({ userName: user.email });
-                    
+
                     if (this.state.recoveryToken !== '') {
                         this.props.history.push('/');
                     } else {
@@ -148,7 +159,16 @@ class MainNav extends React.Component {
                     this.closeLogIn();
                 })
             } else {
-                this.setState({ loginError: "Invalid username or password" });
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
+
+                this.captcha.reset();
             }
         })
     }
@@ -184,9 +204,24 @@ class MainNav extends React.Component {
         });
     }
 
+    messageListener() {
+        this.getCountOfMessages();
+
+        setInterval(() => {
+            this.getCountOfMessages();
+        }, 120000);
+    }
+
+    getCountOfMessages() {
+        getCountOfUnreadMessages().then(data => {
+            this.setState({ unreadMessages: data.count });
+        })
+    }
+
     render() {
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
+                <NotificationContainer />
                 <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Login</h1>
@@ -194,7 +229,11 @@ class MainNav extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
-                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            {/* this.login(null); */ }
+                            this.captcha.execute();
+                        }}>
                             <div className="form-group">
                                 <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="mail" />
                                 <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
@@ -211,7 +250,7 @@ class MainNav extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => {this.login(token); this.captcha.reset(); }}
+                                onChange={token => { this.login(token); this.captcha.reset(); }}
                             />
 
                             <button type="submit" className="btn btn-primary">Login</button>
@@ -256,7 +295,7 @@ class MainNav extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => {this.register(token); this.captcha.reset(); }}
+                                onChange={token => { this.register(token); this.captcha.reset(); }}
                             />
 
                             <button type="submit" className="btn btn-primary">Sign up</button>
@@ -288,6 +327,11 @@ class MainNav extends React.Component {
                             <Nav>
                                 <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                 <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
+                                <NavItem componentClass={Link} href="/profile/messages" to="/profile/messages">
+                                    <div className="unread-messages-box">
+                                        <span className="bold" style={{right: this.state.unreadMessages.toString().split('').length === 2 ? '2px' : '4px'}}>{this.state.unreadMessages}</span>
+                                    </div>
+                                </NavItem>
                                 <NavDropdown title={localStorage[Config.getValue("domainPrefix") + ".auth.username"]} id="main-nav-dropdown">
                                     <MenuItem componentClass={Link} className="header" href="/profile/dashboard" to="/profile/dashboard">View Profile<img src={Config.getValue("basePath") + "images/icon-dropdown/icon-user.png"} alt="view profile" /></MenuItem>
                                     <MenuItem componentClass={Link} href="/profile/me/edit" to="/profile/me/edit">Edit Profile</MenuItem>

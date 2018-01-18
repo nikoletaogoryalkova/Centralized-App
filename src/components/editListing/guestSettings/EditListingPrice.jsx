@@ -1,22 +1,22 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
-import NavCreateListing from '../NavCreateListing';
+import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
+import NavEditListing from '../NavEditListing';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-export default class CreateListingPrice extends React.Component {
+export default class EditListingPrice extends React.Component {
     render() {
         const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = this.props.values;
 
         return (
             <div>
-                <NavCreateListing progress='100%' />
+                <NavEditListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingGuestSettingsAside />
+                                <EditListingGuestSettingsAside />
                             </div>
 
                             {!this.props.values.loading ? <div className="col-md-9">
@@ -75,15 +75,14 @@ export default class CreateListingPrice extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/create/checking" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/edit/checking" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => { 
+                        <NavLink to="/profile/listings/edit/price" className="btn btn-primary btn-next" onClick={(e) => { 
                                 e.preventDefault(); 
-                                this.captcha.execute();
                                 {/* this.props.createListing(); */}
-                            }} 
-                            id="btn-continue">Finish</NavLink>
+                                this.captcha.execute(); 
+                            }} id="btn-continue">Finish</NavLink>
                         
                         <ReCAPTCHA
                                 ref={el => this.captcha = el}

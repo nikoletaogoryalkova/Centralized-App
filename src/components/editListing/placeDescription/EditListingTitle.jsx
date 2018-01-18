@@ -1,18 +1,20 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
+import NavEditListing from '../NavEditListing';
 
-export default class CreateListingTitle extends React.Component {
+export default class EditListingTitle extends React.Component {
     render() {
         const { name } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <CreateListingPlaceDescriptionAside />
+                                <EditListingPlaceDescriptionAside />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
                                 <h2>Give your place a name</h2>

@@ -3,16 +3,101 @@ import React from 'react';
 import ProfileHeader from '../ProfileHeader';
 import MessagesChatUser from './MessagesChatUser';
 import Footer from '../../Footer';
+import MessagesChat from './MessagesChat';
+import Message from './Message';
 import MessagesChatDay from './MessagesChatDay';
 
-export default class MessagesChatPage extends React.Component {
+import { getChatMessages, sendMessage } from '../../../requester';
+import { withRouter } from 'react-router-dom';
+import { Config } from '../../../config';
+import InfiniteList from 'react-infinite-scroll-list';
+import moment from 'moment';
+
+class MessagesChatPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            messages: [],
+            loading: true,
+            recipient: '',
+            recipientId: '',
+            recipientImage: '',
+            sending: false,
+            message: '',
+
+            infinityLoading: false,
+            totalPages: 0,
+            currentPage: 0,
+        }
+
+        this.sendMessage = this.sendMessage.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.fetchMessages = this.fetchMessages.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchMessages();
+    }
+
+    fetchMessages(page = 0) {
+        this.setState({ infinityLoading: true });
+        getChatMessages(this.props.match.params.id, page).then((data) => {
+            data.content[0].sender.email === localStorage[Config.getValue("domainPrefix") + ".auth.username"]
+            let recipient = data.content[0].recipient.email === localStorage[Config.getValue("domainPrefix") + ".auth.username"] ? data.content[0].sender : data.content[0].recipient;
+            let totalMessages = this.state.messages;
+            data.content.forEach((item) => {
+                totalMessages.push(item);
+            });
+
+            this.setState(
+                {
+                    messages: totalMessages,
+                    loading: false,
+                    recipient: recipient.fullName,
+                    recipientId: recipient.id,
+                    recipientImage: recipient.image,
+                    totalPages: data.totalPages,
+                    infinityLoading: false
+                });
+        });
+    }
+
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
+    sendMessage(e) {
+        e.preventDefault();
+
+        this.setState({ sending: true })
+
+        let message = {
+            recipient: this.state.recipientId,
+            message: this.state.message
+        }
+
+        sendMessage(message, this.props.match.params.id).then((data) => {
+            let messages = this.state.messages;
+            messages.splice(0, 0, data);
+
+            this.setState({ sending: false, messages: messages, message: '' });
+        });
+    }
+
     render() {
+        if (this.state.loading) {
+            return <div className="loader"></div>
+        }
+
+        let lastRenderedUser = '';
+        let lastRenderedDay = '';
         return (
             <div>
                 <ProfileHeader />
                 <section id="profile-messages-chat-head">
                     <div className="container">
-                        <h2>Conversation with Jaime Davidson</h2>
+                        <h2>Conversation with {this.state.recipient}</h2>
                         <hr className="profile-line" />
                     </div>
                 </section>
@@ -20,16 +105,40 @@ export default class MessagesChatPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-4">
-                                <MessagesChatUser />
+                                <MessagesChatUser userInfo={{ image: this.state.recipientImage, fullName: this.state.recipient }} />
                             </div>
                             <div className="col-md-7">
                                 <div id="chat">
-                                    <textarea placeholder="Type your message here..."></textarea>
-                                    <input type="button" className="button" value="Send Message" />
-                                    <MessagesChatDay />
-                                    <MessagesChatDay />
-                                    <MessagesChatDay />
-                                    <MessagesChatDay />
+                                    <form onSubmit={this.sendMessage}>
+                                        <textarea name="message" value={this.state.message} onChange={this.onChange} required="required" placeholder="Type your message here..."></textarea>
+                                        <input type="submit" className="button" disabled={this.state.sending} value={this.state.sending ? 'Sending...' : 'Send Message'} />
+                                    </form>
+                                    <InfiniteList
+                                        root="viewport"
+                                        isLoading={this.state.infinityLoading}
+                                        isEndReached={this.state.currentPage === this.state.totalPages - 1}
+                                        onReachThreshold={() => {
+                                            this.setState({ currentPage: this.state.currentPage + 1 })
+                                            this.fetchMessages(this.state.currentPage);
+                                        }}
+                                        threshold={180}>
+                                        {this.state.messages.map((message, i) => {
+                                            let isQueueMessage = lastRenderedUser === message.sender.email;
+                                            lastRenderedUser = message.sender.email;
+
+                                            let messageDate = moment(message.createdAt, "DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY");
+                                            let isNewDay = lastRenderedDay !== messageDate;
+                                            lastRenderedDay = messageDate;
+                                            return <div>
+                                                {isNewDay ? <MessagesChatDay date={messageDate} /> : null}
+                                                <MessagesChat key={i} queueMessage={isQueueMessage} sender={message.sender.email === localStorage[Config.getValue("domainPrefix") + ".auth.username"]}
+                                                    message={message}>
+                                                    <Message message={message} />
+                                                </MessagesChat>
+                                            </div>
+                                        })}
+                                    </InfiniteList>
+                                    {this.state.infinityLoading ? <div className="loader"></div> : null}
                                 </div>
                             </div>
                             <div className="clear-both before-footer" />
@@ -41,3 +150,5 @@ export default class MessagesChatPage extends React.Component {
         );
     }
 }
+
+export default withRouter(MessagesChatPage);
