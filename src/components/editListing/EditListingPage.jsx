@@ -229,8 +229,8 @@ class EditListingPage extends React.Component {
 
     getText(text) {
         if (text) {
-            let index = text.indexOf('\r\nNeighborhood:');
-            return text.substr(0, index);
+            let index = text.indexOf('Neighborhood:');
+            return text.substr(0, index).trim();
         }
     }
 
