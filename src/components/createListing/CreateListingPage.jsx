@@ -323,10 +323,12 @@ class CreateListingPage extends React.Component {
         }
 
         createListing(listing, captchaToken).then((res) => {
-            if (res.success) {
-                this.setState({ loading: false });
-                this.props.history.push('/profile/listings');
-                NotificationManager.success('Successfully updated your profile', 'Create new listing');
+            if (res.success) {                this.setState({loading: false});
+                res.response.json().then(res => { 
+                    const id = res.id;
+                    const path = `/profile/listings/calendar/${id}`;
+                    this.props.history.push(path);
+                });
             }
             else {
                 this.setState({ loading: false });
