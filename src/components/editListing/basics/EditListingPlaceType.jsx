@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import EditListingBasicsAside from './EditListingBasicsAside';
+import NavEditListing from '../NavEditListing';
 
 import { Config } from '../../../config';
 
@@ -10,6 +11,7 @@ export default class EditListingPlaceType extends React.Component {
         const { type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='33%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

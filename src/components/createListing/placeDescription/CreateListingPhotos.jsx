@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import NavCreateListing from '../NavCreateListing';
 
 import Dropzone from 'react-dropzone';
 
@@ -40,6 +41,7 @@ export default class CreateListingPhotos extends React.Component {
     render() {
         return (
             <div>
+                <NavCreateListing progress='66%' />
                 <NotificationContainer />
                 <div className="container">
                     <div className="row">

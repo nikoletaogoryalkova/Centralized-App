@@ -2,12 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
+import NavEditListing from '../NavEditListing';
 
 export default class EditListingTitle extends React.Component {
     render() {
         const { name } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

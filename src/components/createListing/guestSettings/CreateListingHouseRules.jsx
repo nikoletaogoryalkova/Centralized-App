@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
+import NavCreateListing from '../NavCreateListing';
 
 export default class CreateListingHouseRules extends React.Component {
 
@@ -9,6 +10,7 @@ export default class CreateListingHouseRules extends React.Component {
         const { suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText } = this.props.values;
         return (
             <div>
+                <NavCreateListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

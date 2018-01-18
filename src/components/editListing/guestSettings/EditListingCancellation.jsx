@@ -2,11 +2,13 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
+import NavEditListing from '../NavEditListing';
 
 export default class EditListingCancellation extends React.Component {
     render() {
         return (
             <div>
+                <NavEditListing progress='100%' />
                 <EditListingGuestSettingsAside />
                 <div className="col-md-9">
                     <div className="form-group">

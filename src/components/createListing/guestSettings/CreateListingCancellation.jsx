@@ -2,11 +2,13 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
+import NavCreateListing from '../NavCreateListing';
 
 export default class CreateListingCancellation extends React.Component {
     render() {
         return (
             <div>
+                <NavCreateListing progress='100%' />
                 <CreateListingGuestSettingsAside />
                 <div className="col-md-9">
                     <div className="form-group">

@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
+import NavEditListing from '../NavEditListing';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class EditListingPrice extends React.Component {
@@ -10,6 +11,7 @@ export default class EditListingPrice extends React.Component {
 
         return (
             <div>
+                <NavEditListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

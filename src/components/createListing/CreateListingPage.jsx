@@ -3,7 +3,6 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import MainNav from '../MainNav';
-import NavCreateListing from './NavCreateListing';
 import CreateListingLandingPage from './basics/CreateListingLandingPage';
 import CreateListingPlaceType from './basics/CreateListingPlaceType';
 import CreateListingAccommodation from './basics/CreateListingAccommodation';
@@ -374,9 +373,6 @@ class CreateListingPage extends React.Component {
         return (
             <div>
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
-                {this.props.location.pathname !== "/profile/listings/create" && this.props.location.pathname !== "/profile/listings/create/landing" &&
-                    <NavCreateListing />
-                }
                 <Redirect exact path="/profile/listings/create/" to="/profile/listings/create/landing" />
                 <Switch>
                     <Route exact path="/profile/listings/create/landing" render={() => <CreateListingLandingPage
@@ -421,8 +417,6 @@ class CreateListingPage extends React.Component {
                     <Route exact path="/profile/listings/create/checking" render={() => <CreateListingChecking
                         values={this.state}
                         updateDropdown={this.onChange} />} />
-                    {/* <Route exact path="/listings/create/cancellation" render={() =>
-                        <CreateListingCancellation />} /> */}
                     <Route exact path="/profile/listings/create/price" render={() => <CreateListingPrice
                         values={this.state}
                         onChange={this.onChange}

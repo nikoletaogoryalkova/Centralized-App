@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
+import NavCreateListing from '../NavCreateListing';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class CreateListingPrice extends React.Component {
@@ -10,6 +11,7 @@ export default class CreateListingPrice extends React.Component {
 
         return (
             <div>
+                <NavCreateListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

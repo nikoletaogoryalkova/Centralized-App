@@ -2,12 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
+import NavEditListing from '../NavEditListing';
 
 export default class EditListingChecking extends React.Component {
     render() {
         const { checkinStart, checkinEnd, checkoutStart, checkoutEnd } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

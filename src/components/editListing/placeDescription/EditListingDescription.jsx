@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
+import NavEditListing from '../NavEditListing';
 import Textarea from '../Textarea';
 
 export default class EditListingDescription extends React.Component {
@@ -33,6 +34,7 @@ export default class EditListingDescription extends React.Component {
         const { text, interaction } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

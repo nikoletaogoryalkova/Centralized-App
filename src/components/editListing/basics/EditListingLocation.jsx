@@ -5,6 +5,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 import EditListingBasicsAside from './EditListingBasicsAside';
+import NavEditListing from '../NavEditListing';
 
 export default class EditListingLocation extends React.Component {
     constructor(props) {
@@ -70,6 +71,7 @@ export default class EditListingLocation extends React.Component {
         });
         return (
             <div>
+                <NavEditListing progress='33%' />
                 <NotificationContainer />
                 <div className="container">
                     <div className="row">

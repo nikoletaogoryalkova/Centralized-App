@@ -5,6 +5,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
+import NavCreateListing from '../NavCreateListing';
 
 export default class CreateListingLocation extends React.Component {
     constructor(props) {
@@ -70,6 +71,7 @@ export default class CreateListingLocation extends React.Component {
         });
         return (
             <div>
+                <NavCreateListing progress='33%' />
                 <NotificationContainer />
                 <div className="container">
                     <div className="row">

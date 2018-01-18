@@ -3,7 +3,6 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import MainNav from '../MainNav';
-import NavEditListing from './NavEditListing';
 import EditListingLandingPage from './basics/EditListingLandingPage';
 import EditListingPlaceType from './basics/EditListingPlaceType';
 import EditListingAccommodation from './basics/EditListingAccommodation';
@@ -453,7 +452,6 @@ class EditListingPage extends React.Component {
             <div>
                 <NotificationContainer />
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
-                {this.props.location.pathname !== "/profile/listings/edit/landing" && <NavEditListing />}
                 <Redirect exact path="/profile/listings/edit/:id" to="/profile/listings/edit/landing" />
                 <Switch>
                     <Route exact path="/profile/listings/edit/landing" render={() => <EditListingLandingPage

@@ -2,12 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
+import NavCreateListing from '../NavCreateListing';
 
 export default class CreateListingChecking extends React.Component {
     render() {
         const { checkinStart, checkinEnd, checkoutStart, checkoutEnd } = this.props.values;
         return (
             <div>
+                <NavCreateListing progress='100%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

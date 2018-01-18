@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import EditListingBasicsAside from './EditListingBasicsAside';
+import NavEditListing from '../NavEditListing';
 import FiltersCheckbox from '../../listings/FiltersCheckbox';
 
 export default class EditListingFacilities extends React.Component {
@@ -37,6 +38,7 @@ export default class EditListingFacilities extends React.Component {
 
         return (
             <div>
+                <NavEditListing progress='33%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
