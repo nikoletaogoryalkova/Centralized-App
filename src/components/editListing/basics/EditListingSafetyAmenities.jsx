@@ -10,6 +10,7 @@ export default class EditListingSafetyAmenities extends React.Component {
     render() {
         const category = this.props.values.categories.filter(category => category.name === "Safety Amenities");
         const safetyAmenities = [];
+        const { listingId } = this.props.values;
         category.forEach((c, j) => {
             if (c.amenities.length > 0) {
                 safetyAmenities.push(
@@ -36,7 +37,7 @@ export default class EditListingSafetyAmenities extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingBasicsAside />
+                                <EditListingBasicsAside listingId={listingId} />
                             </div>
 
                             <div className="col-md-9">
@@ -56,10 +57,10 @@ export default class EditListingSafetyAmenities extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/facilities" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/facilities/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/location" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/location/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

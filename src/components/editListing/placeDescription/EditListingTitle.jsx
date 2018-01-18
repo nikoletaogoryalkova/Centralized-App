@@ -6,7 +6,7 @@ import NavEditListing from '../NavEditListing';
 
 export default class EditListingTitle extends React.Component {
     render() {
-        const { name } = this.props.values;
+        const { listingId, name } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='66%' />
@@ -14,7 +14,7 @@ export default class EditListingTitle extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingPlaceDescriptionAside />
+                                <EditListingPlaceDescriptionAside listingId={listingId} />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
                                 <h2>Give your place a name</h2>
@@ -35,10 +35,10 @@ export default class EditListingTitle extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/location" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/location/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/description" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/description/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

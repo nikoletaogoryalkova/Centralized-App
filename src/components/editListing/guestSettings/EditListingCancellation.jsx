@@ -9,7 +9,7 @@ export default class EditListingCancellation extends React.Component {
         return (
             <div>
                 <NavEditListing progress='100%' />
-                <EditListingGuestSettingsAside />
+                <EditListingGuestSettingsAside listingId={listingId} />
                 <div className="col-md-9">
                     <div className="form-group">
                         <h2>When your guest can cancel their reservation?</h2>

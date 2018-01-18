@@ -7,7 +7,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class EditListingPrice extends React.Component {
     render() {
-        const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = this.props.values;
+        const { listingId, currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = this.props.values;
 
         return (
             <div>
@@ -16,7 +16,7 @@ export default class EditListingPrice extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingGuestSettingsAside />
+                                <EditListingGuestSettingsAside listingId={listingId} />
                             </div>
 
                             {!this.props.values.loading ? <div className="col-md-9">
@@ -75,10 +75,10 @@ export default class EditListingPrice extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/checking" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/checking/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/price" className="btn btn-primary btn-next" onClick={(e) => { 
+                        <NavLink to={`/profile/listings/edit/price/${listingId}`} className="btn btn-primary btn-next" onClick={(e) => { 
                                 e.preventDefault(); 
                                 {/* this.props.createListing(); */}
                                 this.captcha.execute(); 

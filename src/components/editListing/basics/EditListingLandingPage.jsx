@@ -36,7 +36,7 @@ export default class EditListingLandingPage extends React.Component {
     }
 
     render() {
-        const { type, name } = this.props.values;
+        const { listingId, type, name } = this.props.values;
 
         return (
             <div>
@@ -96,7 +96,7 @@ export default class EditListingLandingPage extends React.Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <NavLink to="/profile/listings/edit/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
+                                    <NavLink to={`/profile/listings/edit/placetype/${listingId}`} className="btn btn-primary" id="btn-continue">Continue</NavLink>
                                     {/* {this.validateInput() 
                                         ? <NavLink to="/profile/listings/edit/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
                                         : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>

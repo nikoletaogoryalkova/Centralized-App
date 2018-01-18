@@ -6,7 +6,7 @@ import NavEditListing from '../NavEditListing';
 
 export default class EditListingChecking extends React.Component {
     render() {
-        const { checkinStart, checkinEnd, checkoutStart, checkoutEnd } = this.props.values;
+        const { listingId, checkinStart, checkinEnd, checkoutStart, checkoutEnd } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='100%' />
@@ -14,7 +14,7 @@ export default class EditListingChecking extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingGuestSettingsAside />
+                                <EditListingGuestSettingsAside listingId={listingId} />
                             </div>
                             <div className="col-md-9">
                                 <h2>When can guests check-in?</h2>
@@ -98,10 +98,10 @@ export default class EditListingChecking extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/houserules" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/price" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/price/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>

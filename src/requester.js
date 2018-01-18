@@ -110,8 +110,8 @@ export async function getListingsByFilter(searchTerms) {
     });
 }
 
-export async function getMyConversations() {
-    return sendRequest(`${host}users/me/conversations`, RequestMethod.GET).then(res => {
+export async function getMyConversations(searchTerm) {
+    return sendRequest(`${host}users/me/conversations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
@@ -195,17 +195,13 @@ export async function login(userObj, captchaToken) {
 
 export async function createListing(listingObj, captchaToken) {
     return sendRequest(`${host}listings`, RequestMethod.POST, listingObj, captchaToken).then(res => {
-        return {
-            success: ("" + res.response.status).indexOf("20") === 0
-        };
+        return res;
     });
 }
 
 export async function editListing(id, listingObj, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/edit`, RequestMethod.POST, listingObj, captchaToken).then(res => {
-        return {
-            success: ("" + res.response.status).indexOf("20") === 0
-        };
+        return res;
     });
 }
 

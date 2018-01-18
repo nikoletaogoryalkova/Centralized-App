@@ -15,9 +15,10 @@ import CreateListingPhotos from './placeDescription/CreateListingPhotos';
 import CreateListingHouseRules from './guestSettings/CreateListingHouseRules';
 import CreateListingChecking from './guestSettings/CreateListingChecking';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
+import CreateListingLocAddress from './CreateListingLocAddress';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes, getCities, getCurrencies } from '../../requester';
+import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes, getCities, getCurrencies, getCurrentLoggedInUserInfo, updateUserInfo } from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -32,14 +33,14 @@ class CreateListingPage extends React.Component {
 
         this.state = {
             type: '1',
-            country: '',
+            country: '1',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
             propertySize: '',
             guestsIncluded: 1,
             bedroomsCount: 1,
-            bedrooms: [ this.createBedroom(), ],
+            bedrooms: [this.createBedroom(),],
             bathrooms: 1,
             facilities: new Set(),
             street: '',
@@ -73,6 +74,9 @@ class CreateListingPage extends React.Component {
             propertyTypes: [],
             cities: [],
             currencies: [],
+
+            userHasLocAddress: null,
+            locAddress: ''
         };
 
         this.onChange = this.onChange.bind(this);
@@ -90,6 +94,7 @@ class CreateListingPage extends React.Component {
         this.onImageDrop = this.onImageDrop.bind(this);
         this.handleImageUpload = this.handleImageUpload.bind(this);
         this.removePhoto = this.removePhoto.bind(this);
+        this.updateLocAddress = this.updateLocAddress.bind(this);
     }
 
     componentDidMount() {
@@ -112,6 +117,10 @@ class CreateListingPage extends React.Component {
         getCurrencies().then(data => {
             this.setState({ currencies: data.content });
         });
+
+        getCurrentLoggedInUserInfo().then(data => {
+            this.setState({ userHasLocAddress: data.locAddress !== null });
+        })
     };
 
     onChange(event) {
@@ -221,7 +230,7 @@ class CreateListingPage extends React.Component {
             this.setState({ countries: data.content });
         });
     }
-    
+
     onSelect(name, option) {
         this.setState({
             [name]: option.value
@@ -244,7 +253,7 @@ class CreateListingPage extends React.Component {
     }
 
     createListing(captchaToken) {
-        this.setState({loading: true});
+        this.setState({ loading: true });
         let listing = {
             listingType: this.state.type,
             type: this.state.propertyType,
@@ -314,14 +323,23 @@ class CreateListingPage extends React.Component {
         }
 
         createListing(listing, captchaToken).then((res) => {
-            if (res.success) {
-                this.setState({loading: false});
-                this.props.history.push('/profile/listings');
-                NotificationManager.success('Successfully updated your profile', 'Create new listing');
+            if (res.success) {                this.setState({loading: false});
+                res.response.json().then(res => { 
+                    const id = res.id;
+                    const path = `/profile/listings/calendar/${id}`;
+                    this.props.history.push(path);
+                });
             }
             else {
-                this.setState({loading: false});
-                NotificationManager.error('Something went wrong!', 'Create new listing');
+                this.setState({ loading: false });
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
             }
         });
     }
@@ -369,12 +387,51 @@ class CreateListingPage extends React.Component {
         }
     }
 
+    updateLocAddress(captchaToken) {
+        getCurrentLoggedInUserInfo().then(data => {
+            let userInfo = {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phoneNumber: data.phoneNumber,
+                preferredLanguage: data.preferredLanguage,
+                preferredCurrency: data.preferredCurrency.id,
+                gender: data.gender,
+                country: data.country.id,
+                city: data.city.id,
+                birthday: moment(data.birthday).format("DD/MM/YYYY"),
+                locAddress: this.state.locAddress
+            }
+            updateUserInfo(userInfo, captchaToken).then(() => {
+                this.componentDidMount();
+            })
+        })
+    }
+
     render() {
+        if (this.state.countries === [] || this.state.currencies === [] ||
+            this.state.propertyTypes === [] || this.state.categories === [] ||
+            this.state.cities === [] || this.state.userHasLocAddress === null) {
+            return <div className="loader"></div>
+        }
+
+        if (this.state.userHasLocAddress === false) {
+            return <div>
+                <nav id="main-nav" className="navbar"><MainNav/></nav>
+                <CreateListingLocAddress values={this.state} onChange={this.onChange} updateLocAddress={this.updateLocAddress}  />
+                <Footer />
+                <NotificationContainer />
+            </div>
+        }
+
         return (
             <div>
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
+
                 <Redirect exact path="/profile/listings/create/" to="/profile/listings/create/landing" />
                 <Switch>
+                    <Route exact path="/profile/listings/create/loc" render={() => <CreateListingLocAddress
+                        values={this.state}
+                        onChange={this.onChange} />} />
                     <Route exact path="/profile/listings/create/landing" render={() => <CreateListingLandingPage
                         values={this.state}
                         onChange={this.onChange} />} />

@@ -3,6 +3,7 @@ import React from 'react';
 import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 import MessagesItem from './MessagesItem';
+import Pagination from 'rc-pagination';
 import { getMyConversations, changeMessageStatus } from '../../../requester';
 
 export default class MessagesPage extends React.Component {
@@ -11,15 +12,18 @@ export default class MessagesPage extends React.Component {
 
         this.state = {
             loading: true,
-            messages: []
+            messages: [],
+            currentPage: 1,
+            totalElements: 0,
         }
 
         this.changeMessageFlag = this.changeMessageFlag.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
     }
 
     componentDidMount() {
-        getMyConversations().then(data => {
-            this.setState({ messages: data.content, loading: false });
+        getMyConversations('?page=0').then(data => {
+            this.setState({ messages: data.content, loading: false, totalElements: data.totalElements });
         })
     }
 
@@ -31,7 +35,7 @@ export default class MessagesPage extends React.Component {
 
         changeMessageStatus(conversationObj).then(res => {
             let messages = this.state.messages;
-            
+
             let message = messages.find(x => x.id === id);
             let messageIndex = messages.findIndex(x => x.id === id);
 
@@ -44,7 +48,32 @@ export default class MessagesPage extends React.Component {
         })
     }
 
+    onPageChange = (page) => {
+        this.setState({
+            currentPage: page,
+            loading: true
+        })
+
+        getMyConversations(`?page=${page - 1}`).then(data => {
+            this.setState({
+                messages: data.content,
+                totalElements: data.totalElements,
+                loading: false
+            })
+        });
+    }
+
     render() {
+        const textItemRender = (current, type, element) => {
+            if (type === 'prev') {
+                return <div className="rc-prev">&lsaquo;</div>;
+            }
+            if (type === 'next') {
+                return <div className="rc-next">&rsaquo;</div>;
+            }
+            return element;
+        };
+
         if (this.state.loading) {
             return <div className="loader"></div>
         }
@@ -57,6 +86,9 @@ export default class MessagesPage extends React.Component {
                         {this.state.messages.map((message, i) => {
                             return <MessagesItem message={message} changeMessageFlag={this.changeMessageFlag} key={i} />
                         })}
+                    </div>
+                    <div className="pagination-box">
+                        {this.state.totalElements !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalElements} />}
                     </div>
                 </section>
                 <Footer />

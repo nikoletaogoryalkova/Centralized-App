@@ -38,14 +38,14 @@ export default class MyListingsPage extends React.Component {
     onPageChange = (page) => {
         this.setState({
             currentPage: page,
-            loadingListing: true
+            loading: true
         })
 
         getMyListings(`?page=${page - 1}`).then(data => {
             this.setState({
                 listings: data.content,
                 totalListings: data.totalElements,
-                loadingListing: false
+                loading: false
             })
         });
     }
@@ -78,7 +78,7 @@ export default class MyListingsPage extends React.Component {
                         })}
 
                         <div className="pagination-box">
-                            {this.state.totalListings !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalElements} />}
+                            {this.state.totalListings !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalListings} />}
                         </div>
 
                         <div className="my-listings">
