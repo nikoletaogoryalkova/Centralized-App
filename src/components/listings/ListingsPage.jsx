@@ -8,10 +8,9 @@ import Listing from './Listing';
 import Pagination from 'rc-pagination';
 import Footer from '../Footer';
 
-import { getListingsByFilter } from '../../requester';
+import { getListingsByFilter, getLocRate } from '../../requester';
 
 class ListingsPage extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -19,7 +18,8 @@ class ListingsPage extends React.Component {
             listings: null,
             listingLoading: true,
             currentPage: 1,
-            totalItems: 0
+            totalItems: 0,
+            locRate: null
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -30,8 +30,17 @@ class ListingsPage extends React.Component {
         if (this.props.location.search) {
             let searchTerms = this.getSearchTerms();
             getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-                this.setState({ listings: data.content, listingLoading: false, totalItems: data.totalElements })
+                getLocRate().then((loc) => {
+                    this.setState({
+                        listings: data.content,
+                        totalItems: data.totalElements,
+                        locRate: loc[0].price_eur,
+                        listingLoading: false
+                    });
+                })
             });
+
+
         }
         else {
             this.props.history.push("/");
@@ -48,8 +57,8 @@ class ListingsPage extends React.Component {
         e.preventDefault();
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms).then(data => {
-            this.setState({ 
-                listings: data.content, 
+            this.setState({
+                listings: data.content,
                 listingLoading: false,
                 totalItems: data.totalElements,
             })
@@ -107,23 +116,29 @@ class ListingsPage extends React.Component {
     onPageChange = (page) => {
         this.setState({
             currentPage: page,
+            listingLoading: true
         })
 
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
-            this.setState({ 
-                listings: data.content, 
-                listingLoading: false, 
-                totalItems: data.totalElements 
+            getLocRate().then((loc) => {
+                this.setState({
+                    listings: data.content,
+                    listingLoading: false,
+                    totalItems: data.totalElements,
+                    locRate: loc[0].price_eur
+                });
             })
         });
     }
 
     componentWillUnmount() {
         this.setState({
-            listings: null, listingLoading: true,
+            listings: null,
+            listingLoading: true,
             currentPage: 1,
-            totalItems: 0
+            totalItems: 0,
+            locRate: null
         })
     }
 
@@ -148,7 +163,7 @@ class ListingsPage extends React.Component {
                                 <div className="list-hotel-box" id="list-hotel-box">
 
                                     {hasListings ? this.state.listings.map((item, i) => {
-                                        return <Listing key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
+                                        return <Listing locRate={this.state.locRate} key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
                                     }) : <div className="text-center"><h3>No results</h3></div>}
 
                                     {hasListings &&
