@@ -201,9 +201,7 @@ export async function createListing(listingObj, captchaToken) {
 
 export async function editListing(id, listingObj, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/edit`, RequestMethod.POST, listingObj, captchaToken).then(res => {
-        return {
-            success: ("" + res.response.status).indexOf("20") === 0
-        };
+        return res;
     });
 }
 

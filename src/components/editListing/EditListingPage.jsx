@@ -399,7 +399,14 @@ class EditListingPage extends React.Component {
                 
             } else {
                 this.setState({loading: false});
-                NotificationManager.error('Something went wrong!', 'Create new listing');
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
             }
         });
     }

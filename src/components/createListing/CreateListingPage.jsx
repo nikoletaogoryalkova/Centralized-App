@@ -321,7 +321,6 @@ class CreateListingPage extends React.Component {
             }
             else {
                 this.setState({loading: false});
-                console.log(res.response)
                 res.response.then(res => {
                     const errors = res.errors;
                     for (let key in errors) {
