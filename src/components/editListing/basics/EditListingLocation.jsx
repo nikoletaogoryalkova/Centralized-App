@@ -62,7 +62,7 @@ export default class EditListingLocation extends React.Component {
     }
 
     render() {
-        const { country, countries, city, cities, street } = this.props.values;
+        const { listingId, country, countries, city, cities, street } = this.props.values;
         const renderCountries = countries.map((item, i) => {
             return { value: item.id, label: item.name }
         });
@@ -77,7 +77,7 @@ export default class EditListingLocation extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingBasicsAside />
+                                <EditListingBasicsAside listingId={listingId} />
                             </div>
                             <div className="col-md-9">
                                 <div className="form-group">
@@ -141,12 +141,12 @@ export default class EditListingLocation extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/safetyamenities" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/safetyamenities/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         
                         {this.validateInput() 
-                            ? <NavLink to="/profile/listings/edit/description" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            ? <NavLink to={`/profile/listings/edit/description/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

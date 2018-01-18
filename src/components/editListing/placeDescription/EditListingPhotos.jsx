@@ -39,6 +39,7 @@ export default class EditListingPhotos extends React.Component {
     }
 
     render() {
+        const { listingId } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='66%' />
@@ -47,7 +48,7 @@ export default class EditListingPhotos extends React.Component {
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingPlaceDescriptionAside />
+                                <EditListingPlaceDescriptionAside listingId={listingId} />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
                                 <h2>Upload photos of your place</h2>
@@ -84,11 +85,11 @@ export default class EditListingPhotos extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/description" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/description/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         {this.validateInput() 
-                            ? <NavLink to="/profile/listings/edit/houserules" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            ? <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

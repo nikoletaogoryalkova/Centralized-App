@@ -96,6 +96,7 @@ class EditListingPage extends React.Component {
     componentWillMount() {
         const id = this.props.match.params.id;
         console.log(id)
+        console.log(window.location)
         getMyListingById(this.props.match.params.id).then(data => {
             console.log(data);
             this.setState({
@@ -448,57 +449,56 @@ class EditListingPage extends React.Component {
     }
 
     render() {
+        console.log(window.location)
         return (
             <div>
                 <NotificationContainer />
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
-                <Redirect exact path="/profile/listings/edit/:id" to="/profile/listings/edit/landing" />
+                <Redirect exact path="/profile/listings/edit/:id" to={`/profile/listings/edit/landing/${this.state.listingId}`} />
                 <Switch>
-                    <Route exact path="/profile/listings/edit/landing" render={() => <EditListingLandingPage
+                    <Route exact path={`/profile/listings/edit/landing/${this.state.listingId}`} render={() => <EditListingLandingPage
                         values={this.state}
                         onChange={this.onChange} />} />
-                    <Route exact path="/profile/listings/edit/placetype" render={() => <EditListingPlaceType
+                    <Route exact path={`/profile/listings/edit/placetype/${this.state.listingId}`} render={() => <EditListingPlaceType
                         values={this.state}
                         toggleCheckbox={this.toggleCheckbox}
                         onChange={this.onChange} />} />
-                    <Route exact path="/profile/listings/edit/accommodation" render={() => <EditListingAccommodation
+                    <Route exact path={`/profile/listings/edit/accommodation/${this.state.listingId}`} render={() => <EditListingAccommodation
                         values={this.state}
                         updateCounter={this.updateCounter}
                         updateBedrooms={this.updateBedrooms}
                         updateBedCount={this.updateBedCount} />} />
-                    <Route exact path="/profile/listings/edit/facilities" render={() => <EditListingFacilities
+                    <Route exact path={`/profile/listings/edit/facilities/${this.state.listingId}`} render={() => <EditListingFacilities
                         values={this.state}
                         toggle={this.toggleFacility} />} />
-                    <Route exact path="/profile/listings/edit/safetyamenities" render={() => <EditListingSafetyAmenities
+                    <Route exact path={`/profile/listings/edit/safetyamenities/${this.state.listingId}`} render={() => <EditListingSafetyAmenities
                         values={this.state}
                         toggle={this.toggleFacility} />} />
-                    <Route exact path="/profile/listings/edit/location" render={() => <EditListingLocation
+                    <Route exact path={`/profile/listings/edit/location/${this.state.listingId}`} render={() => <EditListingLocation
                         values={this.state}
                         onChange={this.onChange}
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}
                         updateCities={this.updateCities} />} />
-                    <Route exact path="/profile/listings/edit/title" render={() => <EditListingTitle
+                    <Route exact path={`/profile/listings/edit/title/${this.state.listingId}`} render={() => <EditListingTitle
                         values={this.state}
                         updateTextbox={this.onChange} />} />
-                    <Route exact path="/profile/listings/edit/description" render={() => <EditListingDescription
+                    <Route exact path={`/profile/listings/edit/description/${this.state.listingId}`} render={() => <EditListingDescription
                         values={this.state}
                         onChange={this.onChange} />} />
-                    <Route exact path="/profile/listings/edit/photos" render={() => <EditListingPhotos
+                    <Route exact path={`/profile/listings/edit/photos/${this.state.listingId}`} render={() => <EditListingPhotos
                         values={this.state}
                         onImageDrop={this.onImageDrop}
                         removePhoto={this.removePhoto} />} />
-                    <Route exact path="/profile/listings/edit/houserules" render={() => <EditListingHouseRules
+                    <Route exact path={`/profile/listings/edit/houserules/${this.state.listingId}`} render={() => <EditListingHouseRules
                         values={this.state}
                         onChange={this.onChange}
                         addRule={this.addHouseRule}
                         removeRule={this.removeHouseRule} />} />
-                    <Route exact path="/profile/listings/edit/checking" render={() => <EditListingChecking
+                    <Route exact path={`/profile/listings/edit/checking/${this.state.listingId}`} render={() => <EditListingChecking
                         values={this.state}
                         updateDropdown={this.onChange} />} />
-                    {/* <Route exact path="/listings/create/cancellation" render={() =>
-                        <EditListingCancellation />} /> */}
-                    <Route exact path="/profile/listings/edit/price" render={() => <EditListingPrice
+                    <Route exact path={`/profile/listings/edit/price/${this.state.listingId}`} render={() => <EditListingPrice
                         values={this.state}
                         onChange={this.onChange}
                         createListing={this.createListing} />} />

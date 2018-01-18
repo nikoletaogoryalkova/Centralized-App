@@ -8,7 +8,7 @@ import { Config } from '../../../config';
 
 export default class EditListingPlaceType extends React.Component {
     render() {
-        const { type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
+        const { listingId, type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='33%' />
@@ -17,7 +17,7 @@ export default class EditListingPlaceType extends React.Component {
                         <div className="listings create">
 
                             <div className="col-md-3">
-                                <EditListingBasicsAside />
+                                <EditListingBasicsAside listingId={listingId} />
                             </div>
                             <div className="reservation-hotel-review-room col-md-8">
                                 <h2>What kind of place do you want to list?</h2>
@@ -141,10 +141,10 @@ export default class EditListingPlaceType extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/landing" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/landing/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/accommodation" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/accommodation/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
             </div>
