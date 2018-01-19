@@ -104,7 +104,18 @@ class PropertyInfo extends React.Component {
                             <div className="clearfix" />
                         </div>
                     </div>
-                    <PropertyReservation locRate={this.props.locRate} showLoginModal={this.props.showLoginModal} isLogged={this.props.isLogged} userInfo={this.props.userInfo} calendar={calendar} nights={this.props.nights} onApply={this.props.onApply} startDate={this.props.startDate} endDate={this.props.endDate} listing={this.props.data} currency={this.props.currency} currencySign={this.props.currencySign} />
+                    <PropertyReservation locRate={this.props.locRate}
+                                         showLoginModal={this.props.showLoginModal}
+                                         isLogged={this.props.isLogged}
+                                         userInfo={this.props.userInfo}
+                                         calendar={calendar}
+                                         nights={this.props.nights}
+                                         onApply={this.props.onApply}
+                                         startDate={this.props.startDate}
+                                         endDate={this.props.endDate}
+                                         listing={this.props.data}
+                                         currency={this.props.currency}
+                                         currencySign={this.props.currencySign} />
                     <div className="clearfix"></div>
                 </div>
             </section>

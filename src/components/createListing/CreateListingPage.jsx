@@ -363,6 +363,9 @@ class CreateListingPage extends React.Component {
                     console.error(err);
                 }
                 if (response.body.secure_url !== '') {
+                    console.log(response.body.original);
+                    console.log(response.body.thumbnail);
+
                     this.setState(previousState => ({
                         uploadedFilesUrls: [...previousState.uploadedFilesUrls, response.body.original],
                         uploadedFilesThumbUrls: [...previousState.uploadedFilesThumbUrls, response.body.thumbnail]
