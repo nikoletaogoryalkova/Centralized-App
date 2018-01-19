@@ -17,7 +17,7 @@ class MessagesItem extends React.Component {
 
     render() {
         return (
-            <div className="message-box">
+            <div className="message-box" onClick={this.handleClick}>
                 <div className="col-md-1">
                     <a href="#" onClick={() => this.props.changeMessageFlag(this.props.message.id, this.props.message.unread)}>
                         {this.props.message.unread === "true" ? <img src={Config.getValue("basePath") + "images/icon-star-message.png"} alt="read-flag" /> : <img src={Config.getValue("basePath") + "images/icon-star-filter-g.png"} alt="unread-flag" />}
@@ -29,7 +29,7 @@ class MessagesItem extends React.Component {
                 <div className="col-md-2">
                     <h4 className="bold">{this.props.message.userInfo.fullName}</h4>
                 </div>
-                <div className="col-md-7 message-content" onClick={this.handleClick}>
+                <div className="col-md-7 message-content">
                     <p>{this.props.message.lastMessage && this.props.message.lastMessage.message}</p>
                 </div>
                 <div className="col-md-2">
