@@ -95,8 +95,6 @@ class EditListingPage extends React.Component {
 
     componentWillMount() {
         const id = this.props.match.params.id;
-        console.log(id)
-        console.log(window.location)
         getMyListingById(this.props.match.params.id).then(data => {
             console.log(data);
             this.setState({
@@ -456,7 +454,6 @@ class EditListingPage extends React.Component {
     }
 
     render() {
-        console.log(window.location)
         return (
             <div>
                 <NotificationContainer />
