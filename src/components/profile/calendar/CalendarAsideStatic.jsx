@@ -13,8 +13,23 @@ export default class CalendarAsideStatic extends React.Component {
                 <h2>Adjust Your Prices</h2>
                 <img src={Config.getValue("basePath") + "images/price-statistic.png"} alt="price-statistic" />
                 <p>
-                    Adjust your price for the night can help you make more money over time.
+                    Click on specific dates on the calendar to set custom rates and increase your revenue.
                 </p>
+                <div>
+                    <form>
+                        <div className="form-group">
+                            <h3 className="bold">Default Daily Price</h3>
+                            <div className="input-group">
+                                <span className="input-group-addon bold">{this.props.currencySign}</span>
+                                <input type="number" className="form-control" name="defaultDailyPrice" onChange={this.props.onChange} value={this.props.defaultDailyPrice} />
+                            </div>
+                        </div>
+
+                        <div className="col-md-12 controls">
+                            <button className="btn btn-primary btn-next bold" type="submit" onClick={this.props.updateDailyPrice}>Save</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     }
