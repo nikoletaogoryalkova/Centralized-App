@@ -167,6 +167,12 @@ export async function getLocRate() {
     });
 }
 
+export async function getLocRateInUserSelectedCurrency(userSelectedCurrency) {
+    return fetch(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${userSelectedCurrency}`).then(res => {
+        return res.json();
+    });
+}
+
 export async function getCurrentLoggedInUserInfo() {
     return sendRequest(`${host}users/me/edit`, RequestMethod.GET).then(res => {
         return res.response.json();

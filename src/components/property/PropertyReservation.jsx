@@ -6,6 +6,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 import { parse } from 'query-string';
 import { requestBooking } from '../../requester';
+import moment from 'moment';
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -70,7 +71,7 @@ class PropertyReservation extends React.Component {
                     res.body.then(data => {
                         if (data.success) {
                             this.props.history.push("/profile/trips?id=" + data.id);
-                        }else {
+                        } else {
                             this.setState({ error: data.message });
                         }
                     })
@@ -93,14 +94,28 @@ class PropertyReservation extends React.Component {
 
             return false;
         };
-        
-        const cleaningFee = this.props.nights > 0 ? (this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.cleaningFee, 10) : parseInt(this.props.listing.cleaningFees[this.props.currency], 10)) : 0;
-        const cleaningFeeEur = this.props.nights > 0 ? parseInt(this.props.listing.cleaningFees["EUR"], 10) : 0;
-        const cleaningFeeLoc = Number((cleaningFeeEur / this.props.locRate).toFixed(4));
-        const listingPrice = (this.props.listing.prices) && this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed() : parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);        
 
-        const listingPriceEur = this.props.listing.prices && parseInt(this.props.listing.prices["EUR"], 10).toFixed(2);
-        const listingPriceLoc = Number((listingPriceEur / this.props.locRate).toFixed(4));
+        const cleaningFee = this.props.nights > 0 ? (this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.cleaningFee, 10) : parseInt(this.props.listing.cleaningFees[this.props.currency], 10)) : 0;
+        const cleaningFeeLoc = Number((cleaningFee / this.props.locRate).toFixed(4));
+
+        let listingPriceForPeriod = 0;
+        let startDate = this.props.startDate;
+        let endDate = this.props.endDate;
+        if (this.props.calendar === null || this.props.calendar === undefined) {
+            return <div className="loader"></div>
+        }
+        for (let i = 0; i <= this.props.calendar.length - 1; i++) {
+            let dayObj = this.props.calendar[i];
+            if (startDate.startOf('day') <= moment(dayObj.date, "DD/MM/YYYY").startOf('day') && endDate.startOf('day') > moment(dayObj.date, "DD/MM/YYYY").startOf('day') && dayObj.available) {
+                listingPriceForPeriod += dayObj.price;
+            }
+
+        }
+        const listingPrice = listingPriceForPeriod;
+
+        const listingPriceLoc = Number((listingPrice / this.props.locRate).toFixed(4));
+        console.log(listingPrice);
+        console.log(this.props.locRate);
         const totalLoc = (this.props.nights * listingPriceLoc + cleaningFeeLoc).toFixed(4);
         return (
             <div className="hotel-chekin">
@@ -110,7 +125,7 @@ class PropertyReservation extends React.Component {
                     }
                     {!this.state.sending &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
-                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc.toFixed(4)} LOC)</span> /per night</p>
+                            {/* <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc.toFixed(4)} LOC)</span> /per night</p> */}
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
@@ -127,7 +142,7 @@ class PropertyReservation extends React.Component {
                             </div>
 
                             {/*<div className="dropdown select-person">*/}
-                                {/*<input onChange={this.onChange} value={this.state.email} id="reservation-email" type="email" className="form-control" name="email" required placeholder="E-mail" />*/}
+                            {/*<input onChange={this.onChange} value={this.state.email} id="reservation-email" type="email" className="form-control" name="email" required placeholder="E-mail" />*/}
                             {/*</div>*/}
 
                             <div className="dropdown select-person">
@@ -146,7 +161,7 @@ class PropertyReservation extends React.Component {
                                 <p style={{ color: 'white' }}>Cleaning Fee: {this.props.currencySign}{cleaningFee.toFixed(2)} ({cleaningFeeLoc} LOC)</p>
                             </div>
 
-                            <div className="hotel-second-price">total <span className="total-price">{this.props.currencySign}{((this.props.nights * listingPrice) + cleaningFee).toFixed(2)}</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span className="total-price">{this.props.currencySign}{(listingPrice + cleaningFee).toFixed(2)}</span> / for&nbsp;
                                 <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div>
@@ -159,18 +174,18 @@ class PropertyReservation extends React.Component {
 
                             {this.props.isLogged &&
                                 <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary"
-                                        id="reservation-btn">Request Booking in LOC or FIAT</button>
+                                    id="reservation-btn">Request Booking in LOC or FIAT</button>
                             }
                             {this.props.isLogged &&
                                 <input required type="checkbox" name="agree-terms" id="agree-terms"
-                                       className="checkbox tick"/>
+                                    className="checkbox tick" />
                             }
                             {this.props.isLogged &&
-                                <label htmlFor="agree-terms" style={{marginTop: 10 + 'px', color: '#FFFFFF'}}>I agree to the
+                                <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the
                                     <a>Terms &amp; Conditions</a></label>
                             }
                             {this.props.isLogged === false &&
-                                <div className="hotel-second-price" style={{textAlign: "center"}}>
+                                <div className="hotel-second-price" style={{ textAlign: "center" }}>
                                     <span className="total-price">Sign-in to reserve this awesome property.</span>
                                 </div>
                             }
