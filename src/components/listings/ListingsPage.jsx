@@ -55,6 +55,11 @@ class ListingsPage extends React.Component {
 
     handleSearch(e) {
         e.preventDefault();
+        this.setState({
+            listings: null,
+            listingLoading: true,
+        });
+
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms).then(data => {
             this.setState({
@@ -143,12 +148,24 @@ class ListingsPage extends React.Component {
     }
 
     render() {
-        if (this.state.listingLoading) {
-            return <div className="loader"></div>;
+        const listings = this.state.listings;
+        const hasLoadedListings = listings ? true : false;
+        const hasListings = hasLoadedListings && listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
+
+        let renderListings;
+        let renderPagination;
+        if (!hasLoadedListings) {
+            renderListings = <div className="loader"></div>;
+        } else if (!hasListings) {
+            renderListings = <div className="text-center"><h3>No results</h3></div>
+        } else {
+            renderListings = listings.map((item, i) => {
+                return <Listing locRate={this.state.locRate} key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
+            });
+
+            renderPagination = <div className="pagination-box">{this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />} </div>
         }
 
-        let listings = this.state.listings;
-        let hasListings = listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
         return (
             <div>
                 <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
@@ -161,16 +178,8 @@ class ListingsPage extends React.Component {
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
-
-                                    {hasListings ? this.state.listings.map((item, i) => {
-                                        return <Listing locRate={this.state.locRate} key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
-                                    }) : <div className="text-center"><h3>No results</h3></div>}
-
-                                    {hasListings &&
-                                        <div className="pagination-box">
-                                            {this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />}
-                                        </div>
-                                    }
+                                    {renderListings}
+                                    {renderPagination}
                                 </div>
                             </div>
                         </div>

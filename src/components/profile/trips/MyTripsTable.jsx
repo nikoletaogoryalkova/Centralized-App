@@ -1,6 +1,8 @@
 import React from 'react';
 import { NotificationContainer } from 'react-notifications';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Link } from 'react-router-dom';
+
 import moment from 'moment';
 
 import CancelTripModal from './modals/CancelTripModal';
@@ -83,7 +85,7 @@ export default class MyTripsTable extends React.Component {
                                     {trip.hostEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${trip.hostEmail}`}>Send Message</a></div> : ''}
                                 </div>
                                 <div className="col-md-2">
-                                    <div>{trip.listingName}</div>
+                                    <div><Link to={`/listings/${trip.listingId}`}><u>{trip.listingName}</u></Link></div>
                                 </div>
                                 <div className="col-md-3">
                                     <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
@@ -100,7 +102,7 @@ export default class MyTripsTable extends React.Component {
                             <div className="reservation-box-pending col-md-12">
                                 {trip.hostLocAddress && !trip.accepted ?
                                     <div>
-                                        Please pay {trip.price} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(0, 7)}</a>
+                                        Please pay {trip.locPrice} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(0, 7)}</a>
                                         <CopyToClipboard text={trip.hostLocAddress}>
                                             <button><i class="fa fa-link" aria-hidden="true" title="Copy LOC Address"></i></button>
                                         </CopyToClipboard>
