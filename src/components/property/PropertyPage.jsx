@@ -14,7 +14,7 @@ import {
     getLocRateInUserSelectedCurrency
 } from '../../requester';
 import { parse } from 'query-string';
-import {Config} from "../../config";
+import { Config } from "../../config";
 
 class PropertyPage extends React.Component {
     constructor(props) {
@@ -45,7 +45,8 @@ class PropertyPage extends React.Component {
             loaded: false,
             isLogged: false,
             userInfo: null,
-            locRate: null
+            locRate: null,
+            loading: true
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -56,7 +57,13 @@ class PropertyPage extends React.Component {
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
         this.initializeCalendar = this.initializeCalendar.bind(this);
+        this.getLocRate = this.getLocRate.bind(this);
     };
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loading: true });
+        this.getLocRate(nextProps.currency);
+    }
 
     componentDidMount() {
         this.initializeCalendar();
@@ -65,22 +72,24 @@ class PropertyPage extends React.Component {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
 
-        getLocRateInUserSelectedCurrency(this.props.currency).then((data) => {
-            this.setState({locRate: data[0][`price_${this.props.currency.toLowerCase()}`]});
+        this.getLocRate(this.props.currency);
+    }
+
+    getLocRate(currency) {
+        getLocRateInUserSelectedCurrency(currency).then((data) => {
+            this.setState({ locRate: data[0][`price_${currency.toLowerCase()}`] });
             if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
                 getCurrentLoggedInUserInfo()
                     .then(res => {
                         this.setState({
                             loaded: true,
                             isLogged: true,
-                            userInfo: res
+                            userInfo: res,
+                            loading: false
                         });
-                    })
-            } else {
-                this.setState({loaded: true});
+                    });
             }
         });
-
     }
 
     handleApply(event, picker) {
@@ -267,18 +276,19 @@ class PropertyPage extends React.Component {
                     </div>
                 </nav>
                 <PropertyInfo allEvents={allEvents}
-                              calendar={this.state.calendar}
-                              nights={this.state.nights}
-                              onApply={this.handleApply}
-                              startDate={this.state.startDate}
-                              endDate={this.state.endDate}
-                              data={this.state.data}
-                              currency={this.props.currency}
-                              currencySign={this.props.currencySign}
-                              prices={this.state.prices}
-                              isLogged={this.state.isLogged}
-                              userInfo={this.state.userInfo}
-                              locRate={this.state.locRate} />
+                    calendar={this.state.calendar}
+                    nights={this.state.nights}
+                    onApply={this.handleApply}
+                    startDate={this.state.startDate}
+                    endDate={this.state.endDate}
+                    data={this.state.data}
+                    currency={this.props.currency}
+                    currencySign={this.props.currencySign}
+                    prices={this.state.prices}
+                    isLogged={this.state.isLogged}
+                    userInfo={this.state.userInfo}
+                    locRate={this.state.locRate}
+                    loading={this.state.loading} />
                 <Footer />
             </div>
         );

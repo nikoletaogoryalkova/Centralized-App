@@ -120,10 +120,10 @@ class PropertyReservation extends React.Component {
         return (
             <div className="hotel-chekin">
                 <div className="hotel-chekin-box">
-                    {this.state.sending &&
+                    {(this.state.sending || this.props.loading) &&
                         <div className="loader"></div>
                     }
-                    {!this.state.sending &&
+                    {(!this.state.sending && !this.props.loading) &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
                             {/* <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc.toFixed(4)} LOC)</span> /per night</p> */}
                             {this.state.error !== '' &&
