@@ -8,7 +8,7 @@ class Listing extends React.Component {
     render() {
         const { street, city, country } = this.props.listing;
         const listingPrice = (this.props.listing.prices) && this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed() : parseInt(this.props.listing.prices[this.props.currency], 10).toFixed(2);        
-        const listingPriceEur = this.props.listing.currencyCode === "EUR" ? this.props.defaultDailyPrice : this.props.listing.prices["EUR"];
+        const listingPriceEur = this.props.listing.currencyCode === "EUR" ? this.props.listing.defaultDailyPrice : this.props.listing.prices["EUR"];
         return (
             <div className="list-hotel">
                 <div className="list-image">

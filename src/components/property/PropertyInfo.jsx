@@ -115,7 +115,8 @@ class PropertyInfo extends React.Component {
                                          endDate={this.props.endDate}
                                          listing={this.props.data}
                                          currency={this.props.currency}
-                                         currencySign={this.props.currencySign} />
+                                         currencySign={this.props.currencySign}
+                                         loading={this.props.loading} />
                     <div className="clearfix"></div>
                 </div>
             </section>
