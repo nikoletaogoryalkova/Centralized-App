@@ -42,7 +42,7 @@ export default class CreateListingAccommodation extends React.Component {
 
         return (
             <div>
-                <NavCreateListing progress='33%' />
+                <NavCreateListing progress='66%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">

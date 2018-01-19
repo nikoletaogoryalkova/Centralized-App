@@ -11,7 +11,7 @@ import moment from 'moment';
 
 import {
     getPropertyById, getCalendarByListingIdAndDateRange, getCurrentLoggedInUserInfo,
-    getLocRate
+    getLocRateInUserSelectedCurrency
 } from '../../requester';
 import { parse } from 'query-string';
 import {Config} from "../../config";
@@ -65,12 +65,11 @@ class PropertyPage extends React.Component {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
 
-        getLocRate().then((data) => {
-            this.setState({locRate: data[0].price_eur});
+        getLocRateInUserSelectedCurrency(this.props.currency).then((data) => {
+            this.setState({locRate: data[0][`price_${this.props.currency.toLowerCase()}`]});
             if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
                 getCurrentLoggedInUserInfo()
                     .then(res => {
-                        console.log(res);
                         this.setState({
                             loaded: true,
                             isLogged: true,

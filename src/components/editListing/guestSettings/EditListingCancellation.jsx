@@ -1,13 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
+import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
+import NavEditListing from '../NavEditListing';
 
-export default class CreateListingCancellation extends React.Component {
+export default class EditListingCancellation extends React.Component {
     render() {
         return (
             <div>
-                <CreateListingGuestSettingsAside />
+                <NavEditListing progress='100%' />
+                <EditListingGuestSettingsAside listingId={listingId} />
                 <div className="col-md-9">
                     <div className="form-group">
                         <h2>When your guest can cancel their reservation?</h2>

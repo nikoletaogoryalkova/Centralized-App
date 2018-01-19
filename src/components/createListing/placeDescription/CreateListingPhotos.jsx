@@ -1,7 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { NotificationManager, NotificationContainer } from 'react-notifications';
 
 import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
+import NavCreateListing from '../NavCreateListing';
 
 import Dropzone from 'react-dropzone';
 
@@ -11,19 +13,36 @@ export default class CreateListingPhotos extends React.Component {
     constructor(props){
         super(props);
 
-        this.state = {
-            error: null
+        this.onDropRejected = this.onDropRejected.bind(this);        
+        this.validateInput = this.validateInput.bind(this);
+        this.showErrors = this.showErrors.bind(this);
+    }
+
+    onDropRejected() {
+        NotificationManager.warning('Maximum file upload size is 10MB. Supported media formats are jpg, jpeg, png');
+    }
+
+    validateInput() {
+        const { uploadedFilesUrls } = this.props.values;
+        if (uploadedFilesUrls.length < 1) {
+            return false;
         }
 
-        this.onDropRejected = this.onDropRejected.bind(this);
+        return true;
     }
-    onDropRejected() {
-        this.setState({error: 'Maximum file upload size is 10MB. Supported media formats are jpg, jpeg, png'})
+
+    showErrors() {
+        const { uploadedFilesUrls } = this.props.values;
+        if (uploadedFilesUrls.length < 6) {
+            NotificationManager.warning("At least 1 picture is required");
+        }
     }
 
     render() {
         return (
             <div>
+                <NavCreateListing progress='66%' />
+                <NotificationContainer />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
@@ -57,7 +76,6 @@ export default class CreateListingPhotos extends React.Component {
                                         )
                                     }
                                 </div>
-                                {this.state.error ? <div className="error">{this.state.error}</div> : null}
                             </div>
                         </div>
                     </div>
@@ -69,7 +87,10 @@ export default class CreateListingPhotos extends React.Component {
                         <NavLink to="/profile/listings/create/description" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/houserules" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        {this.validateInput() 
+                            ? <NavLink to="/profile/listings/create/houserules" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
+                        }
                     </div>
                 </div>
             </div>

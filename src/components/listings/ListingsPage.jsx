@@ -8,10 +8,9 @@ import Listing from './Listing';
 import Pagination from 'rc-pagination';
 import Footer from '../Footer';
 
-import { getListingsByFilter } from '../../requester';
+import { getListingsByFilter, getLocRate } from '../../requester';
 
 class ListingsPage extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -19,7 +18,8 @@ class ListingsPage extends React.Component {
             listings: null,
             listingLoading: true,
             currentPage: 1,
-            totalItems: 0
+            totalItems: 0,
+            locRate: null
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -30,8 +30,17 @@ class ListingsPage extends React.Component {
         if (this.props.location.search) {
             let searchTerms = this.getSearchTerms();
             getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-                this.setState({ listings: data.content, listingLoading: false, totalItems: data.totalElements })
+                getLocRate().then((loc) => {
+                    this.setState({
+                        listings: data.content,
+                        totalItems: data.totalElements,
+                        locRate: loc[0].price_eur,
+                        listingLoading: false
+                    });
+                })
             });
+
+
         }
         else {
             this.props.history.push("/");
@@ -46,10 +55,15 @@ class ListingsPage extends React.Component {
 
     handleSearch(e) {
         e.preventDefault();
+        this.setState({
+            listings: null,
+            listingLoading: true,
+        });
+
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms).then(data => {
-            this.setState({ 
-                listings: data.content, 
+            this.setState({
+                listings: data.content,
                 listingLoading: false,
                 totalItems: data.totalElements,
             })
@@ -107,33 +121,51 @@ class ListingsPage extends React.Component {
     onPageChange = (page) => {
         this.setState({
             currentPage: page,
+            listingLoading: true
         })
 
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
-            this.setState({ 
-                listings: data.content, 
-                listingLoading: false, 
-                totalItems: data.totalElements 
+            getLocRate().then((loc) => {
+                this.setState({
+                    listings: data.content,
+                    listingLoading: false,
+                    totalItems: data.totalElements,
+                    locRate: loc[0].price_eur
+                });
             })
         });
     }
 
     componentWillUnmount() {
         this.setState({
-            listings: null, listingLoading: true,
+            listings: null,
+            listingLoading: true,
             currentPage: 1,
-            totalItems: 0
+            totalItems: 0,
+            locRate: null
         })
     }
 
     render() {
-        if (this.state.listingLoading) {
-            return <div className="loader"></div>;
+        const listings = this.state.listings;
+        const hasLoadedListings = listings ? true : false;
+        const hasListings = hasLoadedListings && listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
+
+        let renderListings;
+        let renderPagination;
+        if (!hasLoadedListings) {
+            renderListings = <div className="loader"></div>;
+        } else if (!hasListings) {
+            renderListings = <div className="text-center"><h3>No results</h3></div>
+        } else {
+            renderListings = listings.map((item, i) => {
+                return <Listing locRate={this.state.locRate} key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
+            });
+
+            renderPagination = <div className="pagination-box">{this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />} </div>
         }
 
-        let listings = this.state.listings;
-        let hasListings = listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
         return (
             <div>
                 <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
@@ -146,16 +178,8 @@ class ListingsPage extends React.Component {
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
-
-                                    {hasListings ? this.state.listings.map((item, i) => {
-                                        return <Listing key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
-                                    }) : <div className="text-center"><h3>No results</h3></div>}
-
-                                    {hasListings &&
-                                        <div className="pagination-box">
-                                            {this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />}
-                                        </div>
-                                    }
+                                    {renderListings}
+                                    {renderPagination}
                                 </div>
                             </div>
                         </div>

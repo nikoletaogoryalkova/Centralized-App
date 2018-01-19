@@ -1,36 +1,23 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import CreateListingBasicsAside from './CreateListingBasicsAside';
+import EditListingBasicsAside from './EditListingBasicsAside';
+import NavEditListing from '../NavEditListing';
 
 import { Config } from '../../../config';
-import { getPropertyTypes } from '../../../requester';
 
-export default class CreateListingPlaceType extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            propertyTypes: [],
-        }
-    }
-
-    componentDidMount() {
-        getPropertyTypes().then(data => {
-            this.setState({ propertyTypes: data.content });
-        });
-    }
-
+export default class EditListingPlaceType extends React.Component {
     render() {
-        const { type, propertyType, roomType, dedicated_space, propertySize } = this.props.values;
+        const { listingId, type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
         return (
             <div>
+                <NavEditListing progress='33%' />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
 
                             <div className="col-md-3">
-                                <CreateListingBasicsAside />
+                                <EditListingBasicsAside listingId={listingId} />
                             </div>
                             <div className="reservation-hotel-review-room col-md-8">
                                 <h2>What kind of place do you want to list?</h2>
@@ -62,7 +49,7 @@ export default class CreateListingPlaceType extends React.Component {
                                                 required="required"
                                                 id="property-type">
                                                 <option disabled value="">Type</option>
-                                                {this.state.propertyTypes.map((item, i) => {
+                                                {propertyTypes.map((item, i) => {
                                                     return <option key={i} value={item.id}>{item.name}</option>
                                                 })}
                                             </select>
@@ -117,15 +104,16 @@ export default class CreateListingPlaceType extends React.Component {
                                     </div>
 
                                     <div className="col-md-6">
+                                        <br/>
                                         <div className="form-group">
                                             <label>Is this set up as dedicated guest space?</label>
                                             <br />
 
-                                            <input type="radio" onChange={(e) => this.props.onChange(e)} name="dedicated_space" id="dedicated-space-yes" className="radio-input-group" checked={dedicated_space === "true"} value="true" />
+                                            <input type="radio" onChange={(e) => this.props.onChange(e)} name="dedicatedSpace" id="dedicated-space-yes" className="radio-input-group" checked={dedicatedSpace === "true"} value="true" />
                                             <label htmlFor="dedicated-space-yes">Yes, it's primarily set up for guests</label>
                                             <br />
 
-                                            <input type="radio" onChange={(e) => this.props.onChange(e)} name="dedicated_space" id="dedicated-space-no" className="radio-input-group" checked={dedicated_space === "false"} value="false" />
+                                            <input type="radio" onChange={(e) => this.props.onChange(e)} name="dedicatedSpace" id="dedicated-space-no" className="radio-input-group" checked={dedicatedSpace === "false"} value="false" />
                                             <label htmlFor="dedicated-space-no">No, I keep my personal belongings here</label>
                                         </div>
                                     </div>
@@ -153,13 +141,12 @@ export default class CreateListingPlaceType extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to="/profile/listings/edit/landing" className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/landing/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/edit/accommodation" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/accommodation/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                     </div>
                 </div>
-
             </div>
         )
     }

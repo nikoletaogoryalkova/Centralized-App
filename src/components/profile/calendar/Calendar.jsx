@@ -139,6 +139,7 @@ export default class Calendar extends React.Component {
                         eventPropGetter={eventStyleGetter}
                     />
                 </div>
+                
                 {this.props.selectedDay !== null && this.props.selectedDay !== '' ? <CalendarAside onCancel={this.props.onCancel}
                     day={this.props.selectedDay}
                     date={this.props.selectedDate}
