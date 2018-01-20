@@ -144,7 +144,7 @@ export default class CreateListingPlaceType extends React.Component {
                         <NavLink to="/profile/listings/create/landing" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/accommodation" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/create/accommodation" className="btn btn-primary btn-next" id="btn-continue" onClick={() => this.props.updateProgress(2)} >Next</NavLink>
                     </div>
                 </div>
 

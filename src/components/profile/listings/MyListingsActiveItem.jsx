@@ -107,7 +107,7 @@ export default class MyListingsActiveItem extends React.Component {
                         <span>{this.props.listing.defaultDailyPrice} {this.props.listing.currencyCode}</span>
                     </li>
                     <li className="edit">
-                        <Link to={`/profile/listings/edit/${this.props.listing.id}`}>Edit Listing</Link>
+                        <Link to={`/profile/listings/edit/landing/${this.props.listing.id}`}>Edit Listing</Link>
                      </li>
                     <li className="calendar">
                         {/* <input type="button" className="button" value="View Calendar"/> */}

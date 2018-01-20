@@ -59,7 +59,7 @@ export default class CreateListingSafetyAmenities extends React.Component {
                         <NavLink to="/profile/listings/create/facilities" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/location" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/create/location" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(4) }}>Next</NavLink>
                     </div>
                 </div>
             </div>

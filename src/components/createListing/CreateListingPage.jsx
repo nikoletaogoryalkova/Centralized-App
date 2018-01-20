@@ -18,7 +18,18 @@ import CreateListingPrice from './guestSettings/CreateListingPrice';
 import CreateListingLocAddress from './CreateListingLocAddress';
 import Footer from '../Footer';
 
-import { getCountries, getAmenitiesByCategory, createListing, getPropertyTypes, getCities, getCurrencies, getCurrentLoggedInUserInfo, updateUserInfo } from '../../requester';
+import { 
+    getCountries, 
+    getAmenitiesByCategory, 
+    createListing, 
+    createListingProgress,
+    updateListingProgress,
+    getPropertyTypes, 
+    getCities, 
+    getCurrencies, 
+    getCurrentLoggedInUserInfo, 
+    updateUserInfo 
+} from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -95,6 +106,8 @@ class CreateListingPage extends React.Component {
         this.handleImageUpload = this.handleImageUpload.bind(this);
         this.removePhoto = this.removePhoto.bind(this);
         this.updateLocAddress = this.updateLocAddress.bind(this);
+        this.createProgress = this.createProgress.bind(this);
+        this.updateProgress = this.updateProgress.bind(this);
     }
 
     componentDidMount() {
@@ -252,8 +265,65 @@ class CreateListingPage extends React.Component {
         return photos;
     }
 
+    createProgress() {
+        let listing = this.createListingObject();
+        let data = {
+            step: 1,
+            data: JSON.stringify(listing)
+        };
+
+        createListingProgress(data).then(res => {
+            if (res.success) {
+                res.response.json().then(res => { 
+                    const id = res.id;
+                    this.setState({progressId: id});
+                });
+            }
+        });
+    }
+
+    updateProgress(step) {
+        const progressId = this.state.progressId;
+        if (!progressId) {
+            this.createProgress();
+        } else {
+            let listing = this.createListingObject();
+            let data = {
+                step: step,
+                data: JSON.stringify(listing),
+            };
+            
+            updateListingProgress(progressId, data);
+        }
+    }
+
     createListing(captchaToken) {
         this.setState({ loading: true });
+        let listing = this.createListingObject();
+
+        createListing(listing, captchaToken).then((res) => {
+            if (res.success) {                this.setState({loading: false});
+                res.response.json().then(res => { 
+                    const id = res.id;
+                    const path = `/profile/listings/calendar/${id}`;
+                    this.props.history.push(path);
+                });
+            }
+            else {
+                this.setState({ loading: false });
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    createListingObject() {
         let listing = {
             listingType: this.state.type,
             type: this.state.propertyType,
@@ -322,28 +392,8 @@ class CreateListingPage extends React.Component {
             currency: this.state.currency,
         }
 
-        createListing(listing, captchaToken).then((res) => {
-            if (res.success) {                this.setState({loading: false});
-                res.response.json().then(res => { 
-                    const id = res.id;
-                    const path = `/profile/listings/calendar/${id}`;
-                    this.props.history.push(path);
-                });
-            }
-            else {
-                this.setState({ loading: false });
-                res.response.then(res => {
-                    const errors = res.errors;
-                    for (let key in errors) {
-                        if (typeof errors[key] !== 'function') {
-                            NotificationManager.warning(errors[key].message);
-                        }
-                    }
-                });
-            }
-        });
+        return listing;
     }
-
 
     onImageDrop(files) {
         this.handleImageUpload(files)
@@ -430,53 +480,63 @@ class CreateListingPage extends React.Component {
             <div>
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
 
-                <Redirect exact path="/profile/listings/create/" to="/profile/listings/create/landing" />
                 <Switch>
                     <Route exact path="/profile/listings/create/loc" render={() => <CreateListingLocAddress
                         values={this.state}
                         onChange={this.onChange} />} />
                     <Route exact path="/profile/listings/create/landing" render={() => <CreateListingLandingPage
                         values={this.state}
-                        onChange={this.onChange} />} />
+                        onChange={this.onChange}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/placetype" render={() => <CreateListingPlaceType
                         values={this.state}
                         toggleCheckbox={this.toggleCheckbox}
-                        onChange={this.onChange} />} />
+                        onChange={this.onChange}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/accommodation" render={() => <CreateListingAccommodation
                         values={this.state}
                         updateCounter={this.updateCounter}
                         updateBedrooms={this.updateBedrooms}
-                        updateBedCount={this.updateBedCount} />} />
+                        updateBedCount={this.updateBedCount}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/facilities" render={() => <CreateListingFacilities
                         values={this.state}
-                        toggle={this.toggleFacility} />} />
+                        toggle={this.toggleFacility}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/safetyamenities" render={() => <CreateListingSafetyAmenities
                         values={this.state}
-                        toggle={this.toggleFacility} />} />
+                        toggle={this.toggleFacility}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/location" render={() => <CreateListingLocation
                         values={this.state}
                         onChange={this.onChange}
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}
-                        updateCities={this.updateCities} />} />
+                        updateCities={this.updateCities}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/title" render={() => <CreateListingTitle
                         values={this.state}
-                        updateTextbox={this.onChange} />} />
+                        updateTextbox={this.onChange}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/description" render={() => <CreateListingDescription
                         values={this.state}
-                        onChange={this.onChange} />} />
+                        onChange={this.onChange}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/photos" render={() => <CreateListingPhotos
                         values={this.state}
                         onImageDrop={this.onImageDrop}
-                        removePhoto={this.removePhoto} />} />
+                        removePhoto={this.removePhoto}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/houserules" render={() => <CreateListingHouseRules
                         values={this.state}
                         onChange={this.onChange}
                         addRule={this.addHouseRule}
-                        removeRule={this.removeHouseRule} />} />
+                        removeRule={this.removeHouseRule}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/checking" render={() => <CreateListingChecking
                         values={this.state}
-                        updateDropdown={this.onChange} />} />
+                        updateDropdown={this.onChange}
+                        updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/price" render={() => <CreateListingPrice
                         values={this.state}
                         onChange={this.onChange}
