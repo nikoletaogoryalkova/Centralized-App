@@ -6,7 +6,8 @@ import {
     getCalendarByListingIdAndDateRange,
     getMyReservations,
     getPropertyById,
-    publishCalendarSlot
+    publishCalendarSlot,
+    editDefaultDailyPrice
 } from "../../../requester";
 import moment from 'moment';
 import Calendar from './Calendar';
@@ -191,9 +192,20 @@ class CalendarPage extends React.Component {
         e.target.className = 'slot-selected';
     }
 
-    updateDailyPrice(e) {
-        e.preventDefault();
-        alert(this.state.defaultDailyPrice);
+    updateDailyPrice(captchaToken) {
+        const listingId = this.props.match.params.id;
+        const priceObj = {
+            defaultDailyPrice: this.state.defaultDailyPrice
+        }
+
+        editDefaultDailyPrice(listingId, priceObj, captchaToken).then(res => {
+            if (res.success) {
+                window.location.reload();
+            } else {
+                alert('failure');
+            }
+        });
+
     }
 
     render() {

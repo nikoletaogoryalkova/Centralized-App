@@ -211,6 +211,12 @@ export async function editListing(id, listingObj, captchaToken) {
     });
 }
 
+export async function editDefaultDailyPrice(id, priceObj, captchaToken) {
+    return sendRequest(`${host}listings/${id}/dailyPrice`, RequestMethod.POST, priceObj, captchaToken).then(res => {
+        return res;
+    });
+}
+
 export async function deleteListing(id, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/delete`, RequestMethod.POST, {}, captchaToken).then(res => {
         return {

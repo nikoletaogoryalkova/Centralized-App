@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Config } from '../../../config';
 
 export default class CalendarAsideStatic extends React.Component {
@@ -26,8 +27,20 @@ export default class CalendarAsideStatic extends React.Component {
                         </div>
 
                         <div className="col-md-12 controls">
-                            <button className="btn btn-primary btn-next bold" type="submit" onClick={this.props.updateDailyPrice}>Save</button>
+                            <button className="btn btn-primary btn-next bold" type="submit" 
+                                onClick={(e) => { 
+                                    e.preventDefault(); 
+                                    {/* this.captcha.execute();  */}
+                                    this.props.updateDailyPrice();
+                                    }}>Save</button>
                         </div>
+
+                        <ReCAPTCHA
+                            ref={el => this.captcha = el}
+                            size="invisible"
+                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            onChange={token => this.props.updateDailyPrice(token)}
+                        />
                     </form>
                 </div>
             </div>
