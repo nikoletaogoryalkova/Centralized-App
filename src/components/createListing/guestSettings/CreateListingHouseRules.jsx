@@ -178,7 +178,7 @@ export default class CreateListingHouseRules extends React.Component {
                         <NavLink to="/profile/listings/create/photos" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/checking" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/create/checking" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(8) }}>Next</NavLink>
                     </div>
                 </div>
             </div>

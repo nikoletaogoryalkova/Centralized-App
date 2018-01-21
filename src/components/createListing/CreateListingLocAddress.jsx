@@ -1,12 +1,12 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { NotificationManager, NotificationContainer } from 'react-notifications';
-import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 import CreateListingBasicsAside from './basics/CreateListingBasicsAside';
 import NavCreateListing from './NavCreateListing';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
 
 export default class CreateListingLocAddress extends React.Component {
     constructor(props) {
@@ -27,12 +27,12 @@ export default class CreateListingLocAddress extends React.Component {
     showErrors() {
         const { locAddress } = this.props.values;
         if (locAddress.length < 20) {
-            NotificationManager.warning("LOC Address should be at least 20 characters long");
+            NotificationManager.warning('LOC Address should be at least 20 characters long');
         }
     }
 
     render() {
-        const { userHasLocAddress, locAddress } = this.props.values;
+        const { locAddress } = this.props.values;
         return <div>
             <NavCreateListing progress='0%' />
             <NotificationContainer />
@@ -63,9 +63,9 @@ export default class CreateListingLocAddress extends React.Component {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
+                    <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                         {this.validateInput()
-                            ? <button type="submit" className="btn btn-primary btn-next">Next</button>
+                            ? <button type="button" className="btn btn-primary btn-next">Next</button>
                             : <button type="button" className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
 
@@ -78,6 +78,12 @@ export default class CreateListingLocAddress extends React.Component {
                     </form>
                 </div>
             </div>
-        </div>
+        </div>;
     }
 }
+
+CreateListingLocAddress.propTypes = {
+    values: PropTypes.object,
+    onChange: PropTypes.func,
+    updateLocAddress: PropTypes.func
+};

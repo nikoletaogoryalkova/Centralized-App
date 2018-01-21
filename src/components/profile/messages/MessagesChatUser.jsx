@@ -1,15 +1,13 @@
 import React from 'react';
-import RatingFeedback from '../RatingFeedback';
 
 export default class MessagesChatUser extends React.Component {
     render() {
         return (
             <div id="card-user">
                 <div className="top">
-                    <div className="thump"  style={{backgroundImage: 'url('+ this.props.userInfo.image + ')'}}></div> {/* pls add style backgound-image the user's thumb */}
+                    <div className="thump" style={{ backgroundImage: 'url(' + this.props.userInfo.image + ')' }}></div> {/* pls add style backgound-image the user's thumb */}
                     <h2>{this.props.userInfo.fullName}</h2>
                     {/* <h3>London, England</h3> */}
-                    {/* <RatingFeedback /> */}
                 </div>
                 {/* <div className="bottom">
                     <ul>

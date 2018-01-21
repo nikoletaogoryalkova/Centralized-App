@@ -205,6 +205,18 @@ export async function createListing(listingObj, captchaToken) {
     });
 }
 
+export async function createListingProgress(listingObj, captchaToken) {
+    return sendRequest(`${host}listings/progress`, RequestMethod.POST, listingObj, captchaToken).then(res => {
+        return res;
+    });
+}
+
+export async function updateListingProgress(id, listingObj, captchaToken) {
+    return sendRequest(`${host}listings/${id}/progress`, RequestMethod.POST, listingObj, captchaToken).then(res => {
+        return res;
+    });
+}
+
 export async function editListing(id, listingObj, captchaToken) {
     return sendRequest(`${host}me/listings/${id}/edit`, RequestMethod.POST, listingObj, captchaToken).then(res => {
         return res;
@@ -226,8 +238,14 @@ export async function deleteListing(id, captchaToken) {
 }
 
 export async function getMyListingById(id) {
-    return sendRequest(`${host}/me/listings/${id}`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}me/listings/${id}`, RequestMethod.GET).then(res => {
         return res.response.json();
+    });
+}
+
+export async function getListingProgress(id) {
+    return sendRequest(`${host}listings/${id}/progress`, RequestMethod.GET).then(res => {
+        return res.data.json();
     });
 }
 

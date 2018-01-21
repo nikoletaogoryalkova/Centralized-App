@@ -1,15 +1,13 @@
-import React from 'react';
-
-import ProfileHeader from '../ProfileHeader';
-import Footer from '../../Footer';
-import ProfileNav from './ProfileNav';
 import { Config } from '../../../config';
 import Dropzone from 'react-dropzone';
-import request from 'superagent';
-import update from 'react-addons-update';
+import Footer from '../../Footer';
+import ProfileHeader from '../ProfileHeader';
+import ProfileNav from './ProfileNav';
+import React from 'react';
 import { getCurrentLoggedInUserInfo } from '../../../requester';
+import request from 'superagent';
 
-const host = Config.getValue("apiHost");
+const host = Config.getValue('apiHost');
 const LOCKCHAIN_UPLOAD_URL = `${host}users/me/images/upload`;
 
 export default class ProfilePhotosPage extends React.Component {
@@ -21,7 +19,7 @@ export default class ProfilePhotosPage extends React.Component {
             uploadedFilesThumbUrls: [],
             loading: true,
             error: null
-        }
+        };
 
         this.onImageDrop = this.onImageDrop.bind(this);
         this.handleImageUpload = this.handleImageUpload.bind(this);
@@ -35,7 +33,7 @@ export default class ProfilePhotosPage extends React.Component {
     }
 
     onImageDrop(files) {
-        this.handleImageUpload(files)
+        this.handleImageUpload(files);
 
         this.setState({
             uploadedFiles: files
@@ -43,14 +41,14 @@ export default class ProfilePhotosPage extends React.Component {
     }
 
     onDropRejected() {
-        this.setState({error: 'Maximum file upload size is 10MB. Supported media formats are jpg, jpeg, png'})
+        this.setState({ error: 'Maximum file upload size is 10MB. Supported media formats are jpg, jpeg, png' });
     }
 
     handleImageUpload(files) {
         files.forEach((file) => {
             let upload = request.post(LOCKCHAIN_UPLOAD_URL)
                 .field('image', file)
-                .set('Authorization', localStorage[Config.getValue("domainPrefix") + ".auth.lockchain"]);
+                .set('Authorization', localStorage[Config.getValue('domainPrefix') + '.auth.lockchain']);
 
 
             upload.end((err, response) => {
@@ -70,8 +68,8 @@ export default class ProfilePhotosPage extends React.Component {
     }
 
     render() {
-        if(this.state.loading) {
-            return <div className="loader"></div>
+        if (this.state.loading) {
+            return <div className="loader"></div>;
         }
 
         return (
@@ -103,7 +101,7 @@ export default class ProfilePhotosPage extends React.Component {
                                         <p>Upload a file from your computer</p>
                                     </Dropzone>
                                 </div>
-                            {this.state.error ? <div className="error">{this.state.error}</div> : null}
+                                {this.state.error ? <div className="error">{this.state.error}</div> : null}
                             </div>
                             <div className="before-footer clear-both" />
                         </div>

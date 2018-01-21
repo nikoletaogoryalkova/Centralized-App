@@ -88,7 +88,7 @@ export default class CreateListingPhotos extends React.Component {
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         {this.validateInput() 
-                            ? <NavLink to="/profile/listings/create/houserules" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            ? <NavLink to="/profile/listings/create/houserules" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(7) }}>Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

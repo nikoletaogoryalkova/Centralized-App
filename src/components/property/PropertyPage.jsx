@@ -1,20 +1,20 @@
-import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
-
-import MainNav from '../MainNav';
-import Search from '../home/Search';
-import PropertyInfo from './PropertyInfo';
-import Footer from '../Footer';
-
-import Lightbox from 'react-images';
-import moment from 'moment';
-
+import { Link, withRouter } from 'react-router-dom';
 import {
-    getPropertyById, getCalendarByListingIdAndDateRange, getCurrentLoggedInUserInfo,
-    getLocRateInUserSelectedCurrency
+    getCalendarByListingIdAndDateRange,
+    getCurrentLoggedInUserInfo,
+    getLocRateInUserSelectedCurrency,
+    getPropertyById
 } from '../../requester';
+
+import { Config } from '../../config';
+import Footer from '../Footer';
+import Lightbox from 'react-images';
+import MainNav from '../MainNav';
+import PropertyInfo from './PropertyInfo';
+import React from 'react';
+import Search from '../home/Search';
+import moment from 'moment';
 import { parse } from 'query-string';
-import { Config } from "../../config";
 
 class PropertyPage extends React.Component {
     constructor(props) {
@@ -58,7 +58,7 @@ class PropertyPage extends React.Component {
         this.openLightbox = this.openLightbox.bind(this);
         this.initializeCalendar = this.initializeCalendar.bind(this);
         this.getLocRate = this.getLocRate.bind(this);
-    };
+    }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: true });
@@ -78,7 +78,7 @@ class PropertyPage extends React.Component {
     getLocRate(currency) {
         getLocRateInUserSelectedCurrency(currency).then((data) => {
             this.setState({ locRate: data[0][`price_${currency.toLowerCase()}`] });
-            if (localStorage.getItem(Config.getValue("domainPrefix") + '.auth.lockchain')) {
+            if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
                 getCurrentLoggedInUserInfo()
                     .then(res => {
                         this.setState({
@@ -88,6 +88,9 @@ class PropertyPage extends React.Component {
                             loading: false
                         });
                     });
+            }
+            else {
+                this.setState({ loaded: true, isLogged: false, loading: false });
             }
         });
     }
@@ -141,10 +144,10 @@ class PropertyPage extends React.Component {
         let diffDays = checkOut.diff(checkIn, 'days');
 
         if (checkOut > checkIn) {
-            this.setState({ nights: diffDays })
+            this.setState({ nights: diffDays });
         }
         else {
-            this.setState({ nights: 0 })
+            this.setState({ nights: 0 });
         }
     }
 
@@ -168,28 +171,28 @@ class PropertyPage extends React.Component {
             ).then(res => {
                 let prices = [];
                 for (let dateInfo of res.content) {
-                    let price = dateInfo.available ? `${this.state.currencySign}${Math.round(dateInfo.price)}` : ``;
+                    let price = dateInfo.available ? `${this.state.currencySign}${Math.round(dateInfo.price)}` : '';
                     prices.push(
                         {
-                            "title": <span className="calendar-price bold">{price}</span>,
-                            "start": moment(dateInfo.date, "DD/MM/YYYY"),
-                            "end": moment(dateInfo.date, "DD/MM/YYYY"),
-                            "allDay": true,
-                            "price": dateInfo.price,
-                            "available": dateInfo.available
+                            'title': <span className="calendar-price bold">{price}</span>,
+                            'start': moment(dateInfo.date, 'DD/MM/YYYY'),
+                            'end': moment(dateInfo.date, 'DD/MM/YYYY'),
+                            'allDay': true,
+                            'price': dateInfo.price,
+                            'available': dateInfo.available
                         }
-                    )
+                    );
                 }
 
                 this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.currency });
             });
-        })
+        });
     }
 
     render() {
 
         if (this.state.data === null || this.state.prices === null || this.state.reservations === null || this.state.loaded === false) {
-            return <div className="loader"></div>
+            return <div className="loader"></div>;
         }
 
         let allEvents = this.state.prices;
@@ -231,7 +234,7 @@ class PropertyPage extends React.Component {
                     </section>
                 </div>
                 <section className="hotel-gallery">
-                    <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url(' + this.state.data.pictures[0].original + ')' } : { backgroundColor: '#AAA' }}>
+                    <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url("' + this.state.data.pictures[0].original + '")' } : { backgroundColor: '#AAA' }}>
                         <div className="container">
                             <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
                             {images !== null && <Lightbox
@@ -295,4 +298,4 @@ class PropertyPage extends React.Component {
     }
 }
 
-export default withRouter(PropertyPage)
+export default withRouter(PropertyPage);

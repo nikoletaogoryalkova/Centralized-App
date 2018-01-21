@@ -2,22 +2,20 @@ import React from 'react';
 
 import { Modal } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-
-import { Config } from '../../../../config';
-// import { postCancelTrip } from '../../requester.js';
+import { NotificationContainer } from 'react-notifications';
+import PropTypes from 'prop-types';
 
 const modal = {
     current: 'showCancelTripModal',
-}
+};
 
 export default class CancelTripModal extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             cancellationText: '',
-        }
+        };
 
         this.onChange = this.onChange.bind(this);
     }
@@ -41,12 +39,12 @@ export default class CancelTripModal extends React.Component {
                                 <textarea rows="4" name="cancellationText" value={this.state.cancellationText} onChange={this.onChange} className="form-control text-area"></textarea>
                             </div>
 
-                            
+
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => { this.props.cancelTrip(this.props.tripId, this.state.cancellationText, token);}}
+                                onChange={token => { this.props.cancelTrip(this.props.tripId, this.state.cancellationText, token); }}
                             />
 
                             <button type="submit" className="btn btn-primary">Send message</button>
@@ -59,3 +57,10 @@ export default class CancelTripModal extends React.Component {
         );
     }
 }
+
+CancelTripModal.propTypes = {
+    isActive: PropTypes.bool,
+    closeModal: PropTypes.func,
+    cancelTrip: PropTypes.func,
+    tripId: PropTypes.number
+};

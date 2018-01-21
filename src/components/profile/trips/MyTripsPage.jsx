@@ -1,14 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { cancelTrip, getMyTrips } from '../../../requester';
 
-import ProfileHeader from '../ProfileHeader';
-import MyTripsTable from './MyTripsTable';
-import Pagination from 'rc-pagination';
 import Footer from '../../Footer';
-import { cancelTrip } from "../../../requester";
-import { NotificationManager, NotificationContainer } from 'react-notifications';
-
-import { getMyTrips } from '../../../requester';
+import { Link } from 'react-router-dom';
+import MyTripsTable from './MyTripsTable';
+import { NotificationManager } from 'react-notifications';
+import Pagination from 'rc-pagination';
+import ProfileHeader from '../ProfileHeader';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default class MyTripsPage extends React.Component {
     constructor(props) {
@@ -20,7 +19,7 @@ export default class MyTripsPage extends React.Component {
             totalTrips: 0,
             currentPage: 1,
             currentTrip: null,
-        }
+        };
     }
 
     componentDidMount() {
@@ -39,9 +38,9 @@ export default class MyTripsPage extends React.Component {
         getMyTrips('?page=0').then((data) => {
             this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTrip: id });
             if (id) {
-                NotificationManager.success("Booking Request Sent Successfully, your host will get back to you with additional questions.", 'Reservation Operations')
+                NotificationManager.success('Booking Request Sent Successfully, your host will get back to you with additional questions.', 'Reservation Operations');
             }
-        })
+        });
     }
 
     cancelTrip(id, cancellationText, captchaToken) {
@@ -51,24 +50,24 @@ export default class MyTripsPage extends React.Component {
         };
 
         cancelTrip(id, cancelTripObj, captchaToken)
-            .then(res => { 
-                this.componentDidMount(); 
-                this._operate(res, id, false) 
+            .then(res => {
+                this.componentDidMount();
+                this._operate(res, id, false);
             });
     }
 
-    onPageChange = (page) => {
+    onPageChange(page) {
         this.setState({
             currentPage: page,
             loadingListing: true
-        })
+        });
 
         getMyTrips(`?page=${page - 1}`).then(data => {
             this.setState({
                 trips: data.content,
                 totalTrips: data.totalElements,
                 loadingListing: false
-            })
+            });
         });
     }
 
@@ -84,7 +83,7 @@ export default class MyTripsPage extends React.Component {
         };
 
         if (this.state.loading) {
-            return <div className="loader"></div>
+            return <div className="loader"></div>;
         }
 
         return (
@@ -115,7 +114,7 @@ export default class MyTripsPage extends React.Component {
 
     _operate(res, id, isAccepted) {
         if (res.success) {
-            NotificationManager.success(res.message, 'Reservation Operations')
+            NotificationManager.success(res.message, 'Reservation Operations');
 
             let newReservations = this.state.trips.map(r => {
                 if (r.id === id) {
@@ -127,7 +126,11 @@ export default class MyTripsPage extends React.Component {
 
             this.setState({ trips: newReservations });
         } else {
-            NotificationManager.error(res.message, 'Reservation Operations')
+            NotificationManager.error(res.message, 'Reservation Operations');
         }
     }
 }
+
+MyTripsPage.propTypes = {
+    location: PropTypes.object
+};

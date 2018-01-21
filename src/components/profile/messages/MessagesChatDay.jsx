@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-
 import moment from 'moment';
 
 export default class MessagesChatPage extends React.Component {
@@ -7,8 +7,12 @@ export default class MessagesChatPage extends React.Component {
         return (
             <div className="stamp">
                 <hr />
-                <span>{moment(this.props.date, "DD/MM/YYYY").format("dddd, D MMM, YYYY")}</span>
+                <span>{moment(this.props.date, 'DD/MM/YYYY').format('dddd, D MMM, YYYY')}</span>
             </div>
         );
     }
 }
+
+MessagesChatPage.propTypes = {
+    date: PropTypes.string
+};
