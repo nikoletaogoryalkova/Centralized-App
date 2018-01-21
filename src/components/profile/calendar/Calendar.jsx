@@ -140,15 +140,20 @@ export default class Calendar extends React.Component {
                     />
                 </div>
                 
-                {this.props.selectedDay !== null && this.props.selectedDay !== '' ? <CalendarAside onCancel={this.props.onCancel}
-                    day={this.props.selectedDay}
-                    date={this.props.selectedDate}
-
-                    price={this.props.price}
-                    available={this.props.available}
-                    onSubmit={this.props.onSubmit}
-                    onChange={this.props.onChange}
-                    currencySign={this.props.currencySign} /> : <CalendarAsideStatic />}
+                {this.props.selectedDay !== null && this.props.selectedDay !== '' ? 
+                    <CalendarAside onCancel={this.props.onCancel}
+                        day={this.props.selectedDay}
+                        date={this.props.selectedDate}
+                        price={this.props.price}
+                        available={this.props.available}
+                        onSubmit={this.props.onSubmit}
+                        onChange={this.props.onChange}
+                        currencySign={this.props.currencySign} /> : 
+                    <CalendarAsideStatic 
+                        currencySign={this.props.currencySign} 
+                        defaultDailyPrice={this.props.defaultDailyPrice} 
+                        onChange={this.props.onChange}
+                        updateDailyPrice={this.props.updateDailyPrice} />}
             </div>
         )
     }
