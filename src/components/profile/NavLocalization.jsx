@@ -8,18 +8,18 @@ export default class NavLocalization extends React.Component {
         this.state = {
             locRate: null,
             loading: true
-        }
+        };
     }
 
     componentDidMount() {
         getLocRate().then((data) => {
-            this.setState({locRate: data[0].price_eur, loading: false})
-        })
+            this.setState({ locRate: data[0].price_eur, loading: false });
+        });
     }
 
     render() {
-        if(this.state.loading) {
-            return <div className="loader"></div>
+        if (this.state.loading) {
+            return <div className="loader"></div>;
         }
 
         return (
@@ -50,6 +50,6 @@ export default class NavLocalization extends React.Component {
                     </ul>
                 </div>
             </nav>
-        )
+        );
     }
 }

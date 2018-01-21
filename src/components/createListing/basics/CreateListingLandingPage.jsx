@@ -98,8 +98,8 @@ export default class CreateListingLandingPage extends React.Component {
                                     </div>
                                     
                                     {this.validateInput() 
-                                        ? <NavLink to="/profile/listings/create/placetype" className="btn btn-primary" id="btn-continue">Continue</NavLink>
-                                        : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
+                                        ? <NavLink to="/profile/listings/create/placetype" className="btn btn-primary" id="btn-continue" onClick={(e) => { this.props.updateProgress(1) }}>Continue</NavLink>
+                                        : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Continue</button>
                                     }
                                 </div>
                             </div>

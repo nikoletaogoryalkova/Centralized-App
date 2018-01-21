@@ -1,8 +1,8 @@
-import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-import MainNav from './MainNav';
 import ListingSearch from './listings/ListingSearch';
+import MainNav from './MainNav';
+import React from 'react';
 
 class Header extends React.Component {
     render() {
@@ -29,7 +29,7 @@ class Header extends React.Component {
                     </div>
                 </section>
             </div>
-        )
+        );
     }
 }
 

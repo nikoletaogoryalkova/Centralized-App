@@ -14,6 +14,6 @@ export default class ProfileHeader extends React.Component {
                 <NavLocalization />
                 <NavProfile />
             </div>
-        )
+        );
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import moment from 'moment'
+import moment from 'moment';
 import { NotificationContainer } from 'react-notifications';
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -11,12 +11,12 @@ export default class MyReservationsTable extends React.Component {
         this.state = {
             selectedId: '',
             action: ''
-        }
+        };
     }
 
     render() {
         if (this.props.loadingListing) {
-            return <div className="loader"></div>
+            return <div className="loader"></div>;
         }
 
         return (
@@ -58,14 +58,14 @@ export default class MyReservationsTable extends React.Component {
                                     {reservation.guestEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${reservation.guestEmail}`}>Send Message</a></div> : ''}
                                 </div>
                                 <div className="col-md-3">
-                                    <div>{moment(new Date(reservation.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(reservation.endDate)).format("DD MMM, YYYY")}</div>
+                                    <div>{moment(new Date(reservation.startDate)).format('DD MMM, YYYY')}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(reservation.endDate)).format('DD MMM, YYYY')}</div>
                                     <div>{reservation.listingName}</div>
                                 </div>
                                 <div className="col-md-2">
                                     <div>{reservation.currencyCode} {reservation.price} total</div>
                                 </div>
                                 <div className="col-md-2">
-                                    <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id, action: reservation.accepted ? 'cancel' : 'accept' }); this.captcha.execute() }}>
+                                    <form onSubmit={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id, action: reservation.accepted ? 'cancel' : 'accept' }); this.captcha.execute(); }}>
                                         {reservation.accepted ? <div><button type="submit" >Cancel</button></div> : <div><button type="submit">Accept</button></div>}
                                     </form>
 
@@ -73,17 +73,17 @@ export default class MyReservationsTable extends React.Component {
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                                 </div>
                                 <div className="col-md-2">
-                                    <div className="reservation-status bold">{reservation.accepted ? "Accepted" : "Pending"}</div>
+                                    <div className="reservation-status bold">{reservation.accepted ? 'Accepted' : 'Pending'}</div>
                                 </div>
                             </div>
                         </div>
-                    )
+                    );
                 })}
                 <ReCAPTCHA
                     ref={el => this.captcha = el}
                     size="invisible"
                     sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                    onChange={token => { this.state.action === 'cancel' ? this.props.onReservationCancel(this.state.selectedId, token) : this.props.onReservationAccept(this.state.selectedId, token); this.captcha.reset() }}
+                    onChange={token => { this.state.action === 'cancel' ? this.props.onReservationCancel(this.state.selectedId, token) : this.props.onReservationAccept(this.state.selectedId, token); this.captcha.reset(); }}
                 />
             </div>
         );
