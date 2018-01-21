@@ -1,13 +1,13 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import {
+    editDefaultDailyPrice,
     getCalendarByListingIdAndDateRange,
     getMyReservations,
     getPropertyById,
-    publishCalendarSlot,
-    editDefaultDailyPrice
-} from "../../../requester";
-import moment from 'moment';
+    publishCalendarSlot
+} from '../../../requester';
+
 import Calendar from './Calendar';
 import Footer from '../../Footer';
 import ProfileHeader from '../ProfileHeader';
@@ -199,7 +199,7 @@ class CalendarPage extends React.Component {
         const listingId = this.props.match.params.id;
         const priceObj = {
             defaultDailyPrice: this.state.defaultDailyPrice
-        }
+        };
 
         editDefaultDailyPrice(listingId, priceObj, captchaToken).then(res => {
             if (res.success) {
@@ -215,7 +215,7 @@ class CalendarPage extends React.Component {
         if (this.state.listing === null || this.state.prices === null || this.state.reservations === null) { //|| this.state.myListings === null
             return <div className="loader"></div>;
         }
-        
+
         this.mergeEvents(this.state.prices, this.state.reservations);
         let allEvents = this.state.prices.concat(this.state.reservations);
 
