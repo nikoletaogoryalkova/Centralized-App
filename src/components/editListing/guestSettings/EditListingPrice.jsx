@@ -1,9 +1,9 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-
 import EditListingGuestSettingsAside from './EditListingGuestSettingsAside';
 import NavEditListing from '../NavEditListing';
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
 
 export default class EditListingPrice extends React.Component {
     render() {
@@ -36,7 +36,7 @@ export default class EditListingPrice extends React.Component {
                                                     id="currency">
                                                     <option disabled value="">Currency</option>
                                                     {currencies.map((item, i) => {
-                                                        return <option key={i} value={item.id}>{item.code}</option>
+                                                        return <option key={i} value={item.id}>{item.code}</option>;
                                                     })}
                                                 </select>
                                             </div>
@@ -78,21 +78,26 @@ export default class EditListingPrice extends React.Component {
                         <NavLink to={`/profile/listings/edit/checking/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/price/${listingId}`} className="btn btn-primary btn-next" onClick={(e) => { 
-                                e.preventDefault(); 
-                                {/* this.props.persistListing(); */}
-                                this.captcha.execute(); 
-                            }} id="btn-continue">Finish</NavLink>
-                        
+                        <NavLink to={`/profile/listings/edit/price/${listingId}`} className="btn btn-primary btn-next" onClick={(e) => {
+                            e.preventDefault();
+                            this.captcha.execute();
+                        }} id="btn-continue">Finish</NavLink>
+
                         <ReCAPTCHA
-                                ref={el => this.captcha = el}
-                                size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => {this.props.persistListing(token); this.captcha.reset();}}
-                            />
+                            ref={el => this.captcha = el}
+                            size="invisible"
+                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            onChange={token => { this.props.persistListing(token); this.captcha.reset(); }}
+                        />
                     </div>
                 </div>
             </div >
         );
     }
 }
+
+EditListingPrice.propTypes = {
+    values: PropTypes.object,
+    onChange: PropTypes.func,
+    persistListing: PropTypes.func
+};

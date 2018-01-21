@@ -1,17 +1,16 @@
-import React from 'react';
-
-import ProfileHeader from '../ProfileHeader';
-import MessagesChatUser from './MessagesChatUser';
-import Footer from '../../Footer';
-import MessagesChat from './MessagesChat';
-import Message from './Message';
-import MessagesChatDay from './MessagesChatDay';
-
 import { getChatMessages, sendMessage } from '../../../requester';
-import { withRouter } from 'react-router-dom';
+
 import { Config } from '../../../config';
+import Footer from '../../Footer';
 import InfiniteList from 'react-infinite-scroll-list';
+import Message from './Message';
+import MessagesChat from './MessagesChat';
+import MessagesChatDay from './MessagesChatDay';
+import MessagesChatUser from './MessagesChatUser';
+import ProfileHeader from '../ProfileHeader';
+import React from 'react';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 class MessagesChatPage extends React.Component {
     constructor(props) {
@@ -29,7 +28,7 @@ class MessagesChatPage extends React.Component {
             infinityLoading: false,
             totalPages: 0,
             currentPage: 0,
-        }
+        };
 
         this.sendMessage = this.sendMessage.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -43,8 +42,7 @@ class MessagesChatPage extends React.Component {
     fetchMessages(page = 0) {
         this.setState({ infinityLoading: true });
         getChatMessages(this.props.match.params.id, page).then((data) => {
-            data.content[0].sender.email === localStorage[Config.getValue("domainPrefix") + ".auth.username"]
-            let recipient = data.content[0].recipient.email === localStorage[Config.getValue("domainPrefix") + ".auth.username"] ? data.content[0].sender : data.content[0].recipient;
+            let recipient = data.content[0].recipient.email === localStorage[Config.getValue('domainPrefix') + '.auth.username'] ? data.content[0].sender : data.content[0].recipient;
             let totalMessages = this.state.messages;
             data.content.forEach((item) => {
                 totalMessages.push(item);
@@ -70,12 +68,12 @@ class MessagesChatPage extends React.Component {
     sendMessage(e) {
         e.preventDefault();
 
-        this.setState({ sending: true })
+        this.setState({ sending: true });
 
         let message = {
             recipient: this.state.recipientId,
             message: this.state.message
-        }
+        };
 
         sendMessage(message, this.props.match.params.id).then((data) => {
             let messages = this.state.messages;
@@ -87,7 +85,7 @@ class MessagesChatPage extends React.Component {
 
     render() {
         if (this.state.loading) {
-            return <div className="loader"></div>
+            return <div className="loader"></div>;
         }
 
         let lastRenderedUser = '';
@@ -118,7 +116,7 @@ class MessagesChatPage extends React.Component {
                                         isLoading={this.state.infinityLoading}
                                         isEndReached={this.state.currentPage === this.state.totalPages - 1}
                                         onReachThreshold={() => {
-                                            this.setState({ currentPage: this.state.currentPage + 1 })
+                                            this.setState({ currentPage: this.state.currentPage + 1 });
                                             this.fetchMessages(this.state.currentPage);
                                         }}
                                         threshold={180}>
@@ -126,16 +124,18 @@ class MessagesChatPage extends React.Component {
                                             let isQueueMessage = lastRenderedUser === message.sender.email;
                                             lastRenderedUser = message.sender.email;
 
-                                            let messageDate = moment(message.createdAt, "DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY");
+                                            let messageDate = moment(message.createdAt, 'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY');
                                             let isNewDay = lastRenderedDay !== messageDate;
                                             lastRenderedDay = messageDate;
-                                            return <div>
+                                            return (<div key={i}>
                                                 {isNewDay ? <MessagesChatDay date={messageDate} /> : null}
-                                                <MessagesChat key={i} queueMessage={isQueueMessage} sender={message.sender.email === localStorage[Config.getValue("domainPrefix") + ".auth.username"]}
+                                                <MessagesChat
+                                                    queueMessage={isQueueMessage}
+                                                    sender={message.sender.email === localStorage[Config.getValue('domainPrefix') + '.auth.username']}
                                                     message={message}>
                                                     <Message message={message} />
                                                 </MessagesChat>
-                                            </div>
+                                            </div>);
                                         })}
                                     </InfiniteList>
                                     {this.state.infinityLoading ? <div className="loader"></div> : null}

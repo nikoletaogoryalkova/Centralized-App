@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import moment from 'moment';
 
 export default class Message extends React.Component {
     render() {
@@ -8,3 +8,7 @@ export default class Message extends React.Component {
         );
     }
 }
+
+Message.propTypes = {
+    message: PropTypes.object
+};

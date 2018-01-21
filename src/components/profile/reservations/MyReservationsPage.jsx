@@ -1,14 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { acceptReservation, cancelReservation, getMyReservations } from '../../../requester';
 
-import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
+import { Link } from 'react-router-dom';
 import MyReservationsTable from './MyReservationsTable';
-import Pagination from 'rc-pagination';
-import { cancelReservation, acceptReservation } from "../../../requester";
 import { NotificationManager } from 'react-notifications';
-
-import { getMyReservations } from '../../../requester'
+import Pagination from 'rc-pagination';
+import ProfileHeader from '../ProfileHeader';
+import React from 'react';
 
 export default class MyReservationsPage extends React.Component {
     constructor(props) {
@@ -19,7 +17,7 @@ export default class MyReservationsPage extends React.Component {
             loading: true,
             totalReservations: 0,
             currentPage: 1
-        }
+        };
 
         this.onPageChange = this.onPageChange.bind(this);
     }
@@ -27,7 +25,7 @@ export default class MyReservationsPage extends React.Component {
     componentDidMount() {
         getMyReservations('?page=0').then((data) => {
             this.setState({ reservations: data.content, totalReservations: data.totalElements, loading: false });
-        })
+        });
     }
 
     cancelReservation(id, captchaToken) {
@@ -40,18 +38,18 @@ export default class MyReservationsPage extends React.Component {
             .then(res => this._operate(res, id, true));
     }
 
-    onPageChange = (page) => {
+    onPageChange(page) {
         this.setState({
             currentPage: page,
             loadingListing: true
-        })
+        });
 
         getMyReservations(`?page=${page - 1}`).then(data => {
-            this.setState({ 
+            this.setState({
                 reservations: data.content,
                 totalReservations: data.totalElements,
                 loadingListing: false
-            })
+            });
         });
     }
 
@@ -59,16 +57,16 @@ export default class MyReservationsPage extends React.Component {
 
         const textItemRender = (current, type, element) => {
             if (type === 'prev') {
-              return <div className="rc-prev">&lsaquo;</div>;
+                return <div className="rc-prev">&lsaquo;</div>;
             }
             if (type === 'next') {
-              return <div className="rc-next">&rsaquo;</div>;
+                return <div className="rc-next">&rsaquo;</div>;
             }
             return element;
-          };          
+        };
 
         if (this.state.loading) {
-            return <div className="loader"></div>
+            return <div className="loader"></div>;
         }
 
         return (
@@ -101,7 +99,7 @@ export default class MyReservationsPage extends React.Component {
 
     _operate(res, id, isAccepted) {
         if (res.success) {
-            NotificationManager.success(res.message, 'Reservation Operations')
+            NotificationManager.success(res.message, 'Reservation Operations');
 
             let newReservations = this.state.reservations.map(r => {
                 if (r.id === id) {
@@ -113,7 +111,7 @@ export default class MyReservationsPage extends React.Component {
 
             this.setState({ reservations: newReservations });
         } else {
-            NotificationManager.error(res.message, 'Reservation Operations')
+            NotificationManager.error(res.message, 'Reservation Operations');
         }
     }
 }
