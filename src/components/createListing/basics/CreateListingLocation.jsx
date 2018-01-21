@@ -146,7 +146,7 @@ export default class CreateListingLocation extends React.Component {
                             &nbsp;Back</NavLink>
                         
                         {this.validateInput() 
-                            ? <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            ? <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(5) }}>Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

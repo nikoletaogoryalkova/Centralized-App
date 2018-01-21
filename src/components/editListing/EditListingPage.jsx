@@ -16,8 +16,18 @@ import EditListingHouseRules from './guestSettings/EditListingHouseRules';
 import EditListingChecking from './guestSettings/EditListingChecking';
 import EditListingPrice from './guestSettings/EditListingPrice';
 import Footer from '../Footer';
+import DefaultListing from './DefaultListing'
 
-import { getCountries, getAmenitiesByCategory, getMyListingById, editListing, getPropertyTypes, getCities, getCurrencies } from '../../requester';
+import { 
+    getCountries, 
+    getAmenitiesByCategory,
+    getMyListingById, 
+    getListingProgress, 
+    editListing,
+    getPropertyTypes, 
+    getCities, 
+    getCurrencies 
+} from '../../requester';
 
 import { Config } from "../../config";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -32,12 +42,13 @@ class EditListingPage extends React.Component {
 
         this.state = {
             listingId: 0,
-            type: '1',
-            country: '',
-            propertyType: '1',
-            roomType: 'entire',
-            dedicatedSpace: 'true',
-            propertySize: '0',
+            progressId: 0,
+            type: DefaultListing.type,
+            country: DefaultListing.country,
+            propertyType: DefaultListing.propertyType,
+            roomType: DefaultListing.roomType,
+            dedicatedSpace: DefaultListing.dedicatedSpace,
+            propertySize: DefaultListing.propertySize,
             guestsIncluded: 1,
             bedroomsCount: 1,
             bedrooms: [ this.createBedroom(), ],
@@ -65,7 +76,7 @@ class EditListingPage extends React.Component {
             defaultDailyPrice: '0',
             cleaningFee: '0',
             securityDeposit: '0',
-            currency: '2', // USD
+            currency: '2',
             loading: false,
             propertyTypes: [],
             countries: [],
@@ -83,7 +94,7 @@ class EditListingPage extends React.Component {
         this.toggleFacility = this.toggleFacility.bind(this);
         this.addHouseRule = this.addHouseRule.bind(this);
         this.removeHouseRule = this.removeHouseRule.bind(this);
-        this.createListing = this.createListing.bind(this);
+        this.persistListing = this.persistListing.bind(this);
         this.updateCountries = this.updateCountries.bind(this);
         this.updateCities = this.updateCities.bind(this);
         this.onImageDrop = this.onImageDrop.bind(this);
@@ -95,47 +106,59 @@ class EditListingPage extends React.Component {
 
     componentWillMount() {
         const id = this.props.match.params.id;
-        getMyListingById(this.props.match.params.id).then(data => {
-            console.log(data);
-            this.setState({
-                listingId: id,
-                type: data.listingType.toString(),
-                country: data.country,
-                propertyType: data.propertyType.toString(),
-                roomType: data.details.roomType ? data.details.roomType : 'entire',
-                dedicatedSpace: data.details.dedicatedSpace,
-                propertySize: data.details.size ? data.details.size : '0',
-                guestsIncluded: data.guestsIncluded ? data.guestsIncluded : 0,
-                bedroomsCount: data.details.bedroomsCount ? data.details.bedroomsCount : 0,
-                bedrooms: data.rooms,
-                bathrooms: data.details.bathrooms ? data.details.bathrooms : 0,
-                facilities: new Set(data.amenities.map(a => a.id)),
-                street: data.description.street,
-                city: data.city,
-                name: data.name,
-                text: this.getText(data.description.text),
-                interaction: data.description.interaction,
-                uploadedFilesUrls: this.populateFileUrls(data.pictures),
-                uploadedFilesThumbUrls: this.populateFileThumbUrls(data.pictures),
-                suitableForChildren: data.details.suitableForChildren ? data.details.suitableForChildren : 'false',
-                suitableForInfants: data.details.suitableForInfants ? data.details.suitableForInfants : 'false',
-                suitableForPets: data.details.suitableForPets ? data.details.suitableForPets : 'false',
-                smokingAllowed: data.details.smokingAllowed ? data.details.smokingAllowed : 'false',
-                eventsAllowed: data.details.eventsAllowed ? data.details.eventsAllowed : 'false',
-                otherHouseRules: data.houseRules && data.houseRules.length > 0 ? new Set(data.houseRules.split('\r\n')) : new Set(),
-                checkinStart: moment(data.checkinStart, "HH:mm:ss").format("HH:mm"),
-                checkinEnd: moment(data.checkinEnd, "HH:mm:ss").format("HH:mm"),
-                checkoutStart: moment(data.checkoutStart, "HH:mm:ss").format("HH:mm"),
-                checkoutEnd: moment(data.checkoutEnd, "HH:mm:ss").format("HH:mm"),
-                defaultDailyPrice: data.defaultDailyPrice,
-                cleaningFee: data.cleaningFee,
-                depositRate: data.depositRate,
-                currency: data.currency,
+        const search = this.props.location.search;
+        if (search) {
+            this.setState({progressId: id});
+            getListingProgress(id).then(data => {
+                console.log(data);
+                this.setListingData(data);
+                const step = search.split('=')[1];
+                const path = `/profile/listings/edit/${step}/${id}`
+                this.props.history.push(path);
+            })
+        } else {
+            this.setState({listingId: id});
+            getMyListingById(id).then(data => {
+                this.setListingData(data);
             });
-            
-            console.log(this.state);
-        });
+        }
+    }
 
+    setListingData(data) {
+        this.setState({
+            type: data.listingType.toString(),
+            country: data.country,
+            propertyType: data.propertyType.toString(),
+            roomType: data.details.roomType ? data.details.roomType : 'entire',
+            dedicatedSpace: data.details.dedicatedSpace,
+            propertySize: data.details.size ? data.details.size : '0',
+            guestsIncluded: data.guestsIncluded ? data.guestsIncluded : 0,
+            bedroomsCount: data.details.bedroomsCount ? data.details.bedroomsCount : 0,
+            bedrooms: data.rooms,
+            bathrooms: data.details.bathrooms ? data.details.bathrooms : 0,
+            facilities: new Set(data.amenities.map(a => a.id)),
+            street: data.description.street,
+            city: data.city,
+            name: data.name,
+            text: this.getText(data.description.text),
+            interaction: data.description.interaction,
+            uploadedFilesUrls: this.populateFileUrls(data.pictures),
+            uploadedFilesThumbUrls: this.populateFileThumbUrls(data.pictures),
+            suitableForChildren: data.details.suitableForChildren ? data.details.suitableForChildren : 'false',
+            suitableForInfants: data.details.suitableForInfants ? data.details.suitableForInfants : 'false',
+            suitableForPets: data.details.suitableForPets ? data.details.suitableForPets : 'false',
+            smokingAllowed: data.details.smokingAllowed ? data.details.smokingAllowed : 'false',
+            eventsAllowed: data.details.eventsAllowed ? data.details.eventsAllowed : 'false',
+            otherHouseRules: data.houseRules && data.houseRules.length > 0 ? new Set(data.houseRules.split('\r\n')) : new Set(),
+            checkinStart: moment(data.checkinStart, "HH:mm:ss").format("HH:mm"),
+            checkinEnd: moment(data.checkinEnd, "HH:mm:ss").format("HH:mm"),
+            checkoutStart: moment(data.checkoutStart, "HH:mm:ss").format("HH:mm"),
+            checkoutEnd: moment(data.checkoutEnd, "HH:mm:ss").format("HH:mm"),
+            defaultDailyPrice: data.defaultDailyPrice,
+            cleaningFee: data.cleaningFee,
+            depositRate: data.depositRate,
+            currency: data.currency,
+        });
     }
 
     componentDidMount() {
@@ -318,8 +341,30 @@ class EditListingPage extends React.Component {
         return fileThumbUrls;
     }
 
-    createListing(captchaToken) {
+    persistListing(captchaToken) {
         this.setState({loading: true});
+        let listing = this.getListingObject();
+        editListing(this.state.listingId, listing, captchaToken).then((res) => {
+            if (res.success) {
+                this.setState({loading: false});
+                this.props.history.push('/profile/listings');
+                NotificationManager.success('Successfully updated your profile', 'Edit new listing');
+                
+            } else {
+                this.setState({loading: false});
+                res.response.then(res => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    getListingObject() {
         let listing = {
             listingType: this.state.type,
             type: this.state.propertyType,
@@ -388,27 +433,8 @@ class EditListingPage extends React.Component {
             currency: this.state.currency,
         }
 
-        console.log(this.state.listingId);
-        editListing(this.state.listingId, listing, captchaToken).then((res) => {
-            if (res.success) {
-                this.setState({loading: false});
-                this.props.history.push('/profile/listings');
-                NotificationManager.success('Successfully updated your profile', 'Edit new listing');
-                
-            } else {
-                this.setState({loading: false});
-                res.response.then(res => {
-                    const errors = res.errors;
-                    for (let key in errors) {
-                        if (typeof errors[key] !== 'function') {
-                            NotificationManager.warning(errors[key].message);
-                        }
-                    }
-                });
-            }
-        });
+        return listing;
     }
-
 
     onImageDrop(files) {
         this.handleImageUpload(files)
@@ -453,14 +479,19 @@ class EditListingPage extends React.Component {
         }
     }
 
+    updateProgress(e) {
+
+    }
+
     render() {
+        console.log(this.state)
         return (
             <div>
                 <NotificationContainer />
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
-                <Redirect exact path="/profile/listings/edit/:id" to={`/profile/listings/edit/landing/${this.state.listingId}`} />
+                {/* <Redirect exact path="/profile/listings/edit/:id" to={`/profile/listings/edit/landing/${this.state.listingId}`} /> */}
                 <Switch>
-                    <Route exact path={`/profile/listings/edit/landing/${this.state.listingId}`} render={() => <EditListingLandingPage
+                    <Route path={`/profile/listings/edit/landing/${this.state.listingId}`} render={() => <EditListingLandingPage
                         values={this.state}
                         onChange={this.onChange} />} />
                     <Route exact path={`/profile/listings/edit/placetype/${this.state.listingId}`} render={() => <EditListingPlaceType
@@ -505,7 +536,7 @@ class EditListingPage extends React.Component {
                     <Route exact path={`/profile/listings/edit/price/${this.state.listingId}`} render={() => <EditListingPrice
                         values={this.state}
                         onChange={this.onChange}
-                        createListing={this.createListing} />} />
+                        persistListing={this.persistListing} />} />
                 </Switch>
                 <Footer />
             </div>
@@ -514,3 +545,40 @@ class EditListingPage extends React.Component {
 }
 
 export default withRouter(EditListingPage);
+
+// const DefaultListing = {
+//     "type": "1",
+//     "country": "1",
+//     "propertyType": "1",
+//     "roomType": "entire",
+//     "dedicatedSpace": "true",
+//     "propertySize": "0",
+//     "guestsIncluded": 1,
+//     "bedroomsCount": 1,
+//     "bedrooms": [{ "singleBedCount": 0, "doubleBedCount": 0, "kingBedCount": 0 }],
+//     "bathrooms": 1,
+//     "facilities": [],
+//     "street": "",
+//     "city": "",
+//     "name": "",
+//     "text": "",
+//     "interaction": "",
+//     "uploadedFiles": [],
+//     "uploadedFilesUrls": [],
+//     "uploadedFilesThumbUrls": [],
+//     "suitableForChildren": "false",
+//     "suitableForInfants": "false",
+//     "suitableForPets": "false",
+//     "smokingAllowed": "false",
+//     "eventsAllowed": "false",
+//     "otherRuleText": "",
+//     "otherHouseRules": [],
+//     "checkinStart": "14:00",
+//     "checkinEnd": "20:00",
+//     "checkoutStart": "00:00",
+//     "checkoutEnd": "13:00",
+//     "defaultDailyPrice": "0",
+//     "cleaningFee": "0",
+//     "securityDeposit": "0",
+//     "currency": "2"
+// }

@@ -101,7 +101,7 @@ export default class CreateListingChecking extends React.Component {
                         <NavLink to="/profile/listings/create/houserules" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(9) }}>Next</NavLink>
                     </div>
                 </div>
             </div>

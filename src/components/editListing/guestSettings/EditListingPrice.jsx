@@ -80,7 +80,7 @@ export default class EditListingPrice extends React.Component {
                             &nbsp;Back</NavLink>
                         <NavLink to={`/profile/listings/edit/price/${listingId}`} className="btn btn-primary btn-next" onClick={(e) => { 
                                 e.preventDefault(); 
-                                {/* this.props.createListing(); */}
+                                {/* this.props.persistListing(); */}
                                 this.captcha.execute(); 
                             }} id="btn-continue">Finish</NavLink>
                         
@@ -88,7 +88,7 @@ export default class EditListingPrice extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => {this.props.createListing(token); this.captcha.reset();}}
+                                onChange={token => {this.props.persistListing(token); this.captcha.reset();}}
                             />
                     </div>
                 </div>
