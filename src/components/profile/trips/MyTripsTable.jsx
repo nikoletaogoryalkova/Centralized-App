@@ -2,7 +2,7 @@ import React from 'react';
 import { NotificationContainer } from 'react-notifications';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Link } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import CancelTripModal from './modals/CancelTripModal';
@@ -15,7 +15,7 @@ export default class MyTripsTable extends React.Component {
             selectedId: '',
             selectedTripId: '',
             showCancelTripModal: false,
-        }
+        };
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -71,7 +71,7 @@ export default class MyTripsTable extends React.Component {
                 </div>
                 {this.props.trips.map(trip => {
                     return (
-                        <div key={trip.id} style={trip.id === this.props.currentTrip ? { backgroundColor: "lightgreen" } : {}} className="row reservation-box">
+                        <div key={trip.id} style={trip.id === this.props.currentTrip ? { backgroundColor: 'lightgreen' } : {}} className="row reservation-box">
                             <div className="col-md-12">
                                 <div className="col-md-1">
                                     <div className="reservation-image-box">
@@ -88,15 +88,15 @@ export default class MyTripsTable extends React.Component {
                                     <div><Link to={`/listings/${trip.listingId}`}><u>{trip.listingName}</u></Link></div>
                                 </div>
                                 <div className="col-md-3">
-                                    <div>{moment(new Date(trip.startDate)).format("DD MMM, YYYY")}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format("DD MMM, YYYY")}</div>
+                                    <div>{moment(new Date(trip.startDate)).format('DD MMM, YYYY')}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format('DD MMM, YYYY')}</div>
                                 </div>
                                 <div className="col-md-2">
-                                    {trip.accepted ? <div>Reservation is accepted and can't be undone</div> : <div><button type="submit" onClick={e => { e.preventDefault(); this.selectTrip(trip.id); this.openModal("showCancelTripModal"); }}>Cancel</button></div>}
+                                    {trip.accepted ? <div>Reservation is accepted and can&#39;t be undone</div> : <div><button type="submit" onClick={e => { e.preventDefault(); this.selectTrip(trip.id); this.openModal('showCancelTripModal'); }}>Cancel</button></div>}
                                     {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                                 </div>
                                 <div className="col-md-2">
-                                    <div className="reservation-status bold">{trip.accepted ? "Accepted" : "Pending"}</div>
+                                    <div className="reservation-status bold">{trip.accepted ? 'Accepted' : 'Pending'}</div>
                                 </div>
                             </div>
                             <div className="reservation-box-pending col-md-12">
@@ -104,15 +104,21 @@ export default class MyTripsTable extends React.Component {
                                     <div>
                                         Please pay {trip.locPrice} LOC to <a href={`https://etherscan.io/address/${trip.hostLocAddress}`} target="_blank">{trip.hostLocAddress.substr(0, 7)}</a>
                                         <CopyToClipboard text={trip.hostLocAddress}>
-                                            <button><i class="fa fa-link" aria-hidden="true" title="Copy LOC Address"></i></button>
+                                            <button><i className="fa fa-link" aria-hidden="true" title="Copy LOC Address"></i></button>
                                         </CopyToClipboard>
-                                        Click <a href="https://medium.com/@LockChainCo/how-to-create-a-personal-wallet-with-myetherwallet-com-and-buy-loc-with-eth-for-beginners-c395fd303d1" target="_blank">here</a> for more instructions.
+                                        Click <a href="https://medium.com/@LockChainCo/how-to-create-a-personal-wallet-with-myetherwallet-com-and-buy-loc-with-eth-for-beginners-c395fd303d1" rel="noopener noreferrer" target="_blank">here</a> for more instructions.
                                     </div> : ''}
                             </div>
                         </div>
-                    )
+                    );
                 })}
             </div>
         );
     }
 }
+
+MyTripsTable.propTypes = {
+    cancelTrip: PropTypes.func,
+    currentTrip: PropTypes.number,
+    trips: PropTypes.array
+};

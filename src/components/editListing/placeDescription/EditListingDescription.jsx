@@ -1,9 +1,9 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { NotificationManager, NotificationContainer } from 'react-notifications';
-
 import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
 import NavEditListing from '../NavEditListing';
+import { NavLink } from 'react-router-dom';
+import { NotificationManager } from 'react-notifications';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Textarea from '../Textarea';
 
 export default class EditListingDescription extends React.Component {
@@ -15,7 +15,7 @@ export default class EditListingDescription extends React.Component {
     }
 
     validateInput() {
-        const { text, interaction } = this.props.values;
+        const { text } = this.props.values;
         if (text.length < 6) {
             return false;
         }
@@ -24,9 +24,9 @@ export default class EditListingDescription extends React.Component {
     }
 
     showErrors() {
-        const { text, interaction } = this.props.values;
+        const { text } = this.props.values;
         if (text.length < 6) {
-            NotificationManager.warning("Summary should be at least 6 characters long")
+            NotificationManager.warning('Summary should be at least 6 characters long');
         }
     }
 
@@ -90,7 +90,7 @@ export default class EditListingDescription extends React.Component {
                         <NavLink to={`/profile/listings/edit/location/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        {this.validateInput() 
+                        {this.validateInput()
                             ? <NavLink to={`/profile/listings/edit/photos/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
@@ -100,3 +100,8 @@ export default class EditListingDescription extends React.Component {
         );
     }
 }
+
+EditListingDescription.propTypes = {
+    values: PropTypes.object,
+    onChange: PropTypes.func
+};

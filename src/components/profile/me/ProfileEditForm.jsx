@@ -1,11 +1,12 @@
-import React from 'react';
+import 'react-notifications/lib/notifications.css';
+
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
 
 import { Config } from '../../../config';
-import { getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
-import 'react-notifications/lib/notifications.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import moment from 'moment';
 import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
+import moment from 'moment';
 
 export default class ProfileEditPage extends React.Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export default class ProfileEditPage extends React.Component {
             cities: [],
             countries: [],
             loading: true
-        }
+        };
 
 
         this.onChange = this.onChange.bind(this);
@@ -68,7 +69,7 @@ export default class ProfileEditPage extends React.Component {
             });
         }).then(() => {
             this.setState({ loading: false });
-        })
+        });
     }
 
     onChange(e) {
@@ -96,7 +97,7 @@ export default class ProfileEditPage extends React.Component {
             city: parseInt(this.state.city, 10),
             birthday: birthday,
             locAddress: this.state.locAddress
-        }
+        };
 
         Object.keys(userInfo).forEach((key) => (userInfo[key] === null || userInfo[key] === '') && delete userInfo[key]);
 
@@ -106,9 +107,9 @@ export default class ProfileEditPage extends React.Component {
                 this.componentDidMount();
             }
             else {
-                NotificationManager.error('Error!', 'Update user profile')
+                NotificationManager.error('Error!', 'Update user profile');
             }
-        })
+        });
 
     }
 
@@ -120,14 +121,14 @@ export default class ProfileEditPage extends React.Component {
         let years = [];
 
         for (let i = (new Date()).getFullYear(); i >= 1940; i--) {
-            years.push(<option key={i} value={i}>{i}</option>)
+            years.push(<option key={i} value={i}>{i}</option>);
         }
 
         return (
             <div id="profile-edit-form">
                 <h2>Edit Profile</h2>
                 <hr />
-                <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
+                <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                     <div className="name">
                         <div className="first">
                             <label htmlFor="fname">First name</label>
@@ -142,7 +143,7 @@ export default class ProfileEditPage extends React.Component {
                     <div className="text"><span>Your public profile only shows your first name.<br />When you request a booking, your host will see your first and last name.</span></div>
                     <div className="birth-sex">
                         <div className="bmonth">
-                            <label htmlFor="bmonth">Birthdate <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                            <label htmlFor="bmonth">Birthdate <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>
                             <select name="month" id="bmonth" onChange={this.onChange} value={this.state.month}>
                                 <option disabled value="">Month</option>
                                 <option value="01">January</option>
@@ -164,8 +165,7 @@ export default class ProfileEditPage extends React.Component {
                             <select name="day" id="bday" onChange={this.onChange} value={this.state.day}>
                                 <option disabled value="">Day</option>
                                 {Array.apply(null, Array(32)).map(function (item, i) {
-                                    if (i > 0)
-                                        return <option key={i} value={i}>{i}</option>
+                                    return i > 0 && <option key={i} value={i}>{i}</option>;
                                 })}
                             </select>
                         </div>
@@ -177,7 +177,7 @@ export default class ProfileEditPage extends React.Component {
                             </select>
                         </div>
                         <div className="sex">
-                            <label htmlFor="sex">Gender <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                            <label htmlFor="sex">Gender <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>
                             <select name="gender" id="sex" onChange={this.onChange} value={this.state.gender}>
                                 <option disabled value="">Gender</option>
                                 <option value="men">Men</option>
@@ -189,13 +189,13 @@ export default class ProfileEditPage extends React.Component {
                     </div>
                     <div className="text"><span>We user this data for analysis and never share it with other users.</span></div>
                     <div className="phone">
-                        <label htmlFor="phone">Phone number <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                        <label htmlFor="phone">Phone number <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>
                         <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
                     </div>
                     <div className="text"><span>We won't share your phone number with other LockChain users.</span></div>
 
                     <div className="loc-address">
-                        <label htmlFor="loc-address">Loc address <img src={Config.getValue("basePath") + "images/icon-lock.png"} className="lock" alt="lock-o" /></label>
+                        <label htmlFor="loc-address">Loc address <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>
                         <input id="loc-address" name="locAddress" value={this.state.locAddress} onChange={this.onChange} type="text" />
                     </div>
 
@@ -211,7 +211,7 @@ export default class ProfileEditPage extends React.Component {
                             <select name="preferredCurrency" id="currency" onChange={this.onChange} value={this.state.preferredCurrency}>
                                 <option disabled value="">Currency</option>
                                 {this.state.currencies.map((item, i) => {
-                                    return <option key={i} value={item.id}>{item.code}</option>
+                                    return <option key={i} value={item.id}>{item.code}</option>;
                                 })}
                             </select>
                         </div>
@@ -223,7 +223,7 @@ export default class ProfileEditPage extends React.Component {
                             <select name="country" id="address" onChange={this.onChange} value={this.state.country}>
                                 <option disabled value="">Country</option>
                                 {this.state.countries.map((item, i) => {
-                                    return <option key={i} value={item.id}>{item.name}</option>
+                                    return <option key={i} value={item.id}>{item.name}</option>;
                                 })}
                             </select>
                         </div>
@@ -231,7 +231,7 @@ export default class ProfileEditPage extends React.Component {
                             <select name="city" onChange={this.onChange} value={this.state.city}>
                                 <option disabled value="">City</option>
                                 {this.state.countries.some(x => x.id === parseInt(this.state.country, 10)) && this.state.countries.find(x => x.id === parseInt(this.state.country, 10)).cities.map((item, i) => {
-                                    return <option key={i} value={item.id}>{item.name}</option>
+                                    return <option key={i} value={item.id}>{item.name}</option>;
                                 })}
                             </select>
                         </div>
@@ -242,7 +242,7 @@ export default class ProfileEditPage extends React.Component {
                         ref={el => this.captcha = el}
                         size="invisible"
                         sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                        onChange={token => {this.updateUser(token); this.captcha.reset(); }}
+                        onChange={token => { this.updateUser(token); this.captcha.reset(); }}
                     />
 
                     <input type="submit" className="button save" value="Save" />

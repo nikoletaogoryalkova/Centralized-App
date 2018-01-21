@@ -1,39 +1,39 @@
-import React from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
-import moment from 'moment';
-
-import MainNav from '../MainNav';
-import EditListingLandingPage from './basics/EditListingLandingPage';
-import EditListingPlaceType from './basics/EditListingPlaceType';
-import EditListingAccommodation from './basics/EditListingAccommodation';
-import EditListingFacilities from './basics/EditListingFacilities';
-import EditListingSafetyAmenities from './basics/EditListingSafetyAmenities';
-import EditListingLocation from './basics/EditListingLocation';
-import EditListingTitle from './placeDescription/EditListingTitle';
-import EditListingDescription from './placeDescription/EditListingDescription';
-import EditListingPhotos from './placeDescription/EditListingPhotos';
-import EditListingHouseRules from './guestSettings/EditListingHouseRules';
-import EditListingChecking from './guestSettings/EditListingChecking';
-import EditListingPrice from './guestSettings/EditListingPrice';
-import Footer from '../Footer';
-import DefaultListing from './DefaultListing'
-
-import { 
-    getCountries, 
-    getAmenitiesByCategory,
-    getMyListingById, 
-    getListingProgress, 
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import {
     editListing,
-    getPropertyTypes, 
-    getCities, 
-    getCurrencies 
+    getAmenitiesByCategory,
+    getCities,
+    getCountries,
+    getCurrencies,
+    getListingProgress,
+    getMyListingById,
+    getPropertyTypes
 } from '../../requester';
 
-import { Config } from "../../config";
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { Config } from '../../config';
+import DefaultListing from './DefaultListing';
+import EditListingAccommodation from './basics/EditListingAccommodation';
+import EditListingChecking from './guestSettings/EditListingChecking';
+import EditListingDescription from './placeDescription/EditListingDescription';
+import EditListingFacilities from './basics/EditListingFacilities';
+import EditListingHouseRules from './guestSettings/EditListingHouseRules';
+import EditListingLandingPage from './basics/EditListingLandingPage';
+import EditListingLocation from './basics/EditListingLocation';
+import EditListingPhotos from './placeDescription/EditListingPhotos';
+import EditListingPlaceType from './basics/EditListingPlaceType';
+import EditListingPrice from './guestSettings/EditListingPrice';
+import EditListingSafetyAmenities from './basics/EditListingSafetyAmenities';
+import EditListingTitle from './placeDescription/EditListingTitle';
+import Footer from '../Footer';
+import MainNav from '../MainNav';
+import PropTypes from 'prop-types';
+import React from 'react';
+import moment from 'moment';
 import request from 'superagent';
 import update from 'react-addons-update';
-const host = Config.getValue("apiHost");
+
+const host = Config.getValue('apiHost');
 const LOCKCHAIN_UPLOAD_URL = `${host}images/upload`;
 
 class EditListingPage extends React.Component {
@@ -51,7 +51,7 @@ class EditListingPage extends React.Component {
             propertySize: DefaultListing.propertySize,
             guestsIncluded: 1,
             bedroomsCount: 1,
-            bedrooms: [ this.createBedroom(), ],
+            bedrooms: [this.createBedroom(),],
             bathrooms: 1,
             facilities: new Set(),
             street: '',
@@ -108,16 +108,16 @@ class EditListingPage extends React.Component {
         const id = this.props.match.params.id;
         const search = this.props.location.search;
         if (search) {
-            this.setState({progressId: id});
+            this.setState({ progressId: id });
             getListingProgress(id).then(data => {
                 console.log(data);
                 this.setListingData(data);
                 const step = search.split('=')[1];
-                const path = `/profile/listings/edit/${step}/${id}`
+                const path = `/profile/listings/edit/${step}/${id}`;
                 this.props.history.push(path);
-            })
+            });
         } else {
-            this.setState({listingId: id});
+            this.setState({ listingId: id });
             getMyListingById(id).then(data => {
                 this.setListingData(data);
             });
@@ -150,10 +150,10 @@ class EditListingPage extends React.Component {
             smokingAllowed: data.details.smokingAllowed ? data.details.smokingAllowed : 'false',
             eventsAllowed: data.details.eventsAllowed ? data.details.eventsAllowed : 'false',
             otherHouseRules: data.houseRules && data.houseRules.length > 0 ? new Set(data.houseRules.split('\r\n')) : new Set(),
-            checkinStart: moment(data.checkinStart, "HH:mm:ss").format("HH:mm"),
-            checkinEnd: moment(data.checkinEnd, "HH:mm:ss").format("HH:mm"),
-            checkoutStart: moment(data.checkoutStart, "HH:mm:ss").format("HH:mm"),
-            checkoutEnd: moment(data.checkoutEnd, "HH:mm:ss").format("HH:mm"),
+            checkinStart: moment(data.checkinStart, 'HH:mm:ss').format('HH:mm'),
+            checkinEnd: moment(data.checkinEnd, 'HH:mm:ss').format('HH:mm'),
+            checkoutStart: moment(data.checkoutStart, 'HH:mm:ss').format('HH:mm'),
+            checkoutEnd: moment(data.checkoutEnd, 'HH:mm:ss').format('HH:mm'),
             defaultDailyPrice: data.defaultDailyPrice,
             cleaningFee: data.cleaningFee,
             depositRate: data.depositRate,
@@ -164,7 +164,7 @@ class EditListingPage extends React.Component {
     componentDidMount() {
         getCountries().then(data => {
             this.setState({ countries: data.content });
-            
+
             getCities(this.state.country).then(data => {
                 this.setState({ cities: data.content });
             });
@@ -181,7 +181,7 @@ class EditListingPage extends React.Component {
         getCurrencies().then(data => {
             this.setState({ currencies: data.content });
         });
-    };
+    }
 
     onChange(event) {
         this.setState({
@@ -232,7 +232,7 @@ class EditListingPage extends React.Component {
         bedrooms[bedroom][name] = value;
         this.setState({
             bedrooms: bedrooms,
-        })
+        });
     }
 
     toggleFacility(item) {
@@ -245,7 +245,7 @@ class EditListingPage extends React.Component {
 
         this.setState({
             facilities: fac,
-        })
+        });
     }
 
     getText(text) {
@@ -263,7 +263,7 @@ class EditListingPage extends React.Component {
             this.setState({
                 otherHouseRules: rules,
                 otherRuleText: '',
-            })
+            });
         }
     }
 
@@ -272,7 +272,7 @@ class EditListingPage extends React.Component {
         rules.delete(value);
         this.setState({
             otherHouseRules: rules,
-        })
+        });
     }
 
     createBedroom() {
@@ -297,11 +297,11 @@ class EditListingPage extends React.Component {
             this.setState({ countries: data.content });
         });
     }
-    
+
     onSelect(name, option) {
         this.setState({
             [name]: option.value
-        })
+        });
     }
 
     getPhotos() {
@@ -342,16 +342,16 @@ class EditListingPage extends React.Component {
     }
 
     persistListing(captchaToken) {
-        this.setState({loading: true});
+        this.setState({ loading: true });
         let listing = this.getListingObject();
         editListing(this.state.listingId, listing, captchaToken).then((res) => {
             if (res.success) {
-                this.setState({loading: false});
+                this.setState({ loading: false });
                 this.props.history.push('/profile/listings');
                 NotificationManager.success('Successfully updated your profile', 'Edit new listing');
-                
+
             } else {
-                this.setState({loading: false});
+                this.setState({ loading: false });
                 res.response.then(res => {
                     const errors = res.errors;
                     for (let key in errors) {
@@ -372,50 +372,50 @@ class EditListingPage extends React.Component {
             details: [
                 {
                     value: this.state.roomType,
-                    detail: { name: "roomType" }
+                    detail: { name: 'roomType' }
                 },
                 {
                     value: this.state.propertySize,
-                    detail: { name: "size" }
+                    detail: { name: 'size' }
                 },
                 {
                     value: this.state.bedroomsCount,
-                    detail: { name: "bedroomsCount" }
+                    detail: { name: 'bedroomsCount' }
                 },
                 {
                     value: this.state.bathrooms,
-                    detail: { name: "bathrooms" }
+                    detail: { name: 'bathrooms' }
                 },
                 {
                     value: this.state.suitableForChildren,
-                    detail: { name: "suitableForChildren" }
+                    detail: { name: 'suitableForChildren' }
                 },
                 {
                     value: this.state.suitableForInfants,
-                    detail: { name: "suitableForInfants" }
+                    detail: { name: 'suitableForInfants' }
                 },
                 {
                     value: this.state.suitableForPets,
-                    detail: { name: "suitableForPets" }
+                    detail: { name: 'suitableForPets' }
                 },
                 {
                     value: this.state.smokingAllowed,
-                    detail: { name: "smokingAllowed" }
+                    detail: { name: 'smokingAllowed' }
                 },
                 {
                     value: this.state.eventsAllowed,
-                    detail: { name: "eventsAllowed" }
+                    detail: { name: 'eventsAllowed' }
                 },
                 {
                     value: this.state.dedicatedSpace,
-                    detail: { name: "dedicatedSpace" }
+                    detail: { name: 'dedicatedSpace' }
                 },
             ],
             description: {
                 street: this.state.street,
                 text: this.state.text,
                 interaction: this.state.interaction,
-                houseRules: Array.from(this.state.otherHouseRules).join("\r\n"),
+                houseRules: Array.from(this.state.otherHouseRules).join('\r\n'),
             },
             guestsIncluded: this.state.guestsIncluded,
             rooms: this.state.bedrooms,
@@ -423,21 +423,21 @@ class EditListingPage extends React.Component {
             city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
-            checkinStart: moment(this.state.checkinStart, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkinEnd: moment(this.state.checkinEnd, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutStart: moment(this.state.checkoutStart, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
-            checkoutEnd: moment(this.state.checkoutEnd, "HH:mm").format("YYYY-MM-DDTHH:mm:ss.SSS"),
+            checkinStart: moment(this.state.checkinStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
+            checkinEnd: moment(this.state.checkinEnd, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
+            checkoutStart: moment(this.state.checkoutStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
+            checkoutEnd: moment(this.state.checkoutEnd, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
             defaultDailyPrice: this.state.defaultDailyPrice,
             cleaningFee: this.state.cleaningFee,
             depositRate: this.state.depositRate,
             currency: this.state.currency,
-        }
+        };
 
         return listing;
     }
 
     onImageDrop(files) {
-        this.handleImageUpload(files)
+        this.handleImageUpload(files);
 
         this.setState({
             uploadedFiles: files
@@ -479,12 +479,8 @@ class EditListingPage extends React.Component {
         }
     }
 
-    updateProgress(e) {
-
-    }
-
     render() {
-        console.log(this.state)
+        console.log(this.state);
         return (
             <div>
                 <NotificationContainer />
@@ -582,3 +578,9 @@ export default withRouter(EditListingPage);
 //     "securityDeposit": "0",
 //     "currency": "2"
 // }
+
+EditListingPage.propTypes = {
+    history: PropTypes.object,
+    location: PropTypes.object,
+    match: PropTypes.object
+};
