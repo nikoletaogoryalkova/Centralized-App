@@ -251,7 +251,13 @@ class EditListingPage extends React.Component {
     getText(text) {
         if (text) {
             let index = text.indexOf('Neighborhood:');
-            return text.substr(0, index).trim();
+            console.log(text);
+            if (index >= 0) {
+                return text.substr(0, index).trim();
+            }
+            else {
+                return text.trim();
+            }
         }
     }
 
