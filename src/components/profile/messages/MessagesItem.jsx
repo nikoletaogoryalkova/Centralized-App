@@ -30,7 +30,7 @@ class MessagesItem extends React.Component {
                     <h4 className="bold">{this.props.message.userInfo.fullName}</h4>
                 </div>
                 <div className="col-md-7 message-content">
-                    <p>{this.props.message.lastMessage && this.props.message.lastMessage.message}</p>
+                    <p>{this.props.message.lastMessage.currentUserSender ? 'You: ' : this.props.message.userInfo.fullName + ': '}{this.props.message.lastMessage && this.props.message.lastMessage.message}</p>
                 </div>
                 <div className="col-md-2">
                     <p className="bold">{this.props.message.lastMessage && moment(this.props.message.lastMessage.createdAt, 'DD/MM/YYYY').format('DD MMM, YYYY')}</p>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import moment from 'moment';
 
 export default class CalendarAside extends React.Component {
     render() {
@@ -7,7 +8,7 @@ export default class CalendarAside extends React.Component {
             <div className="calendar-aside">
                 <div className="col-md-12 calendar-aside-header">
                     <div className="col-md-10">
-                        <h3 className="bold">Settings</h3>
+                        <h3 className="bold">Settings - {moment(this.props.date).format('DD MMM')}</h3>
                     </div>
                     <div className="col-md-2">
                         <button className="close" onClick={this.props.onCancel}>x</button>

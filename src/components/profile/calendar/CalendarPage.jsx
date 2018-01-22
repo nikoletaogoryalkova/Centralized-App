@@ -1,6 +1,7 @@
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import {
+    editDefaultDailyPrice,
     getCalendarByListingIdAndDateRange,
     getMyReservations,
     getPropertyById,
@@ -22,6 +23,7 @@ class CalendarPage extends React.Component {
             listing: null,
             prices: null,
             reservations: null,
+            defaultDailyPrice: '',
             // myListings: null,
             selectedDay: '',
             selectedDate: '',
@@ -36,6 +38,7 @@ class CalendarPage extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onListingChange = this.onListingChange.bind(this);
+        this.updateDailyPrice = this.updateDailyPrice.bind(this);
     }
 
 
@@ -63,7 +66,7 @@ class CalendarPage extends React.Component {
             default: currencySign = 'null';
             }
 
-            this.setState({ currencySign: currencySign, listing: data.content });
+            this.setState({ currencySign: currencySign, listing: data.content, defaultDailyPrice: data.defaultDailyPrice });
 
             getCalendarByListingIdAndDateRange(
                 this.props.match.params.id,
@@ -192,6 +195,22 @@ class CalendarPage extends React.Component {
         e.target.className = 'slot-selected';
     }
 
+    updateDailyPrice(captchaToken) {
+        const listingId = this.props.match.params.id;
+        const priceObj = {
+            defaultDailyPrice: this.state.defaultDailyPrice
+        };
+
+        editDefaultDailyPrice(listingId, priceObj, captchaToken).then(res => {
+            if (res.success) {
+                window.location.reload();
+            } else {
+                alert('failure');
+            }
+        });
+
+    }
+
     render() {
         if (this.state.listing === null || this.state.prices === null || this.state.reservations === null) { //|| this.state.myListings === null
             return <div className="loader"></div>;
@@ -210,11 +229,12 @@ class CalendarPage extends React.Component {
                             onSelectSlot={this.onSelectSlot}
                             selectedDay={this.state.selectedDay}
                             selectedDate={this.state.selectedDate}
-
                             price={this.state.price}
+                            defaultDailyPrice={this.state.defaultDailyPrice}
                             available={this.state.available}
                             onSubmit={this.onSubmit}
                             onChange={this.onChange}
+                            updateDailyPrice={this.updateDailyPrice}
                             currencySign={this.state.currencySign}
                             // myListings={this.state.myListings}
                             selectedListing={this.state.selectedListing}
