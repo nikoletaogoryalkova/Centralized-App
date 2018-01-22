@@ -114,7 +114,7 @@ class PropertyReservation extends React.Component {
         const listingPriceLoc = Number((listingPrice / this.props.locRate).toFixed(4));
         console.log(listingPrice);
         console.log(this.props.locRate);
-        const totalLoc = (this.props.nights * listingPriceLoc + cleaningFeeLoc).toFixed(4);
+        const totalLoc = (listingPriceLoc + cleaningFeeLoc).toFixed(4);
         return (
             <div className="hotel-chekin">
                 <div className="hotel-chekin-box">
