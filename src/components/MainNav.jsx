@@ -275,11 +275,11 @@ class MainNav extends React.Component {
                             </div>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
-                                <input type="text" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" placeholder="First Name" />
+                                <input type="text" required="required" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" placeholder="First Name" />
                             </div>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
-                                <input type="text" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
+                                <input type="text" required="required" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
                             </div>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-wallet.png'} alt="ETH wallet" />
@@ -287,7 +287,7 @@ class MainNav extends React.Component {
                             </div>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
-                                <input type="password" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
+                                <input type="password" required="required" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
                             </div>
 
                             <ReCAPTCHA
