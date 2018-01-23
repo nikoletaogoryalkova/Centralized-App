@@ -92,7 +92,7 @@ class ListingsPage extends React.Component {
         }
 
         if (!map.has('priceMin')) {
-            map.set('priceMin', '100');
+            map.set('priceMin', '1');
         }
 
         if (!map.has('priceMax')) {
