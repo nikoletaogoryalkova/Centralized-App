@@ -122,7 +122,7 @@ class Filters extends React.Component {
     }
 
     getPriceValue() {
-        let min = Number(this.props.paramsMap.get('priceMin')) > 100 ? Number(this.props.paramsMap.get('priceMin')) : 100;
+        let min = Number(this.props.paramsMap.get('priceMin')) > 1 ? Number(this.props.paramsMap.get('priceMin')) : 1;
         let max = Number(this.props.paramsMap.get('priceMax')) < 5000 ? Number(this.props.paramsMap.get('priceMax')) : 5000;
         return [min, max];
     }
@@ -156,7 +156,7 @@ class Filters extends React.Component {
         });
 
         this.props.updateParamsMap('propertyStars', Array.from(stars).join(','));
-        this.props.updateParamsMap('priceMin', '100');
+        this.props.updateParamsMap('priceMin', '1');
         this.props.updateParamsMap('priceMax', '5000');
         this.props.updateParamsMap('propertyTypes', Array.from(types).join(','));
         this.props.updateParamsMap('propertyAmenities', Array.from(amenities).join(','));
