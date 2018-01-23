@@ -141,8 +141,8 @@ export async function getCountOfUnreadMessages() {
     });
 }
 
-export async function getAmenitiesFilters() {
-    return sendRequest(`${host}amenities`, RequestMethod.GET).then(res => {
+export async function getCitiesFilters(id) {
+    return sendRequest(`${host}countries/${id}/cities`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

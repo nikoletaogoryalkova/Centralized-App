@@ -1,4 +1,4 @@
-import { getAmenitiesFilters, getPropertyTypes } from '../../requester';
+import { getCitiesFilters, getPropertyTypes } from '../../requester';
 
 import FiltersCheckbox from './FiltersCheckbox';
 import React from 'react';
@@ -12,11 +12,11 @@ class Filters extends React.Component {
 
         this.state = {
             propertyTypeFilters: [],
-            amenitiesFilters: [],
+            citiesFilters: [],
             selectedStars: new Set(),
-            priceValue: [100, 10000],
+            priceValue: [1, 10000],
             selectedPropertyTypes: new Set(),
-            selectedAmenities: new Set(),
+            selectedCities: new Set(),
             loading: true,
         };
 
@@ -25,24 +25,24 @@ class Filters extends React.Component {
     }
 
     async getData() {
-        const [propertyTypeFilters, amenitiesFilters] = await Promise.all([getPropertyTypes(), getAmenitiesFilters()]);
+        const [propertyTypeFilters, citiesFilters] = await Promise.all([getPropertyTypes(), getCitiesFilters(this.props.countryId)]);
         this.setState({
             propertyTypeFilters: propertyTypeFilters.content,
-            amenitiesFilters: amenitiesFilters.content,
+            citiesFilters: citiesFilters.content,
             loading: false
         });
     }
 
     componentDidMount() {
-        Promise.all([getPropertyTypes(), getAmenitiesFilters()])
+        Promise.all([getPropertyTypes(), getCitiesFilters(this.props.countryId)])
             .then((arr) => {
-                const [propertyTypeFilters, amenitiesFilters] = arr;
-                return [propertyTypeFilters, amenitiesFilters];
+                const [propertyTypeFilters, citiesFilters] = arr;
+                return [propertyTypeFilters, citiesFilters];
             })
-            .then(([propertyTypeFilters, amenitiesFilters]) => {
+            .then(([propertyTypeFilters, citiesFilters]) => {
                 this.setState({
                     propertyTypeFilters: propertyTypeFilters.content,
-                    amenitiesFilters: amenitiesFilters.content,
+                    citiesFilters: citiesFilters.content,
                     loading: false
                 });
             });
@@ -55,44 +55,25 @@ class Filters extends React.Component {
 
         this.setState({
             selectedStars: this.getSelectedFilters('propertyStars'),
-            selectedPropertyTypes: this.getSelectedFilters('propertyTypes'),
-            selectedAmenities: this.getSelectedFilters('propertyAmenities')
+            selectedPropertyTypes: this.getSelectedFilters('propertyTypes')
         });
-    }
-
-    componentWillUnmount() {
-        this.setState({ propertyTypeFilters: '', loading: true });
     }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    toggleStar(label) {
-        let stars = this.state.selectedStars;
-        if (stars.has(label)) {
-            stars.delete(label);
+    toggleCity(label) {
+        let cities = this.state.selectedCities;
+        if (cities.has(label)) {
+            cities.delete(label);
         } else {
-            stars.add(label);
+            cities.add(label);
         }
 
-        this.props.updateParamsMap('propertyStars', Array.from(stars).join(','));
+        this.props.updateParamsMap('cities', Array.from(cities).join(','));
         this.setState({
-            selectedStars: stars,
-        });
-    }
-
-    toggleAmenity(label) {
-        let amenities = this.state.selectedAmenities;
-        if (amenities.has(label)) {
-            amenities.delete(label);
-        } else {
-            amenities.add(label);
-        }
-
-        this.props.updateParamsMap('propertyAmenities', Array.from(amenities).join(','));
-        this.setState({
-            selectedAmenities: amenities
+            selectedCities: cities
         });
     }
 
@@ -122,7 +103,7 @@ class Filters extends React.Component {
     }
 
     getPriceValue() {
-        let min = Number(this.props.paramsMap.get('priceMin')) > 100 ? Number(this.props.paramsMap.get('priceMin')) : 100;
+        let min = Number(this.props.paramsMap.get('priceMin')) > 1 ? Number(this.props.paramsMap.get('priceMin')) : 1;
         let max = Number(this.props.paramsMap.get('priceMax')) < 5000 ? Number(this.props.paramsMap.get('priceMax')) : 5000;
         return [min, max];
     }
@@ -144,22 +125,22 @@ class Filters extends React.Component {
 
     clearFilters(e) {
         let stars = new Set();
-        let prices = [100, 5000];
+        let prices = [1, 5000];
         let types = new Set();
-        let amenities = new Set();
+        let cities = new Set();
 
         this.setState({
             selectedStars: stars,
             priceValue: prices,
-            selectedAmenities: amenities,
+            selectedCities: cities,
             selectedPropertyTypes: types,
         });
 
         this.props.updateParamsMap('propertyStars', Array.from(stars).join(','));
-        this.props.updateParamsMap('priceMin', '100');
+        this.props.updateParamsMap('priceMin', '1');
         this.props.updateParamsMap('priceMax', '5000');
         this.props.updateParamsMap('propertyTypes', Array.from(types).join(','));
-        this.props.updateParamsMap('propertyAmenities', Array.from(amenities).join(','));
+        this.props.updateParamsMap('cities', Array.from(cities).join(','));
         this.props.handleSearch(e);
     }
 
@@ -170,12 +151,29 @@ class Filters extends React.Component {
             return (<div className="loader" />);
         }
 
-        let selectedStars = this.state.selectedStars;
         let selectedPropertyTypes = this.state.selectedPropertyTypes;
-        let selectedAmenities = this.state.selectedAmenities;
-
+        let selectedCities = this.state.selectedCities;
+        let citiesFilters = this.state.citiesFilters.filter(x => x.listingsCount > 0);
         return (
             <div className="filter-box">
+                <div className="form-group">
+                    <label>City</label>
+                    <div className="filter-check-box">
+                        {citiesFilters.map((item, i) => {
+                            return (
+                                <div key={i} onClick={() => this.toggleCity(item.name)}>
+                                    <FiltersCheckbox
+                                        key={i}
+                                        text={item.name}
+                                        count={item.listingsCount}
+                                        checked={selectedCities.has(item.name)} />
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+                <div className="clearfix" />
+
                 <div className="form-group">
                     <label>Pricing</label>
 

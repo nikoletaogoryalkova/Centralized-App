@@ -1,14 +1,13 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { getListingsByFilter, getLocRate } from '../../requester';
 
-import Header from '../Header';
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
+import Footer from '../Footer';
+import Header from '../Header';
 import Listing from './Listing';
 import Pagination from 'rc-pagination';
-import Footer from '../Footer';
-
-import { getListingsByFilter, getLocRate } from '../../requester';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class ListingsPage extends React.Component {
     constructor(props) {
@@ -19,7 +18,8 @@ class ListingsPage extends React.Component {
             listingLoading: true,
             currentPage: 1,
             totalItems: 0,
-            locRate: null
+            locRate: null,
+            countryId: ''
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -50,6 +50,7 @@ class ListingsPage extends React.Component {
     componentWillMount() {
         if (this.props.location.search) {
             this.paramsMap = this.getParamsMap();
+            this.setState({ countryId: this.getParamsMap().get("countryId") })
         }
     };
 
@@ -57,7 +58,7 @@ class ListingsPage extends React.Component {
         e.preventDefault();
         this.setState({
             listings: null,
-            listingLoading: true,
+            listingLoading: true
         });
 
         let searchTerms = this.getSearchTerms();
@@ -66,6 +67,7 @@ class ListingsPage extends React.Component {
                 listings: data.content,
                 listingLoading: false,
                 totalItems: data.totalElements,
+                countryId: this.getParamsMap().get("countryId")
             })
         });
 
@@ -92,7 +94,7 @@ class ListingsPage extends React.Component {
         }
 
         if (!map.has('priceMin')) {
-            map.set('priceMin', '100');
+            map.set('priceMin', '1');
         }
 
         if (!map.has('priceMax')) {
@@ -107,6 +109,9 @@ class ListingsPage extends React.Component {
             this.paramsMap.delete(key);
         } else {
             this.paramsMap.set(key, this.createParam(value));
+        }
+        if (key === "countryId") {
+            this.paramsMap.delete("cities");
         }
     }
 
@@ -151,7 +156,7 @@ class ListingsPage extends React.Component {
         const listings = this.state.listings;
         const hasLoadedListings = listings ? true : false;
         const hasListings = hasLoadedListings && listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
-
+        const paramsMap = this.getParamsMap();
         let renderListings;
         let renderPagination;
         if (!hasLoadedListings) {
@@ -174,7 +179,7 @@ class ListingsPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
+                                <Filters key={this.state.countryId} countryId={this.state.countryId} paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
