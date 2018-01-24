@@ -81,13 +81,19 @@ class PropertyReservation extends React.Component {
     render() {
         const calendar = this.props.calendar;
         const invalidDates = calendar.filter(c => !c.available)
-            .map(c => new Date(c.date));
+            .map(c => moment(c.date, 'DD/MM/YYYY'));
         const isInvalidDate = date => {
-            let dateCandidate = new Date(date.format('MM/DD/YYYY'));
+            let dateCandidate = moment(date, 'DD/MM/YYYY');
             for (let invalidDate of invalidDates) {
-                if (invalidDate - dateCandidate === 0) {
+                if (invalidDate.diff(dateCandidate) === 0) {
                     return true;
                 }
+            }
+
+            const now = moment().add('89', 'days');
+            now.hours(0, 0, 0, 0);
+            if (dateCandidate.diff(now) > 0) {
+                return true;
             }
 
             return false;
