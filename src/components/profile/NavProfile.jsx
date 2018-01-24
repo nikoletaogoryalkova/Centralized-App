@@ -1,6 +1,5 @@
+import { NavLink } from 'react-router-dom';
 import React from 'react';
-
-import { Link } from 'react-router-dom';
 
 export default class NavProfile extends React.Component {
     render() {
@@ -8,12 +7,14 @@ export default class NavProfile extends React.Component {
             <nav id="profile-nav">
                 <div className="container">
                     <ul className="navbar-profile">
-                        <li><Link to="/profile/dashboard">Dashboard</Link></li>
-                        <li><Link to="/profile/listings">My Listings</Link></li>
-                        <li><Link to="/profile/reservations">My Reservations</Link></li>
-                        <li><Link to="/profile/trips">My Trips</Link></li>
-                        <li><Link to="/profile/messages">Messages</Link></li>
-                        <li><Link to="/profile/me/edit">Profile</Link></li>
+                        <li><NavLink exact activeClassName="active" to="/profile/dashboard">Dasboard</NavLink></li>
+                        <li><NavLink exact activeClassName="active" to="/profile/listings">My Listings</NavLink></li>
+                        <li><NavLink exact activeClassName="active" to="/profile/reservations">My Reservations</NavLink></li>
+                        <li><NavLink exact activeClassName="active" to="/profile/trips">My Trips</NavLink></li>
+                        <li><NavLink exact activeClassName="active" to="/profile/messages">Messages</NavLink></li>
+                        <li><NavLink exact activeClassName="active" to="/profile/me/edit">Profile</NavLink></li>
+                        <li><NavLink activeClassName="active" to="/admin/listings">All Listings</NavLink></li>
+
                         {/* <li><Link to="/profile/account/notifications">Account</Link></li> */}
                     </ul>
                 </div>

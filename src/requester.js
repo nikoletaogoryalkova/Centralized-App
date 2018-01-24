@@ -256,6 +256,24 @@ export async function getMyListings(searchTerm) {
     });
 }
 
+export async function getAllPublishedListings(searchTerm) {
+    return sendRequest(`${host}admin/listings/published${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getAllUnpublishedListings(searchTerm) {
+    return sendRequest(`${host}admin/listings/unpublished${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function changeListingStatus(listingObj) {
+    return sendRequest(`${host}admin/listings/state`, RequestMethod.POST, listingObj, '').then(res => {
+        return res.response.json();
+    });
+}
+
 export async function getAllMyListings() {
     return sendRequest(`${host}users/me/listings?size=1000000`, RequestMethod.GET).then(res => {
         return res.response.json();
