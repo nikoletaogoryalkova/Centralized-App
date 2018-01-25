@@ -6,7 +6,7 @@ import NavEditListing from '../NavEditListing';
 
 export default class EditListingTitle extends React.Component {
     render() {
-        const { listingId, name } = this.props.values;
+        const { listingId, name, isInProgress } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='66%' />

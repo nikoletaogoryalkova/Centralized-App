@@ -8,7 +8,7 @@ import { Config } from '../../../config';
 
 export default class EditListingPlaceType extends React.Component {
     render() {
-        const { listingId, type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
+        const { listingId, listingType, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize, isInProgress } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='33%' />
@@ -30,8 +30,8 @@ export default class EditListingPlaceType extends React.Component {
                                             <select
                                                 onChange={(e) => this.props.onChange(e)}
                                                 className="form-control"
-                                                name="type"
-                                                value={type}
+                                                name="listingType"
+                                                value={listingType}
                                                 required="required"
                                                 id="listing-type">
                                                 <option value="1">Home</option>
@@ -141,10 +141,10 @@ export default class EditListingPlaceType extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to={`/profile/listings/edit/landing/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to={`/profile/listings/edit/landing/${listingId}`} className="btn btn-default btn-back" id="btn-continue" >
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/accommodation/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/accommodation/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(2) }}} >Next</NavLink>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import NavEditListing from '../NavEditListing';
 
 export default class EditListingChecking extends React.Component {
     render() {
-        const { listingId, checkinStart, checkinEnd, checkoutStart, checkoutEnd } = this.props.values;
+        const { listingId, checkinStart, checkinEnd, checkoutStart, checkoutEnd, isInProgress } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='100%' />
@@ -101,7 +101,7 @@ export default class EditListingChecking extends React.Component {
                         <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/price/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/price/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(10) }}} >Next</NavLink>
                     </div>
                 </div>
             </div>

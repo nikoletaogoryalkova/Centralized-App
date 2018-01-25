@@ -31,7 +31,7 @@ export default class EditListingDescription extends React.Component {
     }
 
     render() {
-        const { listingId, text, interaction } = this.props.values;
+        const { listingId, text, interaction, isInProgress } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='66%' />
@@ -91,7 +91,7 @@ export default class EditListingDescription extends React.Component {
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         {this.validateInput()
-                            ? <NavLink to={`/profile/listings/edit/photos/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            ? <NavLink to={`/profile/listings/edit/photos/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(7) }}} >Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

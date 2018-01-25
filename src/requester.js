@@ -10,6 +10,7 @@ const RequestMethod = {
 };
 
 function getHeaders(headers = null) {
+
     headers = headers || {};
     if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
         headers['Authorization'] = localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'];
@@ -246,7 +247,7 @@ export async function getMyListingById(id) {
 
 export async function getListingProgress(id) {
     return sendRequest(`${host}listings/${id}/progress`, RequestMethod.GET).then(res => {
-        return res.data.json();
+        return res.response.json();
     });
 }
 

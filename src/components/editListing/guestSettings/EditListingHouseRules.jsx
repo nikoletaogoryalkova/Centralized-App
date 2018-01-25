@@ -7,7 +7,7 @@ import NavEditListing from '../NavEditListing';
 export default class EditListingHouseRules extends React.Component {
 
     render() {
-        const { listingId, suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText } = this.props.values;
+        const { listingId, suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText, isInProgress } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='100%' />
@@ -178,7 +178,7 @@ export default class EditListingHouseRules extends React.Component {
                         <NavLink to={`/profile/listings/edit/photos/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/checking/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/checking/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(9) }}} >Next</NavLink>
                     </div>
                 </div>
             </div>

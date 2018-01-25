@@ -10,7 +10,7 @@ import LabeledBedroomCounter from '../LabeledBedroomCounter';
 export default class EditListingAccommodation extends React.Component {
 
     render() {
-        const { listingId, guestsIncluded, bedroomsCount, bedrooms, bathrooms } = this.props.values;
+        const { listingId, guestsIncluded, bedroomsCount, bedrooms, bathrooms, isInProgress } = this.props.values;
         const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
@@ -107,7 +107,7 @@ export default class EditListingAccommodation extends React.Component {
                         <NavLink to={`/profile/listings/edit/placetype/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/facilities/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/facilities/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(3) }}} >Next</NavLink>
                     </div>
                 </div>
             </div>
