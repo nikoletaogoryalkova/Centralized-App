@@ -1,32 +1,128 @@
+import { Link, withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { changeListingStatus, getAllPublishedListings } from '../../../requester';
+import { changeListingStatus, getAllPublishedListings, getCities, getCountries } from '../../../requester';
 
+import AllListingsFilter from './AllListingsFilter';
 import Footer from '../../Footer';
-import { Link } from 'react-router-dom';
 import ListingRow from './ListingRow';
 import Pagination from 'rc-pagination';
 import ProfileHeader from '../ProfileHeader';
 import React from 'react';
+import queryString from 'query-string';
 
-export default class AllPublishedListings extends React.Component {
+class AllPublishedListings extends React.Component {
     constructor(props) {
         super(props);
 
+        let searchMap = queryString.parse(this.props.location.search);
+        console.log(searchMap);
         this.state = {
             listings: [],
             loading: true,
             totalElements: 0,
-            currentPage: 1
+            currentPage: searchMap.page == undefined ? 1 : searchMap.page,
+            country: searchMap.countryId === undefined ? '' : searchMap.countryId,
+            city: searchMap.cityId === undefined ? '' : searchMap.cityId,
+            cities: [],
+            countries: [],
+            name: searchMap.listingName === undefined ? '' : searchMap.listingName,
+            hostEmail: searchMap.host === undefined ? '' : searchMap.host
         };
 
         this.onPageChange = this.onPageChange.bind(this);
         this.updateListingStatus = this.updateListingStatus.bind(this);
+        this.onSelect = this.onSelect.bind(this);
+        this.updateCities = this.updateCities.bind(this);
+        this.updateCountry = this.updateCountry.bind(this);
+        this.updateCities = this.updateCities.bind(this);
+        this.onSearch = this.onSearch.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
-        getAllPublishedListings('?page=0').then((data) => {
+        let searchTerm = this.buildSearchTerm();
+        getAllPublishedListings(searchTerm).then((data) => {
             this.setState({ listings: data.content, loading: false, totalElements: data.totalElements });
         });
+
+        getCities(this.state.country).then(data => {
+            this.setState({ cities: data.content });
+        });
+
+        getCountries().then(data => {
+            this.setState({ countries: data.content });
+        });
+
+    }
+
+    onSearch() {
+        this.setState({ loading: true });
+
+        let searchTerm = this.buildSearchTerm();
+
+        getAllPublishedListings(searchTerm).then((data) => {
+            this.props.history.push(`/admin/listings/published${searchTerm}`);
+            this.setState({ listings: data.content, loading: false, totalElements: data.totalElements });
+        });
+    }
+
+    buildSearchTerm() {
+        let searchTerm = `?page=${this.state.currentPage - 1}`;
+
+        if (this.state.city != '') {
+            searchTerm += `&cityId=${this.state.city}`;
+        }
+
+        if (this.state.name != '') {
+            searchTerm += `&listingName=${this.state.name}`;
+        }
+
+        if (this.state.country != '') {
+            searchTerm += `&countryId=${this.state.country}`;
+        }
+
+        if (this.state.hostEmail != '') {
+            searchTerm += `&host=${this.state.hostEmail}`;
+        }
+        return searchTerm;
+    }
+
+    onSelect(name, option) {
+        this.setState({
+            [name]: option.value
+        });
+    }
+
+    onChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    async updateCountry(option) {
+        if (!option) {
+            return;
+        }
+
+        await this.onSelect('country', option);
+        this.updateCities();
+    }
+
+    updateCities() {
+        getCities(this.state.country).then(data => {
+            this.setState({
+                city: '',
+                cities: data.content,
+            });
+        });
+    }
+
+    async updateCity(option) {
+        if (!option) {
+            return;
+        }
+
+        await this.onSelect('city', option);
     }
 
     onPageChange(page) {
@@ -35,7 +131,13 @@ export default class AllPublishedListings extends React.Component {
             loading: true
         });
 
-        getAllPublishedListings(`?page=${page - 1}`).then(data => {
+        let searchTerm = queryString.parse(this.props.location.search);
+
+        searchTerm.page = this.state.currentPage;
+
+        let newSearchTerm = queryString.stringify(searchTerm);
+        getAllPublishedListings('?' + newSearchTerm).then(data => {
+            this.props.history.push('?' + newSearchTerm);
             this.setState({
                 listings: data.content,
                 totalElements: data.totalElements,
@@ -88,6 +190,20 @@ export default class AllPublishedListings extends React.Component {
                             <li><Link to="/admin/listings/unpublished"><h2>Unpublished</h2></Link></li>
                         </ul>
                         <hr />
+
+                        <AllListingsFilter
+                            countries={this.state.countries}
+                            cities={this.state.cities}
+                            city={this.state.city}
+                            country={this.state.country}
+                            onSelect={this.onSelect}
+                            name={this.state.name}
+                            hostEmail={this.state.hostEmail}
+                            updateCountry={this.updateCountry}
+                            onSearch={this.onSearch}
+                            loading={this.state.countries === [] || this.state.countries.length === 0}
+                            onChange={this.onChange} />
+
                         {this.state.listings.length === 0 ? <div className="text-center p20"><h3>There isn't any published listings</h3></div> :
                             <div className="container">
                                 <div className="table-header bold">
@@ -118,3 +234,5 @@ export default class AllPublishedListings extends React.Component {
         );
     }
 }
+
+export default withRouter(AllPublishedListings);

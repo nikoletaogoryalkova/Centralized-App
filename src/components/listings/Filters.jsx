@@ -1,5 +1,3 @@
-import { getCitiesFilters, getPropertyTypes } from '../../requester';
-
 import FiltersCheckbox from './FiltersCheckbox';
 import React from 'react';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
@@ -11,8 +9,8 @@ class Filters extends React.Component {
         super(props);
 
         this.state = {
-            propertyTypeFilters: [],
-            citiesFilters: [],
+            propertyTypeFilters: this.props.propertyTypes,
+            citiesFilters: this.props.cities,
             selectedStars: new Set(),
             priceValue: [1, 10000],
             selectedPropertyTypes: new Set(),
@@ -22,30 +20,6 @@ class Filters extends React.Component {
 
         this.changeValue = this.changeValue.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
-    }
-
-    async getData() {
-        const [propertyTypeFilters, citiesFilters] = await Promise.all([getPropertyTypes(), getCitiesFilters(this.props.countryId)]);
-        this.setState({
-            propertyTypeFilters: propertyTypeFilters.content,
-            citiesFilters: citiesFilters.content,
-            loading: false
-        });
-    }
-
-    componentDidMount() {
-        Promise.all([getPropertyTypes(), getCitiesFilters(this.props.countryId)])
-            .then((arr) => {
-                const [propertyTypeFilters, citiesFilters] = arr;
-                return [propertyTypeFilters, citiesFilters];
-            })
-            .then(([propertyTypeFilters, citiesFilters]) => {
-                this.setState({
-                    propertyTypeFilters: propertyTypeFilters.content,
-                    citiesFilters: citiesFilters.content,
-                    loading: false
-                });
-            });
     }
 
     componentWillMount() {
@@ -147,26 +121,27 @@ class Filters extends React.Component {
     render() {
         const { loading } = this.state;
 
-        if (loading) {
-            return (<div className="loader" />);
+        if (this.props.cities === [] && this.props.propertyTypes === []) {
+            return <div className="loader"></div>;
         }
 
         let selectedPropertyTypes = this.state.selectedPropertyTypes;
         let selectedCities = this.state.selectedCities;
-        let citiesFilters = this.state.citiesFilters.filter(x => x.listingsCount > 0);
+        let citiesFilters = this.props.cities;
+        console.log(this.props.cities);
         return (
             <div className="filter-box">
                 <div className="form-group">
                     <label>City</label>
                     <div className="filter-check-box">
-                        {citiesFilters.map((item, i) => {
+                        {this.props.cities.map((item, i) => {
                             return (
-                                <div key={i} onClick={() => this.toggleCity(item.name)}>
+                                <div key={i} onClick={() => this.toggleCity(item.text)}>
                                     <FiltersCheckbox
                                         key={i}
-                                        text={item.name}
-                                        count={item.listingsCount}
-                                        checked={selectedCities.has(item.name)} />
+                                        text={item.text}
+                                        count={item.count}
+                                        checked={selectedCities.has(item.text)} />
                                 </div>
                             );
                         })}
@@ -194,14 +169,14 @@ class Filters extends React.Component {
                 <div className="form-group">
                     <label>Property Type</label>
                     <div className="filter-check-box">
-                        {this.state.propertyTypeFilters.map((item, i) => {
+                        {this.props.propertyTypes.map((item, i) => {
                             return (
-                                <div key={i} onClick={() => this.togglePropertyType(item.name)}>
+                                <div key={i} onClick={() => this.togglePropertyType(item.text)}>
                                     <FiltersCheckbox
                                         key={i}
-                                        text={item.name}
+                                        text={item.text}
                                         count={item.count}
-                                        checked={selectedPropertyTypes.has(item.name)} />
+                                        checked={selectedPropertyTypes.has(item.text)} />
                                 </div>
                             );
                         })}

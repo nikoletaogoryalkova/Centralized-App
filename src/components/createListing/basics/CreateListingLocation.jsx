@@ -1,16 +1,17 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { NotificationManager, NotificationContainer } from 'react-notifications';
-import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 import CreateListingBasicsAside from './CreateListingBasicsAside';
 import NavCreateListing from '../NavCreateListing';
+import { NavLink } from 'react-router-dom';
+import React from 'react';
+import Select from 'react-select';
 
 export default class CreateListingLocation extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.validateInput = this.validateInput.bind(this);
         this.showErrors = this.showErrors.bind(this);
         this.updateCountry = this.updateCountry.bind(this);
@@ -32,7 +33,7 @@ export default class CreateListingLocation extends React.Component {
 
         await this.props.onSelect('city', option);
     }
-    
+
     validateInput() {
         const { street, city } = this.props.values;
         if (street.length < 6) {
@@ -49,25 +50,25 @@ export default class CreateListingLocation extends React.Component {
     showErrors() {
         const { street, city, country } = this.props.values;
         if (street.length < 6) {
-            NotificationManager.warning("Address should be at least 6 characters long");
+            NotificationManager.warning('Address should be at least 6 characters long');
         }
 
         if (!city || city === '') {
-            NotificationManager.warning("City is required");
+            NotificationManager.warning('City is required');
         }
 
         if (!country || country === '') {
-            NotificationManager.warning("Country is required");
+            NotificationManager.warning('Country is required');
         }
     }
 
     render() {
         const { country, countries, city, cities, street } = this.props.values;
         const renderCountries = countries.map((item, i) => {
-            return { value: item.id, label: item.name }
+            return { value: item.id, label: item.name };
         });
         const renderCities = cities.map((item, i) => {
-            return { value: item.id, label: item.name }
+            return { value: item.id, label: item.name };
         });
         return (
             <div>
@@ -91,7 +92,7 @@ export default class CreateListingLocation extends React.Component {
                                                     placeholder="Country"
                                                     className="form-control form-control-select"
                                                     clearable={false}
-                                                    style={{border: 'none'}}
+                                                    style={{ border: 'none' }}
                                                     value={country}
                                                     onChange={this.updateCountry}
                                                     options={renderCountries}
@@ -105,7 +106,7 @@ export default class CreateListingLocation extends React.Component {
                                                     placeholder="City"
                                                     className="form-control form-control-select"
                                                     clearable={false}
-                                                    style={{border: 'none'}}
+                                                    style={{ border: 'none' }}
                                                     value={city}
                                                     onChange={option => this.props.onSelect('city', option)}
                                                     options={renderCities}
@@ -144,9 +145,9 @@ export default class CreateListingLocation extends React.Component {
                         <NavLink to="/profile/listings/create/safetyamenities" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        
-                        {this.validateInput() 
-                            ? <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(5) }}>Next</NavLink>
+
+                        {this.validateInput()
+                            ? <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(5); }}>Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

@@ -1,8 +1,7 @@
-import React from 'react';
-import {withRouter} from 'react-router-dom';
-
 import DateRangePicker from 'react-bootstrap-daterangepicker';
+import React from 'react';
 import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 class DatePicker extends React.Component {
     render() {
@@ -26,21 +25,21 @@ class DatePicker extends React.Component {
                             endDate={this.props.endDate}
                             minDate={moment().format('DD/MM/YYYY')}
                             maxDate={moment().add(90, 'days').format('DD/MM/YYYY')}
-                            locale={{format: 'DD/MM/YYYY'}}>
+                            locale={{ format: 'DD/MM/YYYY' }}>
                             <input className="form-control"
-                                   required="required"
-                                   autoComplete="off"
-                                   placeholder="Select date"
-                                   name="stay"/>
+                                required="required"
+                                autoComplete="off"
+                                placeholder="Select date"
+                                name="stay" />
                         </DateRangePicker>
                     </div>
                 </div>
 
-                <div id="search-nights" style={{minWidth: searchNightsWidth + '%'}}>
+                <div id="search-nights" style={{ minWidth: searchNightsWidth + '%' }}>
                     <span>{this.props.nights} nights</span>
                 </div>
             </div>
-        )
+        );
     }
 }
 

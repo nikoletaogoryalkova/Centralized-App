@@ -2040,15 +2040,6 @@ li.dropdown {
     font-weight: bold;
 }
 
-.my-reservations button {
-    background: none;
-    border: none;
-}
-
-.my-reservations button:hover {
-    color: #d77a61;
-}
-
 #profile-mylistings::after {
     clear: both;
     display: block;

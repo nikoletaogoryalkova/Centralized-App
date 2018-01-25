@@ -19,7 +19,9 @@ class ListingsPage extends React.Component {
             currentPage: 1,
             totalItems: 0,
             locRate: null,
-            countryId: ''
+            countryId: '',
+            cities: [],
+            propertyTypes: []
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -32,10 +34,12 @@ class ListingsPage extends React.Component {
             getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
                 getLocRate().then((loc) => {
                     this.setState({
-                        listings: data.content,
-                        totalItems: data.totalElements,
+                        listings: data.filteredListings.content,
+                        totalItems: data.filteredListings.totalElements,
                         locRate: loc[0].price_eur,
-                        listingLoading: false
+                        listingLoading: false,
+                        cities: data.cities,
+                        propertyTypes: data.types
                     });
                 })
             });
@@ -64,11 +68,18 @@ class ListingsPage extends React.Component {
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms).then(data => {
             this.setState({
-                listings: data.content,
+                listings: data.filteredListings.content,
                 listingLoading: false,
-                totalItems: data.totalElements,
-                countryId: this.getParamsMap().get("countryId")
+                totalItems: data.filteredListings.totalElements,
+                countryId: this.getParamsMap().get("countryId"),
             })
+
+            if (!this.getParamsMap().get("cities") || !this.getParamsMap().get("propertyTypes")) {
+                this.setState({
+                    cities: data.cities,
+                    propertyTypes: data.types
+                });
+            }
         });
 
         let url = `/listings/?${searchTerms}`;
@@ -133,9 +144,9 @@ class ListingsPage extends React.Component {
         getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
             getLocRate().then((loc) => {
                 this.setState({
-                    listings: data.content,
+                    listings: data.filteredListings.content,
                     listingLoading: false,
-                    totalItems: data.totalElements,
+                    totalItems: data.filteredListings.totalElements,
                     locRate: loc[0].price_eur
                 });
             })
@@ -179,7 +190,7 @@ class ListingsPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters key={this.state.countryId} countryId={this.state.countryId} paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
+                                <Filters cities={this.state.cities} propertyTypes={this.state.propertyTypes} key={this.state.countryId} countryId={this.state.countryId} paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
