@@ -1,8 +1,9 @@
 import { Link, withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { changeListingStatus, getAllUnpublishedListings, getCities, getCountries } from '../../../requester';
+import { changeListingStatus, contactHost, getAllUnpublishedListings, getCities, getCountries } from '../../../requester';
 
 import AllListingsFilter from './AllListingsFilter';
+import ContactHostModal from '../../property/ContactHostModal';
 import Footer from '../../Footer';
 import ListingRow from './ListingRow';
 import Pagination from 'rc-pagination';
@@ -25,7 +26,8 @@ class AllUnpublishedListings extends React.Component {
             cities: [],
             countries: [],
             name: searchMap.listingName === undefined ? '' : searchMap.listingName,
-            hostEmail: searchMap.host === undefined ? '' : searchMap.host
+            hostEmail: searchMap.host === undefined ? '' : searchMap.host,
+            isShownContactHostModal: false
         };
 
         this.onPageChange = this.onPageChange.bind(this);
@@ -36,6 +38,9 @@ class AllUnpublishedListings extends React.Component {
         this.updateCities = this.updateCities.bind(this);
         this.onSearch = this.onSearch.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.sendMessageToHost = this.sendMessageToHost.bind(this);
     }
 
     componentDidMount() {
@@ -164,6 +169,26 @@ class AllUnpublishedListings extends React.Component {
         });
     }
 
+    sendMessageToHost(id, message, captchaToken) {
+        this.setState({ loading: true });
+        let contactHostObj = {
+            message: message
+        };
+
+        contactHost(id, contactHostObj, captchaToken)
+            .then(res => {
+                this.props.history.push(`/profile/messages/chat/${res.conversation}`);
+            });
+    }
+
+    openModal(id) {
+        this.setState({ isShownContactHostModal: true, selectedListing: id });
+    }
+
+    closeModal() {
+        this.setState({ isShownContactHostModal: false });
+    }
+
     render() {
         if (this.state.loading) {
             return <div className="loader"></div>;
@@ -204,12 +229,15 @@ class AllUnpublishedListings extends React.Component {
                             loading={this.state.countries === [] || this.state.countries.length === 0}
                             onChange={this.onChange} />
 
+                        <ContactHostModal id={this.state.selectedListing} isActive={this.state.isShownContactHostModal} closeModal={this.closeModal} sendMessageToHost={this.sendMessageToHost} />
+
+
                         {this.state.listings.length === 0 ? <div className="text-center p20"><h3>There isn't any unpublished listings</h3></div> :
                             <div className="container">
                                 <div className="table-header bold">
-                                    <div className="col-md-2">
+                                    <div className="col-md-1">
                                     </div>
-                                    <div className="col-md-5">
+                                    <div className="col-md-4">
                                         <span>Name</span>
                                     </div>
                                     <div className="col-md-2">
@@ -218,9 +246,12 @@ class AllUnpublishedListings extends React.Component {
                                     <div className="col-md-3">
                                         <span>Actions</span>
                                     </div>
+                                    <div className="col-md-2">
+                                        <span>Contact host</span>
+                                    </div>
                                 </div>
                                 {this.state.listings.map((item, i) => {
-                                    return <ListingRow action="Publish" updateListingStatus={this.updateListingStatus} listing={item} key={i} />;
+                                    return <ListingRow action="Publish" updateListingStatus={this.updateListingStatus} listing={item} key={i} openModal={this.openModal} />;
                                 })}
 
                                 <div className="pagination-box">

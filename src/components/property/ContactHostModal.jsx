@@ -43,7 +43,7 @@ class ContactHostModal extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => { this.props.sendMessageToHost(this.props.match.params.id, this.state.message, token); }}
+                                onChange={token => { this.props.sendMessageToHost(this.props.id, this.state.message, token); }}
                             />
 
                             <button type="submit" className="btn btn-primary">Send message</button>

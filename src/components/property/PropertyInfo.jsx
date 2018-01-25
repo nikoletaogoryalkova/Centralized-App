@@ -40,7 +40,7 @@ class PropertyInfo extends React.Component {
             <section id="hotel-info">
                 <div className="container">
                     <div className="hotel-content" id="overview">
-                        <ContactHostModal isActive={this.props.isShownContactHostModal} closeModal={this.props.closeModal} sendMessageToHost={this.props.sendMessageToHost} />
+                        <ContactHostModal id={this.props.match.params.id} isActive={this.props.isShownContactHostModal} closeModal={this.props.closeModal} sendMessageToHost={this.props.sendMessageToHost} />
                         <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
                         <h1> {this.props.data.name} </h1>
                         <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
