@@ -8,7 +8,7 @@ import { Config } from '../../../config';
 
 export default class CreateListingPlaceType extends React.Component {
     render() {
-        const { type, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
+        const { listingType, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = this.props.values;
         return (
             <div>
                 <NavCreateListing progress='33%' />
@@ -30,8 +30,8 @@ export default class CreateListingPlaceType extends React.Component {
                                             <select
                                                 onChange={(e) => this.props.onChange(e)}
                                                 className="form-control"
-                                                name="type"
-                                                value={type}
+                                                name="listingType"
+                                                value={listingType}
                                                 required="required"
                                                 id="listing-type">
                                                 <option value="1">Home</option>

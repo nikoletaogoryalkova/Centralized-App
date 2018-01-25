@@ -43,7 +43,7 @@ class CreateListingPage extends React.Component {
         super(props);
 
         this.state = {
-            type: '1',
+            listingType: '1',
             country: '1',
             propertyType: '1',
             roomType: 'entire',
@@ -326,7 +326,7 @@ class CreateListingPage extends React.Component {
 
     createListingObject() {
         let listing = {
-            listingType: this.state.type,
+            listingType: this.state.listingType,
             type: this.state.propertyType,
             country: this.state.country,
             details: [
