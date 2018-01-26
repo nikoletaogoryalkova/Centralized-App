@@ -7,6 +7,7 @@ import Header from '../Header';
 import Listing from './Listing';
 import Pagination from 'rc-pagination';
 import React from 'react';
+import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 
 class ListingsPage extends React.Component {
@@ -65,7 +66,12 @@ class ListingsPage extends React.Component {
             listingLoading: true
         });
 
+        let oldSearchTerms = queryString.parse(this.props.location.search);
+        let newSearchTerms = this.getParamsMap();
         let searchTerms = this.getSearchTerms();
+
+
+
         getListingsByFilter(searchTerms).then(data => {
             this.setState({
                 listings: data.filteredListings.content,
@@ -74,7 +80,18 @@ class ListingsPage extends React.Component {
                 countryId: this.getParamsMap().get("countryId"),
             })
 
-            if (!this.getParamsMap().get("cities") || !this.getParamsMap().get("propertyTypes")) {
+            if (!this.getParamsMap().get("cities") && !this.getParamsMap().get("propertyTypes")) {
+                this.setState({
+                    cities: data.cities,
+                    propertyTypes: data.types
+                });
+            }
+            console.log(oldSearchTerms.countryId);
+            console.log(newSearchTerms.countryId);
+            if (oldSearchTerms.countryId !== newSearchTerms.get("countryId") ||
+                oldSearchTerms.startDate !== newSearchTerms.get("startDate") ||
+                oldSearchTerms.endDate !== newSearchTerms.get("endDate") ||
+                oldSearchTerms.guests !== newSearchTerms.get("guests")) {
                 this.setState({
                     cities: data.cities,
                     propertyTypes: data.types

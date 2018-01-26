@@ -2023,11 +2023,11 @@ li.dropdown {
     margin-right: 5px;
 }
 
-.my-reservations .reservation-box .reservation-image-box {
+.reservation-image-box {
     text-align: center;
 }
 
-.my-reservations .reservation-box .reservation-image-box span {
+.reservation-image-box span {
     border-radius: 50%;
     margin: 0 auto;
 }
