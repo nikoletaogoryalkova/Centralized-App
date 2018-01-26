@@ -49,9 +49,11 @@ class AllUnpublishedListings extends React.Component {
             this.setState({ listings: data.content, loading: false, totalElements: data.totalElements });
         });
 
-        getCities(this.state.country).then(data => {
-            this.setState({ cities: data.content });
-        });
+        if (this.state.country !== '') {
+            getCities(this.state.country).then(data => {
+                this.setState({ cities: data.content });
+            });
+        }
 
         getCountries().then(data => {
             this.setState({ countries: data.content });
