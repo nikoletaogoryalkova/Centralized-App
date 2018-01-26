@@ -7,22 +7,19 @@ export default class NavProfile extends React.Component {
         super(props);
 
         this.state = {
-            currentUserRole: '',
+            roles: '',
             loading: true
         };
     }
 
     componentDidMount() {
         getCurrentLoggedInUserInfo().then((data) => {
-            this.setState({ currentUserRole: data.roles[0].name, loading: false });
+            this.setState({ roles: data.roles, loading: false });
         });
     }
 
     isOnlyForAdmin() {
-        if (this.state.currentUserRole === 'ADMIN') {
-            return true;
-        }
-        return false;
+        return this.state.roles.filter(c => c.name === 'ADMIN').length > 0;
     }
 
     render() {
