@@ -1754,6 +1754,11 @@ li.dropdown {
     padding-top: 33px;
 }
 
+#profile-mylistings ul.profile-mylistings-active>li.edit-new {
+    width: 200px;
+    padding-top: 33px;
+}
+
 #profile-mylistings ul.profile-mylistings-active>li.edit>a {
     font-size: 20px;
     font-family: 'FuturaStd-Medium', sans-serif;

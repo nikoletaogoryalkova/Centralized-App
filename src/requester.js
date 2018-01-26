@@ -257,6 +257,12 @@ export async function getMyListings(searchTerm) {
     });
 }
 
+export async function getMyListingsInProgress(searchTerm) {
+    return sendRequest(`${host}users/me/listings/incomplete${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
 export async function getAllPublishedListings(searchTerm) {
     return sendRequest(`${host}admin/listings/published${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}`, RequestMethod.GET).then(res => {
         return res.response.json();
