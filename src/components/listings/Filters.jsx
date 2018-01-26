@@ -189,7 +189,7 @@ class Filters extends React.Component {
                 </div>
 
                 <div className="form-group">
-                    <button type="submit" onClick={this.props.handleSearch} className="btn btn-primary">See Hotels</button>
+                    <button type="submit" onClick={this.props.handleSearch} className="btn btn-primary">Apply Filters</button>
                 </div>
             </div>
         );

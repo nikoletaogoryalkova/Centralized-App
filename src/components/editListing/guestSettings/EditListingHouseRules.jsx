@@ -178,7 +178,7 @@ export default class EditListingHouseRules extends React.Component {
                         <NavLink to={`/profile/listings/edit/photos/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/checking/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(9) }}} >Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/checking/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(8) }}} >Next</NavLink>
                     </div>
                 </div>
             </div>

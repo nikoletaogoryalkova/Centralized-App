@@ -1,7 +1,7 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
+import { Config } from '../../../config';
 import { Link } from 'react-router-dom';
-import ListingRating from '../../listings/ListingRating';
 import { Modal } from 'react-bootstrap';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
@@ -15,7 +15,40 @@ export default class MyListingsActiveItem extends React.Component {
             isDeleting: false,
             deletingId: -1,
             deletingName: '',
-            sending: false
+            sending: false,
+            progress: [
+                {
+                    number: 1,
+                    name: 'The Basics',
+                    steps: [
+                        { text: 'Landing', stepNumber: 1 },
+                        { text: 'Place type', stepNumber: 2 },
+                        { text: 'Accomodation', stepNumber: 3 },
+                        { text: 'Facilities', stepNumber: 4 },
+                        { text: 'Safety amenities', stepNumber: 5 },
+                        { text: 'Location', stepNumber: 6 }
+                    ],
+                    completed: this.props.step > 6
+                },
+                {
+                    number: 2,
+                    name: 'Place Description',
+                    steps: [
+                        { text: 'Description', stepNumber: 7 },
+                        { text: 'Photos', stepNumber: 8 }
+                    ],
+                    completed: this.props.step > 8
+                },
+                {
+                    number: 3,
+                    name: 'Guest Settings',
+                    steps: [
+                        { text: 'House rules', stepNumber: 9 },
+                        { text: 'Check-in/Check-out', stepNumber: 10 },
+                        { text: 'Price', stepNumber: 11 }
+                    ]
+                }
+            ]
         };
 
         this.onHide = this.onHide.bind(this);
@@ -31,8 +64,6 @@ export default class MyListingsActiveItem extends React.Component {
                 deletingName: ''
             }
         );
-
-        console.log(this.state);
     }
 
     onOpen(id, name) {
@@ -62,6 +93,36 @@ export default class MyListingsActiveItem extends React.Component {
                 this.setState({ sending: false });
                 this.onHide();
             });
+    }
+
+    calculateProgressPercentage(progressNumber) {
+        let resultValue = 0;
+        if (progressNumber <= 6) {
+            resultValue = progressNumber / 6;
+        }
+        else if (progressNumber <= 8) {
+            resultValue = (progressNumber - 6) / 2;
+        }
+        else if (progressNumber <= 11) {
+            resultValue = (progressNumber - 8) / 3;
+        }
+
+        return resultValue * 100;
+    }
+
+    calculateProgressImage(progressNumber) {
+        let resultValue = '';
+        if (progressNumber <= 6) {
+            resultValue = 'vector-room.png';
+        }
+        else if (progressNumber <= 8) {
+            resultValue = 'vector-camera.png';
+        }
+        else if (progressNumber <= 11) {
+            resultValue = 'vector-calendar.png';
+        }
+
+        return resultValue;
     }
 
     render() {
@@ -94,24 +155,55 @@ export default class MyListingsActiveItem extends React.Component {
                         <button onClick={this.onHide} className="btn btn-info">No, go back!</button>
                     </Modal.Body>
                 </Modal>
-                <ul className="profile-mylistings-active">
-                    <li className="toggle off"></li>
-                    <li className="thumb"><span
-                        style={{ backgroundImage: `url("${this.props.listing.pictures[0] && this.props.listing.pictures[0].thumbnail}")` }}></span></li>
-                    <li className="details">
+                <div className="row my-listing-box">
+                    <div className="col-md-2">
+                        <div className="my-listing-image-box">
+                            <img src={this.props.listing.pictures[0] && this.props.listing.pictures[0].thumbnail} alt="user-profile" />
+                        </div>
+                    </div>
+                    <div className="col-md-8 listing-name">
                         <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>{this.props.listing.name}</Link>
-                    </li>
-                    <li className="price">
-                    </li>
-                    <li className="edit-new">
-                    </li>
-                    <li className="calendar">
-                        <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
-                    </li>
-                    {/* <li className="remove" onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
-                        <span></span>
-                    </li> */}
-                </ul>
+                    </div>
+                    <div className="col-md-2">
+                        <Link className="btn btn-primary btn-block bold" to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-2">
+                    </div>
+                    <div className="col-md-6">
+                        {this.state.progress.map((item, i) => {
+                            return (
+                                <div key={i} className="progress-box">
+                                    <div className="col-md-1 progress-number">
+                                        <p className={item.completed ? 'completed' : 'bold'}>{item.completed ? <i className="fa fa-check" aria-hidden="true"></i>
+                                            : item.number}</p>
+                                    </div>
+                                    <div className="col-md-11">
+                                        <div className="progress-name">
+                                            <span>{item.name}</span>
+                                        </div>
+                                        <div className="progress-steps">
+                                            <span>{item.steps.map(function (element) { return element.text; }).join(', ')}</span>
+                                        </div>
+
+                                        {item.steps.filter(s => s.stepNumber === this.props.step).length > 0 &&
+                                            <div className="progress-bar-outline" style={{ marginBottom: '10px', width: '100%', background: '#E1E1E1', height: '3px' }}>
+                                                <div className="progress-bar" style={{ height: '3px', width: `${this.calculateProgressPercentage(this.props.step)}%`, background: '#A0C5BE' }}></div>
+                                            </div>}
+
+                                        {item.steps.filter(s => s.stepNumber === this.props.step).length > 0 &&
+                                            <div className="progress-continue">
+                                                <Link className="btn btn-primary bold" to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
+                                            </div>}
+                                    </div>
+                                </div>);
+                        })}
+                    </div>
+                    <div className="col-md-4 progress-image">
+                        <img src={Config.getValue('basePath') + 'images/' + this.calculateProgressImage(this.props.step)} alt="progress-image" />
+                    </div>
+                </div>
             </div>
         );
     }

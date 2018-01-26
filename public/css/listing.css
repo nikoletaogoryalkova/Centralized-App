@@ -115,3 +115,70 @@
 .list-hotel-comfort .icon-hotel-1 {
   background: url(../images/icon-hotel-1.png) center no-repeat;
 }
+.my-listing-box {
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  background-color: white;
+  padding: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+.my-listing-box .my-listing-image-box {
+  width: 95px;
+  height: 60px;
+  overflow: hidden;
+  margin: 0 auto;
+  align-items: center;
+  display: flex;
+  border-radius: 3px;
+}
+.my-listing-box .my-listing-image-box img {
+  width: 100%;
+  margin: 70px 0 35px 0;
+}
+.my-listing-box .listing-name a {
+  font-size: 24px;
+  font-weight: bold;
+}
+.progress-box {
+  text-align: center;
+  margin: 10px 0;
+  display: block;
+}
+.progress-box .progress-number p {
+  border: 2px solid #d97a61;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.progress-box .progress-number .completed {
+  background-color: #d97a61;
+  color: white;
+  font-size: 12px;
+}
+.progress-box .progress-name {
+  text-align: left;
+  font-size: 22px;
+  font-weight: bold;
+}
+.progress-box .progress-steps {
+  text-align: left;
+}
+.progress-box .progress-continue {
+  text-align: left;
+  margin-bottom: 10px;
+}
+.progress-box .progress-continue a {
+  background-color: #A2C5BF;
+  padding: 6px 12px;
+  font-size: 16px;
+}
+.progress-image img {
+  width: 90%;
+}
