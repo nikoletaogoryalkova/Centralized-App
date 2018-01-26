@@ -43,6 +43,7 @@ class CreateListingPage extends React.Component {
         super(props);
 
         this.state = {
+            progressId: null,
             listingType: '1',
             country: '1',
             propertyType: '1',
@@ -132,6 +133,7 @@ class CreateListingPage extends React.Component {
         });
 
         getCurrentLoggedInUserInfo().then(data => {
+            console.log(data);
             this.setState({ userHasLocAddress: data.locAddress !== null });
         });
     }
@@ -326,6 +328,7 @@ class CreateListingPage extends React.Component {
 
     createListingObject() {
         let listing = {
+            progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
             country: this.state.country,

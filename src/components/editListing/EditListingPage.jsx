@@ -1,7 +1,8 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import {
     editListing,
+    createListing,
     getAmenitiesByCategory,
     getCities,
     getCountries,
@@ -125,7 +126,7 @@ class EditListingPage extends React.Component {
         this.setState({ listingId: id });
         const search = this.props.location.search;
         if (search) {
-            this.setState({ isInProgress: true });
+            this.setState({ isInProgress: true, progressId: id });
             getListingProgress(id).then(res => {
                 console.log(JSON.parse(res.data));
                 this.setListingData(JSON.parse(res.data));
@@ -378,28 +379,53 @@ class EditListingPage extends React.Component {
     persistListing(captchaToken) {
         this.setState({ loading: true });
         let listing = this.createListingObject();
-        editListing(this.state.listingId, listing, captchaToken).then((res) => {
-            if (res.success) {
-                this.setState({ loading: false });
-                this.props.history.push('/profile/listings');
-                NotificationManager.success('Successfully updated your profile', 'Edit new listing');
-
-            } else {
-                this.setState({ loading: false });
-                res.response.then(res => {
-                    const errors = res.errors;
-                    for (let key in errors) {
-                        if (typeof errors[key] !== 'function') {
-                            NotificationManager.warning(errors[key].message);
+        if (this.state.isInProgress) {
+            createListing(listing, captchaToken).then((res) => {
+                if (res.success) {
+                    this.setState({ loading: false });
+                    res.response.json().then(res => {
+                        const id = res.id;
+                        const path = `/profile/listings/calendar/${id}`;
+                        this.props.history.push(path);
+                    });
+                }
+                else {
+                    this.setState({ loading: false });
+                    res.response.then(res => {
+                        const errors = res.errors;
+                        for (let key in errors) {
+                            if (typeof errors[key] !== 'function') {
+                                NotificationManager.warning(errors[key].message);
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        } else {
+            editListing(this.state.listingId, listing, captchaToken).then((res) => {
+                if (res.success) {
+                    this.setState({ loading: false });
+                    this.props.history.push('/profile/listings');
+                    NotificationManager.success('Successfully updated your profile', 'Edit new listing');
+
+                } else {
+                    this.setState({ loading: false });
+                    res.response.then(res => {
+                        const errors = res.errors;
+                        for (let key in errors) {
+                            if (typeof errors[key] !== 'function') {
+                                NotificationManager.warning(errors[key].message);
+                            }
+                        }
+                    });
+                }
+            });
+        }
     }
 
     createListingObject() {
         let listing = {
+            progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
             country: this.state.country,
