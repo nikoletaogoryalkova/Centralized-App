@@ -104,7 +104,6 @@ export default class MyListingsActiveItem extends React.Component {
                     <li className="price">
                     </li>
                     <li className="edit-new">
-                        <span>Ready for publishing</span>
                     </li>
                     <li className="calendar">
                         <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>

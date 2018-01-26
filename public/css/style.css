@@ -1689,6 +1689,10 @@ li.dropdown {
     margin-bottom: 20px;
 }
 
+#profile-mylistings ul.profile-mylistings-active.inactive {
+    background-color: #AAA;
+}
+
 #profile-mylistings ul.profile-mylistings-active::after {
     clear: both;
     content: '';

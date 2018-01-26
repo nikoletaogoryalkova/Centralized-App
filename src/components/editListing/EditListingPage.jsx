@@ -1,5 +1,5 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import {
     editListing,
     getAmenitiesByCategory,
@@ -183,10 +183,10 @@ class EditListingPage extends React.Component {
         if (houseRules && houseRules.length > 0) {
             return new Set(houseRules.split('\r\n'));
         }
-        
+
         return new Set();
     }
-    
+
     componentDidMount() {
         getCountries().then(data => {
             this.setState({ countries: data.content });
@@ -232,7 +232,7 @@ class EditListingPage extends React.Component {
         let bedroomsCount = this.state.bedroomsCount;
         let value = Number(event.target.value);
         if (value < 0) { value = 0; }
-        if (value > 9) { value = 9; }
+
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
 
         if (value > bedroomsCount) {
@@ -254,7 +254,7 @@ class EditListingPage extends React.Component {
         const name = e.target.name;
         let value = Number(e.target.value);
         if (value < 0) { value = 0; }
-        if (value > 9) { value = 9; }
+
         bedrooms[bedroom][name] = value;
         this.setState({
             bedrooms: bedrooms,
