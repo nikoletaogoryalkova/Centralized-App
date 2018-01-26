@@ -36,7 +36,7 @@ export default class CreateListingLandingPage extends React.Component {
     }
 
     render() {
-        const { type, name } = this.props.values;
+        const { listingType, name } = this.props.values;
 
         return (
             <div>
@@ -77,8 +77,8 @@ export default class CreateListingLandingPage extends React.Component {
                                                     <input
                                                         type="radio"
                                                         onChange={(e) => this.props.onChange(e)}
-                                                        name="type"
-                                                        checked={type === '1'}
+                                                        name="listingType"
+                                                        checked={listingType === '1'}
                                                         value="1" />
                                                     <span className="button"><img src={Config.getValue("basePath") + "images/icon-check-japonica.png"} alt="radio-home" /></span>
                                                     <span>Home</span>
@@ -86,8 +86,8 @@ export default class CreateListingLandingPage extends React.Component {
                                                 <label className="hotel custom-radio" >
                                                     <input
                                                         type="radio"
-                                                        name="type"
-                                                        checked={type === '2'}
+                                                        name="listingType"
+                                                        checked={listingType === '2'}
                                                         value="2"
                                                         onClick={this.showComingSoonNotification} />
                                                     <span className="button"><img src={Config.getValue("basePath") + "images/icon-check-japonica.png"} alt="radio-hotel" /></span>

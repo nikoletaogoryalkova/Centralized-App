@@ -1,16 +1,15 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-
-import EditListingBasicsAside from './EditListingBasicsAside';
-import NavEditListing from '../NavEditListing';
 import Counter from '../Counter';
 import Dropdown from '../Dropdown';
+import EditListingBasicsAside from './EditListingBasicsAside';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
+import NavEditListing from '../NavEditListing';
+import { NavLink } from 'react-router-dom';
+import React from 'react';
 
 export default class EditListingAccommodation extends React.Component {
 
     render() {
-        const { listingId, guestsIncluded, bedroomsCount, bedrooms, bathrooms } = this.props.values;
+        const { listingId, guestsIncluded, bedroomsCount, bedrooms, bathrooms, isInProgress } = this.props.values;
         const bedroomRows = bedrooms.map((bedroom, i) => {
             return <div key={i}>
                 <h3>Bedroom {i + 1} (What type of beds are available in this room)?</h3>
@@ -37,7 +36,7 @@ export default class EditListingAccommodation extends React.Component {
                     value={bedrooms[i].kingBedCount}
                     onChange={this.props.updateBedCount}
                 />
-            </div>
+            </div>;
         });
 
         return (
@@ -71,7 +70,7 @@ export default class EditListingAccommodation extends React.Component {
                                     <h3>How many bedrooms can your guests use?</h3>
                                     <Dropdown
                                         name="bedroomsCount"
-                                        options={[1, 2, 3, 4, 5]}
+                                        options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
                                         value={bedroomsCount}
                                         onChange={this.props.updateBedrooms} />
                                 </div>
@@ -107,7 +106,7 @@ export default class EditListingAccommodation extends React.Component {
                         <NavLink to={`/profile/listings/edit/placetype/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/facilities/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/facilities/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(3); } }} >Next</NavLink>
                     </div>
                 </div>
             </div>

@@ -1,12 +1,11 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-
+import ContactHostModal from './ContactHostModal';
 import ListingRating from '../listings/ListingRating';
 import PropertyAmenityColumn from './PropertyAmenityColumn';
-import PropertyReview from './PropertyReview';
+import PropertyCalendar from './PropertyCalendar';
 import PropertyReservation from './PropertyReservation';
-
-import PropertyCalendar from "./PropertyCalendar";
+import PropertyReview from './PropertyReview';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 class PropertyInfo extends React.Component {
     getAmenities(amenities) {
@@ -35,19 +34,19 @@ class PropertyInfo extends React.Component {
         const amenities = this.getAmenities(allAmenities.slice(5));
         const { street, city, country } = this.props.data;
         if (calendar === null) {
-            return <div>Loading...</div>
+            return <div>Loading...</div>;
         }
         return (
             <section id="hotel-info">
                 <div className="container">
                     <div className="hotel-content" id="overview">
-
+                        <ContactHostModal id={this.props.match.params.id} isActive={this.props.isShownContactHostModal} closeModal={this.props.closeModal} sendMessageToHost={this.props.sendMessageToHost} />
                         <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
                         <h1> {this.props.data.name} </h1>
                         <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
-                        
                         <div className="clearfix" />
                         <p>{street}, {city.name}, {country.name}</p>
+                        <a className="undreline" onClick={this.props.openModal}>Contact Host</a>
                         <div className="list-hotel-description">
                             {this.props.descriptionText}
                         </div>
@@ -61,7 +60,7 @@ class PropertyInfo extends React.Component {
                                     <div key={i} className="icon-facilities">
                                         <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><b>{item.name}</b></span>
                                     </div>
-                                )
+                                );
                             })}
                             <div className="clearfix" />
                         </div>
@@ -88,7 +87,7 @@ class PropertyInfo extends React.Component {
                                 <div id="reviews">
                                     <h2>User Rating &amp; Reviews</h2>
                                     {this.props.data.reviews.map((item, i) => {
-                                        return <PropertyReview key={i} rating={item.average} reviewText={item.comments} />
+                                        return <PropertyReview key={i} rating={item.average} reviewText={item.comments} />;
                                     })}
                                     <hr />
                                 </div>
@@ -105,22 +104,22 @@ class PropertyInfo extends React.Component {
                         </div>
                     </div>
                     <PropertyReservation locRate={this.props.locRate}
-                                         showLoginModal={this.props.showLoginModal}
-                                         isLogged={this.props.isLogged}
-                                         userInfo={this.props.userInfo}
-                                         calendar={calendar}
-                                         nights={this.props.nights}
-                                         onApply={this.props.onApply}
-                                         startDate={this.props.startDate}
-                                         endDate={this.props.endDate}
-                                         listing={this.props.data}
-                                         currency={this.props.currency}
-                                         currencySign={this.props.currencySign}
-                                         loading={this.props.loading} />
+                        showLoginModal={this.props.showLoginModal}
+                        isLogged={this.props.isLogged}
+                        userInfo={this.props.userInfo}
+                        calendar={calendar}
+                        nights={this.props.nights}
+                        onApply={this.props.onApply}
+                        startDate={this.props.startDate}
+                        endDate={this.props.endDate}
+                        listing={this.props.data}
+                        currency={this.props.currency}
+                        currencySign={this.props.currencySign}
+                        loading={this.props.loading} />
                     <div className="clearfix"></div>
                 </div>
             </section>
-        )
+        );
     }
 }
 

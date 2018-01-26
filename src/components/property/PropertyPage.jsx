@@ -1,5 +1,6 @@
 import { Link, withRouter } from 'react-router-dom';
 import {
+    contactHost,
     getCalendarByListingIdAndDateRange,
     getCurrentLoggedInUserInfo,
     getLocRateInUserSelectedCurrency,
@@ -46,7 +47,8 @@ class PropertyPage extends React.Component {
             isLogged: false,
             userInfo: null,
             locRate: null,
-            loading: true
+            loading: true,
+            isShownContactHostModal: false
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -58,6 +60,9 @@ class PropertyPage extends React.Component {
         this.openLightbox = this.openLightbox.bind(this);
         this.initializeCalendar = this.initializeCalendar.bind(this);
         this.getLocRate = this.getLocRate.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.sendMessageToHost = this.sendMessageToHost.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -151,6 +156,18 @@ class PropertyPage extends React.Component {
         }
     }
 
+    sendMessageToHost(id, message, captchaToken) {
+        this.setState({ loading: true });
+        let contactHostObj = {
+            message: message
+        };
+
+        contactHost(id, contactHostObj, captchaToken)
+            .then(res => {
+                this.props.history.push(`/profile/messages/chat/${res.conversation}`);
+            });
+    }
+
     initializeCalendar() {
         let now = new Date();
         let end = new Date();
@@ -187,6 +204,14 @@ class PropertyPage extends React.Component {
                 this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.currency });
             });
         });
+    }
+
+    openModal() {
+        this.setState({ isShownContactHostModal: true });
+    }
+
+    closeModal() {
+        this.setState({ isShownContactHostModal: false });
     }
 
     render() {
@@ -291,7 +316,11 @@ class PropertyPage extends React.Component {
                     isLogged={this.state.isLogged}
                     userInfo={this.state.userInfo}
                     locRate={this.state.locRate}
-                    loading={this.state.loading} />
+                    loading={this.state.loading}
+                    openModal={this.openModal}
+                    closeModal={this.closeModal}
+                    isShownContactHostModal={this.state.isShownContactHostModal}
+                    sendMessageToHost={this.sendMessageToHost} />
                 <Footer />
             </div>
         );

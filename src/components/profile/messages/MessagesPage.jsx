@@ -1,10 +1,10 @@
-import React from 'react';
+import { changeMessageStatus, getMyConversations } from '../../../requester';
 
-import ProfileHeader from '../ProfileHeader';
 import Footer from '../../Footer';
 import MessagesItem from './MessagesItem';
 import Pagination from 'rc-pagination';
-import { getMyConversations, changeMessageStatus } from '../../../requester';
+import ProfileHeader from '../ProfileHeader';
+import React from 'react';
 
 export default class MessagesPage extends React.Component {
     constructor(props) {
@@ -82,14 +82,18 @@ export default class MessagesPage extends React.Component {
             <div>
                 <ProfileHeader />
                 <section id="profile-messages-hosting">
-                    <div className="container">
-                        {this.state.messages.map((message, i) => {
-                            return <MessagesItem message={message} changeMessageFlag={this.changeMessageFlag} key={i} />
-                        })}
-                    </div>
-                    <div className="pagination-box">
-                        {this.state.totalElements !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalElements} />}
-                    </div>
+                    {this.state.messages.length === 0 ? <div className="text-center p20"><h3>You don't have any messages</h3></div> :
+                        <div>
+                            <div className="container">
+                                {this.state.messages.map((message, i) => {
+                                    return <MessagesItem message={message} changeMessageFlag={this.changeMessageFlag} key={i} />
+                                })}
+                            </div>
+                            <div className="pagination-box">
+                                {this.state.totalElements !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalElements} />}
+                            </div>
+                        </div>
+                    }
                 </section>
                 <Footer />
             </div>

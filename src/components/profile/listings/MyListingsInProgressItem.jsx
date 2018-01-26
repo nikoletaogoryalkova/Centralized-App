@@ -65,7 +65,6 @@ export default class MyListingsActiveItem extends React.Component {
     }
 
     render() {
-        const listingStateBackgroundClass = this.props.state === 'active' ? '' : ' inactive';
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                 <NotificationContainer />
@@ -95,29 +94,23 @@ export default class MyListingsActiveItem extends React.Component {
                         <button onClick={this.onHide} className="btn btn-info">No, go back!</button>
                     </Modal.Body>
                 </Modal>
-                <ul className={`profile-mylistings-active ${listingStateBackgroundClass}`}>
+                <ul className="profile-mylistings-active">
                     <li className="toggle off"></li>
                     <li className="thumb"><span
-                        style={{ backgroundImage: `url(${this.props.listing.thumbnail})` }}></span></li>
+                        style={{ backgroundImage: `url("${this.props.listing.pictures[0] && this.props.listing.pictures[0].thumbnail}")` }}></span></li>
                     <li className="details">
-                        <Link to={'/listings/' + this.props.listing.id}>{this.props.listing.name}</Link>
-
-                        <ListingRating rating={this.props.listing.averageRating}
-                            reviewsCount={this.props.listing.reviewsCount} />
+                        <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>{this.props.listing.name}</Link>
                     </li>
                     <li className="price">
-                        <span>{this.props.listing.defaultDailyPrice} {this.props.listing.currencyCode}</span>
                     </li>
-                    <li className="edit">
-                        <Link to={`/profile/listings/edit/landing/${this.props.listing.id}`}>Edit Listing</Link>
+                    <li className="edit-new">
                     </li>
                     <li className="calendar">
-                        {/* <input type="button" className="button" value="View Calendar"/> */}
-                        <Link to={'/profile/listings/calendar/' + this.props.listing.id}>View Calendar</Link>
+                        <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
                     </li>
-                    <li className="remove" onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
+                    {/* <li className="remove" onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
                         <span></span>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
         );

@@ -1,7 +1,7 @@
 import 'react-notifications/lib/notifications.css';
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
+import { getCurrentLoggedInUserInfo, updateUserInfo, getCountries, getCities } from '../../../requester';
 
 import { Config } from '../../../config';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -35,9 +35,15 @@ export default class ProfileEditPage extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.changeDropdownValue = this.changeDropdownValue.bind(this);
         this.updateUser = this.updateUser.bind(this);
+        this.updateCities = this.updateCities.bind(this);
+        this.updateCountry = this.updateCountry.bind(this);
     }
 
     componentDidMount() {
+        getCountries().then(data => {
+            this.setState({ countries: data.content });
+        });
+        
         getCurrentLoggedInUserInfo().then((data) => {
             let day = '';
             let month = '';
@@ -50,7 +56,6 @@ export default class ProfileEditPage extends React.Component {
                 year = birthday.format('YYYY');
             }
 
-
             this.setState({
                 firstName: data.firstName !== null ? data.firstName : '',
                 lastName: data.lastName !== null ? data.lastName : '',
@@ -58,14 +63,17 @@ export default class ProfileEditPage extends React.Component {
                 preferredLanguage: data.preferredLanguage !== null ? data.preferredLanguage : '',
                 preferredCurrency: data.preferredCurrency !== null ? data.preferredCurrency.id : '',
                 gender: data.gender !== null ? data.gender : '',
-                country: data.country !== null ? data.country.id : '',
-                city: data.city !== null ? data.city.id : '',
+                country: data.country !== null ? data.country.id : '1',
+                city: data.city !== null ? data.city.id : '1',
                 locAddress: data.locAddress !== null ? data.locAddress : '',
-                countries: data.countries,
                 currencies: data.currencies,
                 day: day,
                 month: month,
                 year: year
+            }, () => {
+                getCities(this.state.country).then(data => {
+                    this.setState({ cities: data.content });
+                });
             });
         }).then(() => {
             this.setState({ loading: false });
@@ -110,7 +118,23 @@ export default class ProfileEditPage extends React.Component {
                 NotificationManager.error('Error!', 'Update user profile');
             }
         });
+    }
 
+    updateCountry(e) {
+        this.setState({ 
+            [e.target.name]: e.target.value,
+        }, () => {
+            this.updateCities();
+        });
+    }
+
+    updateCities() {
+        getCities(this.state.country).then(data => {
+            this.setState({
+                city: '1',
+                cities: data.content,
+            });
+        });
     }
 
     render() {
@@ -220,7 +244,7 @@ export default class ProfileEditPage extends React.Component {
                     <div className="address language-currency">
                         <label htmlFor="address">Where you live</label>
                         <div className="language">
-                            <select name="country" id="address" onChange={this.onChange} value={this.state.country}>
+                            <select name="country" id="address" onChange={this.updateCountry} value={this.state.country}>
                                 <option disabled value="">Country</option>
                                 {this.state.countries.map((item, i) => {
                                     return <option key={i} value={item.id}>{item.name}</option>;
@@ -230,7 +254,7 @@ export default class ProfileEditPage extends React.Component {
                         <div className="language">
                             <select name="city" onChange={this.onChange} value={this.state.city}>
                                 <option disabled value="">City</option>
-                                {this.state.countries.some(x => x.id === parseInt(this.state.country, 10)) && this.state.countries.find(x => x.id === parseInt(this.state.country, 10)).cities.map((item, i) => {
+                                {this.state.cities.map((item, i) => {
                                     return <option key={i} value={item.id}>{item.name}</option>;
                                 })}
                             </select>

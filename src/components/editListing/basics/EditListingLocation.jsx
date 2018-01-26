@@ -62,7 +62,7 @@ export default class EditListingLocation extends React.Component {
     }
 
     render() {
-        const { listingId, country, countries, city, cities, street } = this.props.values;
+        const { listingId, country, countries, city, cities, street, isInProgress } = this.props.values;
         const renderCountries = countries.map((item, i) => {
             return { value: item.id, label: item.name }
         });
@@ -146,7 +146,7 @@ export default class EditListingLocation extends React.Component {
                             &nbsp;Back</NavLink>
                         
                         {this.validateInput() 
-                            ? <NavLink to={`/profile/listings/edit/description/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                            ? <NavLink to={`/profile/listings/edit/description/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(6) }}} >Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

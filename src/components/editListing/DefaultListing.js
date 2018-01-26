@@ -5,7 +5,7 @@ let response = {
         "propertyType": "1",
         "roomType": "entire",
         "dedicatedSpace": "true",
-        "propertySize": "0",
+        "size": "0",
         "guestsIncluded": 1,
         "bedroomsCount": 1,
         "bedrooms": [{ "singleBedCount": 0, "doubleBedCount": 0, "kingBedCount": 0 }],

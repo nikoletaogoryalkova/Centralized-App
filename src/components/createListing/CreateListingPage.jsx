@@ -43,7 +43,8 @@ class CreateListingPage extends React.Component {
         super(props);
 
         this.state = {
-            type: '1',
+            progressId: null,
+            listingType: '1',
             country: '1',
             propertyType: '1',
             roomType: 'entire',
@@ -132,6 +133,7 @@ class CreateListingPage extends React.Component {
         });
 
         getCurrentLoggedInUserInfo().then(data => {
+            console.log(data);
             this.setState({ userHasLocAddress: data.locAddress !== null });
         });
     }
@@ -159,7 +161,7 @@ class CreateListingPage extends React.Component {
         let bedroomsCount = this.state.bedroomsCount;
         let value = Number(event.target.value);
         if (value < 0) { value = 0; }
-        if (value > 9) { value = 9; }
+
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
 
         if (value > bedroomsCount) {
@@ -181,7 +183,6 @@ class CreateListingPage extends React.Component {
         const name = e.target.name;
         let value = Number(e.target.value);
         if (value < 0) { value = 0; }
-        if (value > 9) { value = 9; }
         bedrooms[bedroom][name] = value;
         this.setState({
             bedrooms: bedrooms,
@@ -326,7 +327,8 @@ class CreateListingPage extends React.Component {
 
     createListingObject() {
         let listing = {
-            listingType: this.state.type,
+            progressId: this.state.progressId,
+            listingType: this.state.listingType,
             type: this.state.propertyType,
             country: this.state.country,
             details: [

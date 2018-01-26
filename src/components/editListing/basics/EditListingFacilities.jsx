@@ -11,10 +11,10 @@ export default class EditListingFacilities extends React.Component {
             return null;
         }
 
-        const facilities = [];
+        const amenities = [];
         this.props.values.categories.forEach((category, j) => {
             if (category.amenities.length > 0 && category.name !== "Safety Amenities") {
-                facilities.push(
+                amenities.push(
                     <div key={j} className="filter-box">
                         <h3>{category.name}</h3>
                         {category.amenities.map((item, i) => {
@@ -22,7 +22,7 @@ export default class EditListingFacilities extends React.Component {
                                 <FiltersCheckbox
                                     key={i}
                                     text={item.name}
-                                    checked={this.props.values.facilities.has(item.id)} />
+                                    checked={this.props.values.amenities.has(item.id)} />
                             </div>
                         })
                         }
@@ -32,11 +32,11 @@ export default class EditListingFacilities extends React.Component {
         });
 
         const columns = [[], [], []];
-        facilities.forEach((item, i) => {
+        amenities.forEach((item, i) => {
             columns[i % 3].push(item);
         });
         
-        const { listingId } = this.props.values;
+        const { listingId, isInProgress } = this.props.values;
 
         return (
             <div>
@@ -75,7 +75,7 @@ export default class EditListingFacilities extends React.Component {
                         <NavLink to={`/profile/listings/edit/accommodation/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        <NavLink to={`/profile/listings/edit/safetyamenities/${listingId}`} className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                        <NavLink to={`/profile/listings/edit/safetyamenities/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(4) }}} >Next</NavLink>
                     </div>
                 </div>
             </div>

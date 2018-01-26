@@ -911,16 +911,12 @@ ul.navbar-profile>li>a {
 }
 
 ul.navbar-profile>li>a:hover {
-    color: white;
+    color: #d87a61;
 }
 
-ul.navbar-profile>li.active {
-    border-bottom: 3px solid #d87a61;
-}
-
-ul.navbar-profile>li.active>a {
+ul.navbar-profile>li>a.active {
     font-weight: bold;
-    color: white;
+    color: #d87a61;
 }
 
 hr.profile-line {
@@ -1693,6 +1689,10 @@ li.dropdown {
     margin-bottom: 20px;
 }
 
+#profile-mylistings ul.profile-mylistings-active.inactive {
+    background-color: #AAA;
+}
+
 #profile-mylistings ul.profile-mylistings-active::after {
     clear: both;
     content: '';
@@ -1755,6 +1755,11 @@ li.dropdown {
 
 #profile-mylistings ul.profile-mylistings-active>li.edit {
     width: 150px;
+    padding-top: 33px;
+}
+
+#profile-mylistings ul.profile-mylistings-active>li.edit-new {
+    width: 200px;
     padding-top: 33px;
 }
 
@@ -2042,15 +2047,6 @@ li.dropdown {
 
 .my-reservations .table-header span {
     font-weight: bold;
-}
-
-.my-reservations button {
-    background: none;
-    border: none;
-}
-
-.my-reservations button:hover {
-    color: #d77a61;
 }
 
 #profile-mylistings::after {
@@ -2643,6 +2639,10 @@ select {
     clear: both;
 }
 
+.p20 {
+    padding: 20px 0;
+}
+
 .gc-reset {
     transform: scale(0.95) !important;
     -webkit-transform: scale(0.95) !important;
@@ -2652,4 +2652,19 @@ select {
 
 .grecaptcha-badge {
     display: none;
+}
+
+.tab-navigation {
+    border-bottom: 1px solid #DFDFE0;
+}
+
+.tab-navigation li {
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 25px;
+    text-align: center;
+}
+
+.tab-navigation li.active {
+    border-bottom: 4px solid #A0C5BE;
 }

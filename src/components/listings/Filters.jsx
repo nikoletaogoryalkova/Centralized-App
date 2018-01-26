@@ -1,5 +1,3 @@
-import { getAmenitiesFilters, getPropertyTypes } from '../../requester';
-
 import FiltersCheckbox from './FiltersCheckbox';
 import React from 'react';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
@@ -11,41 +9,17 @@ class Filters extends React.Component {
         super(props);
 
         this.state = {
-            propertyTypeFilters: [],
-            amenitiesFilters: [],
+            propertyTypeFilters: this.props.propertyTypes,
+            citiesFilters: this.props.cities,
             selectedStars: new Set(),
-            priceValue: [100, 10000],
+            priceValue: [1, 10000],
             selectedPropertyTypes: new Set(),
-            selectedAmenities: new Set(),
+            selectedCities: new Set(),
             loading: true,
         };
 
         this.changeValue = this.changeValue.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
-    }
-
-    async getData() {
-        const [propertyTypeFilters, amenitiesFilters] = await Promise.all([getPropertyTypes(), getAmenitiesFilters()]);
-        this.setState({
-            propertyTypeFilters: propertyTypeFilters.content,
-            amenitiesFilters: amenitiesFilters.content,
-            loading: false
-        });
-    }
-
-    componentDidMount() {
-        Promise.all([getPropertyTypes(), getAmenitiesFilters()])
-            .then((arr) => {
-                const [propertyTypeFilters, amenitiesFilters] = arr;
-                return [propertyTypeFilters, amenitiesFilters];
-            })
-            .then(([propertyTypeFilters, amenitiesFilters]) => {
-                this.setState({
-                    propertyTypeFilters: propertyTypeFilters.content,
-                    amenitiesFilters: amenitiesFilters.content,
-                    loading: false
-                });
-            });
     }
 
     componentWillMount() {
@@ -55,44 +29,25 @@ class Filters extends React.Component {
 
         this.setState({
             selectedStars: this.getSelectedFilters('propertyStars'),
-            selectedPropertyTypes: this.getSelectedFilters('propertyTypes'),
-            selectedAmenities: this.getSelectedFilters('propertyAmenities')
+            selectedPropertyTypes: this.getSelectedFilters('propertyTypes')
         });
-    }
-
-    componentWillUnmount() {
-        this.setState({ propertyTypeFilters: '', loading: true });
     }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    toggleStar(label) {
-        let stars = this.state.selectedStars;
-        if (stars.has(label)) {
-            stars.delete(label);
+    toggleCity(label) {
+        let cities = this.state.selectedCities;
+        if (cities.has(label)) {
+            cities.delete(label);
         } else {
-            stars.add(label);
+            cities.add(label);
         }
 
-        this.props.updateParamsMap('propertyStars', Array.from(stars).join(','));
+        this.props.updateParamsMap('cities', Array.from(cities).join(','));
         this.setState({
-            selectedStars: stars,
-        });
-    }
-
-    toggleAmenity(label) {
-        let amenities = this.state.selectedAmenities;
-        if (amenities.has(label)) {
-            amenities.delete(label);
-        } else {
-            amenities.add(label);
-        }
-
-        this.props.updateParamsMap('propertyAmenities', Array.from(amenities).join(','));
-        this.setState({
-            selectedAmenities: amenities
+            selectedCities: cities
         });
     }
 
@@ -144,14 +99,14 @@ class Filters extends React.Component {
 
     clearFilters(e) {
         let stars = new Set();
-        let prices = [100, 5000];
+        let prices = [1, 5000];
         let types = new Set();
-        let amenities = new Set();
+        let cities = new Set();
 
         this.setState({
             selectedStars: stars,
             priceValue: prices,
-            selectedAmenities: amenities,
+            selectedCities: cities,
             selectedPropertyTypes: types,
         });
 
@@ -159,23 +114,41 @@ class Filters extends React.Component {
         this.props.updateParamsMap('priceMin', '1');
         this.props.updateParamsMap('priceMax', '5000');
         this.props.updateParamsMap('propertyTypes', Array.from(types).join(','));
-        this.props.updateParamsMap('propertyAmenities', Array.from(amenities).join(','));
+        this.props.updateParamsMap('cities', Array.from(cities).join(','));
         this.props.handleSearch(e);
     }
 
     render() {
         const { loading } = this.state;
 
-        if (loading) {
-            return (<div className="loader" />);
+        if (this.props.cities === [] && this.props.propertyTypes === []) {
+            return <div className="loader"></div>;
         }
 
-        let selectedStars = this.state.selectedStars;
         let selectedPropertyTypes = this.state.selectedPropertyTypes;
-        let selectedAmenities = this.state.selectedAmenities;
-
+        let selectedCities = this.state.selectedCities;
+        let citiesFilters = this.props.cities;
+        console.log(this.props.cities);
         return (
             <div className="filter-box">
+                <div className="form-group">
+                    <label>City</label>
+                    <div className="filter-check-box">
+                        {this.props.cities.map((item, i) => {
+                            return (
+                                <div key={i} onClick={() => this.toggleCity(item.text)}>
+                                    <FiltersCheckbox
+                                        key={i}
+                                        text={item.text}
+                                        count={item.count}
+                                        checked={selectedCities.has(item.text)} />
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+                <div className="clearfix" />
+
                 <div className="form-group">
                     <label>Pricing</label>
 
@@ -196,14 +169,14 @@ class Filters extends React.Component {
                 <div className="form-group">
                     <label>Property Type</label>
                     <div className="filter-check-box">
-                        {this.state.propertyTypeFilters.map((item, i) => {
+                        {this.props.propertyTypes.map((item, i) => {
                             return (
-                                <div key={i} onClick={() => this.togglePropertyType(item.name)}>
+                                <div key={i} onClick={() => this.togglePropertyType(item.text)}>
                                     <FiltersCheckbox
                                         key={i}
-                                        text={item.name}
+                                        text={item.text}
                                         count={item.count}
-                                        checked={selectedPropertyTypes.has(item.name)} />
+                                        checked={selectedPropertyTypes.has(item.text)} />
                                 </div>
                             );
                         })}

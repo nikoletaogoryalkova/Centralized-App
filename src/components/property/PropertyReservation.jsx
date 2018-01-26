@@ -1,12 +1,10 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-
 import DatePicker from '../DatePicker';
 import ReCAPTCHA from 'react-google-recaptcha';
-
+import React from 'react';
+import moment from 'moment';
 import { parse } from 'query-string';
 import { requestBooking } from '../../requester';
-import moment from 'moment';
+import { withRouter } from 'react-router-dom';
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -23,7 +21,7 @@ class PropertyReservation extends React.Component {
 
         this.state = {
             guests: guests,
-            name: !props.isLogged ? '' : props.userInfo.firstName + " " + props.userInfo.lastName,
+            name: !props.isLogged ? '' : props.userInfo.firstName + ' ' + props.userInfo.lastName,
             email: !props.isLogged ? '' : props.userInfo.email,
             phone: !props.isLogged ? '' : props.userInfo.phoneNumber,
             captcha: '',
@@ -40,7 +38,7 @@ class PropertyReservation extends React.Component {
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-    };
+    }
 
     captchaChange(value) {
         this.setState({ captcha: value });
@@ -50,7 +48,7 @@ class PropertyReservation extends React.Component {
         this.setState({ sending: true });
 
         if (this.state.name === '') {
-            this.setState({ error: 'Name is required!' })
+            this.setState({ error: 'Name is required!' });
         }
         else {
             var requestInfo = {
@@ -61,20 +59,20 @@ class PropertyReservation extends React.Component {
                 name: this.state.name,
                 email: this.state.email,
                 phone: this.state.phone,
-            }
+            };
 
             requestBooking(requestInfo, captchaToken).then((res) => {
                 this.setState({ sending: false });
                 if (res.status === 403) {
-                    this.setState({ error: "Please sign-in/register to able to make bookings" });
+                    this.setState({ error: 'Please sign-in/register to able to make bookings' });
                 } else {
                     res.body.then(data => {
                         if (data.success) {
-                            this.props.history.push("/profile/trips?id=" + data.id);
+                            this.props.history.push('/profile/trips?id=' + data.id);
                         } else {
                             this.setState({ error: data.message });
                         }
-                    })
+                    });
                 }
             });
         }
@@ -83,13 +81,19 @@ class PropertyReservation extends React.Component {
     render() {
         const calendar = this.props.calendar;
         const invalidDates = calendar.filter(c => !c.available)
-            .map(c => new Date(c.date));
+            .map(c => moment(c.date, 'DD/MM/YYYY'));
         const isInvalidDate = date => {
-            let dateCandidate = new Date(date.format("MM/DD/YYYY"));
+            let dateCandidate = moment(date, 'DD/MM/YYYY');
             for (let invalidDate of invalidDates) {
-                if (invalidDate - dateCandidate === 0) {
+                if (invalidDate.diff(dateCandidate) === 0) {
                     return true;
                 }
+            }
+
+            const now = moment().add('89', 'days');
+            now.hours(0, 0, 0, 0);
+            if (dateCandidate.diff(now) > 0) {
+                return true;
             }
 
             return false;
@@ -102,11 +106,11 @@ class PropertyReservation extends React.Component {
         let startDate = this.props.startDate;
         let endDate = this.props.endDate;
         if (this.props.calendar === null || this.props.calendar === undefined) {
-            return <div className="loader"></div>
+            return <div className="loader"></div>;
         }
         for (let i = 0; i <= this.props.calendar.length - 1; i++) {
             let dayObj = this.props.calendar[i];
-            if (startDate.startOf('day') <= moment(dayObj.date, "DD/MM/YYYY").startOf('day') && endDate.startOf('day') > moment(dayObj.date, "DD/MM/YYYY").startOf('day') && dayObj.available) {
+            if (startDate.startOf('day') <= moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && endDate.startOf('day') > moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && dayObj.available) {
                 listingPriceForPeriod += dayObj.price;
             }
 
@@ -124,7 +128,7 @@ class PropertyReservation extends React.Component {
                         <div className="loader"></div>
                     }
                     {(!this.state.sending && !this.props.loading) &&
-                        <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
+                        <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                             {/* <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc.toFixed(4)} LOC)</span> /per night</p> */}
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
@@ -162,13 +166,13 @@ class PropertyReservation extends React.Component {
                             </div>
 
                             <div className="hotel-second-price">total <span className="total-price">{this.props.currencySign}{(listingPrice + cleaningFee).toFixed(2)}</span> / for&nbsp;
-                                <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
+                            <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div>
                                 <p style={{ color: 'white' }}><b>or</b></p>
                             </div>
                             <div className="hotel-second-price">total <span className="total-price">{totalLoc} LOC</span> / for&nbsp;
-                                <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
+                            <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div className="nonev"></div>
 
@@ -181,11 +185,11 @@ class PropertyReservation extends React.Component {
                                     className="checkbox tick" />
                             }
                             {this.props.isLogged &&
-                                <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the
-                                    <a>Terms &amp; Conditions</a></label>
+                                <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the&nbsp;
+                                <a>Terms &amp; Conditions</a></label>
                             }
                             {this.props.isLogged === false &&
-                                <div className="hotel-second-price" style={{ textAlign: "center" }}>
+                                <div className="hotel-second-price" style={{ textAlign: 'center' }}>
                                     <span className="total-price">Sign-in to reserve this awesome property.</span>
                                 </div>
                             }
@@ -194,7 +198,7 @@ class PropertyReservation extends React.Component {
                     }
                 </div>
             </div>
-        )
+        );
     }
 }
 
