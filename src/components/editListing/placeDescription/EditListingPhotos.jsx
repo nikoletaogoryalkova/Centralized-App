@@ -89,7 +89,7 @@ export default class EditListingPhotos extends React.Component {
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         {this.validateInput() 
-                            ? <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(8) }}} >Next</NavLink>
+                            ? <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(7) }}} >Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>
