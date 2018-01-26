@@ -85,7 +85,7 @@ export default class MyListingsPage extends React.Component {
                         <h2>Active ({this.state.totalListings})</h2>
                         <hr className="profile-line" />
                         {this.state.listings.map((item, i) => {
-                            return <MyListingsActiveItem filterListings={this.filterListings} listing={item} key={i} />
+                            return <MyListingsActiveItem state={item.state} filterListings={this.filterListings} listing={item} key={i} />
                         })}
 
                         <div className="pagination-box">

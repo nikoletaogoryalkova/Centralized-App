@@ -161,7 +161,7 @@ class CreateListingPage extends React.Component {
         let bedroomsCount = this.state.bedroomsCount;
         let value = Number(event.target.value);
         if (value < 0) { value = 0; }
-        if (value > 9) { value = 9; }
+
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
 
         if (value > bedroomsCount) {
@@ -183,7 +183,6 @@ class CreateListingPage extends React.Component {
         const name = e.target.name;
         let value = Number(e.target.value);
         if (value < 0) { value = 0; }
-        if (value > 9) { value = 9; }
         bedrooms[bedroom][name] = value;
         this.setState({
             bedrooms: bedrooms,

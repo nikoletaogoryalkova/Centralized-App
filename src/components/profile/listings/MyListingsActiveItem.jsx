@@ -65,6 +65,7 @@ export default class MyListingsActiveItem extends React.Component {
     }
 
     render() {
+        const listingStateBackgroundClass = this.props.state === 'active' ? '' : ' inactive';
         return (
             <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                 <NotificationContainer />
@@ -94,7 +95,7 @@ export default class MyListingsActiveItem extends React.Component {
                         <button onClick={this.onHide} className="btn btn-info">No, go back!</button>
                     </Modal.Body>
                 </Modal>
-                <ul className="profile-mylistings-active">
+                <ul className={`profile-mylistings-active ${listingStateBackgroundClass}`}>
                     <li className="toggle off"></li>
                     <li className="thumb"><span
                         style={{ backgroundImage: `url(${this.props.listing.thumbnail})` }}></span></li>

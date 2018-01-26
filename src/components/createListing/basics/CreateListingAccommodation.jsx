@@ -1,11 +1,10 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-
-import CreateListingBasicsAside from './CreateListingBasicsAside';
-import NavCreateListing from '../NavCreateListing';
 import Counter from '../Counter';
+import CreateListingBasicsAside from './CreateListingBasicsAside';
 import Dropdown from '../Dropdown';
 import LabeledBedroomCounter from '../LabeledBedroomCounter';
+import NavCreateListing from '../NavCreateListing';
+import { NavLink } from 'react-router-dom';
+import React from 'react';
 
 export default class CreateListingAccommodation extends React.Component {
 
@@ -37,7 +36,7 @@ export default class CreateListingAccommodation extends React.Component {
                     value={bedrooms[i].kingBedCount}
                     onChange={this.props.updateBedCount}
                 />
-            </div>
+            </div>;
         });
 
         return (
@@ -71,7 +70,7 @@ export default class CreateListingAccommodation extends React.Component {
                                     <h3>How many bedrooms can your guests use?</h3>
                                     <Dropdown
                                         name="bedroomCount"
-                                        options={[1, 2, 3, 4, 5]}
+                                        options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
                                         value={bedroomsCount}
                                         onChange={this.props.updateBedrooms} />
                                 </div>
