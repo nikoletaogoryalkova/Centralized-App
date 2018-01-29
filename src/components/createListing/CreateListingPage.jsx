@@ -31,6 +31,7 @@ import Footer from '../Footer';
 import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { arrayMove } from 'react-sortable-hoc';
 import moment from 'moment';
 import request from 'superagent';
 import update from 'react-addons-update';
@@ -109,6 +110,7 @@ class CreateListingPage extends React.Component {
         this.updateLocAddress = this.updateLocAddress.bind(this);
         this.createProgress = this.createProgress.bind(this);
         this.updateProgress = this.updateProgress.bind(this);
+        this.onSortEnd = this.onSortEnd.bind(this);
     }
 
     componentDidMount() {
@@ -436,6 +438,13 @@ class CreateListingPage extends React.Component {
         }
     }
 
+    onSortEnd({ oldIndex, newIndex }) {
+        this.setState({
+            uploadedFilesUrls: arrayMove(this.state.uploadedFilesUrls, oldIndex, newIndex),
+        });
+    }
+
+
     updateLocAddress(captchaToken) {
         getCurrentLoggedInUserInfo().then(data => {
             let userInfo = {
@@ -522,7 +531,8 @@ class CreateListingPage extends React.Component {
                         values={this.state}
                         onImageDrop={this.onImageDrop}
                         removePhoto={this.removePhoto}
-                        updateProgress={this.updateProgress} />} />
+                        updateProgress={this.updateProgress}
+                        onSortEnd={this.onSortEnd} />} />
                     <Route exact path="/profile/listings/create/houserules" render={() => <CreateListingHouseRules
                         values={this.state}
                         onChange={this.onChange}
