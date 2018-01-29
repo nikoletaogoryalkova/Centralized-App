@@ -26,7 +26,6 @@ import CreateListingPhotos from './placeDescription/CreateListingPhotos';
 import CreateListingPlaceType from './basics/CreateListingPlaceType';
 import CreateListingPrice from './guestSettings/CreateListingPrice';
 import CreateListingSafetyAmenities from './basics/CreateListingSafetyAmenities';
-import CreateListingTitle from './placeDescription/CreateListingTitle';
 import Footer from '../Footer';
 import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
@@ -133,7 +132,6 @@ class CreateListingPage extends React.Component {
         });
 
         getCurrentLoggedInUserInfo().then(data => {
-            console.log(data);
             this.setState({ userHasLocAddress: data.locAddress !== null });
         });
     }
@@ -516,10 +514,6 @@ class CreateListingPage extends React.Component {
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}
                         updateCities={this.updateCities}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/title" render={() => <CreateListingTitle
-                        values={this.state}
-                        updateTextbox={this.onChange}
                         updateProgress={this.updateProgress} />} />
                     <Route exact path="/profile/listings/create/description" render={() => <CreateListingDescription
                         values={this.state}
