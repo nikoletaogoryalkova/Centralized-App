@@ -29,7 +29,6 @@ export default class MyListingsPage extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ loading: false });
         getMyListings('?page=0').then((data) => {
             this.setState({ listings: data.content, totalListings: data.totalElements, loading: false });
         });
@@ -77,7 +76,7 @@ export default class MyListingsPage extends React.Component {
                     <div className="container">
                         <h2>In Progress ({this.state.totalListingsInProgress})</h2>
                         <hr className="profile-line" />
-                        {this.state.listingsInProgress.map((item, i) => {
+                        {this.state.listingsInProgress && this.state.listingsInProgress.map((item, i) => {
                             return <MyListingsInProgressItem id={item.id} step={item.step} filterListings={this.filterListings} listing={JSON.parse(item.data)} key={i} />;
                         })}
                     </div>
