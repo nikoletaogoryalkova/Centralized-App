@@ -20,6 +20,8 @@ export default class MyTripsPage extends React.Component {
             currentPage: 1,
             currentTrip: null,
         };
+
+        this.onPageChange = this.onPageChange.bind(this);
     }
 
     componentDidMount() {

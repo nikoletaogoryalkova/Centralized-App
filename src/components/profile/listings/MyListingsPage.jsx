@@ -21,6 +21,7 @@ export default class MyListingsPage extends React.Component {
         };
 
         this.filterListings = this.filterListings.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
     }
 
     filterListings(id) {
