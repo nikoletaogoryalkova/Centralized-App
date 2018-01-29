@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
@@ -7,26 +8,26 @@ class ListingRating extends React.Component {
             return '';
         }
 
-        let result = "";
+        let result = '';
         let ratingRoundedNumber = Math.round(ratingNumber);
 
         if (ratingRoundedNumber === 5) {
-            result += "Excellent";
+            result += 'Excellent';
         }
         else if (ratingRoundedNumber === 4) {
-            result += "Very good";
+            result += 'Very good';
         }
         else if (ratingRoundedNumber === 3) {
-            result += "Good";
+            result += 'Good';
         }
         else if (ratingRoundedNumber === 2) {
-            result += "Sufficient";
+            result += 'Sufficient';
         }
         else if (ratingRoundedNumber === 1) {
-            result += "Weak";
+            result += 'Weak';
         }
         else if (ratingRoundedNumber === 0 && reviewsCount !== 0) {
-            result += "Poor"
+            result += 'Poor';
         }
         result += ' ';
         result += Math.round(ratingNumber * 100) / 100 + '/5';
@@ -55,8 +56,13 @@ class ListingRating extends React.Component {
                 </div>
                 <div className="list-hotel-rating-review">{this.props.reviewsCount} Reviews</div>
             </div>
-        )
+        );
     }
 }
+
+ListingRating.propTypes = {
+    rating: PropTypes.number,
+    reviewsCount: PropTypes.number
+};
 
 export default withRouter(ListingRating);

@@ -1,8 +1,8 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import ListingRating from '../listings/ListingRating';
 import ListingPictures from '../listings/ListingPictures';
-
+import ListingRating from '../listings/ListingRating';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default class ListingSliderBox extends React.Component {
     render() {
@@ -25,3 +25,10 @@ export default class ListingSliderBox extends React.Component {
             </div>);
     }
 }
+
+ListingSliderBox.propTypes = {
+    listing: PropTypes.object,
+    currency: PropTypes.string,
+    currencySign: PropTypes.string,
+    locRate: PropTypes.string
+};

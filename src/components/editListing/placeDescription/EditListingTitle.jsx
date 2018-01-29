@@ -1,12 +1,11 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-
 import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
 import NavEditListing from '../NavEditListing';
+import { NavLink } from 'react-router-dom';
+import React from 'react';
 
 export default class EditListingTitle extends React.Component {
     render() {
-        const { listingId, name, isInProgress } = this.props.values;
+        const { listingId, name } = this.props.values;
         return (
             <div>
                 <NavEditListing progress='66%' />
@@ -22,7 +21,7 @@ export default class EditListingTitle extends React.Component {
 
                                 <div className="col-md-12">
                                     <div className="form-group">
-                                        <input onChange={this.props.updateTextbox}  placeholder="Listing title" className="form-control" name="name" value={name} />
+                                        <input onChange={this.props.updateTextbox} placeholder="Listing title" className="form-control" name="name" value={name} />
                                     </div>
                                 </div>
 

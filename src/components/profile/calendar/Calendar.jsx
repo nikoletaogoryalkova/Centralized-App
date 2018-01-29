@@ -1,13 +1,12 @@
-import React from 'react';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import BigCalendar from 'react-big-calendar';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import moment from 'moment';
 import CalendarAside from './CalendarAside';
-
 import CalendarAsideStatic from './CalendarAsideStatic';
 import CustomEvent from './CustomEvent';
-
+import PropTypes from 'prop-types';
+import React from 'react';
+import moment from 'moment';
 
 export default class Calendar extends React.Component {
     render() {
@@ -37,8 +36,8 @@ export default class Calendar extends React.Component {
                         })}
                     </select> */}
                 </div>
-            )
-        }
+            );
+        };
 
         const eventStyleGetter = (event) => {
             const now = new Date();
@@ -53,26 +52,26 @@ export default class Calendar extends React.Component {
                 backgroundColor: '#a2c5bf',
                 position: 'relative',
                 top: '-20px'
-            }
+            };
 
             if (isPastDate) {
-                styleNotSelected["opacity"] = '0.5';
-                styleSelected["opacity"] = '0.5';
+                styleNotSelected['opacity'] = '0.5';
+                styleSelected['opacity'] = '0.5';
             }
 
             if (!event.isReservation) {
                 return {
                     style: styleNotSelected
-                }
+                };
             }
             else {
                 return {
                     style: styleSelected
-                }
+                };
             }
         };
 
-        const DateCell = ({ range, value, children }) => {
+        const DateCell = ({ value, children }) => {
             const now = new Date();
             const afterDaysConst = 89;
             now.setHours(0, 0, 0, 0);
@@ -84,17 +83,17 @@ export default class Calendar extends React.Component {
             let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > dateAfterDays);
 
             return (
-                <div className={isPastDate ? "date-in-past" : "rbc-day-bg"} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto' }}>
+                <div className={isPastDate ? 'date-in-past' : 'rbc-day-bg'} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto' }}>
                     {/* onClick={this.props.onSlotClick} */}
                     {children}
                 </div>
-            )
-        }
+            );
+        };
 
         const formats = {
             weekdayFormat: (date, culture, localizer) =>
                 localizer.format(date, 'dddd', culture)
-        }
+        };
 
         moment.locale('ko', {
             week: {
@@ -105,7 +104,7 @@ export default class Calendar extends React.Component {
         BigCalendar.momentLocalizer(moment);
 
         return (
-            <div className={(this.props.selectedDay !== null && this.props.selectedDay !== '') ? "col-md-12 calendar dynamic-aside" : "col-md-12 calendar"}>
+            <div className={(this.props.selectedDay !== null && this.props.selectedDay !== '') ? 'col-md-12 calendar dynamic-aside' : 'col-md-12 calendar'}>
                 <div className="col-md-8">
                     <BigCalendar selectable
                         popup
@@ -139,8 +138,8 @@ export default class Calendar extends React.Component {
                         eventPropGetter={eventStyleGetter}
                     />
                 </div>
-                
-                {this.props.selectedDay !== null && this.props.selectedDay !== '' ? 
+
+                {this.props.selectedDay !== null && this.props.selectedDay !== '' ?
                     <CalendarAside onCancel={this.props.onCancel}
                         day={this.props.selectedDay}
                         date={this.props.selectedDate}
@@ -148,13 +147,28 @@ export default class Calendar extends React.Component {
                         available={this.props.available}
                         onSubmit={this.props.onSubmit}
                         onChange={this.props.onChange}
-                        currencySign={this.props.currencySign} /> : 
-                    <CalendarAsideStatic 
-                        currencySign={this.props.currencySign} 
-                        defaultDailyPrice={this.props.defaultDailyPrice} 
+                        currencySign={this.props.currencySign} /> :
+                    <CalendarAsideStatic
+                        currencySign={this.props.currencySign}
+                        defaultDailyPrice={this.props.defaultDailyPrice}
                         onChange={this.props.onChange}
                         updateDailyPrice={this.props.updateDailyPrice} />}
             </div>
-        )
+        );
     }
 }
+
+Calendar.propTypes = {
+    selectedDay: PropTypes.object,
+    selectedDate: PropTypes.object,
+    price: PropTypes.number,
+    available: PropTypes.bool,
+    onSubmit: PropTypes.func,
+    onChange: PropTypes.func,
+    currencySign: PropTypes.string,
+    defaultDailyPrice: PropTypes.number,
+    updateDailyPrice: PropTypes.func,
+    allEvents: PropTypes.array,
+    onCancel: PropTypes.func,
+    onSelectSlot: PropTypes.func
+};

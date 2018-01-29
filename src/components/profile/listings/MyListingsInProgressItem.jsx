@@ -3,11 +3,12 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import { Config } from '../../../config';
 import { Link } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { deleteListing } from '../../../requester';
 
-export default class MyListingsActiveItem extends React.Component {
+export default class MyListingsInProgressItem extends React.Component {
     constructor(props) {
         super(props);
 
@@ -158,7 +159,7 @@ export default class MyListingsActiveItem extends React.Component {
                 <div className="row my-listing-box">
                     <div className="col-md-2">
                         <div className="my-listing-image-box">
-                            <img src={this.props.listing.pictures[0] && this.props.listing.pictures[0].thumbnail} alt="user-profile" />
+                            <img src={this.props.listing.pictures[0] && this.props.listing.pictures[0].thumbnail} alt="user" />
                         </div>
                     </div>
                     <div className="col-md-8 listing-name">
@@ -201,10 +202,17 @@ export default class MyListingsActiveItem extends React.Component {
                         })}
                     </div>
                     <div className="col-md-4 progress-image">
-                        <img src={Config.getValue('basePath') + 'images/' + this.calculateProgressImage(this.props.step)} alt="progress-image" />
+                        <img src={Config.getValue('basePath') + 'images/' + this.calculateProgressImage(this.props.step)} alt="progress-thumbnail" />
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+MyListingsInProgressItem.propTypes = {
+    listing: PropTypes.object,
+    step: PropTypes.number,
+    id: PropTypes.number,
+    filterListings: PropTypes.func
+};

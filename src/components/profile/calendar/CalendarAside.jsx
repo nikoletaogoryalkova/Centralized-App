@@ -1,5 +1,6 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
 import moment from 'moment';
 
 export default class CalendarAside extends React.Component {
@@ -15,15 +16,15 @@ export default class CalendarAside extends React.Component {
                     </div>
                 </div>
                 <div className="col-md-12 calendar-aside-body">
-                    <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
+                    <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                         <div className="col-md-12">
                             <h3 className="bold">Reservation Settings</h3>
                         </div>
                         <div className="col-md-12">
-                            <label className="radio-label" style={this.props.available === "true" ? { backgroundColor: '#7BAAA2', color: '#FFFFFF' } : {}} htmlFor="available">Available</label>
-                            <input type="radio" name="available" onChange={this.props.onChange} value="true" checked={this.props.available === "true"} id="available" />
-                            <label className="radio-label" style={this.props.available === "false" ? { backgroundColor: '#7BAAA2', color: '#FFFFFF' } : {}} htmlFor="blocked">Blocked</label>
-                            <input type="radio" name="available" onChange={this.props.onChange} value="false" checked={this.props.available === "false"} id="blocked" />
+                            <label className="radio-label" style={this.props.available === 'true' ? { backgroundColor: '#7BAAA2', color: '#FFFFFF' } : {}} htmlFor="available">Available</label>
+                            <input type="radio" name="available" onChange={this.props.onChange} value="true" checked={this.props.available === 'true'} id="available" />
+                            <label className="radio-label" style={this.props.available === 'false' ? { backgroundColor: '#7BAAA2', color: '#FFFFFF' } : {}} htmlFor="blocked">Blocked</label>
+                            <input type="radio" name="available" onChange={this.props.onChange} value="false" checked={this.props.available === 'false'} id="blocked" />
                         </div>
 
                         <div className="col-md-12">
@@ -38,11 +39,11 @@ export default class CalendarAside extends React.Component {
                         </div>
 
                         <ReCAPTCHA
-                                ref={el => this.captcha = el}
-                                size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.props.onSubmit(token)}
-                            />
+                            ref={el => this.captcha = el}
+                            size="invisible"
+                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            onChange={token => this.props.onSubmit(token)}
+                        />
 
                         <div className="col-md-12 controls">
                             <button className="btn btn-default btn-back bold" onClick={this.props.onCancel}>Cancel</button>
@@ -51,6 +52,16 @@ export default class CalendarAside extends React.Component {
                     </form>
                 </div>
             </div>
-        </div>
+        </div>;
     }
 }
+
+CalendarAside.propTypes = {
+    date: PropTypes.string,
+    onCancel: PropTypes.func,
+    available: PropTypes.bool,
+    onChange: PropTypes.func,
+    currencySign: PropTypes.string,
+    price: PropTypes.number,
+    onSubmit: PropTypes.func
+};

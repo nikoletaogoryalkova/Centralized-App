@@ -1,9 +1,10 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { getCountries } from '../../requester';
 import DatePicker from '../DatePicker';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { getCountries } from '../../requester';
 import moment from 'moment';
-const queryString = require('query-string');
+import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 
 class Search extends React.Component {
     constructor(props) {
@@ -44,26 +45,26 @@ class Search extends React.Component {
 
     componentDidMount() {
         getCountries(true).then(data => {
-            this.setState({ countries: data.content })
+            this.setState({ countries: data.content });
         });
 
         if (this.state.startDate && this.state.endDate) {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
-    };
+    }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
         if (this.props.updateParamsMap) {
             this.props.updateParamsMap(e.target.name, e.target.value);
         }
-    };
+    }
 
     onSubmit(e) {
         e.preventDefault();
 
         let queryString = '?';
-        
+
         queryString += 'countryId=' + this.state.countryId;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
@@ -80,8 +81,8 @@ class Search extends React.Component {
         });
         this.calculateNights(picker.startDate, picker.endDate);
         if (this.props.updateParamsMap) {
-            this.props.updateParamsMap("startDate", picker.startDate.format('DD/MM/YYYY'));
-            this.props.updateParamsMap("endDate", picker.endDate.format('DD/MM/YYYY'));
+            this.props.updateParamsMap('startDate', picker.startDate.format('DD/MM/YYYY'));
+            this.props.updateParamsMap('endDate', picker.endDate.format('DD/MM/YYYY'));
         }
     }
 
@@ -92,10 +93,10 @@ class Search extends React.Component {
         let diffDays = checkOut.diff(checkIn, 'days');
 
         if (checkOut > checkIn) {
-            this.setState({ nights: diffDays })
+            this.setState({ nights: diffDays });
         }
         else {
-            this.setState({ nights: 0 })
+            this.setState({ nights: 0 });
         }
     }
 
@@ -112,7 +113,7 @@ class Search extends React.Component {
                         required="required">
                         <option disabled value="">Location</option>
                         {this.state.countries.map((item, i) => {
-                            return <option key={i} value={item.id}>{item.name}</option>
+                            return <option key={i} value={item.id}>{item.name}</option>;
                         })}
                     </select>
                 </div>
@@ -138,8 +139,14 @@ class Search extends React.Component {
                 <button className="btn btn-primary">Search</button>
 
             </form>
-        )
+        );
     }
 }
+
+Search.propTypes = {
+    updateParamsMap: PropTypes.func,
+    location: PropTypes.object,
+    history: PropTypes.object
+};
 
 export default withRouter(Search);

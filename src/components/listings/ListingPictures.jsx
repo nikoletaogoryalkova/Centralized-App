@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { React_Bootstrap_Carousel } from 'react-bootstrap-carousel';
 
@@ -33,3 +34,8 @@ export default class ListingPictures extends React.Component {
         );
     }
 }
+
+ListingPictures.propTypes = {
+    pictures: PropTypes.array,
+    id: PropTypes.number
+};

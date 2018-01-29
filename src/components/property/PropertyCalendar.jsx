@@ -1,9 +1,9 @@
-import React from 'react';
-
-import BigCalendar from "react-big-calendar";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import moment from 'moment';
 
+import BigCalendar from 'react-big-calendar';
+import PropTypes from 'prop-types';
+import React from 'react';
+import moment from 'moment';
 
 export default class PropertyCalendar extends React.Component {
     render() {
@@ -27,8 +27,8 @@ export default class PropertyCalendar extends React.Component {
 
                     <span className="rbc-toolbar-label">{label()}</span>
                 </div>
-            )
-        }
+            );
+        };
 
         const eventStyleGetter = (event) => {
             const now = new Date();
@@ -43,47 +43,47 @@ export default class PropertyCalendar extends React.Component {
                 backgroundColor: '#a2c5bf',
                 position: 'relative',
                 top: '-20px'
-            }
+            };
 
             if (isPastDate) {
-                styleNotSelected["opacity"] = '0.5';
-                styleSelected["opacity"] = '0.5';
+                styleNotSelected['opacity'] = '0.5';
+                styleSelected['opacity'] = '0.5';
             }
 
             if (!event.isReservation) {
                 return {
                     style: styleNotSelected
-                }
+                };
             }
             else {
                 return {
                     style: styleSelected
-                }
+                };
             }
         };
 
-        const DateCell = ({ range, value, children }) => {
+        const DateCell = ({ value, children }) => {
             const now = new Date();
             now.setHours(0, 0, 0, 0);
 
             let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > moment().add(89, 'days'));
 
             let currentDay = this.props.prices.find(p => p.start.diff(value) === 0);
-            if((currentDay && !currentDay.available) || currentDay === undefined) {
+            if ((currentDay && !currentDay.available) || currentDay === undefined) {
                 isPastDate = true;
             }
 
             return (
-                <div className={isPastDate ? "date-in-past" : "rbc-day-bg"} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto'}}>
+                <div className={isPastDate ? 'date-in-past' : 'rbc-day-bg'} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto' }}>
                     {children}
                 </div>
-            )
-        }
+            );
+        };
 
         const formats = {
             weekdayFormat: (date, culture, localizer) =>
                 localizer.format(date, 'dddd', culture)
-        }
+        };
 
         moment.locale('ko', {
             week: {
@@ -94,7 +94,7 @@ export default class PropertyCalendar extends React.Component {
         BigCalendar.momentLocalizer(moment);
 
         return (
-            <div className="col-md-12 calendar" style={{margin: '30px 0'}}>
+            <div className="col-md-12 calendar" style={{ margin: '30px 0' }}>
                 <div className="col-md-12">
                     <BigCalendar selectable
                         popup
@@ -112,6 +112,11 @@ export default class PropertyCalendar extends React.Component {
                     />
                 </div>
             </div>
-        )
+        );
     }
 }
+
+PropertyCalendar.propTypes = {
+    prices: PropTypes.array,
+    allEvents: PropTypes.array
+};
