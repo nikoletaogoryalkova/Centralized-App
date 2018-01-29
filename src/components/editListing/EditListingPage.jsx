@@ -1,8 +1,8 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import {
-    editListing,
     createListing,
+    editListing,
     getAmenitiesByCategory,
     getCities,
     getCountries,
@@ -31,6 +31,7 @@ import Footer from '../Footer';
 import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { arrayMove } from 'react-sortable-hoc';
 import moment from 'moment';
 import request from 'superagent';
 import update from 'react-addons-update';
@@ -119,6 +120,7 @@ class EditListingPage extends React.Component {
         this.populateFileUrls = this.populateFileUrls.bind(this);
         this.populateFileThumbUrls = this.populateFileThumbUrls.bind(this);
         this.updateProgress = this.updateProgress.bind(this);
+        this.onSortEnd = this.onSortEnd.bind(this);
     }
 
     componentWillMount() {
@@ -128,7 +130,6 @@ class EditListingPage extends React.Component {
         if (search) {
             this.setState({ isInProgress: true, progressId: id });
             getListingProgress(id).then(res => {
-                console.log(JSON.parse(res.data));
                 this.setListingData(JSON.parse(res.data));
                 const step = steps[search.split('=')[1]];
                 const path = `/profile/listings/edit/${step}/${id}`;
@@ -180,7 +181,6 @@ class EditListingPage extends React.Component {
 
     getOtherHouseRules(data) {
         const houseRules = data.houseRules ? data.houseRules : data.description.houseRules;
-        console.log(houseRules);
         if (houseRules && houseRules.length > 0) {
             return new Set(houseRules.split('\r\n'));
         }
@@ -278,7 +278,6 @@ class EditListingPage extends React.Component {
     getText(text) {
         if (text) {
             let index = text.indexOf('Neighborhood:');
-            console.log(text);
             if (index >= 0) {
                 return text.substr(0, index).trim();
             }
@@ -547,8 +546,6 @@ class EditListingPage extends React.Component {
             data: JSON.stringify(listing),
         };
 
-        console.log(data.data);
-
         updateListingProgress(progressId, data);
     }
 
@@ -569,6 +566,13 @@ class EditListingPage extends React.Component {
         } else {
             return data.amenities;
         }
+    }
+
+    onSortEnd({ oldIndex, newIndex }) {
+        this.setState({
+            uploadedFilesUrls: arrayMove(this.state.uploadedFilesUrls, oldIndex, newIndex),
+            uploadedFilesThumbUrls: arrayMove(this.state.uploadedFilesThumbUrls, oldIndex, newIndex)
+        });
     }
 
     render() {
@@ -620,7 +624,8 @@ class EditListingPage extends React.Component {
                         values={this.state}
                         onImageDrop={this.onImageDrop}
                         removePhoto={this.removePhoto}
-                        updateProgress={this.updateProgress} />} />
+                        updateProgress={this.updateProgress}
+                        onSortEnd={this.onSortEnd} />} />
                     <Route exact path={`/profile/listings/edit/houserules/${id}`} render={() => <EditListingHouseRules
                         values={this.state}
                         onChange={this.onChange}

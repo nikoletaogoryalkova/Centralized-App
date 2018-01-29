@@ -32,8 +32,6 @@ export default class MyListingsActiveItem extends React.Component {
                 deletingName: ''
             }
         );
-
-        console.log(this.state);
     }
 
     onOpen(id, name) {

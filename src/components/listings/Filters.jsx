@@ -127,7 +127,6 @@ class Filters extends React.Component {
         let selectedPropertyTypes = this.state.selectedPropertyTypes;
         let selectedCities = this.state.selectedCities;
 
-        console.log(this.props.cities);
         return (
             <div className="filter-box">
                 <div className="form-group">
