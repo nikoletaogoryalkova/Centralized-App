@@ -1,19 +1,18 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { NotificationManager, NotificationContainer } from 'react-notifications';
-
-import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
-import NavEditListing from '../NavEditListing';
-
-import Dropzone from 'react-dropzone';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 import { Config } from '../../../config';
+import Dropzone from 'react-dropzone';
+import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
+import NavEditListing from '../NavEditListing';
+import { NavLink } from 'react-router-dom';
+import React from 'react';
 
 export default class EditListingPhotos extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
-        this.onDropRejected = this.onDropRejected.bind(this);        
+        this.onDropRejected = this.onDropRejected.bind(this);
         this.validateInput = this.validateInput.bind(this);
         this.showErrors = this.showErrors.bind(this);
     }
@@ -34,12 +33,32 @@ export default class EditListingPhotos extends React.Component {
     showErrors() {
         const { uploadedFilesUrls } = this.props.values;
         if (uploadedFilesUrls.length < 1) {
-            NotificationManager.warning("At least 1 picture is required");
+            NotificationManager.warning('At least 1 picture is required');
         }
     }
 
     render() {
         const { listingId, isInProgress } = this.props.values;
+
+        const SortableItem = SortableElement(({ value, i }) =>
+            <div className="uploaded-small-picture col-md-4" >
+                <button onClick={this.props.removePhoto} className="close">
+                    <img className="inactiveLink" src={Config.getValue('basePath') + 'images/icon-delete.png'} alt="remove" />
+                </button>
+                <img draggable={false} src={value} height={200} alt={`uploaded-${i}`} />
+            </div>
+        );
+
+        const SortableList = SortableContainer(({ items }) => {
+            return (
+                <div className="col-md-12">
+                    {items.map((value, index) => (
+                        <SortableItem key={`item-${index}`} index={index} value={value} />
+                    ))}
+                </div>
+            );
+        });
+
         return (
             <div>
                 <NavEditListing progress='66%' />
@@ -66,16 +85,7 @@ export default class EditListingPhotos extends React.Component {
                                 </Dropzone>
 
                                 <div className="pictures-preview col-md-12">
-                                    {this.props.values.uploadedFilesUrls.length === 0 ? null :
-                                        this.props.values.uploadedFilesUrls.map((imageUrl, i) =>
-                                            <div key={i} className="uploaded-small-picture col-md-4">
-                                                <button onClick={this.props.removePhoto} className="close">
-                                                    <img className="inactiveLink" src={Config.getValue("basePath") + "images/icon-delete.png"} alt="remove" />
-                                                </button>
-                                                <img src={imageUrl} height={200} alt={`uploaded-${i}`} />
-                                            </div>
-                                        )
-                                    }
+                                    {this.props.values.uploadedFilesUrls.length === 0 ? null : <SortableList axis={'xy'} lockToContainerEdges={true} items={this.props.values.uploadedFilesUrls} onSortEnd={this.props.onSortEnd} />}
                                 </div>
                             </div>
                         </div>
@@ -88,8 +98,8 @@ export default class EditListingPhotos extends React.Component {
                         <NavLink to={`/profile/listings/edit/description/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
-                        {this.validateInput() 
-                            ? <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(7) }}} >Next</NavLink>
+                        {this.validateInput()
+                            ? <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(7); } }} >Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>

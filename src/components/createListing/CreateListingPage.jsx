@@ -441,6 +441,7 @@ class CreateListingPage extends React.Component {
     onSortEnd({ oldIndex, newIndex }) {
         this.setState({
             uploadedFilesUrls: arrayMove(this.state.uploadedFilesUrls, oldIndex, newIndex),
+            uploadedFilesThumbUrls: arrayMove(this.state.uploadedFilesThumbUrls, oldIndex, newIndex)
         });
     }
 
