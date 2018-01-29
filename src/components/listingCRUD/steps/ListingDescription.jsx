@@ -3,21 +3,21 @@ import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
 
-import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
-import NavCreateListing from '../NavCreateListing';
-import Textarea from '../Textarea';
+import PlaceDescriptionAside from '../aside/PlaceDescriptionAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
+import Textarea from '../textbox/Textarea';
 
 export default function CreateListingDescription(props) {
     const { text, interaction } = props.values;
     return (
         <div>
-            <NavCreateListing progress='66%' />
+            <ListingCrudNav progress='66%' />
             <NotificationContainer />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <CreateListingPlaceDescriptionAside />
+                            <PlaceDescriptionAside />
                         </div>
                         <div className="reservation-hotel-review-room col-md-9">
                             <h2>Tell your guests about your place</h2>

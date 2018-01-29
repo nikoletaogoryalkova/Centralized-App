@@ -2,19 +2,19 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
-import NavCreateListing from '../NavCreateListing';
+import GuestSettingsAside from '../aside/GuestSettingsAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
 
 export default function CreateListingHouseRules(props) {
     const { suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText } = props.values;
     return (
         <div>
-            <NavCreateListing progress='100%' />
+            <ListingCrudNav progress='100%' />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <CreateListingGuestSettingsAside />
+                            <GuestSettingsAside />
                         </div>
                         <div className="col-md-9">
                             <h2>House Rules</h2>
@@ -186,7 +186,6 @@ export default function CreateListingHouseRules(props) {
 
 CreateListingHouseRules.propTypes ={
     values: PropTypes.any.isRequired,
-    updateDropdown: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     addRule: PropTypes.func.isRequired,
     updateProgress: PropTypes.func.isRequired,

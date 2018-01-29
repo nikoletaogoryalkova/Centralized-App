@@ -1,5 +1,5 @@
-import CreateListingGuestSettingsAside from './CreateListingGuestSettingsAside';
-import NavCreateListing from '../NavCreateListing';
+import GuestSettingsAside from '../aside/GuestSettingsAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -11,12 +11,12 @@ export default function CreateListingPrice(props) {
     const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = props.values;
     return (
         <div>
-            <NavCreateListing progress='100%' />
+            <ListingCrudNav progress='100%' />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <CreateListingGuestSettingsAside />
+                            <GuestSettingsAside />
                         </div>
 
                         {!props.values.loading ? <div className="col-md-9">

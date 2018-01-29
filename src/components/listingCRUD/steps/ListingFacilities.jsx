@@ -2,8 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import CreateListingBasicsAside from './CreateListingBasicsAside';
-import NavCreateListing from '../NavCreateListing';
+import BasicsAside from '../aside/BasicsAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
 import FiltersCheckbox from '../../listings/FiltersCheckbox';
 
 export default function CreateListingFacilities(props) {
@@ -39,12 +39,12 @@ export default function CreateListingFacilities(props) {
 
     return (
         <div>
-            <NavCreateListing progress='33%' />
+            <ListingCrudNav progress='33%' />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <CreateListingBasicsAside />
+                            <BasicsAside />
                         </div>
                         <div className="col-md-9">
                             <div className="form-group">

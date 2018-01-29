@@ -2,8 +2,8 @@ import 'react-select/dist/react-select.css';
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
-import CreateListingBasicsAside from './basics/CreateListingBasicsAside';
-import NavCreateListing from './NavCreateListing';
+import BasicsAside from '../aside/BasicsAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
@@ -34,13 +34,13 @@ export default class CreateListingLocAddress extends React.Component {
     render() {
         const { locAddress } = this.props.values;
         return <div>
-            <NavCreateListing progress='0%' />
+            <ListingCrudNav progress='0%' />
             <NotificationContainer />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <CreateListingBasicsAside />
+                            <BasicsAside />
                         </div>
                         <div className="col-md-9">
                             <div className="form-group">

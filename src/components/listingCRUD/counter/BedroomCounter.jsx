@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Config } from '../../config';
+import { Config } from '../../../config';
 
-export default class Counter extends React.Component {
+export default class BedroomCounter extends React.Component {
     constructor(props){
         super(props);
 
@@ -13,14 +13,14 @@ export default class Counter extends React.Component {
 
     increment = (e) => {
         e.target.name = this.props.name;
-        e.target.value = Number(this.props.value) + 1;
-        this.props.onChange(e);
+        e.target.value = this.props.value + 1;
+        this.props.onChange(this.props.bedroom, e);
     }
 
     decrement = (e) => {
         e.target.name = this.props.name;
-        e.target.value = Number(this.props.value) - 1;
-        this.props.onChange(e);
+        e.target.value = this.props.value - 1;
+        this.props.onChange(this.props.bedroom, e);
     }
 
     render() {
@@ -32,7 +32,7 @@ export default class Counter extends React.Component {
                     alt="plus"
                     onClick={(e) => this.decrement(e)} />
                 
-                <span
+                <span 
                     style={{margin: '10px', padding: '10px'}}>
                     {this.props.value}
                 </span>
@@ -47,8 +47,7 @@ export default class Counter extends React.Component {
     }
 }
 
-Counter.propTypes ={
+BedroomCounter.propTypes ={
     name: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
 }

@@ -1,12 +1,12 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
-import CreateListingBasicsAside from './CreateListingBasicsAside';
-import NavCreateListing from '../NavCreateListing';
-import Counter from '../Counter';
-import Dropdown from '../Dropdown';
-import LabeledBedroomCounter from '../LabeledBedroomCounter';
+import BasicsAside from '../aside/BasicsAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
+import Counter from '../counter/Counter';
+import Dropdown from '../dropdown/Dropdown';
+import LabeledBedroomCounter from '../counter/LabeledBedroomCounter';
 
 export default function CreateListingAccommodation(props) {
     const { guestsIncluded, bedroomsCount, bedrooms, bathrooms } = props.values;
@@ -41,12 +41,12 @@ export default function CreateListingAccommodation(props) {
 
     return (
         <div>
-            <NavCreateListing progress='66%' />
+            <ListingCrudNav progress='33%' />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <CreateListingBasicsAside />
+                            <BasicsAside />
                         </div>
                         <div className="reservation-hotel-review-room col-md-9">
 
@@ -70,7 +70,7 @@ export default function CreateListingAccommodation(props) {
                                 <h3>How many bedrooms can your guests use?</h3>
                                 <Dropdown
                                     name="bedroomCount"
-                                    options={[1, 2, 3, 4, 5]}
+                                    options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
                                     value={bedroomsCount}
                                     onChange={props.updateBedrooms} />
                             </div>
@@ -106,7 +106,7 @@ export default function CreateListingAccommodation(props) {
                     <NavLink to="/profile/listings/create/placetype" className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
-                    <NavLink to="/profile/listings/create/facilities" className="btn btn-primary btn-next" id="btn-continue">Next</NavLink>
+                    <NavLink to="/profile/listings/create/facilities" className="btn btn-primary btn-next" id="btn-continue" onClick={() => props.updateProgress(2)}>Next</NavLink>
                 </div>
             </div>
         </div>
@@ -115,8 +115,9 @@ export default function CreateListingAccommodation(props) {
 
 CreateListingAccommodation.propTypes = {
     values: PropTypes.any,
-    updateCounter: PropTypes.func,
+    onChange: PropTypes.func,
     updateBedCount: PropTypes.func,
-    updateBedrooms: PropTypes.func,
     updateProgress: PropTypes.func,
+    updateBedrooms: PropTypes.func,
+    updateCounter: PropTypes.func,
 };

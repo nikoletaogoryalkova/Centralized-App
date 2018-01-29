@@ -2,8 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import CreateListingBasicsAside from './CreateListingBasicsAside';
-import NavCreateListing from '../NavCreateListing';
+import BasicsAside from '../aside/BasicsAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
 
 import { Config } from '../../../config';
 
@@ -11,13 +11,13 @@ export default function CreateListingPlaceType(props) {
     const { listingType, propertyType, propertyTypes, roomType, dedicatedSpace, propertySize } = props.values;
     return (
         <div>
-            <NavCreateListing progress='33%' />
+            <ListingCrudNav progress='33%' />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
 
                         <div className="col-md-3">
-                            <CreateListingBasicsAside />
+                            <BasicsAside />
                         </div>
                         <div className="reservation-hotel-review-room col-md-8">
                             <h2>What kind of place do you want to list?</h2>

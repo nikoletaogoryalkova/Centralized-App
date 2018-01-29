@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FiltersCheckbox from '../../listings/FiltersCheckbox';
-import CreateListingBasicsAside from './CreateListingBasicsAside';
-import NavCreateListing from '../NavCreateListing';
+import BasicsAside from '../aside/BasicsAside';
+import ListingCrudNav from '../navigation/ListingCrudNav';
 
 export default function CreateListingSafetyAmenities(props) {
     const category = props.values.categories.filter(category => category.name === 'Safety Amenities');
@@ -29,12 +29,12 @@ export default function CreateListingSafetyAmenities(props) {
 
     return (
         <div>
-            <NavCreateListing progress='33%' />
+            <ListingCrudNav progress='33%' />
             <div className="container">
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <CreateListingBasicsAside />
+                            <BasicsAside />
                         </div>
 
                         <div className="col-md-9">
