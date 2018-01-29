@@ -126,14 +126,14 @@ class PropertyInfo extends React.Component {
 
 PropertyInfo.propTypes = {
     data: PropTypes.object,
-    locRate: PropTypes.number,
+    locRate: PropTypes.string,
     showLoginModal: PropTypes.bool,
     isLogged: PropTypes.bool,
     userInfo: PropTypes.object,
     nights: PropTypes.number,
     onApply: PropTypes.func,
-    startDate: PropTypes.string,
-    endDate: PropTypes.string,
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
     currencySign: PropTypes.string,
     currency: PropTypes.string,
     loading: PropTypes.bool,
