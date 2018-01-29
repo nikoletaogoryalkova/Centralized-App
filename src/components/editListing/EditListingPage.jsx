@@ -1,8 +1,8 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import {
-    editListing,
     createListing,
+    editListing,
     getAmenitiesByCategory,
     getCities,
     getCountries,
@@ -128,7 +128,6 @@ class EditListingPage extends React.Component {
         if (search) {
             this.setState({ isInProgress: true, progressId: id });
             getListingProgress(id).then(res => {
-                console.log(JSON.parse(res.data));
                 this.setListingData(JSON.parse(res.data));
                 const step = steps[search.split('=')[1]];
                 const path = `/profile/listings/edit/${step}/${id}`;
@@ -180,7 +179,6 @@ class EditListingPage extends React.Component {
 
     getOtherHouseRules(data) {
         const houseRules = data.houseRules ? data.houseRules : data.description.houseRules;
-        console.log(houseRules);
         if (houseRules && houseRules.length > 0) {
             return new Set(houseRules.split('\r\n'));
         }
@@ -278,7 +276,6 @@ class EditListingPage extends React.Component {
     getText(text) {
         if (text) {
             let index = text.indexOf('Neighborhood:');
-            console.log(text);
             if (index >= 0) {
                 return text.substr(0, index).trim();
             }
@@ -546,8 +543,6 @@ class EditListingPage extends React.Component {
             step: step,
             data: JSON.stringify(listing),
         };
-
-        console.log(data.data);
 
         updateListingProgress(progressId, data);
     }

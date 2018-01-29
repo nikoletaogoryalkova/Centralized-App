@@ -133,7 +133,6 @@ class CreateListingPage extends React.Component {
         });
 
         getCurrentLoggedInUserInfo().then(data => {
-            console.log(data);
             this.setState({ userHasLocAddress: data.locAddress !== null });
         });
     }
@@ -412,13 +411,7 @@ class CreateListingPage extends React.Component {
                 .field('image', file);
 
             upload.end((err, response) => {
-                if (err) {
-                    console.error(err);
-                }
                 if (response.body.secure_url !== '') {
-                    console.log(response.body.original);
-                    console.log(response.body.thumbnail);
-
                     this.setState(previousState => ({
                         uploadedFilesUrls: [...previousState.uploadedFilesUrls, response.body.original],
                         uploadedFilesThumbUrls: [...previousState.uploadedFilesThumbUrls, response.body.thumbnail]

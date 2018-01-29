@@ -56,7 +56,6 @@ export default class ProfilePhotosPage extends React.Component {
                     console.error(err);
                 }
                 else {
-                    console.log(response.body.thumbnail);
                     this.setState({
                         uploadedFilesThumbUrls: [response.body.thumbnail]
                     });
