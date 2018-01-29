@@ -29,6 +29,7 @@ export default class MyListingsPage extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({ loading: false });
         getMyListings('?page=0').then((data) => {
             this.setState({ listings: data.content, totalListings: data.totalElements, loading: false });
         });
