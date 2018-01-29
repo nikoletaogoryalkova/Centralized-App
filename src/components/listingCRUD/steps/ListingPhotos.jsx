@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
-
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import PlaceDescriptionAside from '../aside/PlaceDescriptionAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
 
@@ -11,6 +11,25 @@ import Dropzone from 'react-dropzone';
 import { Config } from '../../../config';
 
 export default function CreateListingPhotos(props) {
+    const SortableItem = SortableElement(({ value, i }) =>
+        <div className="uploaded-small-picture col-md-4" >
+            <button onClick={props.removePhoto} className="close">
+                <img className="inactiveLink" src={Config.getValue('basePath') + 'images/icon-delete.png'} alt="remove" />
+            </button>
+            <img draggable={false} src={value} height={200} alt={`uploaded-${i}`} />
+        </div>
+    );
+
+    const SortableList = SortableContainer(({ items }) => {
+        return (
+            <div className="col-md-12">
+                {items.map((value, index) => (
+                    <SortableItem key={`item-${index}`} index={index} value={value} />
+                ))}
+            </div>
+        );
+    });
+
     return (
         <div>
             <ListingCrudNav progress='66%' />
@@ -37,16 +56,7 @@ export default function CreateListingPhotos(props) {
                             </Dropzone>
 
                             <div className="pictures-preview col-md-12">
-                                {props.values.uploadedFilesUrls.length === 0 ? null :
-                                    props.values.uploadedFilesUrls.map((imageUrl, i) =>
-                                        <div key={i} className="uploaded-small-picture col-md-4">
-                                            <button onClick={props.removePhoto} className="close">
-                                                <img className="inactiveLink" src={Config.getValue('basePath') + 'images/icon-delete.png'} alt="remove" />
-                                            </button>
-                                            <img src={imageUrl} height={200} alt={`uploaded-${i}`} />
-                                        </div>
-                                    )
-                                }
+                                {props.values.uploadedFilesUrls.length === 0 ? null : <SortableList axis={'xy'} lockToContainerEdges={true} items={props.values.uploadedFilesUrls} onSortEnd={props.onSortEnd} />}
                             </div>
                         </div>
                     </div>
@@ -59,7 +69,7 @@ export default function CreateListingPhotos(props) {
                     <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
-                    {validateInput(props.values) 
+                    {validateInput(props.values)
                         ? <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(7); }}>Next</NavLink>
                         : <button className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
                     }

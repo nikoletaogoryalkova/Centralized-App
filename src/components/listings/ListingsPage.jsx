@@ -87,8 +87,7 @@ class ListingsPage extends React.Component {
                     propertyTypes: data.types
                 });
             }
-            console.log(oldSearchTerms.countryId);
-            console.log(newSearchTerms.countryId);
+
             if (oldSearchTerms.countryId !== newSearchTerms.get('countryId') ||
                 oldSearchTerms.startDate !== newSearchTerms.get('startDate') ||
                 oldSearchTerms.endDate !== newSearchTerms.get('endDate') ||

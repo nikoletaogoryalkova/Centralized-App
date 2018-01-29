@@ -1,8 +1,8 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import {
-    editListing,
     createListing,
+    editListing,
     getAmenitiesByCategory,
     getCities,
     getCountries,
@@ -30,6 +30,7 @@ import Footer from '../Footer';
 import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { arrayMove } from 'react-sortable-hoc';
 import moment from 'moment';
 import request from 'superagent';
 import update from 'react-addons-update';
@@ -121,6 +122,7 @@ class EditListingPage extends React.Component {
         this.populateFileUrls = this.populateFileUrls.bind(this);
         this.populateFileThumbUrls = this.populateFileThumbUrls.bind(this);
         this.updateProgress = this.updateProgress.bind(this);
+        this.onSortEnd = this.onSortEnd.bind(this);
     }
 
     componentWillMount() {
@@ -584,6 +586,13 @@ class EditListingPage extends React.Component {
         }
     }
 
+    onSortEnd({ oldIndex, newIndex }) {
+        this.setState({
+            uploadedFilesUrls: arrayMove(this.state.uploadedFilesUrls, oldIndex, newIndex),
+            uploadedFilesThumbUrls: arrayMove(this.state.uploadedFilesThumbUrls, oldIndex, newIndex)
+        });
+    }
+
     render() {
         return (
             <div>
@@ -648,6 +657,7 @@ class EditListingPage extends React.Component {
                         values={this.state}
                         onImageDrop={this.onImageDrop}
                         removePhoto={this.removePhoto}
+                        onSortEnd={this.onSortEnd}
                         updateProgress={this.updateProgress}
                         routes={routes}
                         prev={routes.description}

@@ -37,14 +37,14 @@ export default function ListingLocAddress(props) {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
         <div className="navigation col-md-12">
             <div className="col-md-3">
             </div>
             <div className="col-md-7">
                 <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
                     {validateInput(props.values)
-                        ? <button type="button" className="btn btn-primary btn-next">Next</button>
+                        ? <button type="submit" className="btn btn-primary btn-next">Next</button>
                         : <button type="button" className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
                     }
 

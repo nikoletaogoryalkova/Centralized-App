@@ -2,13 +2,13 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 import { Config } from '../../../config';
+import CreateListingPlaceDescriptionAside from './CreateListingPlaceDescriptionAside';
 import Dropzone from 'react-dropzone';
-import EditListingPlaceDescriptionAside from './EditListingPlaceDescriptionAside';
-import NavEditListing from '../NavEditListing';
+import NavCreateListing from '../NavCreateListing';
 import { NavLink } from 'react-router-dom';
 import React from 'react';
 
-export default class EditListingPhotos extends React.Component {
+export default class CreateListingPhotos extends React.Component {
     constructor(props) {
         super(props);
 
@@ -32,14 +32,12 @@ export default class EditListingPhotos extends React.Component {
 
     showErrors() {
         const { uploadedFilesUrls } = this.props.values;
-        if (uploadedFilesUrls.length < 1) {
+        if (uploadedFilesUrls.length < 6) {
             NotificationManager.warning('At least 1 picture is required');
         }
     }
 
     render() {
-        const { listingId, isInProgress } = this.props.values;
-
         const SortableItem = SortableElement(({ value, i }) =>
             <div className="uploaded-small-picture col-md-4" >
                 <button onClick={this.props.removePhoto} className="close">
@@ -61,13 +59,13 @@ export default class EditListingPhotos extends React.Component {
 
         return (
             <div>
-                <NavEditListing progress='66%' />
+                <NavCreateListing progress='66%' />
                 <NotificationContainer />
                 <div className="container">
                     <div className="row">
                         <div className="listings create">
                             <div className="col-md-3">
-                                <EditListingPlaceDescriptionAside listingId={listingId} />
+                                <CreateListingPlaceDescriptionAside />
                             </div>
                             <div className="reservation-hotel-review-room col-md-9">
                                 <h2>Upload photos of your place</h2>
@@ -95,16 +93,16 @@ export default class EditListingPhotos extends React.Component {
                     <div className="col-md-3">
                     </div>
                     <div className="col-md-7">
-                        <NavLink to={`/profile/listings/edit/description/${listingId}`} className="btn btn-default btn-back" id="btn-continue">
+                        <NavLink to="/profile/listings/create/description" className="btn btn-default btn-back" id="btn-continue">
                             <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                             &nbsp;Back</NavLink>
                         {this.validateInput()
-                            ? <NavLink to={`/profile/listings/edit/houserules/${listingId}`} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { if (isInProgress) { this.props.updateProgress(7); } }} >Next</NavLink>
+                            ? <NavLink to="/profile/listings/create/houserules" className="btn btn-primary btn-next" id="btn-continue" onClick={(e) => { this.props.updateProgress(7); }}>Next</NavLink>
                             : <button className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }

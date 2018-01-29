@@ -49,5 +49,5 @@ Listing.propTypes = {
     currency: PropTypes.string,
     location: PropTypes.object,
     currencySign: PropTypes.string,
-    locRate: PropTypes.number
+    locRate: PropTypes.string
 };

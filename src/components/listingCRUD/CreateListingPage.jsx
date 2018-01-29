@@ -30,6 +30,7 @@ import Footer from '../Footer';
 import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { arrayMove } from 'react-sortable-hoc';
 import moment from 'moment';
 import request from 'superagent';
 import update from 'react-addons-update';
@@ -108,6 +109,7 @@ class CreateListingPage extends React.Component {
         this.updateLocAddress = this.updateLocAddress.bind(this);
         this.createProgress = this.createProgress.bind(this);
         this.updateProgress = this.updateProgress.bind(this);
+        this.onSortEnd = this.onSortEnd.bind(this);
     }
 
     componentDidMount() {
@@ -410,9 +412,6 @@ class CreateListingPage extends React.Component {
                 .field('image', file);
 
             upload.end((err, response) => {
-                if (err) {
-                    console.error(err);
-                }
                 if (response.body.secure_url !== '') {
                     this.setState(previousState => ({
                         uploadedFilesUrls: [...previousState.uploadedFilesUrls, response.body.original],
@@ -437,6 +436,14 @@ class CreateListingPage extends React.Component {
             });
         }
     }
+
+    onSortEnd({ oldIndex, newIndex }) {
+        this.setState({
+            uploadedFilesUrls: arrayMove(this.state.uploadedFilesUrls, oldIndex, newIndex),
+            uploadedFilesThumbUrls: arrayMove(this.state.uploadedFilesThumbUrls, oldIndex, newIndex)
+        });
+    }
+
 
     updateLocAddress(captchaToken) {
         getCurrentLoggedInUserInfo().then(data => {
@@ -542,6 +549,7 @@ class CreateListingPage extends React.Component {
                         values={this.state}
                         onImageDrop={this.onImageDrop}
                         removePhoto={this.removePhoto}
+                        onSortEnd={this.onSortEnd}
                         updateProgress={this.updateProgress}
                         routes={routes}
                         prev={routes.description}
