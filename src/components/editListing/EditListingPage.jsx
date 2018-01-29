@@ -31,6 +31,7 @@ import Footer from '../Footer';
 import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { arrayMove } from 'react-sortable-hoc';
 import moment from 'moment';
 import request from 'superagent';
 import update from 'react-addons-update';
@@ -119,6 +120,7 @@ class EditListingPage extends React.Component {
         this.populateFileUrls = this.populateFileUrls.bind(this);
         this.populateFileThumbUrls = this.populateFileThumbUrls.bind(this);
         this.updateProgress = this.updateProgress.bind(this);
+        this.onSortEnd = this.onSortEnd.bind(this);
     }
 
     componentWillMount() {
@@ -566,6 +568,13 @@ class EditListingPage extends React.Component {
         }
     }
 
+    onSortEnd({ oldIndex, newIndex }) {
+        this.setState({
+            uploadedFilesUrls: arrayMove(this.state.uploadedFilesUrls, oldIndex, newIndex),
+            uploadedFilesThumbUrls: arrayMove(this.state.uploadedFilesThumbUrls, oldIndex, newIndex)
+        });
+    }
+
     render() {
         const id = this.state.listingId;
         return (
@@ -615,7 +624,8 @@ class EditListingPage extends React.Component {
                         values={this.state}
                         onImageDrop={this.onImageDrop}
                         removePhoto={this.removePhoto}
-                        updateProgress={this.updateProgress} />} />
+                        updateProgress={this.updateProgress}
+                        onSortEnd={this.onSortEnd} />} />
                     <Route exact path={`/profile/listings/edit/houserules/${id}`} render={() => <EditListingHouseRules
                         values={this.state}
                         onChange={this.onChange}
