@@ -14,19 +14,18 @@ import {
 } from '../../requester';
 
 import { Config } from '../../config';
-import CreateListingAccommodation from './basics/CreateListingAccommodation';
-import CreateListingChecking from './guestSettings/CreateListingChecking';
-import CreateListingDescription from './placeDescription/CreateListingDescription';
-import CreateListingFacilities from './basics/CreateListingFacilities';
-import CreateListingHouseRules from './guestSettings/CreateListingHouseRules';
-import CreateListingLandingPage from './basics/CreateListingLandingPage';
-import CreateListingLocAddress from './CreateListingLocAddress';
-import CreateListingLocation from './basics/CreateListingLocation';
-import CreateListingPhotos from './placeDescription/CreateListingPhotos';
-import CreateListingPlaceType from './basics/CreateListingPlaceType';
-import CreateListingPrice from './guestSettings/CreateListingPrice';
-import CreateListingSafetyAmenities from './basics/CreateListingSafetyAmenities';
-import CreateListingTitle from './placeDescription/CreateListingTitle';
+import ListingAccommodations from './steps/ListingAccommodations';
+import ListingChecking from './steps/ListingChecking';
+import ListingDescription from './steps/ListingDescription';
+import ListingFacilities from './steps/ListingFacilities';
+import ListingHouseRules from './steps/ListingHouseRules';
+import ListingLandingPage from './steps/ListingLandingPage';
+import ListingLocAddress from './steps/ListingLocAddress';
+import ListingLocation from './steps/ListingLocation';
+import ListingPhotos from './steps/ListingPhotos';
+import ListingPlaceType from './steps/ListingPlaceType';
+import ListingPrice from './steps/ListingPrice';
+import ListingSafetyFacilities from './steps/ListingSafetyFacilities';
 import Footer from '../Footer';
 import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
@@ -476,7 +475,7 @@ class CreateListingPage extends React.Component {
         if (this.state.userHasLocAddress === false) {
             return <div>
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
-                <CreateListingLocAddress values={this.state} onChange={this.onChange} updateLocAddress={this.updateLocAddress} />
+                <ListingLocAddress values={this.state} onChange={this.onChange} updateLocAddress={this.updateLocAddress} />
                 <Footer />
                 <NotificationContainer />
             </div>;
@@ -487,67 +486,96 @@ class CreateListingPage extends React.Component {
                 <nav id="main-nav" className="navbar"><MainNav /></nav>
 
                 <Switch>
-                    <Route exact path="/profile/listings/create/loc" render={() => <CreateListingLocAddress
-                        values={this.state}
-                        onChange={this.onChange} />} />
-                    <Route exact path="/profile/listings/create/landing" render={() => <CreateListingLandingPage
+                    <Route exact path={routes.loc} render={() => <ListingLocAddress
                         values={this.state}
                         onChange={this.onChange}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/placetype" render={() => <CreateListingPlaceType
+                        routes={routes}
+                        next={routes.landing} />} />
+                    <Route exact path={routes.landing} render={() => <ListingLandingPage
+                        values={this.state}
+                        onChange={this.onChange}
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        next={routes.placetype} />} />
+                    <Route exact path={routes.placetype} render={() => <ListingPlaceType
                         values={this.state}
                         toggleCheckbox={this.toggleCheckbox}
                         onChange={this.onChange}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/accommodation" render={() => <CreateListingAccommodation
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.landing}
+                        next={routes.accommodation} />} />
+                    <Route exact path={routes.accommodation} render={() => <ListingAccommodations
                         values={this.state}
                         updateCounter={this.updateCounter}
                         updateBedrooms={this.updateBedrooms}
                         updateBedCount={this.updateBedCount}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/facilities" render={() => <CreateListingFacilities
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.placetype}
+                        next={routes.facilities} />} />
+                    <Route exact path={routes.facilities} render={() => <ListingFacilities
                         values={this.state}
                         toggle={this.toggleFacility}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/safetyamenities" render={() => <CreateListingSafetyAmenities
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.accommodation}
+                        next={routes.safetyamenities} />} />
+                    <Route exact path={routes.safetyamenities} render={() => <ListingSafetyFacilities
                         values={this.state}
                         toggle={this.toggleFacility}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/location" render={() => <CreateListingLocation
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.facilities}
+                        next={routes.location} />} />
+                    <Route exact path={routes.location} render={() => <ListingLocation
                         values={this.state}
                         onChange={this.onChange}
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}
                         updateCities={this.updateCities}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/title" render={() => <CreateListingTitle
-                        values={this.state}
-                        updateTextbox={this.onChange}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/description" render={() => <CreateListingDescription
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.safetyamenities}
+                        next={routes.description} />} />
+                    <Route exact path={routes.description} render={() => <ListingDescription
                         values={this.state}
                         onChange={this.onChange}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/photos" render={() => <CreateListingPhotos
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.location}
+                        next={routes.photos} />} />
+                    <Route exact path={routes.photos} render={() => <ListingPhotos
                         values={this.state}
                         onImageDrop={this.onImageDrop}
                         removePhoto={this.removePhoto}
+                        onSortEnd={this.onSortEnd}
                         updateProgress={this.updateProgress}
-                        onSortEnd={this.onSortEnd} />} />
-                    <Route exact path="/profile/listings/create/houserules" render={() => <CreateListingHouseRules
+                        routes={routes}
+                        prev={routes.description}
+                        next={routes.houserules} />} />
+                    <Route exact path={routes.houserules} render={() => <ListingHouseRules
                         values={this.state}
                         onChange={this.onChange}
                         addRule={this.addHouseRule}
                         removeRule={this.removeHouseRule}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/checking" render={() => <CreateListingChecking
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.photos}
+                        next={routes.checking} />} />
+                    <Route exact path={routes.checking} render={() => <ListingChecking
                         values={this.state}
                         updateDropdown={this.onChange}
-                        updateProgress={this.updateProgress} />} />
-                    <Route exact path="/profile/listings/create/price" render={() => <CreateListingPrice
+                        updateProgress={this.updateProgress}
+                        routes={routes}
+                        prev={routes.houserules}
+                        next={routes.price} />} />
+                    <Route exact path={routes.price} render={() => <ListingPrice
                         values={this.state}
                         onChange={this.onChange}
-                        createListing={this.createListing} />} />
+                        finish={this.createListing}
+                        routes={routes}
+                        prev={routes.checking} />} />
                 </Switch>
                 <Footer />
                 <NotificationContainer />
@@ -557,6 +585,21 @@ class CreateListingPage extends React.Component {
 }
 
 export default withRouter(CreateListingPage);
+
+const routes = {
+    loc: '/profile/listings/create/loc',
+    landing: '/profile/listings/create/landing/',
+    placetype: '/profile/listings/create/placetype/',
+    accommodation: '/profile/listings/create/accommodation/',
+    facilities: '/profile/listings/create/facilities/',
+    safetyamenities: '/profile/listings/create/safetyamenities/',
+    location: '/profile/listings/create/location/',
+    description: '/profile/listings/create/description/',
+    photos: '/profile/listings/create/photos/',
+    houserules: '/profile/listings/create/houserules/',
+    checking: '/profile/listings/create/checking/',
+    price: '/profile/listings/create/price/',
+};
 
 CreateListingPage.propTypes = {
     history: PropTypes.object

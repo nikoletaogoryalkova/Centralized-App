@@ -12,13 +12,13 @@ function Textarea({name, value, placeholder, rows=5, ...props}) {
                 className="form-control"
                 {...props}></textarea>
         </div>
-    )
+    );
 }
 
 Textarea.propTypes ={
     name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-}
+};
 
 export default Textarea;
