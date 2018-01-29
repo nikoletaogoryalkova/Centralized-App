@@ -1,7 +1,7 @@
 import 'react-notifications/lib/notifications.css';
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { getCurrentLoggedInUserInfo, updateUserInfo, getCountries, getCities } from '../../../requester';
+import { getCities, getCountries, getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
 
 import { Config } from '../../../config';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -43,7 +43,7 @@ export default class ProfileEditPage extends React.Component {
         getCountries().then(data => {
             this.setState({ countries: data.content });
         });
-        
+
         getCurrentLoggedInUserInfo().then((data) => {
             let day = '';
             let month = '';
@@ -121,7 +121,7 @@ export default class ProfileEditPage extends React.Component {
     }
 
     updateCountry(e) {
-        this.setState({ 
+        this.setState({
             [e.target.name]: e.target.value,
         }, () => {
             this.updateCities();
@@ -216,7 +216,7 @@ export default class ProfileEditPage extends React.Component {
                         <label htmlFor="phone">Phone number <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>
                         <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
                     </div>
-                    <div className="text"><span>We won't share your phone number with other LockChain users.</span></div>
+                    <div className="text"><span>We won&#39;t share your phone number with other LockChain users.</span></div>
 
                     <div className="loc-address">
                         <label htmlFor="loc-address">Loc address <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>

@@ -3,6 +3,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import { Link } from 'react-router-dom';
 import ListingRating from '../../listings/ListingRating';
 import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { deleteListing } from '../../../requester';
@@ -123,3 +124,9 @@ export default class MyListingsActiveItem extends React.Component {
         );
     }
 }
+
+MyListingsActiveItem.propTypes = {
+    listing: PropTypes.object,
+    state: PropTypes.bool,
+    filterListings: PropTypes.func
+};

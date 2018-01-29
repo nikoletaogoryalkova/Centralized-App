@@ -8,6 +8,7 @@ import MessagesChat from './MessagesChat';
 import MessagesChatDay from './MessagesChatDay';
 import MessagesChatUser from './MessagesChatUser';
 import ProfileHeader from '../ProfileHeader';
+import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
@@ -150,5 +151,9 @@ class MessagesChatPage extends React.Component {
         );
     }
 }
+
+MessagesChatPage.propTypes = {
+    match: PropTypes.object
+};
 
 export default withRouter(MessagesChatPage);

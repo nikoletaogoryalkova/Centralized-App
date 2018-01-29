@@ -8,6 +8,7 @@ import Footer from '../../Footer';
 import ListingRow from './ListingRow';
 import Pagination from 'rc-pagination';
 import ProfileHeader from '../ProfileHeader';
+import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';
 
@@ -234,7 +235,7 @@ class AllUnpublishedListings extends React.Component {
                         <ContactHostModal id={this.state.selectedListing} isActive={this.state.isShownContactHostModal} closeModal={this.closeModal} sendMessageToHost={this.sendMessageToHost} />
 
 
-                        {this.state.listings.length === 0 ? <div className="text-center p20"><h3>There isn't any unpublished listings</h3></div> :
+                        {this.state.listings.length === 0 ? <div className="text-center p20"><h3>There isn&#39;t any unpublished listings</h3></div> :
                             <div className="container">
                                 <div className="table-header bold">
                                     <div className="col-md-1">
@@ -268,5 +269,10 @@ class AllUnpublishedListings extends React.Component {
         );
     }
 }
+
+AllUnpublishedListings.propTypes = {
+    location: PropTypes.object,
+    history: PropTypes.object
+};
 
 export default withRouter(AllUnpublishedListings);

@@ -11,6 +11,7 @@ import { Config } from '../../config';
 import Footer from '../Footer';
 import Lightbox from 'react-images';
 import MainNav from '../MainNav';
+import PropTypes from 'prop-types';
 import PropertyInfo from './PropertyInfo';
 import React from 'react';
 import Search from '../home/Search';
@@ -326,5 +327,13 @@ class PropertyPage extends React.Component {
         );
     }
 }
+
+PropertyPage.propTypes = {
+    history: PropTypes.object,
+    match: PropTypes.object,
+    currencySign: PropTypes.string,
+    location: PropTypes.object,
+    currency: PropTypes.string
+};
 
 export default withRouter(PropertyPage);

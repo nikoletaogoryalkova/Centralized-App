@@ -21,6 +21,6 @@ export default class DashboardReviews extends React.Component {
                     </ul>
                 </div>
             </section>
-        )
+        );
     }
 }

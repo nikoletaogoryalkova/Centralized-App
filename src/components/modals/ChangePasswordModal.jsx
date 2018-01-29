@@ -1,25 +1,25 @@
-import React from 'react';
-
-import { Modal } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Config } from '../../config';
+import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
 import { postNewPassword } from '../../requester.js';
 
 const modal = {
     current: 'changePassword',
     next: 'showLoginModal',
-}
+};
 
 export default class ChangePasswordModal extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             password: '',
             error: null,
-        }
+        };
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.submitPassword.bind(this);
@@ -42,11 +42,11 @@ export default class ChangePasswordModal extends React.Component {
             this.captcha.reset();
             return;
         }
-        
+
         const postObj = {
             token: this.props.recoveryToken,
             password: this.state.password,
-        }
+        };
 
         postNewPassword(postObj, captchaToken).then((res) => {
             if (res.success) {
@@ -71,14 +71,14 @@ export default class ChangePasswordModal extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
-                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute() }}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                             <div className="form-group">
-                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
+                                <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
                                 <input type="password" name="password" value={this.state.password} onChange={this.onChange} className="form-control" placeholder="New password" />
                             </div>
 
                             <div className="form-group">
-                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
+                                <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
                                 <input type="password" name="confirmPassword" value={this.state.confirmPassword} onChange={this.onChange} className="form-control" placeholder="Confirm password" />
                             </div>
 
@@ -99,3 +99,10 @@ export default class ChangePasswordModal extends React.Component {
         );
     }
 }
+
+ChangePasswordModal.propTypes = {
+    recoveryToken: PropTypes.string,
+    openModal: PropTypes.func,
+    closeModal: PropTypes.func,
+    isActive: PropTypes.bool
+};

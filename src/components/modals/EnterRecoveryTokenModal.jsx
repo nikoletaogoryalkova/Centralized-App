@@ -1,23 +1,23 @@
-import React from 'react';
-
-import { Modal } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 import { Config } from '../../config';
+import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { sendRecoveryToken } from '../../requester.js';
 
 const modal = {
     current: 'enterRecoveryToken',
     next: 'changePassword',
-}
+};
 
 export default class EnterRecoveryTokenModal extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             error: null,
-        }
+        };
 
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -47,7 +47,7 @@ export default class EnterRecoveryTokenModal extends React.Component {
                         {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
                         <form onSubmit={(e) => { e.preventDefault(); this.onSubmit(); }}>
                             <div className="form-group">
-                                <img src={Config.getValue("basePath") + "images/login-mail.png"} alt="email" />
+                                <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
                                 <input type="text" name="recoveryToken" value={this.props.recoveryToken} onChange={this.props.onChange} className="form-control" placeholder="Token" />
                             </div>
 
@@ -61,3 +61,11 @@ export default class EnterRecoveryTokenModal extends React.Component {
         );
     }
 }
+
+EnterRecoveryTokenModal.propTypes = {
+    recoveryToken: PropTypes.string,
+    openModal: PropTypes.func,
+    closeModal: PropTypes.func,
+    isActive: PropTypes.bool,
+    onChange: PropTypes.func
+};

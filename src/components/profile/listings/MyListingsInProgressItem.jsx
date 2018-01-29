@@ -3,11 +3,12 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import { Config } from '../../../config';
 import { Link } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { deleteListing } from '../../../requester';
 
-export default class MyListingsActiveItem extends React.Component {
+export default class MyListingsInProgressItem extends React.Component {
     constructor(props) {
         super(props);
 
@@ -208,3 +209,10 @@ export default class MyListingsActiveItem extends React.Component {
         );
     }
 }
+
+MyListingsInProgressItem.propTypes = {
+    listing: PropTypes.object,
+    step: PropTypes.number,
+    id: PropTypes.number,
+    filterListings: PropTypes.func
+};

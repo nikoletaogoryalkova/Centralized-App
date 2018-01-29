@@ -1,4 +1,4 @@
-import { getMyListings, getMyListingsInProgress } from '../../../requester'
+import { getMyListings, getMyListingsInProgress } from '../../../requester';
 
 import Footer from '../../Footer';
 import { Link } from 'react-router-dom';
@@ -34,22 +34,22 @@ export default class MyListingsPage extends React.Component {
         });
 
         getMyListingsInProgress('?page=0').then((data) => {
-            this.setState({ listingsInProgress: data.content, totalListingsInProgress: data.totalElements })
-        })
+            this.setState({ listingsInProgress: data.content, totalListingsInProgress: data.totalElements });
+        });
     }
 
-    onPageChange = (page) => {
+    onPageChange(page) {
         this.setState({
             currentPage: page,
             loading: true
-        })
+        });
 
         getMyListings(`?page=${page - 1}`).then(data => {
             this.setState({
                 listings: data.content,
                 totalListings: data.totalElements,
                 loading: false
-            })
+            });
         });
     }
 
@@ -66,7 +66,7 @@ export default class MyListingsPage extends React.Component {
         };
 
         if (this.state.loading) {
-            return <div className="loader"></div>
+            return <div className="loader"></div>;
         }
 
         return (
@@ -77,7 +77,7 @@ export default class MyListingsPage extends React.Component {
                         <h2>In Progress ({this.state.totalListingsInProgress})</h2>
                         <hr className="profile-line" />
                         {this.state.listingsInProgress.map((item, i) => {
-                            return <MyListingsInProgressItem id={item.id} step={item.step} filterListings={this.filterListings} listing={JSON.parse(item.data)} key={i} />
+                            return <MyListingsInProgressItem id={item.id} step={item.step} filterListings={this.filterListings} listing={JSON.parse(item.data)} key={i} />;
                         })}
                     </div>
 
@@ -85,7 +85,7 @@ export default class MyListingsPage extends React.Component {
                         <h2>Active ({this.state.totalListings})</h2>
                         <hr className="profile-line" />
                         {this.state.listings.map((item, i) => {
-                            return <MyListingsActiveItem state={item.state} filterListings={this.filterListings} listing={item} key={i} />
+                            return <MyListingsActiveItem state={item.state} filterListings={this.filterListings} listing={item} key={i} />;
                         })}
 
                         <div className="pagination-box">

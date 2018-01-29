@@ -63,5 +63,6 @@ ContactHostModal.propTypes = {
     isActive: PropTypes.bool,
     closeModal: PropTypes.func,
     sendMessageToHost: PropTypes.func,
-    match: PropTypes.object
+    match: PropTypes.object,
+    id: PropTypes.number
 };

@@ -1,7 +1,7 @@
 import FiltersCheckbox from './FiltersCheckbox';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
-import StarCheckbox from './StarCheckbox';
 import { withRouter } from 'react-router-dom';
 
 class Filters extends React.Component {
@@ -119,7 +119,6 @@ class Filters extends React.Component {
     }
 
     render() {
-        const { loading } = this.state;
 
         if (this.props.cities === [] && this.props.propertyTypes === []) {
             return <div className="loader"></div>;
@@ -127,7 +126,7 @@ class Filters extends React.Component {
 
         let selectedPropertyTypes = this.state.selectedPropertyTypes;
         let selectedCities = this.state.selectedCities;
-        let citiesFilters = this.props.cities;
+
         console.log(this.props.cities);
         return (
             <div className="filter-box">
@@ -195,5 +194,13 @@ class Filters extends React.Component {
         );
     }
 }
+
+Filters.propTypes = {
+    propertyTypes: PropTypes.array,
+    cities: PropTypes.array,
+    paramsMap: PropTypes.object,
+    updateParamsMap: PropTypes.func,
+    handleSearch: PropTypes.func
+};
 
 export default withRouter(Filters);

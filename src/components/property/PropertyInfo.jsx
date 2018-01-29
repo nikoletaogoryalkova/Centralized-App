@@ -1,5 +1,6 @@
 import ContactHostModal from './ContactHostModal';
 import ListingRating from '../listings/ListingRating';
+import PropTypes from 'prop-types';
 import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyCalendar from './PropertyCalendar';
 import PropertyReservation from './PropertyReservation';
@@ -122,5 +123,30 @@ class PropertyInfo extends React.Component {
         );
     }
 }
+
+PropertyInfo.propTypes = {
+    data: PropTypes.object,
+    locRate: PropTypes.number,
+    showLoginModal: PropTypes.bool,
+    isLogged: PropTypes.bool,
+    userInfo: PropTypes.object,
+    nights: PropTypes.number,
+    onApply: PropTypes.func,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    currencySign: PropTypes.string,
+    currency: PropTypes.string,
+    loading: PropTypes.bool,
+    descriptionsAccessInfo: PropTypes.string,
+    match: PropTypes.object,
+    isShownContactHostModal: PropTypes.bool,
+    closeModal: PropTypes.func,
+    sendMessageToHost: PropTypes.func,
+    allEvents: PropTypes.array,
+    prices: PropTypes.array,
+    openModal: PropTypes.func,
+    calendar: PropTypes.array,
+    descriptionText: PropTypes.string
+};
 
 export default withRouter(PropertyInfo);

@@ -6,6 +6,7 @@ import Footer from '../Footer';
 import Header from '../Header';
 import Listing from './Listing';
 import Pagination from 'rc-pagination';
+import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
@@ -42,22 +43,22 @@ class ListingsPage extends React.Component {
                         cities: data.cities,
                         propertyTypes: data.types
                     });
-                })
+                });
             });
 
 
         }
         else {
-            this.props.history.push("/");
+            this.props.history.push('/');
         }
-    };
+    }
 
     componentWillMount() {
         if (this.props.location.search) {
             this.paramsMap = this.getParamsMap();
-            this.setState({ countryId: this.getParamsMap().get("countryId") })
+            this.setState({ countryId: this.getParamsMap().get('countryId') });
         }
-    };
+    }
 
     handleSearch(e) {
         e.preventDefault();
@@ -77,10 +78,10 @@ class ListingsPage extends React.Component {
                 listings: data.filteredListings.content,
                 listingLoading: false,
                 totalItems: data.filteredListings.totalElements,
-                countryId: this.getParamsMap().get("countryId"),
-            })
+                countryId: this.getParamsMap().get('countryId'),
+            });
 
-            if (!this.getParamsMap().get("cities") && !this.getParamsMap().get("propertyTypes")) {
+            if (!this.getParamsMap().get('cities') && !this.getParamsMap().get('propertyTypes')) {
                 this.setState({
                     cities: data.cities,
                     propertyTypes: data.types
@@ -88,10 +89,10 @@ class ListingsPage extends React.Component {
             }
             console.log(oldSearchTerms.countryId);
             console.log(newSearchTerms.countryId);
-            if (oldSearchTerms.countryId !== newSearchTerms.get("countryId") ||
-                oldSearchTerms.startDate !== newSearchTerms.get("startDate") ||
-                oldSearchTerms.endDate !== newSearchTerms.get("endDate") ||
-                oldSearchTerms.guests !== newSearchTerms.get("guests")) {
+            if (oldSearchTerms.countryId !== newSearchTerms.get('countryId') ||
+                oldSearchTerms.startDate !== newSearchTerms.get('startDate') ||
+                oldSearchTerms.endDate !== newSearchTerms.get('endDate') ||
+                oldSearchTerms.guests !== newSearchTerms.get('guests')) {
                 this.setState({
                     cities: data.cities,
                     propertyTypes: data.types
@@ -130,7 +131,7 @@ class ListingsPage extends React.Component {
         }
 
         return map;
-    };
+    }
 
     updateParamsMap(key, value) {
         if (!value || value === '') {
@@ -138,24 +139,24 @@ class ListingsPage extends React.Component {
         } else {
             this.paramsMap.set(key, this.createParam(value));
         }
-        if (key === "countryId") {
-            this.paramsMap.delete("cities");
+        if (key === 'countryId') {
+            this.paramsMap.delete('cities');
         }
     }
 
     parseParam(param) {
         return param.split('%20').join(' ');
-    };
+    }
 
     createParam(param) {
         return param.split(' ').join('%20');
     }
 
-    onPageChange = (page) => {
+    onPageChange(page) {
         this.setState({
             currentPage: page,
             listingLoading: true
-        })
+        });
 
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
@@ -166,7 +167,7 @@ class ListingsPage extends React.Component {
                     totalItems: data.filteredListings.totalElements,
                     locRate: loc[0].price_eur
                 });
-            })
+            });
         });
     }
 
@@ -177,26 +178,26 @@ class ListingsPage extends React.Component {
             currentPage: 1,
             totalItems: 0,
             locRate: null
-        })
+        });
     }
 
     render() {
         const listings = this.state.listings;
         const hasLoadedListings = listings ? true : false;
         const hasListings = hasLoadedListings && listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
-        const paramsMap = this.getParamsMap();
+
         let renderListings;
         let renderPagination;
         if (!hasLoadedListings) {
             renderListings = <div className="loader"></div>;
         } else if (!hasListings) {
-            renderListings = <div className="text-center"><h3>No results</h3></div>
+            renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <Listing locRate={this.state.locRate} key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />
+                return <Listing locRate={this.state.locRate} key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />;
             });
 
-            renderPagination = <div className="pagination-box">{this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />} </div>
+            renderPagination = <div className="pagination-box">{this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />} </div>;
         }
 
         return (
@@ -223,5 +224,12 @@ class ListingsPage extends React.Component {
         );
     }
 }
+
+ListingsPage.propTypes = {
+    location: PropTypes.object,
+    history: PropTypes.object,
+    currency: PropTypes.string,
+    currencySign: PropTypes.string
+};
 
 export default withRouter(ListingsPage);

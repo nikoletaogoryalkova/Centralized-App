@@ -1,18 +1,19 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Config } from '../../../config';
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
 
 export default class CalendarAsideStatic extends React.Component {
     render() {
         return <div className="col-md-4">
-        
+
             <div>
-                <NavLink to="/profile/listings/" className="btn btn-primary btn-next" style={{ margin: '10px 0', display: 'block'}}>My Listings</NavLink>
+                <NavLink to="/profile/listings/" className="btn btn-primary btn-next" style={{ margin: '10px 0', display: 'block' }}>My Listings</NavLink>
             </div>
             <div className="col-md-12 calendar-aside-static">
                 <h2>Adjust Your Prices</h2>
-                <img src={Config.getValue("basePath") + "images/price-statistic.png"} alt="price-statistic" />
+                <img src={Config.getValue('basePath') + 'images/price-statistic.png'} alt="price-statistic" />
                 <p>
                     Click on specific dates on the calendar to set custom rates and increase your revenue.
                 </p>
@@ -27,12 +28,12 @@ export default class CalendarAsideStatic extends React.Component {
                         </div>
 
                         <div className="col-md-12 controls">
-                            <button className="btn btn-primary btn-next bold" type="submit" 
-                                onClick={(e) => { 
-                                    e.preventDefault(); 
-                                    {/* this.captcha.execute();  */}
+                            <button className="btn btn-primary btn-next bold" type="submit"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    {/* this.captcha.execute();  */ }
                                     this.props.updateDailyPrice();
-                                    }}>Save</button>
+                                }}>Save</button>
                         </div>
 
                         <ReCAPTCHA
@@ -44,6 +45,13 @@ export default class CalendarAsideStatic extends React.Component {
                     </form>
                 </div>
             </div>
-        </div>
+        </div>;
     }
 }
+
+CalendarAsideStatic.propTypes = {
+    currencySign: PropTypes.string,
+    onChange: PropTypes.func,
+    defaultDailyPrice: PropTypes.number,
+    updateDailyPrice: PropTypes.func
+};

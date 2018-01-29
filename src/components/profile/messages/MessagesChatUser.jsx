@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class MessagesChatUser extends React.Component {
@@ -22,3 +23,7 @@ export default class MessagesChatUser extends React.Component {
         );
     }
 }
+
+MessagesChatUser.propTypes = {
+    userInfo: PropTypes.object
+};

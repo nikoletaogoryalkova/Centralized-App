@@ -1,8 +1,8 @@
-import React from 'react';
-
-import moment from 'moment';
 import { NotificationContainer } from 'react-notifications';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
+import moment from 'moment';
 
 export default class MyReservationsTable extends React.Component {
     constructor(props) {
@@ -89,3 +89,10 @@ export default class MyReservationsTable extends React.Component {
         );
     }
 }
+
+MyReservationsTable.propTypes = {
+    loadingListing: PropTypes.bool,
+    reservations: PropTypes.array,
+    onReservationAccept: PropTypes.func,
+    onReservationCancel: PropTypes.func
+};

@@ -32,6 +32,6 @@ export default class DashboardOverview extends React.Component {
                     </ul>
                 </div>
             </section>
-        )
+        );
     }
 }
