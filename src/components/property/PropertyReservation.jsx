@@ -128,7 +128,7 @@ class PropertyReservation extends React.Component {
                     }
                     {(!this.state.sending && !this.props.loading) &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                            {/* <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice} ({listingPriceLoc.toFixed(4)} LOC)</span> /per night</p> */}
+                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{listingPrice / this.props.nights} ({(listingPriceLoc / this.props.nights).toFixed(4)} LOC)</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
