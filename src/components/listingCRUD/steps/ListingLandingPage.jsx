@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { NotificationManager, NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
 
@@ -7,7 +7,7 @@ import ListingCrudNav from '../navigation/ListingCrudNav';
 
 import { Config } from '../../../config';
 
-export default function CreateListingLandingPage(props) {
+function ListingLandingPage(props) {
     const { listingType, name } = props.values;
     return (
         <div>
@@ -69,7 +69,7 @@ export default function CreateListingLandingPage(props) {
                                 </div>
                                 
                                 {validateInput(props.values) 
-                                    ? <NavLink to="/profile/listings/create/placetype" className="btn btn-primary" id="btn-continue" onClick={() => { props.updateProgress(1); }}>Continue</NavLink>
+                                    ? <NavLink to={props.next} className="btn btn-primary" id="btn-continue" onClick={() => { props.updateProgress(1); }}>Continue</NavLink>
                                     : <button className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Continue</button>
                                 }
                             </div>
@@ -80,6 +80,8 @@ export default function CreateListingLandingPage(props) {
         </div>
     );
 }
+
+export default withRouter(ListingLandingPage);
 
 function showComingSoonNotification() {
     NotificationManager.warning('Coming Soon...');
@@ -101,8 +103,9 @@ function showErrors(values) {
     }
 }
 
-CreateListingLandingPage.propTypes = {
+ListingLandingPage.propTypes = {
     values: PropTypes.any,
     onChange: PropTypes.func,
     updateProgress: PropTypes.func,
+    next: PropTypes.string,
 };

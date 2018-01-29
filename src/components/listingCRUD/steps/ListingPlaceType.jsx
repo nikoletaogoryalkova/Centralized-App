@@ -17,7 +17,7 @@ export default function CreateListingPlaceType(props) {
                     <div className="listings create">
 
                         <div className="col-md-3">
-                            <BasicsAside />
+                            <BasicsAside routes={props.routes} />
                         </div>
                         <div className="reservation-hotel-review-room col-md-8">
                             <h2>What kind of place do you want to list?</h2>
@@ -140,10 +140,10 @@ export default function CreateListingPlaceType(props) {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <NavLink to="/profile/listings/create/landing" className="btn btn-default btn-back" id="btn-continue">
+                    <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
-                    <NavLink to="/profile/listings/create/accommodation" className="btn btn-primary btn-next" id="btn-continue" onClick={() => props.updateProgress(2)} >Next</NavLink>
+                    <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => props.updateProgress(2)} >Next</NavLink>
                 </div>
             </div>
         </div>
@@ -154,4 +154,6 @@ CreateListingPlaceType.propTypes = {
     values: PropTypes.any,
     onChange: PropTypes.func,
     updateProgress: PropTypes.func,
+    prev: PropTypes.string,
+    next: PropTypes.string,
 };

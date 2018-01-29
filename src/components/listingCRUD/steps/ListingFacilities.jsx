@@ -44,7 +44,7 @@ export default function CreateListingFacilities(props) {
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <BasicsAside />
+                            <BasicsAside routes={props.routes} />
                         </div>
                         <div className="col-md-9">
                             <div className="form-group">
@@ -71,10 +71,10 @@ export default function CreateListingFacilities(props) {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <NavLink to="/profile/listings/create/accommodation" className="btn btn-default btn-back" id="btn-continue">
+                    <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
-                    <NavLink to="/profile/listings/create/safetyamenities" className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(3); }}>Next</NavLink>
+                    <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(3); }}>Next</NavLink>
                 </div>
             </div>
         </div>
@@ -84,4 +84,6 @@ export default function CreateListingFacilities(props) {
 CreateListingFacilities.propTypes = {
     values: PropTypes.any,
     updateProgress: PropTypes.func,
+    prev: PropTypes.string,
+    next: PropTypes.string,
 };

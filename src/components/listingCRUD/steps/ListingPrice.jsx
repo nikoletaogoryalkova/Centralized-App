@@ -16,7 +16,7 @@ export default function CreateListingPrice(props) {
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <GuestSettingsAside />
+                            <GuestSettingsAside routes={props.routes} />
                         </div>
 
                         {!props.values.loading ? <div className="col-md-9">
@@ -75,10 +75,10 @@ export default function CreateListingPrice(props) {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <NavLink to="/profile/listings/create/checking" className="btn btn-default btn-back" id="btn-continue">
+                    <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
-                    <NavLink to="/profile/listings/create/price" className="btn btn-primary btn-next" onClick={(e) => {
+                    <NavLink to='#' className="btn btn-primary btn-next" onClick={(e) => {
                         e.preventDefault();
                         captcha.execute();
                     }} id="btn-continue">Finish</NavLink>
@@ -87,7 +87,7 @@ export default function CreateListingPrice(props) {
                         ref={(el) => captcha = el}
                         size="invisible"
                         sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                        onChange={token => { props.createListing(token); captcha.reset(); }}
+                        onChange={token => { props.finish(token); captcha.reset(); }}
                     />
                 </div>
             </div>
@@ -98,5 +98,6 @@ export default function CreateListingPrice(props) {
 CreateListingPrice.propTypes = {
     values: PropTypes.object,
     onChange: PropTypes.func,
-    createListing: PropTypes.func
+    finish: PropTypes.func,
+    prev: PropTypes.string,
 };

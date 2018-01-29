@@ -8,82 +8,77 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 
-export default class CreateListingLocAddress extends React.Component {
-    constructor(props) {
-        super(props);
+let captcha;
 
-        this.validateInput = this.validateInput.bind(this);
-        this.showErrors = this.showErrors.bind(this);
-    }
-    validateInput() {
-        const { locAddress } = this.props.values;
-        if (locAddress.length < 20) {
-            return false;
-        }
-
-        return true;
-    }
-
-    showErrors() {
-        const { locAddress } = this.props.values;
-        if (locAddress.length < 20) {
-            NotificationManager.warning('LOC Address should be at least 20 characters long');
-        }
-    }
-
-    render() {
-        const { locAddress } = this.props.values;
-        return <div>
-            <ListingCrudNav progress='0%' />
-            <NotificationContainer />
-            <div className="container">
-                <div className="row">
-                    <div className="listings create">
-                        <div className="col-md-3">
-                            <BasicsAside />
-                        </div>
-                        <div className="col-md-9">
-                            <div className="form-group">
-                                <h2>You need to enter LOC Address in order to publish a property</h2>
-                                <hr />
-                                <div className="col-md-12">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label htmlFor="street">LOC Address</label>
-                                            <input onChange={this.props.onChange} className="form-control" id="locAddress" name="locAddress" value={locAddress} />
-                                        </div>
+export default function ListingLocAddress(props) {
+    const { locAddress } = props.values;
+    return <div>
+        <ListingCrudNav progress='0%' />
+        <NotificationContainer />
+        <div className="container">
+            <div className="row">
+                <div className="listings create">
+                    <div className="col-md-3">
+                        <BasicsAside routes={props.routes} />
+                    </div>
+                    <div className="col-md-9">
+                        <div className="form-group">
+                            <h2>You need to enter LOC Address in order to publish a property</h2>
+                            <hr />
+                            <div className="col-md-12">
+                                <div className="col-md-6">
+                                    <div className="form-group">
+                                        <label htmlFor="street">LOC Address</label>
+                                        <input onChange={props.onChange} className="form-control" id="locAddress" name="locAddress" value={locAddress} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div >
-            <div className="navigation col-md-12">
-                <div className="col-md-3">
-                </div>
-                <div className="col-md-7">
-                    <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                        {this.validateInput()
-                            ? <button type="button" className="btn btn-primary btn-next">Next</button>
-                            : <button type="button" className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
-                        }
-
-                        <ReCAPTCHA
-                            ref={el => this.captcha = el}
-                            size="invisible"
-                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                            onChange={token => { this.props.updateLocAddress(token); this.captcha.reset(); }}
-                        />
-                    </form>
-                </div>
             </div>
-        </div>;
+        </div >
+        <div className="navigation col-md-12">
+            <div className="col-md-3">
+            </div>
+            <div className="col-md-7">
+                <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
+                    {validateInput(props.values)
+                        ? <button type="button" className="btn btn-primary btn-next">Next</button>
+                        : <button type="button" className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
+                    }
+
+                    <ReCAPTCHA
+                        ref={el => captcha = el}
+                        size="invisible"
+                        sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                        onChange={token => { props.updateLocAddress(token); captcha.reset(); }}
+                    />
+                </form>
+            </div>
+        </div>
+    </div>;
+}
+
+function validateInput(values) {
+    const { locAddress } = values;
+    if (locAddress.length < 20) {
+        return false;
+    }
+
+    return true;
+}
+
+function showErrors(values) {
+    const { locAddress } = values;
+    if (locAddress.length < 20) {
+        NotificationManager.warning('LOC Address should be at least 20 characters long');
     }
 }
 
-CreateListingLocAddress.propTypes = {
+ListingLocAddress.propTypes = {
     values: PropTypes.object,
     onChange: PropTypes.func,
-    updateLocAddress: PropTypes.func
+    updateLocAddress: PropTypes.func,
+    next: PropTypes.string,
 };

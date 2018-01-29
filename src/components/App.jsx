@@ -8,7 +8,7 @@ import CalendarPage from './profile/calendar/CalendarPage';
 import { Config } from '../config';
 import CreateListingPage from './listingCRUD/CreateListingPage';
 import DashboardPage from './profile/dashboard/DashboardPage';
-import EditListingPage from './editListing/EditListingPage';
+import EditListingPage from './listingCRUD/EditListingPage';
 import HomePage from './home/HomePage.jsx';
 import ListingPage from './listings/ListingsPage';
 import MessagesChatPage from './profile/messages/MessagesChatPage';

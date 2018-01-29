@@ -34,7 +34,7 @@ export default function CreateListingSafetyAmenities(props) {
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <BasicsAside />
+                            <BasicsAside routes={props.routes} />
                         </div>
 
                         <div className="col-md-9">
@@ -54,10 +54,10 @@ export default function CreateListingSafetyAmenities(props) {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <NavLink to="/profile/listings/create/facilities" className="btn btn-default btn-back" id="btn-continue">
+                    <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
-                    <NavLink to="/profile/listings/create/location" className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(4); }}>Next</NavLink>
+                    <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(4); }}>Next</NavLink>
                 </div>
             </div>
         </div>
@@ -67,4 +67,6 @@ export default function CreateListingSafetyAmenities(props) {
 CreateListingSafetyAmenities.propTypes = {
     values: PropTypes.any,
     updateProgress: PropTypes.func,
+    prev: PropTypes.string,
+    next: PropTypes.string,
 };

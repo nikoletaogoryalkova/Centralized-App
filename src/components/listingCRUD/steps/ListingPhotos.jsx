@@ -19,7 +19,7 @@ export default function CreateListingPhotos(props) {
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <PlaceDescriptionAside />
+                            <PlaceDescriptionAside routes={props.routes} />
                         </div>
                         <div className="reservation-hotel-review-room col-md-9">
                             <h2>Upload photos of your place</h2>
@@ -56,11 +56,11 @@ export default function CreateListingPhotos(props) {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <NavLink to="/profile/listings/create/description" className="btn btn-default btn-back" id="btn-continue">
+                    <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
                     {validateInput(props.values) 
-                        ? <NavLink to="/profile/listings/create/houserules" className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(7); }}>Next</NavLink>
+                        ? <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(7); }}>Next</NavLink>
                         : <button className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
                     }
                 </div>
@@ -95,4 +95,6 @@ CreateListingPhotos.propTypes = {
     onImageDrop: PropTypes.func,
     removePhoto: PropTypes.func,
     updateProgress: PropTypes.func,
+    prev: PropTypes.string,
+    next: PropTypes.string,
 };

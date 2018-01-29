@@ -14,7 +14,7 @@ export default function CreateListingHouseRules(props) {
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <GuestSettingsAside />
+                            <GuestSettingsAside routes={props.routes} />
                         </div>
                         <div className="col-md-9">
                             <h2>House Rules</h2>
@@ -174,10 +174,10 @@ export default function CreateListingHouseRules(props) {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <NavLink to="/profile/listings/create/photos" className="btn btn-default btn-back" id="btn-continue">
+                    <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
-                    <NavLink to="/profile/listings/create/checking" className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(8); }}>Next</NavLink>
+                    <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(8); }}>Next</NavLink>
                 </div>
             </div>
         </div>
@@ -189,4 +189,6 @@ CreateListingHouseRules.propTypes ={
     onChange: PropTypes.func.isRequired,
     addRule: PropTypes.func.isRequired,
     updateProgress: PropTypes.func.isRequired,
+    prev: PropTypes.string,
+    next: PropTypes.string,
 };

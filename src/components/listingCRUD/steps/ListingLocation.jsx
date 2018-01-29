@@ -26,7 +26,7 @@ export default function CreateListingLocation(props) {
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <BasicsAside />
+                            <BasicsAside routes={props.routes} />
                         </div>
                         <div className="col-md-9">
                             <div className="form-group">
@@ -90,12 +90,12 @@ export default function CreateListingLocation(props) {
                 <div className="col-md-3">
                 </div>
                 <div className="col-md-7">
-                    <NavLink to="/profile/listings/create/safetyamenities" className="btn btn-default btn-back" id="btn-continue">
+                    <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
                         <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
                         &nbsp;Back</NavLink>
 
                     {validateInput(props.values)
-                        ? <NavLink to="/profile/listings/create/description" className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(5); }}>Next</NavLink>
+                        ? <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(5); }}>Next</NavLink>
                         : <button className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
                     }
                 </div>
@@ -147,4 +147,6 @@ CreateListingLocation.propTypes = {
     onSelect: PropTypes.func,
     updateCities: PropTypes.func,
     updateProgress: PropTypes.func,
+    prev: PropTypes.string,
+    next: PropTypes.string,
 };

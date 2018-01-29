@@ -1,12 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default function CreateListingGuestSettingsAside() {
+export default function GuestSettingsAside(props) {
     return (
         <div>
-            <div className="host-step"><NavLink exact activeClassName="active" to="/profile/listings/create/houserules">House Rules</NavLink></div>
-            <div className="host-step"><NavLink exact activeClassName="active" to="/profile/listings/create/checking">Check-in / Check-out</NavLink></div>
-            <div className="host-step"><NavLink exact activeClassName="active" to="/profile/listings/create/price">Price</NavLink></div>
+            <div className="host-step"><NavLink exact activeClassName="active" to={props.routes.houserules}>House Rules</NavLink></div>
+            <div className="host-step"><NavLink exact activeClassName="active" to={props.routes.checking}>Check-in / Check-out</NavLink></div>
+            <div className="host-step"><NavLink exact activeClassName="active" to={props.routes.price}>Price</NavLink></div>
         </div>
     );
 }
+
+GuestSettingsAside.propTypes = {
+    routes: PropTypes.any,
+};

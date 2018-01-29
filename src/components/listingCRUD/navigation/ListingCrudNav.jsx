@@ -19,5 +19,5 @@ export default function ListingCrudNav(props) {
 }
 
 ListingCrudNav.propTypes ={
-    progress: PropTypes.number,
+    progress: PropTypes.string,
 };
