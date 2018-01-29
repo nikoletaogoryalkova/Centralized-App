@@ -65,7 +65,7 @@ export default class CreateListingLocAddress extends React.Component {
                 <div className="col-md-7">
                     <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                         {this.validateInput()
-                            ? <button type="button" className="btn btn-primary btn-next">Next</button>
+                            ? <button type="submit" className="btn btn-primary btn-next">Next</button>
                             : <button type="button" className="btn btn-primary btn-next disabled" onClick={this.showErrors}>Next</button>
                         }
 
