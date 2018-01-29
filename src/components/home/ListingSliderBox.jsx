@@ -30,5 +30,5 @@ ListingSliderBox.propTypes = {
     listing: PropTypes.object,
     currency: PropTypes.string,
     currencySign: PropTypes.string,
-    locRate: PropTypes.number
+    locRate: PropTypes.string
 };

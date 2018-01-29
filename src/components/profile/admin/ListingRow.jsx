@@ -8,7 +8,7 @@ export default class ListingRow extends React.Component {
                 <div className="col-md-12">
                     <div className="col-md-1">
                         <div className="reservation-image-box">
-                            <span className="session-nav-user-thumb"><img src={this.props.listing.thumbnail} alt="listing-picture" /></span>
+                            <span className="session-nav-user-thumb"><img src={this.props.listing.thumbnail} alt="listing-thumbnail" /></span>
                         </div>
                     </div>
                     <div className="col-md-4">
@@ -18,10 +18,10 @@ export default class ListingRow extends React.Component {
                         <span>{this.props.listing.defaultDailyPrice}</span>
                     </div>
                     <div className="col-md-3">
-                        <a href="#" onClick={() => this.props.updateListingStatus(this.props.listing.id)}>{this.props.action}</a>
+                        <a onClick={() => this.props.updateListingStatus(this.props.listing.id)}>{this.props.action}</a>
                     </div>
                     <div className="col-md-2">
-                        <a href="#" onClick={() => this.props.openModal(this.props.listing.id)}>Contact host</a>
+                        <a onClick={() => this.props.openModal(this.props.listing.id)}>Contact host</a>
                     </div>
                 </div>
             </div>

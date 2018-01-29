@@ -21,7 +21,7 @@ class AllUnpublishedListings extends React.Component {
             listings: [],
             loading: true,
             totalElements: 0,
-            currentPage: searchMap.page == undefined ? 1 : searchMap.page,
+            currentPage: searchMap.page === undefined ? 1 : searchMap.page,
             country: searchMap.countryId === undefined ? '' : searchMap.countryId,
             city: searchMap.cityId === undefined ? '' : searchMap.cityId,
             cities: [],
@@ -77,19 +77,19 @@ class AllUnpublishedListings extends React.Component {
     buildSearchTerm() {
         let searchTerm = `?page=${this.state.currentPage - 1}`;
 
-        if (this.state.city != '') {
+        if (this.state.city !== '') {
             searchTerm += `&cityId=${this.state.city}`;
         }
 
-        if (this.state.name != '') {
+        if (this.state.name !== '') {
             searchTerm += `&listingName=${this.state.name}`;
         }
 
-        if (this.state.country != '') {
+        if (this.state.country !== '') {
             searchTerm += `&countryId=${this.state.country}`;
         }
 
-        if (this.state.hostEmail != '') {
+        if (this.state.hostEmail !== '') {
             searchTerm += `&host=${this.state.hostEmail}`;
         }
         return searchTerm;
@@ -164,7 +164,7 @@ class AllUnpublishedListings extends React.Component {
             if (res.success) {
                 NotificationManager.success('Successfully changed status to active', 'Listings Operations');
                 let allListings = this.state.listings;
-                this.setState({ listings: allListings.filter(x => x.id != id) });
+                this.setState({ listings: allListings.filter(x => x.id !== id) });
             }
             else {
                 NotificationManager.error('Something went wrong', 'Listings Operations');

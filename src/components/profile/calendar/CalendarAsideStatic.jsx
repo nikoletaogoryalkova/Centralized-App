@@ -31,7 +31,6 @@ export default class CalendarAsideStatic extends React.Component {
                             <button className="btn btn-primary btn-next bold" type="submit"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    {/* this.captcha.execute();  */ }
                                     this.props.updateDailyPrice();
                                 }}>Save</button>
                         </div>
