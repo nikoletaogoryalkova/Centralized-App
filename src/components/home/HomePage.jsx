@@ -83,7 +83,6 @@ class HomePage extends React.Component {
                 }
                 <div className="clearfix"></div>
             </section>
-            <Footer />
         </div>
         );
     }

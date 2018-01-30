@@ -298,7 +298,8 @@ class PropertyPage extends React.Component {
                         </ul>
                     </div>
                 </nav>
-                <PropertyInfo allEvents={allEvents}
+                <PropertyInfo 
+                    allEvents={allEvents}
                     calendar={this.state.calendar}
                     nights={this.state.nights}
                     onApply={this.handleApply}

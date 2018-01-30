@@ -2,7 +2,6 @@ import { changeMessageStatus, getMyConversations } from '../../../requester';
 
 import MessagesItem from './MessagesItem';
 import Pagination from 'rc-pagination';
-import ProfileHeader from '../ProfileHeader';
 import React from 'react';
 
 export default class MessagesPage extends React.Component {
@@ -79,7 +78,6 @@ export default class MessagesPage extends React.Component {
 
         return (
             <div>
-                <ProfileHeader />
                 <section id="profile-messages-hosting">
                     {this.state.messages.length === 0 ? <div className="text-center p20"><h3>You don&#39;t have any messages</h3></div> :
                         <div>

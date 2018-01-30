@@ -18,7 +18,7 @@ export default class NavProfile extends React.Component {
         });
     }
 
-    isOnlyForAdmin() {
+    isAdmin() {
         return this.state.roles.filter(c => c.name === 'ADMIN').length > 0;
     }
 
@@ -35,9 +35,9 @@ export default class NavProfile extends React.Component {
                         <li><NavLink exact activeClassName="active" to="/profile/listings">My Listings</NavLink></li>
                         <li><NavLink exact activeClassName="active" to="/profile/reservations">My Reservations</NavLink></li>
                         <li><NavLink exact activeClassName="active" to="/profile/trips">My Trips</NavLink></li>
-                        <li><NavLink exact activeClassName="active" to="/profile/messages">Messages</NavLink></li>
-                        <li><NavLink exact activeClassName="active" to="/profile/me/edit">Profile</NavLink></li>
-                        {this.isOnlyForAdmin() && <li><NavLink activeClassName="active" to="/admin/listings">All Listings</NavLink></li>}
+                        <li><NavLink activeClassName="active" to="/profile/messages">Messages</NavLink></li>
+                        <li><NavLink activeClassName="active" to="/profile/me/edit">Profile</NavLink></li>
+                        {this.isAdmin() && <li><NavLink activeClassName="active" to="/profile/admin/listings">All Listings</NavLink></li>}
 
                         {/* <li><Link to="/profile/account/notifications">Account</Link></li> */}
                     </ul>
