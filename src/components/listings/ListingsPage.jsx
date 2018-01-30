@@ -2,7 +2,6 @@ import { getListingsByFilter, getLocRate } from '../../requester';
 
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
-import Footer from '../Footer';
 import Header from '../Header';
 import Listing from './Listing';
 import Pagination from 'rc-pagination';
@@ -219,7 +218,6 @@ class ListingsPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }

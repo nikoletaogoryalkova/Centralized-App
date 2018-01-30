@@ -1,6 +1,5 @@
 import { acceptReservation, cancelReservation, getMyReservations } from '../../../requester';
 
-import Footer from '../../Footer';
 import { Link } from 'react-router-dom';
 import MyReservationsTable from './MyReservationsTable';
 import { NotificationManager } from 'react-notifications';
@@ -91,7 +90,6 @@ export default class MyReservationsPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }

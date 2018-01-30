@@ -1,10 +1,10 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
-import { Config } from '../../config';
+import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { sendRecoveryToken } from '../../requester.js';
+import { sendRecoveryToken } from '../../../requester.js';
 
 const modal = {
     current: 'enterRecoveryToken',

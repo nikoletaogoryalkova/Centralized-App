@@ -1,7 +1,6 @@
 import React from 'react';
 
 import ProfileHeader from '../ProfileHeader';
-import Footer from '../../Footer';
 import ProfileNav from './ProfileNav';
 import ProfileEditForm from './ProfileEditForm';
 
@@ -24,7 +23,6 @@ export default class ProfileEditPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }

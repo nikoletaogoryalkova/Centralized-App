@@ -26,8 +26,6 @@ import ListingPhotos from './steps/ListingPhotos';
 import ListingPlaceType from './steps/ListingPlaceType';
 import ListingPrice from './steps/ListingPrice';
 import ListingSafetyFacilities from './steps/ListingSafetyFacilities';
-import Footer from '../Footer';
-import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { arrayMove } from 'react-sortable-hoc';
@@ -474,17 +472,13 @@ class CreateListingPage extends React.Component {
 
         if (this.state.userHasLocAddress === false) {
             return <div>
-                <nav id="main-nav" className="navbar"><MainNav /></nav>
                 <ListingLocAddress values={this.state} onChange={this.onChange} updateLocAddress={this.updateLocAddress} />
-                <Footer />
                 <NotificationContainer />
             </div>;
         }
 
         return (
             <div>
-                <nav id="main-nav" className="navbar"><MainNav /></nav>
-
                 <Switch>
                     <Route exact path={routes.loc} render={() => <ListingLocAddress
                         values={this.state}
@@ -577,7 +571,6 @@ class CreateListingPage extends React.Component {
                         routes={routes}
                         prev={routes.checking} />} />
                 </Switch>
-                <Footer />
                 <NotificationContainer />
             </div>
         );

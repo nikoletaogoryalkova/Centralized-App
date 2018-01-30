@@ -26,8 +26,6 @@ import ListingPhotos from './steps/ListingPhotos';
 import ListingPlaceType from './steps/ListingPlaceType';
 import ListingPrice from './steps/ListingPrice';
 import ListingSafetyFacilities from './steps/ListingSafetyFacilities';
-import Footer from '../Footer';
-import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { arrayMove } from 'react-sortable-hoc';
@@ -597,7 +595,6 @@ class EditListingPage extends React.Component {
         return (
             <div>
                 <NotificationContainer />
-                <nav id="main-nav" className="navbar"><MainNav /></nav>
                 <Switch>
                     <Route path={routes.landing} render={() => <ListingLandingPage
                         values={this.state}
@@ -685,7 +682,6 @@ class EditListingPage extends React.Component {
                         routes={routes}
                         prev={routes.checking} />} />
                 </Switch>
-                <Footer />
             </div>
         );
     }

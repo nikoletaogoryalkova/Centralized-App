@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import observer from '../services/observer';
+import observer from '../../services/observer';
 export default class Footer extends React.Component {
     toggleCurrency(currency) {
         observer.currencyChange(currency);
