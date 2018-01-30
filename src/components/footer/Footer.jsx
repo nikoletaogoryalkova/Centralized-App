@@ -1,8 +1,8 @@
-import React from 'react';
-
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
+import React from 'react';
 import observer from '../../services/observer';
+
 export default class Footer extends React.Component {
     toggleCurrency(currency) {
         observer.currencyChange(currency);
@@ -44,11 +44,17 @@ export default class Footer extends React.Component {
                                 </ul>
                             </div>
 
-                            <DropdownButton block={true} title={localStorage["currency"] ? localStorage["currency"] : 'USD'} id="bg-nested-dropdown">
+                            <select onChange={(e) => this.toggleCurrency(e.target.value)} value={localStorage['currency'] ? localStorage['currency'] : 'USD'} className="currency-switcher">
+                                <option value="GBP">£ GBP</option>
+                                <option value="EUR">€ EUR</option>
+                                <option value="USD">$ USD</option>
+                            </select>
+
+                            {/* <DropdownButton block={true} title={localStorage['currency'] ? localStorage['currency'] : 'USD'} id="bg-nested-dropdown">
                                 <MenuItem onClick={() => this.toggleCurrency('GBP')}>£ GBP</MenuItem>
                                 <MenuItem onClick={() => this.toggleCurrency('EUR')}>€ EUR</MenuItem>
                                 <MenuItem onClick={() => this.toggleCurrency('USD')}>$ USD</MenuItem>
-                            </DropdownButton>
+                            </DropdownButton> */}
                         </div>
 
                         <div className="clearfix"></div>
@@ -57,6 +63,6 @@ export default class Footer extends React.Component {
 
                 </div>
             </footer>
-        )
+        );
     }
 }
