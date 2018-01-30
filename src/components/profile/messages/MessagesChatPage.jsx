@@ -92,7 +92,6 @@ class MessagesChatPage extends React.Component {
         let lastRenderedDay = '';
         return (
             <div>
-                <ProfileHeader />
                 <section id="profile-messages-chat-head">
                     <div className="container">
                         <h2>Conversation with {this.state.recipient}</h2>

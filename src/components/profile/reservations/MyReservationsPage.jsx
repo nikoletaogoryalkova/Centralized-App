@@ -70,7 +70,6 @@ export default class MyReservationsPage extends React.Component {
 
         return (
             <div className="my-reservations">
-                <ProfileHeader />
                 <section id="profile-my-reservations">
                     <div className="container">
                         <h2>Upcoming Reservations ({this.state.totalReservations})</h2>

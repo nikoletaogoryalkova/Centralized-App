@@ -71,7 +71,6 @@ export default class MyListingsPage extends React.Component {
 
         return (
             <div>
-                <ProfileHeader />
                 <section id="profile-mylistings">
                     <div className="container">
                         <h2>In Progress ({this.state.totalListingsInProgress})</h2>

@@ -220,7 +220,6 @@ class CalendarPage extends React.Component {
 
         return (
             <div>
-                <ProfileHeader />
                 <div className="col-md-12">
                     <div className="container">
                         <Calendar allEvents={allEvents}

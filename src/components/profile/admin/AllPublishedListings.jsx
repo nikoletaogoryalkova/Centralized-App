@@ -68,7 +68,7 @@ class AllPublishedListings extends React.Component {
         let searchTerm = this.buildSearchTerm();
 
         getAllPublishedListings(searchTerm).then((data) => {
-            this.props.history.push(`/admin/listings/published${searchTerm}`);
+            this.props.history.push(`/profile/admin/listings/published${searchTerm}`);
             this.setState({ listings: data.content, loading: false, totalElements: data.totalElements });
         });
     }
@@ -209,15 +209,8 @@ class AllPublishedListings extends React.Component {
         return (
             <div className="my-reservations">
                 <NotificationContainer />
-                <ProfileHeader />
                 <section id="profile-my-reservations">
                     <div className="container">
-                        <ul className="tab-navigation">
-                            <li className="active"><Link to="/admin/listings/published"><h2>Published</h2></Link></li>
-                            <li><Link to="/admin/listings/unpublished"><h2>Unpublished</h2></Link></li>
-                        </ul>
-                        <hr />
-
                         <AllListingsFilter
                             countries={this.state.countries}
                             cities={this.state.cities}
