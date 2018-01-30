@@ -1,45 +1,62 @@
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
-import { Config } from '../../config';
+import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
-import { postRecoveryEmail } from '../../requester.js';
+import { postNewPassword } from '../../../requester.js';
 
 const modal = {
-    current: 'sendRecoveryEmail',
-    next: 'enterRecoveryToken',
+    current: 'changePassword',
+    next: 'showLoginModal',
 };
 
-export default class SendRecoveryEmailModal extends React.Component {
+export default class ChangePasswordModal extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            recoveryEmail: '',
+            password: '',
             error: null,
         };
 
         this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.submitEmail.bind(this);
+        this.onSubmit = this.submitPassword.bind(this);
     }
+
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    submitEmail(captchaToken) {
-        const email = {
-            email: this.state.recoveryEmail,
+    submitPassword(captchaToken) {
+        if (this.state.password !== this.state.confirmPassword) {
+            NotificationManager.warning('Passwords don\'t match', 'Password');
+            this.captcha.reset();
+            return;
+        }
+
+        if (this.state.password.length < 6) {
+            NotificationManager.warning('Should be at least 6 characters long, containing characters and digits', 'Password');
+            this.captcha.reset();
+            return;
+        }
+
+        const postObj = {
+            token: this.props.recoveryToken,
+            password: this.state.password,
         };
-        postRecoveryEmail(email, captchaToken).then((res) => {
+
+        postNewPassword(postObj, captchaToken).then((res) => {
             if (res.success) {
                 this.props.closeModal(modal.current);
                 this.props.openModal(modal.next);
+                NotificationManager.success('Successfully changed', 'Password');
             }
             else {
-                NotificationManager.warning('Invalid email', 'Email');
+                NotificationManager.warning('Not found', '404');
+                this.captcha.reset();
             }
         });
     }
@@ -49,7 +66,7 @@ export default class SendRecoveryEmailModal extends React.Component {
             <div>
                 <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
                     <Modal.Header>
-                        <h1>Recover your password</h1>
+                        <h1>Recover your password (3)</h1>
                         <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
@@ -57,18 +74,19 @@ export default class SendRecoveryEmailModal extends React.Component {
                         <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
-                                <input type="email" name="recoveryEmail" value={this.state.recoveryEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
+                                <input type="password" name="password" value={this.state.password} onChange={this.onChange} className="form-control" placeholder="New password" />
                             </div>
 
-                            <div className="login-sign">
-                                <p>Already sent an email? Enter your security <a onClick={(e) => { e.preventDefault(); this.props.closeModal(modal.current); this.props.openModal(modal.next); }}>token</a>.</p>
+                            <div className="form-group">
+                                <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
+                                <input type="password" name="confirmPassword" value={this.state.confirmPassword} onChange={this.onChange} className="form-control" placeholder="Confirm password" />
                             </div>
 
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.submitEmail(token)}
+                                onChange={token => this.submitPassword(token)}
                             />
 
                             <button type="submit" className="btn btn-primary">Send email</button>
@@ -82,7 +100,8 @@ export default class SendRecoveryEmailModal extends React.Component {
     }
 }
 
-SendRecoveryEmailModal.propTypes = {
+ChangePasswordModal.propTypes = {
+    recoveryToken: PropTypes.string,
     openModal: PropTypes.func,
     closeModal: PropTypes.func,
     isActive: PropTypes.bool

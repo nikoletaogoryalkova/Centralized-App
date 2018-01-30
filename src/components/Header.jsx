@@ -1,15 +1,12 @@
 import { Link, withRouter } from 'react-router-dom';
 
 import ListingSearch from './listings/ListingSearch';
-import MainNav from './MainNav';
 import React from 'react';
 
 class Header extends React.Component {
     render() {
         return (
             <div>
-                <MainNav />
-
                 <nav id="second-nav">
                     <div className="container">
                         <ul className="nav navbar-nav">

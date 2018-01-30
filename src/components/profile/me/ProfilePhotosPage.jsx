@@ -1,6 +1,5 @@
 import { Config } from '../../../config';
 import Dropzone from 'react-dropzone';
-import Footer from '../../Footer';
 import ProfileHeader from '../ProfileHeader';
 import ProfileNav from './ProfileNav';
 import React from 'react';
@@ -106,7 +105,6 @@ export default class ProfilePhotosPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }
