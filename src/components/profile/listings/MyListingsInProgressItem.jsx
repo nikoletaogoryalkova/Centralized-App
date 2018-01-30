@@ -158,8 +158,8 @@ export default class MyListingsInProgressItem extends React.Component {
                 </Modal>
                 <div className="row my-listing-box">
                     <div className="col-md-2">
-                        <div className="my-listing-image-box">
-                            <img src={this.props.listing.pictures[0] && this.props.listing.pictures[0].thumbnail} alt="user" />
+                        <div className={(this.props.listing.pictures[0] ? '' : 'not ') + 'my-listing-image-box'}>
+                            {this.props.listing.pictures[0] && <img src={this.props.listing.pictures[0].thumbnail} alt="listing-thumbnail" />}
                         </div>
                     </div>
                     <div className="col-md-8 listing-name">

@@ -20,6 +20,7 @@ export default class MyListingsPage extends React.Component {
         };
 
         this.filterListings = this.filterListings.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
     }
 
     filterListings(id) {
@@ -75,7 +76,7 @@ export default class MyListingsPage extends React.Component {
                     <div className="container">
                         <h2>In Progress ({this.state.totalListingsInProgress})</h2>
                         <hr className="profile-line" />
-                        {this.state.listingsInProgress.map((item, i) => {
+                        {this.state.listingsInProgress && this.state.listingsInProgress.map((item, i) => {
                             return <MyListingsInProgressItem id={item.id} step={item.step} filterListings={this.filterListings} listing={JSON.parse(item.data)} key={i} />;
                         })}
                     </div>

@@ -44,7 +44,7 @@ class PropertyInfo extends React.Component {
                         <ContactHostModal id={this.props.match.params.id} isActive={this.props.isShownContactHostModal} closeModal={this.props.closeModal} sendMessageToHost={this.props.sendMessageToHost} />
                         <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
                         <h1> {this.props.data.name} </h1>
-                        <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
+                        {/* <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} /> */}
                         <div className="clearfix" />
                         <p>{street}, {city.name}, {country.name}</p>
                         <a className="undreline" onClick={this.props.openModal}>Contact Host</a>

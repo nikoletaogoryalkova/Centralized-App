@@ -27,6 +27,7 @@ class ListingsPage extends React.Component {
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
     }
 
     componentDidMount() {
