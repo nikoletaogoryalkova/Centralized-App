@@ -8,9 +8,7 @@ import {
 } from '../../requester';
 
 import { Config } from '../../config';
-import Footer from '../Footer';
 import Lightbox from 'react-images';
-import MainNav from '../MainNav';
 import PropTypes from 'prop-types';
 import PropertyInfo from './PropertyInfo';
 import React from 'react';
@@ -236,10 +234,6 @@ class PropertyPage extends React.Component {
         return (
             <div key={1}>
                 <div>
-                    <header id='main-nav' className="navbar">
-                        <MainNav />
-                    </header>
-
                     <nav id="second-nav">
                         <div className="container">
                             <ul className="nav navbar-nav">
@@ -322,7 +316,6 @@ class PropertyPage extends React.Component {
                     closeModal={this.closeModal}
                     isShownContactHostModal={this.state.isShownContactHostModal}
                     sendMessageToHost={this.sendMessageToHost} />
-                <Footer />
             </div>
         );
     }

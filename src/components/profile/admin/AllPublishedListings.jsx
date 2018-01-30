@@ -4,7 +4,6 @@ import { changeListingStatus, contactHost, getAllPublishedListings, getCities, g
 
 import AllListingsFilter from './AllListingsFilter';
 import ContactHostModal from '../../property/ContactHostModal';
-import Footer from '../../Footer';
 import ListingRow from './ListingRow';
 import Pagination from 'rc-pagination';
 import ProfileHeader from '../ProfileHeader';
@@ -267,7 +266,6 @@ class AllPublishedListings extends React.Component {
                             </div>}
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }

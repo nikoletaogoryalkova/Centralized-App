@@ -9,7 +9,6 @@ import {
 } from '../../../requester';
 
 import Calendar from './Calendar';
-import Footer from '../../Footer';
 import ProfileHeader from '../ProfileHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -242,7 +241,6 @@ class CalendarPage extends React.Component {
                             onSlotClick={this.onSlotClick} />
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }

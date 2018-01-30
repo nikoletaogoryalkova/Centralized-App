@@ -1,7 +1,6 @@
 import { getChatMessages, sendMessage } from '../../../requester';
 
 import { Config } from '../../../config';
-import Footer from '../../Footer';
 import InfiniteList from 'react-infinite-scroll-list';
 import Message from './Message';
 import MessagesChat from './MessagesChat';
@@ -146,7 +145,6 @@ class MessagesChatPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }

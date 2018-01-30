@@ -1,6 +1,5 @@
 import { getMyListings, getMyListingsInProgress } from '../../../requester';
 
-import Footer from '../../Footer';
 import { Link } from 'react-router-dom';
 import MyListingsActiveItem from './MyListingsActiveItem';
 import MyListingsInProgressItem from './MyListingsInProgressItem';
@@ -98,7 +97,6 @@ export default class MyListingsPage extends React.Component {
                     </div>
 
                 </section>
-                <Footer />
                 <NotificationContainer />
             </div>
         );

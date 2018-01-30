@@ -42,9 +42,6 @@ export default class DashboardPending extends React.Component {
                                         <span>{reservation.currencyCode} {reservation.price}</span>
                                     </span>
                                 </li>
-                                {/*<li>*/}
-                                {/*<span className="cnt block">17 oct</span>*/}
-                                {/*</li>*/}
                             </ul>
                         );
                     })}

@@ -1,7 +1,6 @@
 import { getMyReservations, getMyTrips } from '../../../requester';
 
 import DashboardPending from './DashboardPending';
-import Footer from '../../Footer';
 import ProfileHeader from '../ProfileHeader';
 import React from 'react';
 
@@ -32,18 +31,19 @@ export default class DashboardPage extends React.Component {
     }
 
     render() {
-        if (this.state.loading) {
-            return <div className="loader"></div>;
-        }
         return (
             <div>
                 <ProfileHeader />
-                <DashboardPending reservations={this.state.reservations} trips={this.state.trips}
-                    totalReservations={this.state.totalReservations} />
+
+                {this.state.loading ?
+                    <div className="loader"></div> :
+                    <DashboardPending reservations={this.state.reservations} trips={this.state.trips}
+                        totalReservations={this.state.totalReservations} />
+                }
+
                 {/*<DashboardReviews />*/}
                 {/*<DashboardOverview />*/}
                 <br />
-                <Footer />
             </div>
         );
     }

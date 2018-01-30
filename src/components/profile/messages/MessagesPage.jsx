@@ -1,6 +1,5 @@
 import { changeMessageStatus, getMyConversations } from '../../../requester';
 
-import Footer from '../../Footer';
 import MessagesItem from './MessagesItem';
 import Pagination from 'rc-pagination';
 import ProfileHeader from '../ProfileHeader';
@@ -95,7 +94,6 @@ export default class MessagesPage extends React.Component {
                         </div>
                     }
                 </section>
-                <Footer />
             </div>
         );
     }

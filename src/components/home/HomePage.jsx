@@ -1,8 +1,7 @@
 import { getListings, getLocRate } from '../../requester';
 
-import Footer from '../Footer';
+import Footer from '../footer/Footer';
 import ListingSliderBox from './ListingSliderBox';
-import MainNav from '../MainNav';
 import OwlCarousel from 'react-owl-carousel';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -29,14 +28,9 @@ class HomePage extends React.Component {
     render() {
         return (<div>
             <header id='main-nav' className="navbar home_page">
-                <MainNav />
-
-
                 <div className="container">
-
                     <h1 className="home_title">Discover your next experience</h1>
                     <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
-
                     <div className="container absolute_box">
                         <nav id="second-nav">
                             <div className="container">

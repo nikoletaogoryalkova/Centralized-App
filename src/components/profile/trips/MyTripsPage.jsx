@@ -1,6 +1,5 @@
 import { cancelTrip, getMyTrips } from '../../../requester';
 
-import Footer from '../../Footer';
 import { Link } from 'react-router-dom';
 import MyTripsTable from './MyTripsTable';
 import { NotificationManager } from 'react-notifications';
@@ -107,7 +106,6 @@ export default class MyTripsPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }
