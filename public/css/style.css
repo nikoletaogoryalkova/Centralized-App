@@ -2665,7 +2665,9 @@ select {
     text-align: center;
 }
 
-.tab-navigation li.active {
+.tab-navigation>li>a.active>h2 {
+    padding: 15px;
+    margin-bottom: 0;
     border-bottom: 4px solid #A0C5BE;
 }
 
