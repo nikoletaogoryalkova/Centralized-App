@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import MyReservationsTable from './MyReservationsTable';
 import { NotificationManager } from 'react-notifications';
 import Pagination from 'rc-pagination';
-import ProfileHeader from '../ProfileHeader';
 import React from 'react';
 
 export default class MyReservationsPage extends React.Component {

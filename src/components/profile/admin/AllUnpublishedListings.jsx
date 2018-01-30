@@ -1,4 +1,4 @@
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { changeListingStatus, contactHost, getAllUnpublishedListings, getCities, getCountries } from '../../../requester';
 
@@ -6,7 +6,6 @@ import AllListingsFilter from './AllListingsFilter';
 import ContactHostModal from '../../property/ContactHostModal';
 import ListingRow from './ListingRow';
 import Pagination from 'rc-pagination';
-import ProfileHeader from '../ProfileHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';

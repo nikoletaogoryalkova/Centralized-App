@@ -1,5 +1,5 @@
 import ContactHostModal from './ContactHostModal';
-import ListingRating from '../listings/ListingRating';
+// import ListingRating from '../listings/ListingRating';
 import PropTypes from 'prop-types';
 import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyCalendar from './PropertyCalendar';

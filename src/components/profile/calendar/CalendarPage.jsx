@@ -9,7 +9,6 @@ import {
 } from '../../../requester';
 
 import Calendar from './Calendar';
-import ProfileHeader from '../ProfileHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';

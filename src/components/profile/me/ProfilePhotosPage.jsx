@@ -1,7 +1,5 @@
 import { Config } from '../../../config';
 import Dropzone from 'react-dropzone';
-import ProfileHeader from '../ProfileHeader';
-import ProfileNav from './ProfileNav';
 import React from 'react';
 import { getCurrentLoggedInUserInfo } from '../../../requester';
 import request from 'superagent';
