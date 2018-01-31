@@ -98,7 +98,7 @@ export default class MyTripsTable extends React.Component {
                                     <div>{moment(new Date(trip.startDate)).format('DD MMM, YYYY')}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format('DD MMM, YYYY')}</div>
                                 </div>
                                 <div className="col-md-2">
-                                    {trip.accepted ? <div>Reservation is accepted and can&#39;t be undone</div> : <div><button type="submit" onClick={e => { e.preventDefault(); this.selectTrip(trip.id); this.openModal('showCancelTripModal'); }}>Cancel</button></div>}
+                                    {trip.accepted ? <div>Reservation is accepted and can&#39;t be undone</div> : <div><button type="submit" onClick={e => { e.preventDefault(); this.selectTrip(trip.id); this.openModal('showCancelTripModal'); }}>Cancel Trip</button></div>}
                                     {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                                 </div>

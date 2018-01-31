@@ -2023,6 +2023,20 @@ li.dropdown {
     margin-right: 5px;
 }
 
+.my-reservations .reservation-box button {
+    padding-bottom:10px;
+    font-weight: bold;
+    font-family: 'FuturaStd-Light', sans-serif;
+    color: #E98B73;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.my-reservations .reservation-box button:hover {
+    cursor: pointer;
+}
+
 .reservation-image-box {
     text-align: center;
 }
