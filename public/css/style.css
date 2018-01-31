@@ -2641,11 +2641,11 @@ h2+hr {
 }
 
 
-/* 
-FIX FOR MAC OS
+
+/* FIX FOR MAC OS */
 select {
     -webkit-appearance: none
-} */
+}
 
 .clearfix {
     display: block;
