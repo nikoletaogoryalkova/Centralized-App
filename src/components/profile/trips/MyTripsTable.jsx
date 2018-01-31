@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import CancelTripModal from './modals/CancelTripModal';
+import CancelTripModal from '../../common/modals/CancelTripModal';
 
 export default class MyTripsTable extends React.Component {
     constructor(props) {
@@ -49,7 +49,14 @@ export default class MyTripsTable extends React.Component {
         return (
             <div className="container">
                 <NotificationContainer />
-                <CancelTripModal isActive={this.state.showCancelTripModal} closeModal={this.closeModal} cancelTrip={this.props.cancelTrip} tripId={this.state.selectedTripId} />
+                <CancelTripModal 
+                    title={'Cancel Trip'}
+                    text={'Tell your host why do you want to cancel your trip.'}
+                    isActiveId={'showCancelTripModal'}
+                    isActive={this.state.showCancelTripModal} 
+                    closeModal={this.closeModal} 
+                    onSubmit={this.props.cancelTrip} 
+                    tripId={this.state.selectedTripId} />
                 <div className="table-header bold">
                     <div className="col-md-1">
                     </div>

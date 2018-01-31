@@ -1,6 +1,7 @@
 import { NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
+import CancelTripModal from '../../common/modals/CancelTripModal';
 import React from 'react';
 import moment from 'moment';
 
@@ -10,8 +11,32 @@ export default class MyReservationsTable extends React.Component {
 
         this.state = {
             selectedId: '',
-            action: ''
+            action: '',
+            showRejectReservationModal: false,
         };
+
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     render() {
@@ -20,8 +45,23 @@ export default class MyReservationsTable extends React.Component {
         }
 
         return (
-            <div className="container">
+            <div className="container">                
+                <CancelTripModal 
+                    title={'Delete Reservation'}
+                    text={'Tell your guest why do you want to reject his reservation.'}
+                    isActiveId={'showRejectReservationModal'}
+                    isActive={this.state.showRejectReservationModal} 
+                    closeModal={this.closeModal} 
+                    onSubmit={this.props.onReservationReject} 
+                    tripId={this.state.selectedId} />
+
                 <NotificationContainer />
+                <ReCAPTCHA
+                    ref={el => this.captcha = el}
+                    size="invisible"
+                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    onChange={token => { this.state.action === 'cancel' ? this.props.onReservationCancel(this.state.selectedId, token) : this.props.onReservationAccept(this.state.selectedId, token); this.captcha.reset(); }}
+                />
                 <div className="table-header bold">
                     <div className="col-md-1">
                     </div>
@@ -69,6 +109,12 @@ export default class MyReservationsTable extends React.Component {
                                         {reservation.accepted ? <div><button type="submit" >Cancel</button></div> : <div><button type="submit">Accept</button></div>}
                                     </form>
 
+                                    {!reservation.accepted && 
+                                        <form>
+                                            <div><button type="submit" onClick={(e) => { e.preventDefault(); this.setState({ selectedId: reservation.id, showRejectReservationModal: true }); }}>Reject</button></div>
+                                        </form>
+                                    }
+
                                     {/* <div><Link to="#">Report a problem</Link></div>
                                 <div><Link to="#">Print Confirmation</Link></div> */}
                                 </div>
@@ -79,12 +125,6 @@ export default class MyReservationsTable extends React.Component {
                         </div>
                     );
                 })}
-                <ReCAPTCHA
-                    ref={el => this.captcha = el}
-                    size="invisible"
-                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                    onChange={token => { this.state.action === 'cancel' ? this.props.onReservationCancel(this.state.selectedId, token) : this.props.onReservationAccept(this.state.selectedId, token); this.captcha.reset(); }}
-                />
             </div>
         );
     }
@@ -94,5 +134,6 @@ MyReservationsTable.propTypes = {
     loadingListing: PropTypes.bool,
     reservations: PropTypes.array,
     onReservationAccept: PropTypes.func,
-    onReservationCancel: PropTypes.func
+    onReservationCancel: PropTypes.func,
+    onReservationReject: PropTypes.func
 };
