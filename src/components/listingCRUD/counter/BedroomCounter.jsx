@@ -11,13 +11,13 @@ export default class BedroomCounter extends React.Component {
         this.decrement = this.decrement.bind(this);
     }
 
-    increment = (e) => {
+    increment(e) {
         e.target.name = this.props.name;
         e.target.value = this.props.value + 1;
         this.props.onChange(this.props.bedroom, e);
     }
 
-    decrement = (e) => {
+    decrement(e) {
         e.target.name = this.props.name;
         e.target.value = this.props.value - 1;
         this.props.onChange(this.props.bedroom, e);
@@ -26,19 +26,17 @@ export default class BedroomCounter extends React.Component {
     render() {
         return (
             <div style={{display: "inline-block"}}>
-                <input 
-                    type="image" 
+                <img
                     src={Config.getValue("basePath") + "images/left.png"}
                     alt="plus"
-                    onClick={(e) => this.decrement(e)} />
+                    onClick={(e) => this.decrement(e)}/>
                 
                 <span 
                     style={{margin: '10px', padding: '10px'}}>
                     {this.props.value}
                 </span>
                 
-                <input 
-                    type="image" 
+                <img
                     src={Config.getValue("basePath") + "images/right.png"}
                     alt="minus"
                     onClick={(e) => this.increment(e)} />
