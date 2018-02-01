@@ -187,7 +187,8 @@ class ListingsPage extends React.Component {
 
         let renderListings;
         let renderPagination;
-        if (!hasLoadedListings) {
+        if (!hasLoadedListings || this.state.listingLoading === true) {
+            window.scrollTo(0, 0);
             renderListings = <div className="loader"></div>;
         } else if (!hasListings) {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
