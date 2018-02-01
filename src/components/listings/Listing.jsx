@@ -7,9 +7,9 @@ import React from 'react';
 
 class Listing extends React.Component {
     render() {
-        const { city, country, prices, currencyCode, defaultDailyPrice, pictures, id, name, reviewsCount, averageRating, description } = this.props.listing;
-        const listingPrice = (prices) && this.props.currency === currencyCode ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[this.props.currency], 10).toFixed(2);
-        const listingPriceEur = this.props.listing.currencyCode === 'EUR' ? this.props.listing.defaultDailyPrice : prices['EUR'];
+        const { cityName, countryName, prices, currency_code, defaultDailyPrice, pictures, id, name, reviewsCount, averageRating, description } = this.props.listing;
+        const listingPrice = (prices) && this.props.currency === currency_code ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[this.props.currency], 10).toFixed(2);
+        const listingPriceEur = currency_code === 'EUR' ? this.props.listing.defaultDailyPrice : prices['EUR'];
         return (
             <div className="list-hotel">
                 <div className="list-image">
@@ -19,7 +19,7 @@ class Listing extends React.Component {
                     <h2><Link to={`/listings/${this.props.listing.id}${this.props.location.search}`}>{name}</Link></h2>
                     <ListingRating rating={averageRating} reviewsCount={reviewsCount} />
                     <div className="clearfix"></div>
-                    <p>{city.name}, {country.name}</p>
+                    <p>{cityName}, {countryName}</p>
                     <div className="list-hotel-text">
                         {description.substr(0, 190)}...
                     </div>

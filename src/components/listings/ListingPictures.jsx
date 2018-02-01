@@ -13,6 +13,7 @@ export default class ListingPictures extends React.Component {
         };
     }
 
+
     render() {
         return (
             // eslint-disable-next-line
