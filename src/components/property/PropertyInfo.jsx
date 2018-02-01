@@ -116,8 +116,6 @@ class PropertyInfo extends React.Component {
                         startDate={this.props.startDate}
                         endDate={this.props.endDate}
                         listing={this.props.data}
-                        currency={this.props.currency}
-                        currencySign={this.props.currencySign}
                         loading={this.props.loading} />
                     <div className="clearfix"></div>
                 </div>
@@ -136,8 +134,6 @@ PropertyInfo.propTypes = {
     onApply: PropTypes.func,
     startDate: PropTypes.object,
     endDate: PropTypes.object,
-    currencySign: PropTypes.string,
-    currency: PropTypes.string,
     loading: PropTypes.bool,
     descriptionsAccessInfo: PropTypes.string,
     match: PropTypes.object,

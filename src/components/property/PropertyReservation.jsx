@@ -7,6 +7,8 @@ import moment from 'moment';
 import { parse } from 'query-string';
 import { requestBooking } from '../../requester';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from "prop-types";
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -25,7 +27,7 @@ class PropertyReservation extends React.Component {
             guests: guests,
             name: !props.isLogged ? '' : props.userInfo.firstName + ' ' + props.userInfo.lastName,
             email: !props.isLogged ? '' : props.userInfo.email,
-            phone: !props.isLogged ? '' : props.userInfo.phoneNumber,
+            phone: !props.isLogged ? '' : props.userInfo.phoneNumber || '',
             captcha: '',
             error: '',
             startDate: this.props.startDate,
@@ -101,7 +103,7 @@ class PropertyReservation extends React.Component {
             return false;
         };
 
-        const cleaningFee = this.props.nights > 0 ? (this.props.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.cleaningFee, 10) : parseInt(this.props.listing.cleaningFees[this.props.currency], 10)) : 0;
+        const cleaningFee = this.props.nights > 0 ? (this.props.paymentInfo.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.cleaningFee, 10) : parseInt(this.props.listing.cleaningFees[this.props.paymentInfo.currency], 10)) : 0;
         const cleaningFeeLoc = Number((cleaningFee / this.props.locRate).toFixed(4));
 
         let listingPriceForPeriod = 0;
@@ -133,7 +135,7 @@ class PropertyReservation extends React.Component {
                     }
                     {(!this.state.sending && !this.props.loading) &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{(this.props.nights === 0 ? listingPrice : (listingPrice / this.props.nights)).toFixed(2)} ({(this.props.nights === 0 ? listingPriceLoc : (listingPriceLoc / this.props.nights)).toFixed(4)} LOC)</span> /per night</p>
+                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.paymentInfo.currencySign}{(this.props.nights === 0 ? listingPrice : (listingPrice / this.props.nights)).toFixed(2)} ({(this.props.nights === 0 ? listingPriceLoc : (listingPriceLoc / this.props.nights)).toFixed(4)} LOC)</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
@@ -170,10 +172,10 @@ class PropertyReservation extends React.Component {
                             <br />
 
                             <div>
-                                <p style={{ color: 'white' }}>Cleaning Fee: {this.props.currencySign}{cleaningFee.toFixed(2)} ({cleaningFeeLoc} LOC)</p>
+                                <p style={{ color: 'white' }}>Cleaning Fee: {this.props.paymentInfo.currencySign}{cleaningFee.toFixed(2)} ({cleaningFeeLoc} LOC)</p>
                             </div>
 
-                            <div className="hotel-second-price">total <span className="total-price">{this.props.currencySign}{(listingPrice + cleaningFee).toFixed(2)}</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span className="total-price">{this.props.paymentInfo.currencySign}{(listingPrice + cleaningFee).toFixed(2)}</span> / for&nbsp;
                             <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div>
@@ -210,4 +212,17 @@ class PropertyReservation extends React.Component {
     }
 }
 
-export default withRouter(PropertyReservation);
+PropertyReservation.propTypes = {
+    // start Redux props
+    dispatch: PropTypes.func,
+    paymentInfo: PropTypes.object
+};
+
+export default withRouter(connect(mapStateToProps)(PropertyReservation));
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
+    };
+}

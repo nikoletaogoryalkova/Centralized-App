@@ -11,11 +11,12 @@ import ListingPage from '../listings/ListingsPage';
 import PropertyPage from '../property/PropertyPage';
 import React from 'react';
 import moment from 'moment';
-import observer from '../../services/observer';
+import { connect } from 'react-redux';
 import MainNav from '../mainNav/MainNav';
 import Footer from '../footer/Footer';
 
 import ProfilePage from '../profile/ProfilePage';
+import PropTypes from "prop-types";
 
 class App extends React.Component {
     constructor(props) {
@@ -23,45 +24,6 @@ class App extends React.Component {
         BigCalendar.setLocalizer(
             BigCalendar.momentLocalizer(moment)
         );
-        let currency = '';
-        let currencySign = '';
-
-        if (localStorage['currency'] && localStorage['currencySign']) {
-            currency = localStorage['currency'];
-            currencySign = localStorage['currencySign'];
-        }
-        else {
-            currency = 'USD';
-            currencySign = '$';
-
-            localStorage['currency'] = currency;
-            localStorage['currencySign'] = currencySign;
-        }
-
-        this.state = { currency: currency, currencySign: currencySign };
-
-        this.currencyChange = this.currencyChange.bind(this);
-    }
-
-    componentDidMount() {
-        observer.currencyChange = this.currencyChange;
-    }
-
-    currencyChange(currency) {
-        let currencySign = '';
-        switch (currency) {
-        case 'EUR': currencySign = '€';
-            break;
-        case 'GBP': currencySign = '£';
-            break;
-        default: currencySign = '$';
-            break;
-        }
-
-        localStorage['currency'] = currency;
-        localStorage['currencySign'] = currencySign;
-
-        this.setState({ currency, currencySign });
     }
 
     isAuthenticated() {
@@ -73,20 +35,22 @@ class App extends React.Component {
     }
 
     render() {
+        const { currency, currencySign } = this.props.paymentInfo;
+
         return (
             <div>
                 <MainNav />
                 <Switch>
-                    <Route exact path="/" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/listings" render={() => <ListingPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/property" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/" render={() => <HomePage />} />
+                    <Route exact path="/listings" render={() => <ListingPage />} />
+                    <Route exact path="/property" render={() => <PropertyPage currency={currency} currencySign={currencySign} />} />
                     <Route exact path="/profile/listings/edit/:step/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} />
                     <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
-                    <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route exact path="/users/resetPassword/:confirm" render={() => <HomePage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage />} />
+                    <Route exact path="/users/resetPassword/:confirm" render={() => <HomePage />} />
                     <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
-                    <Route path="/profile/" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfilePage location={this.props.location} currency={this.state.currency} currencySign={this.state.currencySign} />} />
-                    <Route path="/listings/:id" render={() => <PropertyPage currency={this.state.currency} currencySign={this.state.currencySign} />} />
+                    <Route path="/profile/" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfilePage location={this.props.location} />} />
+                    <Route path="/listings/:id" render={() => <PropertyPage currency={currency} currencySign={currencySign} />} />
                 </Switch>
                 <Footer />
             </div>
@@ -94,4 +58,19 @@ class App extends React.Component {
     }
 }
 
-export default withRouter(App);
+App.propTypes = {
+    location: PropTypes.object,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    paymentInfo: PropTypes.object
+};
+
+export default withRouter(connect(mapStateToProps)(App));
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
+    };
+}

@@ -194,7 +194,7 @@ class ListingsPage extends React.Component {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <Listing locRate={this.state.locRate} key={i} listing={item} currency={this.props.currency} currencySign={this.props.currencySign} />;
+                return <Listing locRate={this.state.locRate} key={i} listing={item} />;
             });
 
             renderPagination = <div className="pagination-box">{this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />} </div>;
@@ -226,9 +226,7 @@ class ListingsPage extends React.Component {
 
 ListingsPage.propTypes = {
     location: PropTypes.object,
-    history: PropTypes.object,
-    currency: PropTypes.string,
-    currencySign: PropTypes.string
+    history: PropTypes.object
 };
 
 export default withRouter(ListingsPage);

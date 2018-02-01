@@ -1,9 +1,7 @@
 import { getListings, getLocRate } from '../../requester';
 
-import Footer from '../footer/Footer';
 import ListingSliderBox from './ListingSliderBox';
 import OwlCarousel from 'react-owl-carousel';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Search from './Search';
 
@@ -77,7 +75,7 @@ class HomePage extends React.Component {
                             }
                         }}>
                         {this.state.listings.map((item, i) => {
-                            return <ListingSliderBox locRate={this.state.locRate} currency={this.props.currency} currencySign={this.props.currencySign} key={i} listing={item} />;
+                            return <ListingSliderBox locRate={this.state.locRate} key={i} listing={item} />;
                         })}
                     </OwlCarousel>
                 }
@@ -87,10 +85,5 @@ class HomePage extends React.Component {
         );
     }
 }
-
-HomePage.propTypes = {
-    currency: PropTypes.string,
-    currencySign: PropTypes.string
-};
 
 export default HomePage;

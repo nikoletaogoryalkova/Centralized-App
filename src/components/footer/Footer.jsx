@@ -1,11 +1,15 @@
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+// import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import React from 'react';
-import observer from '../../services/observer';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-export default class Footer extends React.Component {
-    toggleCurrency(currency) {
-        observer.currencyChange(currency);
+import { setCurrency } from '../../actions/paymentInfo';
+
+class Footer extends React.Component {
+    componentDidMount() {
+        if (localStorage['currency']) setCurrency(localStorage['currency']);
+        else localStorage['currency'] = this.props.paymentInfo.currency;
     }
 
     render() {
@@ -44,10 +48,13 @@ export default class Footer extends React.Component {
                                 </ul>
                             </div>
 
-                            <select onChange={(e) => this.toggleCurrency(e.target.value)} value={localStorage['currency'] ? localStorage['currency'] : 'USD'} className="currency-switcher">
-                                <option value="GBP">£ GBP</option>
-                                <option value="EUR">€ EUR</option>
-                                <option value="USD">$ USD</option>
+                            <select
+                                onChange={(e) => this.props.dispatch(setCurrency(e.target.value))}
+                                value={this.props.paymentInfo.currency}
+                                className="currency-switcher">
+                                    <option value="GBP">£ GBP</option>
+                                    <option value="EUR">€ EUR</option>
+                                    <option value="USD">$ USD</option>
                             </select>
 
                             {/* <DropdownButton block={true} title={localStorage['currency'] ? localStorage['currency'] : 'USD'} id="bg-nested-dropdown">
@@ -64,5 +71,20 @@ export default class Footer extends React.Component {
                 </div>
             </footer>
         );
+    }
+}
+
+Footer.propTypes = {
+    // start Redux props
+    dispatch: PropTypes.func,
+    paymentInfo: PropTypes.object
+};
+
+export default connect(mapStateToProps)(Footer);
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
     }
 }

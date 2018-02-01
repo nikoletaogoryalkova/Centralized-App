@@ -327,8 +327,6 @@ class PropertyPage extends React.Component {
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     data={this.state.data}
-                    currency={this.props.currency}
-                    currencySign={this.props.currencySign}
                     prices={this.state.prices}
                     isLogged={this.props.userInfo.isLogged}
                     userInfo={this.state.userInfo}
@@ -356,11 +354,11 @@ PropertyPage.propTypes = {
     userInfo: PropTypes.object
 };
 
-export default connect(mapStateToProps)(withRouter(PropertyPage));
+export default withRouter(connect(mapStateToProps)(PropertyPage));
 
 function mapStateToProps(state) {
-  const { userInfo } = state;
-  return {
-    userInfo
-  }
+    const { userInfo } = state;
+    return {
+        userInfo
+    }
 }
