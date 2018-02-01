@@ -1,7 +1,9 @@
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { getCountOfUnreadMessages, login, register } from '../../requester';
+import { setIsLogged } from '../../actions/userInfo';
 
 import ChangePasswordModal from './modals/ChangePasswordModal';
 import { Config } from '../../config';
@@ -52,6 +54,12 @@ class MainNav extends React.Component {
     }
 
     componentDidMount() {
+        // if localStorage data shows that user is logged in, then setIsLogged(true) in Redux
+        if (
+            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] &&
+            localStorage[Config.getValue('domainPrefix') + '.auth.username']
+        ) this.props.dispatch(setIsLogged(true));
+
         const search = this.props.location.search;
         const searchParams = search.split('=');
         if (searchParams[0] === '?token') {
@@ -147,15 +155,19 @@ class MainNav extends React.Component {
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
                     localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
+
+                    // reflect that the user is logged in, both in Redux and in the local component state
+                    this.props.dispatch(setIsLogged(true));
                     this.setState({ userName: user.email });
 
                     if (this.state.recoveryToken !== '') {
                         this.props.history.push('/');
-                    } else {
+                    }
+                    // else {
                         // this won't reload components in <main>
                         // this.props.history.push(window.location.pathname + window.location.search); 
-                        window.location.reload();
-                    }
+                        // window.location.reload();
+                    // }
 
                     this.closeLogIn();
                 });
@@ -180,6 +192,8 @@ class MainNav extends React.Component {
         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
 
+        // reflect that the user is logged out, both in Redux and in the local component state
+        this.props.dispatch(setIsLogged(false));
         this.setState({ userName: '' });
 
         this.props.history.push('/');
@@ -352,9 +366,20 @@ class MainNav extends React.Component {
     }
 }
 
-export default withRouter(MainNav);
+export default connect(mapStateToProps)(withRouter(MainNav));
+
+function mapStateToProps(state) {
+    const { userInfo } = state;
+    return {
+        userInfo
+    }
+}
 
 MainNav.propTypes = {
     location: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    userInfo: PropTypes.object
 };
