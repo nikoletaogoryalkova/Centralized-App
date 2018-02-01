@@ -1,4 +1,5 @@
 import { Link, withRouter } from 'react-router-dom';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { connect } from 'react-redux';
 import {
     contactHost,
@@ -22,7 +23,7 @@ class PropertyPage extends React.Component {
         super(props);
 
         let startDate = moment();
-        let endDate = moment().add(1, 'days');
+        let endDate = moment().add(1, 'day');
 
         if (this.props) {
             let queryParams = parse(this.props.location.search);
@@ -99,11 +100,25 @@ class PropertyPage extends React.Component {
     }
 
     handleApply(event, picker) {
-        this.setState({
-            startDate: picker.startDate,
-            endDate: picker.endDate,
-        });
-        this.calculateNights(picker.startDate, picker.endDate);
+        let prices = this.state.prices;
+        let range = prices.filter(x => x.start >= picker.startDate && x.end <= picker.endDate);
+
+        let availableDates = prices.filter(x => x.available).sort(function (a, b) { return a.start.diff(b.start); });
+
+        let isInvalidRange = range.filter(x => !x.available).length > 0;
+        if (isInvalidRange) {
+            NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
+            this.setState({ startDate: availableDates[0].start, endDate: availableDates[0].start });
+
+            this.calculateNights(availableDates[0].start.format('DD/MM/YYYY'), availableDates[0].start.format('DD/MM/YYYY'));
+        }
+        else {
+            this.setState({
+                startDate: picker.startDate,
+                endDate: picker.endDate,
+            });
+            this.calculateNights(picker.startDate, picker.endDate);
+        }
     }
 
     openLightbox(event) {
@@ -119,21 +134,25 @@ class PropertyPage extends React.Component {
             lightboxIsOpen: false,
         });
     }
+
     gotoPrevious() {
         this.setState({
             currentImage: this.state.currentImage - 1,
         });
     }
+
     gotoNext() {
         this.setState({
             currentImage: this.state.currentImage + 1,
         });
     }
+
     gotoImage(index) {
         this.setState({
             currentImage: index,
         });
     }
+
     handleClickImage() {
         if (this.state.currentImage === this.state.data.pictures.length - 1) return;
 
@@ -214,7 +233,10 @@ class PropertyPage extends React.Component {
 
     render() {
 
-        if (this.state.data === null || this.state.prices === null || this.state.reservations === null || this.state.loaded === false) {
+        if (this.state.data === null ||
+            this.state.prices === null ||
+            this.state.reservations === null ||
+            this.state.loaded === false) {
             return <div className="loader"></div>;
         }
 
@@ -316,6 +338,7 @@ class PropertyPage extends React.Component {
                     closeModal={this.closeModal}
                     isShownContactHostModal={this.state.isShownContactHostModal}
                     sendMessageToHost={this.sendMessageToHost} />
+                <NotificationContainer />
             </div>
         );
     }

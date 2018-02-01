@@ -13,24 +13,32 @@ export default class ListingPictures extends React.Component {
         };
     }
 
+
     render() {
+        let pictures = this.props.pictures;
+
+        if (typeof this.props.pictures === 'string') {
+            pictures = JSON.parse(this.props.pictures);
+        }
+
         return (
-            // eslint-disable-next-line
-            <React_Bootstrap_Carousel
-                animation={true}
-                autoplay={false}
-                leftIcon={this.state.leftIcon}
-                rightIcon={this.state.rightIcon}
-                indicators={false}
-                className="carousel-fade"    >
-                {this.props.pictures.map((item, i) => {
-                    return (
-                        <div className="item" key={i}>
-                            <Link to={`/listings/${this.props.id}`}><img src={item.thumbnail} alt="" /></Link>
-                        </div>
-                    );
-                })}
-            </React_Bootstrap_Carousel>
+            <div>
+                {pictures !== null && <React_Bootstrap_Carousel
+                    animation={true}
+                    autoplay={false}
+                    leftIcon={this.state.leftIcon}
+                    rightIcon={this.state.rightIcon}
+                    indicators={false}
+                    className="carousel-fade">
+                    {pictures.map((item, i) => {
+                        return (
+                            <div className="item" key={i}>
+                                <Link to={`/listings/${this.props.id}`}><img src={item.thumbnail} alt="" /></Link>
+                            </div>
+                        );
+                    })}
+                </React_Bootstrap_Carousel>}
+            </div>
         );
     }
 }

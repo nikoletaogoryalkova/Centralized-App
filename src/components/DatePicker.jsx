@@ -10,6 +10,9 @@ class DatePicker extends React.Component {
             searchNightsWidth = 5;
         }
 
+        console.log(this.props.startDate);
+        console.log(this.props.endDate);
+
         return (
             <div>
                 <div className="input-daterange">

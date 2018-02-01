@@ -1,3 +1,5 @@
+// import '../../../public/css/calendar.css';
+
 import DatePicker from '../DatePicker';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
@@ -108,13 +110,16 @@ class PropertyReservation extends React.Component {
         if (this.props.calendar === null || this.props.calendar === undefined) {
             return <div className="loader"></div>;
         }
-        for (let i = 0; i <= this.props.calendar.length - 1; i++) {
+        for (let i = 0; i < this.props.calendar.length; i++) {
             let dayObj = this.props.calendar[i];
             if (startDate.startOf('day') <= moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && endDate.startOf('day') > moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && dayObj.available) {
                 listingPriceForPeriod += dayObj.price;
             }
-
         }
+
+        console.log(calendar);
+        let isInvalidRange = this.props.calendar.filter(x => moment(x.date, 'DD/MM/YYYY') >= startDate && moment(x.date, 'DD/MM/YYYY') <= endDate && !x.available).length > 0;
+
         const listingPrice = listingPriceForPeriod;
 
         const listingPriceLoc = Number((listingPrice / this.props.locRate).toFixed(4));
@@ -128,11 +133,15 @@ class PropertyReservation extends React.Component {
                     }
                     {(!this.state.sending && !this.props.loading) &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{(listingPrice / this.props.nights).toFixed(2)} ({(listingPriceLoc / this.props.nights).toFixed(4)} LOC)</span> /per night</p>
+                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.currencySign}{(this.props.nights === 0 ? listingPrice : (listingPrice / this.props.nights)).toFixed(2)} ({(this.props.nights === 0 ? listingPriceLoc : (listingPriceLoc / this.props.nights)).toFixed(4)} LOC)</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
-                            <DatePicker isInvalidDate={isInvalidDate} nights={this.props.nights} onApply={this.props.onApply} startDate={this.props.startDate} endDate={this.props.endDate} />
+                            <DatePicker isInvalidDate={isInvalidDate}
+                                nights={this.props.nights}
+                                onApply={this.props.onApply}
+                                startDate={this.props.startDate}
+                                endDate={this.props.endDate} />
 
                             <div className="clearfix"></div>
 
@@ -176,7 +185,7 @@ class PropertyReservation extends React.Component {
                             <div className="nonev"></div>
 
                             {this.props.isLogged &&
-                                <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary"
+                                <button disabled={this.props.nights <= 0 || isInvalidRange} type="submit" className="btn btn-primary"
                                     id="reservation-btn">Request Booking in LOC or FIAT</button>
                             }
                             {this.props.isLogged &&
