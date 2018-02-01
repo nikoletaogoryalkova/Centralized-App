@@ -376,6 +376,7 @@ function mapStateToProps(state) {
 }
 
 MainNav.propTypes = {
+    // start Router props
     location: PropTypes.object,
     history: PropTypes.object,
 

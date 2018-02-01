@@ -59,6 +59,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+    // start Router props
     location: PropTypes.object,
 
     // start Redux props

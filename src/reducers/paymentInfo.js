@@ -2,7 +2,8 @@ import { paymentInfo } from '../actions/actionTypes';
 
 const initialState = {
     currency: 'USD',
-    currencySign: '$'
+    currencySign: '$',
+    locRate: null
 };
 
 export default function reducer(state = initialState, action) {
@@ -12,6 +13,12 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 currency: action.currency,
                 currencySign: getCurrencySign(action.currency)
+            };
+
+        case paymentInfo.SET_LOC_RATE:
+            return {
+                ...state,
+                locRate: action.locRate
             };
 
         default:

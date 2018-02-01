@@ -343,11 +343,13 @@ class PropertyPage extends React.Component {
 }
 
 PropertyPage.propTypes = {
-    history: PropTypes.object,
     match: PropTypes.object,
     currencySign: PropTypes.string,
-    location: PropTypes.object,
     currency: PropTypes.string,
+
+    // start Router props
+    history: PropTypes.object,
+    location: PropTypes.object,
 
     // start Redux props
     dispatch: PropTypes.func,

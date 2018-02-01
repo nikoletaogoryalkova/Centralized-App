@@ -4,12 +4,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setCurrency } from '../../actions/paymentInfo';
+import { setCurrency, setLocRate } from '../../actions/paymentInfo';
+import {getLocRateInUserSelectedCurrency} from "../../requester";
 
 class Footer extends React.Component {
     componentDidMount() {
+        const { currency, locRate } = this.props.paymentInfo;
         if (localStorage['currency']) setCurrency(localStorage['currency']);
-        else localStorage['currency'] = this.props.paymentInfo.currency;
+        else localStorage['currency'] = currency;
+
+        if (!locRate) this.getAndSetLocRate(currency);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { currency, locRate } = nextProps.paymentInfo;
+        if (!locRate || currency !== this.props.paymentInfo.currency) this.getAndSetLocRate(currency);
+    }
+
+    getAndSetLocRate(currency) {
+        getLocRateInUserSelectedCurrency(currency).then((data) => {
+            this.props.dispatch(setLocRate(data[0][`price_${currency.toLowerCase()}`]));
+        });
     }
 
     render() {

@@ -225,6 +225,7 @@ class ListingsPage extends React.Component {
 }
 
 ListingsPage.propTypes = {
+    // start Router props
     location: PropTypes.object,
     history: PropTypes.object
 };

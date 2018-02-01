@@ -45,8 +45,10 @@ class Listing extends React.Component {
 
 Listing.propTypes = {
     listing: PropTypes.object,
-    location: PropTypes.object,
     locRate: PropTypes.string,
+
+    // start Router props
+    location: PropTypes.object,
 
     // start Redux props
     dispatch: PropTypes.func,
