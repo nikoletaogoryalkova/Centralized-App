@@ -1,4 +1,5 @@
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
     contactHost,
     getCalendarByListingIdAndDateRange,
@@ -43,7 +44,6 @@ class PropertyPage extends React.Component {
             prices: null,
             oldCurrency: this.props.currency,
             loaded: false,
-            isLogged: false,
             userInfo: null,
             locRate: null,
             loading: true,
@@ -87,14 +87,13 @@ class PropertyPage extends React.Component {
                     .then(res => {
                         this.setState({
                             loaded: true,
-                            isLogged: true,
                             userInfo: res,
                             loading: false
                         });
                     });
             }
             else {
-                this.setState({ loaded: true, isLogged: false, loading: false });
+                this.setState({ loaded: true, loading: false });
             }
         });
     }
@@ -309,7 +308,7 @@ class PropertyPage extends React.Component {
                     currency={this.props.currency}
                     currencySign={this.props.currencySign}
                     prices={this.state.prices}
-                    isLogged={this.state.isLogged}
+                    isLogged={this.props.userInfo.isLogged}
                     userInfo={this.state.userInfo}
                     locRate={this.state.locRate}
                     loading={this.state.loading}
@@ -327,7 +326,18 @@ PropertyPage.propTypes = {
     match: PropTypes.object,
     currencySign: PropTypes.string,
     location: PropTypes.object,
-    currency: PropTypes.string
+    currency: PropTypes.string,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    userInfo: PropTypes.object
 };
 
-export default withRouter(PropertyPage);
+export default connect(mapStateToProps)(withRouter(PropertyPage));
+
+function mapStateToProps(state) {
+  const { userInfo } = state;
+  return {
+    userInfo
+  }
+}
