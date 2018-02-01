@@ -59,7 +59,7 @@ export default class Footer extends React.Component {
 
                         <div className="clearfix"></div>
                     </div>
-                    <div className="copyright">Copyright 2017 LockChain | All rights reserved.</div>
+                    <div className="copyright">Copyright 2017-2018 LockChain | All rights reserved.</div>
 
                 </div>
             </footer>
