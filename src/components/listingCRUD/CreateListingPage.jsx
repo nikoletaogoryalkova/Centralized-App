@@ -182,8 +182,6 @@ class CreateListingPage extends React.Component {
         let value = Number(e.target.value);
         if (value < 0) { value = 0; }
         bedrooms[bedroom][name] = value;
-        console.log(value);
-        console.log(bedrooms);
         this.setState({
             bedrooms: bedrooms,
         });

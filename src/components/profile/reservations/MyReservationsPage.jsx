@@ -37,7 +37,6 @@ export default class MyReservationsPage extends React.Component {
     }
 
     rejectReservation(id, cancellationText, captchaToken) {
-        console.log(id)
         this.setState({ loading: true });
         let cancelTripObj = {
             message: cancellationText

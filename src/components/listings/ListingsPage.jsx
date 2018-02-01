@@ -61,7 +61,9 @@ class ListingsPage extends React.Component {
     }
 
     handleSearch(e) {
-        e.preventDefault();
+        if (e.preventDefault != 'undefined' && typeof e.preventDefault == 'function') {
+            e.preventDefault();
+        }
         this.setState({
             listings: null,
             listingLoading: true
@@ -152,6 +154,7 @@ class ListingsPage extends React.Component {
     }
 
     onPageChange(page) {
+        window.scrollTo(0, 0);
         this.setState({
             currentPage: page,
             listingLoading: true
@@ -188,7 +191,6 @@ class ListingsPage extends React.Component {
         let renderListings;
         let renderPagination;
         if (!hasLoadedListings || this.state.listingLoading === true) {
-            window.scrollTo(0, 0);
             renderListings = <div className="loader"></div>;
         } else if (!hasListings) {
             renderListings = <div className="text-center"><h3>No results</h3></div>;

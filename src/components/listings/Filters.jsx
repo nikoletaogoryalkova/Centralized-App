@@ -134,7 +134,7 @@ class Filters extends React.Component {
                     <div className="filter-check-box">
                         {this.props.cities.map((item, i) => {
                             return (
-                                <div key={i} onClick={() => this.toggleCity(item.text)}>
+                                <div key={i} onClick={(e) => { this.toggleCity(item.text); this.props.handleSearch(e); }}>
                                     <FiltersCheckbox
                                         key={i}
                                         text={item.text}
@@ -153,7 +153,7 @@ class Filters extends React.Component {
                     <div className="filter-price-box">
                         <ReactBootstrapSlider
                             value={this.state.priceValue}
-                            slideStop={this.changeValue}
+                            slideStop={(e) => { this.changeValue(e); this.props.handleSearch(e); }}
                             step={5}
                             max={5000}
                             min={1}
@@ -169,7 +169,7 @@ class Filters extends React.Component {
                     <div className="filter-check-box">
                         {this.props.propertyTypes.map((item, i) => {
                             return (
-                                <div key={i} onClick={() => this.togglePropertyType(item.text)}>
+                                <div key={i} onClick={(e) => { this.togglePropertyType(item.text); this.props.handleSearch(e); }}>
                                     <FiltersCheckbox
                                         key={i}
                                         text={item.text}
@@ -186,9 +186,9 @@ class Filters extends React.Component {
                     <button type="submit" onClick={this.clearFilters} className="btn btn">Clear Filters</button>
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <button type="submit" onClick={this.props.handleSearch} className="btn btn-primary">Apply Filters</button>
-                </div>
+                </div> */}
             </div>
         );
     }

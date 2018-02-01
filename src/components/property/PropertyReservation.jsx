@@ -117,7 +117,6 @@ class PropertyReservation extends React.Component {
             }
         }
 
-        console.log(calendar);
         let isInvalidRange = this.props.calendar.filter(x => moment(x.date, 'DD/MM/YYYY') >= startDate && moment(x.date, 'DD/MM/YYYY') <= endDate && !x.available).length > 0;
 
         const listingPrice = listingPriceForPeriod;
