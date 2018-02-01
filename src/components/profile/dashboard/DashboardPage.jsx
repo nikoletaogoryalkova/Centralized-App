@@ -1,7 +1,6 @@
 import { getMyReservations, getMyTrips } from '../../../requester';
 
 import DashboardPending from './DashboardPending';
-import ProfileHeader from '../ProfileHeader';
 import React from 'react';
 
 export default class DashboardPage extends React.Component {
@@ -33,16 +32,11 @@ export default class DashboardPage extends React.Component {
     render() {
         return (
             <div>
-                <ProfileHeader />
-
                 {this.state.loading ?
                     <div className="loader"></div> :
                     <DashboardPending reservations={this.state.reservations} trips={this.state.trips}
                         totalReservations={this.state.totalReservations} />
                 }
-
-                {/*<DashboardReviews />*/}
-                {/*<DashboardOverview />*/}
                 <br />
             </div>
         );

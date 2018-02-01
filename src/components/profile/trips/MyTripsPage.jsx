@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import MyTripsTable from './MyTripsTable';
 import { NotificationManager } from 'react-notifications';
 import Pagination from 'rc-pagination';
-import ProfileHeader from '../ProfileHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -89,7 +88,6 @@ export default class MyTripsPage extends React.Component {
 
         return (
             <div className="my-reservations">
-                <ProfileHeader />
                 <section id="profile-my-reservations">
                     <div className="container">
                         <h2>Upcoming Trips ({this.state.totalTrips})</h2>

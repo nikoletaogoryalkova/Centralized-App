@@ -1,10 +1,9 @@
-import { acceptReservation, cancelReservation, getMyReservations } from '../../../requester';
+import { acceptReservation, cancelReservation, cancelTrip, getMyReservations } from '../../../requester';
 
 import { Link } from 'react-router-dom';
 import MyReservationsTable from './MyReservationsTable';
 import { NotificationManager } from 'react-notifications';
 import Pagination from 'rc-pagination';
-import ProfileHeader from '../ProfileHeader';
 import React from 'react';
 
 export default class MyReservationsPage extends React.Component {
@@ -15,7 +14,7 @@ export default class MyReservationsPage extends React.Component {
             reservations: [],
             loading: true,
             totalReservations: 0,
-            currentPage: 1
+            currentPage: 1,
         };
 
         this.onPageChange = this.onPageChange.bind(this);
@@ -35,6 +34,20 @@ export default class MyReservationsPage extends React.Component {
     acceptReservation(id, captchaToken) {
         acceptReservation(id, captchaToken)
             .then(res => this._operate(res, id, true));
+    }
+
+    rejectReservation(id, cancellationText, captchaToken) {
+        console.log(id)
+        this.setState({ loading: true });
+        let cancelTripObj = {
+            message: cancellationText
+        };
+
+        cancelTrip(id, cancelTripObj, captchaToken)
+            .then(res => {
+                this.componentDidMount();
+                this._operate(res, id, false);
+            });
     }
 
     onPageChange(page) {
@@ -70,16 +83,17 @@ export default class MyReservationsPage extends React.Component {
 
         return (
             <div className="my-reservations">
-                <ProfileHeader />
                 <section id="profile-my-reservations">
                     <div className="container">
+
                         <h2>Upcoming Reservations ({this.state.totalReservations})</h2>
                         <hr />
                         <MyReservationsTable
                             loadingListing={this.state.loadingListing}
                             reservations={this.state.reservations}
                             onReservationCancel={this.cancelReservation.bind(this)}
-                            onReservationAccept={this.acceptReservation.bind(this)} />
+                            onReservationAccept={this.acceptReservation.bind(this)}
+                            onReservationReject={this.rejectReservation.bind(this)} />
 
                         <div className="pagination-box">
                             {this.state.totalReservations !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalReservations} />}

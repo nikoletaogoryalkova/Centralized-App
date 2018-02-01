@@ -7,7 +7,7 @@ export default class ProfileNav extends React.Component {
         return (
             <div>
                 <div className="host-step"><NavLink exact activeClassName="active" to="/profile/me/edit">Edit Profile</NavLink></div>
-                <div className="host-step"><NavLink exact activeClassName="active" to="/profile/me/photos">Photos</NavLink></div>
+                <div className="host-step"><NavLink exact activeClassName="active" to="/profile/me/edit/photos">Photos</NavLink></div>
                 {/* <div className="host-step"><NavLink exact activeClassName="active" to="/profile/me/verification">Trist and Verification</NavLink></div>
                 <div className="host-step"><NavLink exact activeClassName="active" to="/profile/me/reviews">Reviews</NavLink></div> */}
             </div>

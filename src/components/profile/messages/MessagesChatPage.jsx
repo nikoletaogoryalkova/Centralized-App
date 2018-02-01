@@ -6,7 +6,6 @@ import Message from './Message';
 import MessagesChat from './MessagesChat';
 import MessagesChatDay from './MessagesChatDay';
 import MessagesChatUser from './MessagesChatUser';
-import ProfileHeader from '../ProfileHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
@@ -92,7 +91,6 @@ class MessagesChatPage extends React.Component {
         let lastRenderedDay = '';
         return (
             <div>
-                <ProfileHeader />
                 <section id="profile-messages-chat-head">
                     <div className="container">
                         <h2>Conversation with {this.state.recipient}</h2>

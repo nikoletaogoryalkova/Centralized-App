@@ -5,10 +5,6 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
 
-const modal = {
-    current: 'showCancelTripModal',
-};
-
 export default class CancelTripModal extends React.Component {
     constructor(props) {
         super(props);
@@ -27,13 +23,13 @@ export default class CancelTripModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(this.props.isActiveId, e)} className="modal fade myModal">
                     <Modal.Header>
-                        <h1>Cancel Trip</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
+                        <h1>{this.props.title}</h1>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(this.props.isActiveId, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>Tell your host why do you want to cancel your trip.</p>
+                        <p>{this.props.text}</p>
                         <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                             <div className="form-group">
                                 <textarea rows="4" name="cancellationText" value={this.state.cancellationText} onChange={this.onChange} className="form-control text-area"></textarea>
@@ -44,7 +40,7 @@ export default class CancelTripModal extends React.Component {
                                 ref={el => this.captcha = el}
                                 size="invisible"
                                 sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => { this.props.cancelTrip(this.props.tripId, this.state.cancellationText, token); }}
+                                onChange={token => { this.props.onSubmit(this.props.tripId, this.state.cancellationText, token); }}
                             />
 
                             <button type="submit" className="btn btn-primary">Send message</button>
@@ -59,8 +55,10 @@ export default class CancelTripModal extends React.Component {
 }
 
 CancelTripModal.propTypes = {
+    title: PropTypes.string,
+    text: PropTypes.string,
     isActive: PropTypes.bool,
     closeModal: PropTypes.func,
-    cancelTrip: PropTypes.func,
+    onSubmit: PropTypes.func,
     tripId: PropTypes.number
 };
