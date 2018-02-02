@@ -1,6 +1,5 @@
 import { getListings, getLocRate } from '../../requester';
 
-import Footer from '../footer/Footer';
 import ListingSliderBox from './ListingSliderBox';
 import OwlCarousel from 'react-owl-carousel';
 import PropTypes from 'prop-types';

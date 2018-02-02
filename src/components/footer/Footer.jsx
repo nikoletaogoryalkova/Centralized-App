@@ -1,5 +1,3 @@
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-
 import React from 'react';
 import observer from '../../services/observer';
 

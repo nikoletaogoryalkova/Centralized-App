@@ -61,7 +61,7 @@ class ListingsPage extends React.Component {
     }
 
     handleSearch(e) {
-        if (e.preventDefault != 'undefined' && typeof e.preventDefault == 'function') {
+        if (e.preventDefault !== 'undefined' && typeof e.preventDefault === 'function') {
             e.preventDefault();
         }
         this.setState({
