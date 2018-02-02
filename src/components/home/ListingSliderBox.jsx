@@ -19,7 +19,7 @@ class ListingSliderBox extends React.Component {
                         <h3><Link to={`/listings/${this.props.listing.id}`}>{this.props.listing.name}</Link></h3>
                         <ListingRating rating={this.props.listing.averageRating} reviewsCount={this.props.listing.reviewsCount} />
                     </div>
-                    <div className="list-property-price">{this.props.paymentInfo.currencySign}{listingPrice} <span>(LOC {(this.props.listing.defaultDailyPrice / this.props.paymentInfo.locRate).toFixed(2)})</span></div>
+                    <div className="list-property-price">{this.props.paymentInfo.currencySign}{listingPrice} <span>(LOC {(listingPrice / this.props.paymentInfo.locRate).toFixed(2)})</span></div>
                     <div className="clearfix">
                     </div>
                 </div>
