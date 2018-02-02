@@ -6,7 +6,8 @@ const host = Config.getValue('apiHost');
 
 const RequestMethod = {
     GET: 0,
-    POST: 1
+    POST: 1,
+    DELETE: 2
 };
 
 function getHeaders(headers = null) {
@@ -35,7 +36,26 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
         body: JSON.stringify(postObj)
     };
 
-    return fetch(endpoint, RequestMethod.GET === method ? getParams : postParams)
+    let deleteParams = {
+        headers: getHeaders(),
+        method: 'DELETE'
+    };
+
+    let requestHeaders = {};
+
+    switch (method) {
+    case RequestMethod.GET:
+        requestHeaders = getParams;
+        break;
+    case RequestMethod.POST:
+        requestHeaders = postParams;
+        break;
+    case RequestMethod.DELETE:
+        requestHeaders = deleteParams;
+        break;
+    }
+
+    return fetch(endpoint, requestHeaders)
         .then(res => {
             if (!res.ok) {
                 return {
@@ -327,6 +347,12 @@ export async function acceptReservation(id, captchaToken) {
 
 export async function cancelTrip(id, cancelTripObj, captchaToken) {
     return sendRequest(`${host}trips/${id}/cancel`, RequestMethod.POST, cancelTripObj, captchaToken).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function deleeteInProgressListing(id) {
+    return sendRequest(`${host}listings/${id}/progress`, RequestMethod.DELETE).then(res => {
         return res.response.json();
     });
 }

@@ -1,4 +1,4 @@
-import { getMyListings, getMyListingsInProgress } from '../../../requester';
+import { deleeteInProgressListing, getMyListings, getMyListingsInProgress } from '../../../requester';
 
 import { Link } from 'react-router-dom';
 import MyListingsActiveItem from './MyListingsActiveItem';
@@ -15,11 +15,14 @@ export default class MyListingsPage extends React.Component {
             listings: [],
             totalListings: 0,
             loading: true,
-            currentPage: 1
+            currentPage: 1,
+            listingsInProgress: null,
+            totalListingsInProgress: 0
         };
 
         this.filterListings = this.filterListings.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
+        this.deleteInProgressListing = this.deleteInProgressListing.bind(this);
     }
 
     filterListings(id) {
@@ -34,6 +37,16 @@ export default class MyListingsPage extends React.Component {
 
         getMyListingsInProgress('?page=0').then((data) => {
             this.setState({ listingsInProgress: data.content, totalListingsInProgress: data.totalElements });
+        });
+    }
+
+    deleteInProgressListing(id) {
+        deleeteInProgressListing(id).then((data) => {
+            if (data.success) {
+                let listingsInProgress = this.state.listingsInProgress;
+                listingsInProgress = listingsInProgress.filter(x => x.id !== id);
+                this.setState({ listingsInProgress: listingsInProgress, totalListingsInProgress: this.state.totalListingsInProgress - 1 });
+            }
         });
     }
 
@@ -64,7 +77,7 @@ export default class MyListingsPage extends React.Component {
             return element;
         };
 
-        if (this.state.loading) {
+        if (this.state.loading && this.state.listingsInProgress !== null) {
             return <div className="loader"></div>;
         }
 
@@ -75,7 +88,7 @@ export default class MyListingsPage extends React.Component {
                         <h2>In Progress ({this.state.totalListingsInProgress})</h2>
                         <hr className="profile-line" />
                         {this.state.listingsInProgress && this.state.listingsInProgress.map((item, i) => {
-                            return <MyListingsInProgressItem id={item.id} step={item.step} filterListings={this.filterListings} listing={JSON.parse(item.data)} key={i} />;
+                            return <MyListingsInProgressItem deleteInProgressListing={this.deleteInProgressListing} id={item.id} step={item.step} filterListings={this.filterListings} listing={JSON.parse(item.data)} key={i} />;
                         })}
                     </div>
 

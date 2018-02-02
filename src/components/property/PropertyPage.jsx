@@ -1,6 +1,5 @@
 import { Link, withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { connect } from 'react-redux';
 import {
     contactHost,
     getCalendarByListingIdAndDateRange,
@@ -14,6 +13,7 @@ import PropTypes from 'prop-types';
 import PropertyInfo from './PropertyInfo';
 import React from 'react';
 import Search from '../home/Search';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 
@@ -102,9 +102,7 @@ class PropertyPage extends React.Component {
         let isInvalidRange = range.filter(x => !x.available).length > 0;
         if (isInvalidRange) {
             NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
-            this.setState({ startDate: availableDates[0].start, endDate: availableDates[0].start });
-
-            this.calculateNights(availableDates[0].start.format('DD/MM/YYYY'), availableDates[0].start.format('DD/MM/YYYY'));
+            this.setState({ startDate: undefined, endDate: undefined });
         }
         else {
             this.setState({
@@ -355,5 +353,5 @@ function mapStateToProps(state) {
     return {
         userInfo,
         paymentInfo
-    }
+    };
 }

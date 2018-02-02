@@ -1,14 +1,14 @@
 // import '../../../public/css/calendar.css';
 
 import DatePicker from '../DatePicker';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 import { requestBooking } from '../../requester';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from "prop-types";
 
 class PropertyReservation extends React.Component {
     constructor(props) {
@@ -112,10 +112,12 @@ class PropertyReservation extends React.Component {
         if (this.props.calendar === null || this.props.calendar === undefined) {
             return <div className="loader"></div>;
         }
-        for (let i = 0; i < this.props.calendar.length; i++) {
-            let dayObj = this.props.calendar[i];
-            if (startDate.startOf('day') <= moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && endDate.startOf('day') > moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && dayObj.available) {
-                listingPriceForPeriod += dayObj.price;
+        if (startDate !== undefined && endDate !== undefined) {
+            for (let i = 0; i < this.props.calendar.length; i++) {
+                let dayObj = this.props.calendar[i];
+                if (startDate.startOf('day') <= moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && endDate.startOf('day') > moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && dayObj.available) {
+                    listingPriceForPeriod += dayObj.price;
+                }
             }
         }
 
@@ -186,7 +188,7 @@ class PropertyReservation extends React.Component {
                             <div className="nonev"></div>
 
                             {this.props.isLogged &&
-                                <button disabled={this.props.nights <= 0 || isInvalidRange} type="submit" className="btn btn-primary"
+                                <button disabled={this.props.nights <= 0 || isInvalidRange || listingPrice === 0} type="submit" className="btn btn-primary"
                                     id="reservation-btn">Request Booking in LOC or FIAT</button>
                             }
                             {this.props.isLogged &&
