@@ -63,7 +63,7 @@ export default class MyTripsPage extends React.Component {
         cancelTrip(id, messageObj, captchaToken)
             .then(response => {
                 if(response.success) {
-                    this.setTripIsAccepted(id, false);
+                    this.componentDidMount();
                     NotificationManager.success(response.message, 'Reservation Operations');
                 } else {
                     NotificationManager.error(response.message, 'Reservation Operations');
