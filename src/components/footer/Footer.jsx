@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { setCurrency, setLocRate } from '../../actions/paymentInfo';
-import {getLocRateInUserSelectedCurrency} from "../../requester";
+import {getLocRateInUserSelectedCurrency} from '../../requester';
 
 class Footer extends React.Component {
     componentDidMount() {
@@ -67,9 +67,9 @@ class Footer extends React.Component {
                                 onChange={(e) => this.props.dispatch(setCurrency(e.target.value))}
                                 value={this.props.paymentInfo.currency}
                                 className="currency-switcher">
-                                    <option value="GBP">£ GBP</option>
-                                    <option value="EUR">€ EUR</option>
-                                    <option value="USD">$ USD</option>
+                                <option value="GBP">£ GBP</option>
+                                <option value="EUR">€ EUR</option>
+                                <option value="USD">$ USD</option>
                             </select>
 
                             {/* <DropdownButton block={true} title={localStorage['currency'] ? localStorage['currency'] : 'USD'} id="bg-nested-dropdown">
@@ -101,5 +101,5 @@ function mapStateToProps(state) {
     const { paymentInfo } = state;
     return {
         paymentInfo
-    }
+    };
 }
