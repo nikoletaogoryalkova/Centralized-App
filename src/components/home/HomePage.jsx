@@ -1,4 +1,4 @@
-import { getListings, getLocRate } from '../../requester';
+import { getListings } from '../../requester';
 
 import ListingSliderBox from './ListingSliderBox';
 import OwlCarousel from 'react-owl-carousel';
@@ -9,18 +9,13 @@ class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            listings: null,
-            locRate: null,
-            loading: true
+            listings: null
         };
     }
 
     componentDidMount() {
         getListings().then(data => {
             this.setState({ listings: data.content });
-        });
-        getLocRate().then((data) => {
-            this.setState({ locRate: data[0].price_eur, loading: false });
         });
     }
     render() {
@@ -48,7 +43,7 @@ class HomePage extends React.Component {
 
             <section id="popular-hotels-box">
                 <h2>Popular Properties</h2>
-                {this.state.loading && this.state.listings === null ? <div className="loader"></div> : this.state.listings && this.state.listings.length > 1 &&
+                {this.state.listings === null ? <div className="loader"></div> : this.state.listings && this.state.listings.length > 1 &&
                     <OwlCarousel
                         className="owl-theme"
                         loop
@@ -75,7 +70,7 @@ class HomePage extends React.Component {
                             }
                         }}>
                         {this.state.listings.map((item, i) => {
-                            return <ListingSliderBox locRate={this.state.locRate} key={i} listing={item} />;
+                            return <ListingSliderBox key={i} listing={item} />;
                         })}
                     </OwlCarousel>
                 }

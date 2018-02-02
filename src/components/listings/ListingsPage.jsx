@@ -1,4 +1,4 @@
-import { getListingsByFilter, getLocRate } from '../../requester';
+import { getListingsByFilter } from '../../requester';
 
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
@@ -19,7 +19,6 @@ class ListingsPage extends React.Component {
             listingLoading: true,
             currentPage: 1,
             totalItems: 0,
-            locRate: null,
             countryId: '',
             cities: [],
             propertyTypes: []
@@ -34,19 +33,14 @@ class ListingsPage extends React.Component {
         if (this.props.location.search) {
             let searchTerms = this.getSearchTerms();
             getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-                getLocRate().then((loc) => {
-                    this.setState({
-                        listings: data.filteredListings.content,
-                        totalItems: data.filteredListings.totalElements,
-                        locRate: loc[0].price_eur,
-                        listingLoading: false,
-                        cities: data.cities,
-                        propertyTypes: data.types
-                    });
+                this.setState({
+                    listings: data.filteredListings.content,
+                    totalItems: data.filteredListings.totalElements,
+                    listingLoading: false,
+                    cities: data.cities,
+                    propertyTypes: data.types
                 });
             });
-
-
         }
         else {
             this.props.history.push('/');
@@ -78,7 +72,7 @@ class ListingsPage extends React.Component {
                 listings: data.filteredListings.content,
                 listingLoading: false,
                 totalItems: data.filteredListings.totalElements,
-                countryId: this.getParamsMap().get('countryId'),
+                countryId: this.getParamsMap().get('countryId')
             });
 
             if (!this.getParamsMap().get('cities') && !this.getParamsMap().get('propertyTypes')) {
@@ -159,13 +153,10 @@ class ListingsPage extends React.Component {
 
         let searchTerms = this.getSearchTerms();
         getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
-            getLocRate().then((loc) => {
-                this.setState({
-                    listings: data.filteredListings.content,
-                    listingLoading: false,
-                    totalItems: data.filteredListings.totalElements,
-                    locRate: loc[0].price_eur
-                });
+            this.setState({
+                listings: data.filteredListings.content,
+                listingLoading: false,
+                totalItems: data.filteredListings.totalElements
             });
         });
     }
@@ -175,8 +166,7 @@ class ListingsPage extends React.Component {
             listings: null,
             listingLoading: true,
             currentPage: 1,
-            totalItems: 0,
-            locRate: null
+            totalItems: 0
         });
     }
 
@@ -194,7 +184,7 @@ class ListingsPage extends React.Component {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <Listing locRate={this.state.locRate} key={i} listing={item} />;
+                return <Listing key={i} listing={item} />;
             });
 
             renderPagination = <div className="pagination-box">{this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />} </div>;
@@ -225,7 +215,6 @@ class ListingsPage extends React.Component {
 }
 
 ListingsPage.propTypes = {
-    // start Router props
     location: PropTypes.object,
     history: PropTypes.object
 };

@@ -1,24 +1,12 @@
 import React from 'react';
-import { getLocRate } from '../../requester';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class NavLocalization extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            locRate: null,
-            loading: true
-        };
-    }
-
-    componentDidMount() {
-        getLocRate().then((data) => {
-            this.setState({ locRate: data[0].price_eur, loading: false });
-        });
-    }
-
+class NavLocalization extends React.Component {
     render() {
-        if (this.state.loading) {
+        const { currency, locRate } = this.props.paymentInfo;
+
+        if (!locRate) {
             return <div className="loader"></div>;
         }
 
@@ -27,8 +15,8 @@ export default class NavLocalization extends React.Component {
                 <div className="container">
                     <ul className="navbar-localization">
                         <li className="conversion">
-                            <span className="name">LOC/EUR</span>
-                            <span className="value">{this.state.locRate} EUR</span>
+                            <span className="name">LOC/{currency}</span>
+                            <span className="value">{locRate} {currency}</span>
                         </li>
                         {/* <li className="balance">
                             <span className="border">
@@ -51,5 +39,20 @@ export default class NavLocalization extends React.Component {
                 </div>
             </nav>
         );
+    }
+}
+
+NavLocalization.propTypes = {
+    // start Redux props
+    dispatch: PropTypes.func,
+    paymentInfo: PropTypes.object
+};
+
+export default connect(mapStateToProps)(NavLocalization);
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
     }
 }
