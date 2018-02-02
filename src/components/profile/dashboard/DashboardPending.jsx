@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 
-export default function DashboardPending() {
+export default function DashboardPending(props) {
     return (
         <section id="profile-dashboard-pending">
             <div className="container">
@@ -16,7 +16,7 @@ export default function DashboardPending() {
                     <li><span>Status</span></li>
                     <li><span>Price</span></li>
                 </ul>
-                {this.props.reservations.map(reservation => {
+                {props.reservations.map(reservation => {
                     return (
                         <ul key={reservation.id} className="profile-pending-list profile-pending-item">
                             <li>
@@ -57,7 +57,7 @@ export default function DashboardPending() {
                     <li><span>Status - Price</span></li>
                     <li><span></span></li>
                 </ul>
-                {this.props.trips.map(trip => {
+                {props.trips.map(trip => {
                     return (
                         <ul key={trip.id} className="profile-pending-list profile-pending-item">
                             <li>
@@ -82,7 +82,6 @@ export default function DashboardPending() {
                         </ul>
                     );
                 })}
-
             </div>
         </section>
     );
