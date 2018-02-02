@@ -5,7 +5,7 @@ import MyReservationsTable from './MyReservationsTable';
 import { NotificationManager } from 'react-notifications';
 import Pagination from 'rc-pagination';
 import React from 'react';
-import CancelTripModal from '../../common/modals/CancelTripModal';
+import CancellationModal from '../../common/modals/CancellationModal';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class MyReservationsPage extends React.Component {
@@ -172,7 +172,7 @@ export default class MyReservationsPage extends React.Component {
                     sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
                     onChange={token => { this.rejectReservation(token); this.rejectCaptcha.reset(); }} />
 
-                <CancelTripModal
+                <CancellationModal
                     name={'showRejectReservationModal'}
                     value={this.state.cancellationText}
                     title={'Delete Reservation'}
@@ -187,7 +187,6 @@ export default class MyReservationsPage extends React.Component {
                         <h2>Upcoming Reservations ({this.state.totalReservations})</h2>
                         <hr />
                         <MyReservationsTable
-                            loading={this.state.loading}
                             reservations={this.state.reservations}
                             onReservationAccept={this.onReservationAccept}
                             onReservationCancel={this.onReservationCancel}

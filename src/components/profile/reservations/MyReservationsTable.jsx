@@ -64,7 +64,6 @@ export default function MyReservationsTable(props) {
 }
 
 MyReservationsTable.propTypes = {
-    loading: PropTypes.bool,
     reservations: PropTypes.array,
     onReservationAccept: PropTypes.func,
     onReservationCancel: PropTypes.func,

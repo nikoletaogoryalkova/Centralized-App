@@ -1,11 +1,8 @@
 import React from 'react';
-
 import { Modal } from 'react-bootstrap';
-import { NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
 
-export default function CancelTripModal(props) {
-    let captcha;
+export default function CancellationModal(props) {
     return (
         <div>
             <Modal show={props.isActive} onHide={e => props.onClose(props.name, e)} className="modal fade myModal">
@@ -25,16 +22,18 @@ export default function CancelTripModal(props) {
                     </form>
                 </Modal.Body>
             </Modal>
-            <NotificationContainer />
         </div>
     );
 }
 
-CancelTripModal.propTypes = {
+CancellationModal.propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.string,
+    onClose: PropTypes.func,
+    onChange: PropTypes.func,
+    onSubmit: PropTypes.func,
     title: PropTypes.string,
     text: PropTypes.string,
     isActive: PropTypes.bool,
     closeModal: PropTypes.func,
-    onSubmit: PropTypes.func,
-    selectedId: PropTypes.number
 };
