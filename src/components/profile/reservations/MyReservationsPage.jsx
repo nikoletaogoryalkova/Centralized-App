@@ -17,16 +17,21 @@ export default class MyReservationsPage extends React.Component {
             loading: true,
             totalReservations: 0,
             currentPage: 1,
-            selectedReservationId: 0
+            selectedReservationId: 0,
+            showRejectReservationModal: false, 
         };
 
         this.onPageChange = this.onPageChange.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.onReservationSelect = this.onReservationSelect.bind(this);
         this.onReservationAccept = this.onReservationAccept.bind(this);
         this.onReservationCancel = this.onReservationCancel.bind(this);
+        this.onReservationReject = this.onReservationReject.bind(this);
         this.acceptReservation = this.acceptReservation.bind(this);
-        this.acceptReservation = this.acceptReservation.bind(this);
-        this.acceptReservation = this.acceptReservation.bind(this);
+        this.cancelReservation = this.cancelReservation.bind(this);
+        this.rejectReservation = this.rejectReservation.bind(this);
     }
 
     componentDidMount() {
@@ -47,19 +52,6 @@ export default class MyReservationsPage extends React.Component {
         this.rejectCaptcha.execute();
     }
 
-    cancelReservation(reservationId, captchaToken) {
-        const id = this.state.selectedReservationId;
-        cancelReservation(id, captchaToken)
-            .then(response => {
-                if(response.success) {
-                    this.setReservationIsAccepted(id, false);
-                    NotificationManager.success(response.message, 'Reservation Operations');
-                } else {
-                    NotificationManager.error(response.message, 'Reservation Operations');
-                }
-            });
-    }
-
     acceptReservation(captchaToken) {
         const id = this.state.selectedReservationId;
         acceptReservation(id, captchaToken)
@@ -73,12 +65,27 @@ export default class MyReservationsPage extends React.Component {
             });
     }
 
-    rejectReservation(reservationId, message, captchaToken) {
-        let messageObj = { message: message };
-        cancelTrip(reservationId, messageObj, captchaToken)
+    cancelReservation(captchaToken) {
+        const id = this.state.selectedReservationId;
+        cancelReservation(id, captchaToken)
             .then(response => {
                 if(response.success) {
-                    this.deleteReservationFromState(reservationId);
+                    this.setReservationIsAccepted(id, false);
+                    NotificationManager.success(response.message, 'Reservation Operations');
+                } else {
+                    NotificationManager.error(response.message, 'Reservation Operations');
+                }
+            });
+    }
+
+    rejectReservation(captchaToken) {
+        const id = this.state.selectedReservationId;
+        const message = this.state.cancellationText;
+        let messageObj = { message: message };
+        cancelTrip(id, messageObj, captchaToken)
+            .then(response => {
+                if(response.success) {
+                    this.deleteReservationFromState(id);
                     NotificationManager.success(response.message, 'Reservation Operations');
                 } else {
                     NotificationManager.error(response.message, 'Reservation Operations');
@@ -116,24 +123,16 @@ export default class MyReservationsPage extends React.Component {
         });
     }
 
-    openModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            [modal]: true
-        });
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
-    closeModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
+    openModal(name) {
+        this.setState({ [name]: true });
+    }
 
-        this.setState({
-            [modal]: false
-        });
+    closeModal(name) {
+        this.setState({ [name]: false });
     }
 
     onReservationSelect(id) {
@@ -162,27 +161,26 @@ export default class MyReservationsPage extends React.Component {
                     size="invisible"
                     sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
                     onChange={token => { this.acceptReservation(token); this.acceptCaptcha.reset(); }} />
-
                 <ReCAPTCHA
                     ref={el => this.cancelCaptcha = el}
                     size="invisible"
                     sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
                     onChange={token => { this.cancelReservation(token); this.cancelCaptcha.reset(); }} />
-
                 <ReCAPTCHA
                     ref={el => this.rejectCaptcha = el}
                     size="invisible"
                     sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                    onChange={token => {  }} />
+                    onChange={token => { this.rejectReservation(token); this.rejectCaptcha.reset(); }} />
 
                 <CancelTripModal
+                    name={'showRejectReservationModal'}
+                    value={this.state.cancellationText}
                     title={'Delete Reservation'}
                     text={'Tell your guest why do you want to reject his reservation.'}
-                    isActiveId={'showRejectReservationModal'}
+                    onChange={this.onChange}
                     isActive={this.state.showRejectReservationModal} 
-                    closeModal={this.closeModal} 
-                    onSubmit={this.rejectReservation} 
-                    tripId={this.state.selectedId} />
+                    onClose={this.closeModal}
+                    onSubmit={this.onReservationReject} />
 
                 <section id="profile-my-reservations">
                     <div className="container">
@@ -193,7 +191,8 @@ export default class MyReservationsPage extends React.Component {
                             reservations={this.state.reservations}
                             onReservationAccept={this.onReservationAccept}
                             onReservationCancel={this.onReservationCancel}
-                            onReservationSelect={this.onReservationSelect} />
+                            onReservationSelect={this.onReservationSelect}
+                            onReservationReject={() => { this.openModal('showRejectReservationModal'); }} />
 
                         <div className="pagination-box">
                             {this.state.totalReservations !== 0 && 
