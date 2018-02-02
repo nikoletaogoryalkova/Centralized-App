@@ -30,7 +30,7 @@ export default class CancelTripModal extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <p>{this.props.text}</p>
-                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
+                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); this.props.closeModal(this.props.isActiveId); }}>
                             <div className="form-group">
                                 <textarea rows="4" name="cancellationText" value={this.state.cancellationText} onChange={this.onChange} className="form-control text-area"></textarea>
                             </div>
