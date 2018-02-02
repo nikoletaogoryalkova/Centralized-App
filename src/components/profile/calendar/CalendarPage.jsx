@@ -9,8 +9,6 @@ import {
 } from '../../../requester';
 
 import Calendar from './Calendar';
-import Footer from '../../Footer';
-import ProfileHeader from '../ProfileHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
@@ -221,7 +219,6 @@ class CalendarPage extends React.Component {
 
         return (
             <div>
-                <ProfileHeader />
                 <div className="col-md-12">
                     <div className="container">
                         <Calendar allEvents={allEvents}
@@ -242,7 +239,6 @@ class CalendarPage extends React.Component {
                             onSlotClick={this.onSlotClick} />
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }

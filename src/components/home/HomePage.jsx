@@ -1,45 +1,29 @@
-import React from 'react';
+import { getListings } from '../../requester';
 
-import MainNav from '../MainNav';
-import Search from './Search';
-import OwlCarousel from 'react-owl-carousel';
 import ListingSliderBox from './ListingSliderBox';
-import Footer from '../Footer'
+import OwlCarousel from 'react-owl-carousel';
+import React from 'react';
+import Search from './Search';
 
-import { getListings, getLocRate } from '../../requester';
 class HomePage extends React.Component {
-    constructor() {
-        super();
-        this.state = { 
-            listings: null,
-            locRate: null,
-            loading: true
+    constructor(props) {
+        super(props);
+        this.state = {
+            listings: null
         };
-    };
+    }
 
     componentDidMount() {
         getListings().then(data => {
-            this.setState({ listings: data.content })
+            this.setState({ listings: data.content });
         });
-        getLocRate().then((data) => {
-            this.setState({ locRate: data[0].price_eur, loading: false });
-        })
-    };
+    }
     render() {
-        if (this.state.loading || this.state.listings == null) {
-            return <div className="loader"></div>;
-        }
-
         return (<div>
             <header id='main-nav' className="navbar home_page">
-                <MainNav />
-
-
                 <div className="container">
-
                     <h1 className="home_title">Discover your next experience</h1>
                     <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
-
                     <div className="container absolute_box">
                         <nav id="second-nav">
                             <div className="container">
@@ -59,7 +43,7 @@ class HomePage extends React.Component {
 
             <section id="popular-hotels-box">
                 <h2>Popular Properties</h2>
-                {this.state.listings.length > 1 &&
+                {this.state.listings === null ? <div className="loader"></div> : this.state.listings && this.state.listings.length > 1 &&
                     <OwlCarousel
                         className="owl-theme"
                         loop
@@ -67,7 +51,7 @@ class HomePage extends React.Component {
                         autoplay={false}
                         margin={30}
                         nav
-                        navText={["<span class='left_carusel'></span>", "<span class='right_carusel'></span>"]}
+                        navText={['<span class=\'left_carusel\'></span>', '<span class=\'right_carusel\'></span>']}
                         items={4}
                         responsiveClass
                         dots={false}
@@ -86,13 +70,12 @@ class HomePage extends React.Component {
                             }
                         }}>
                         {this.state.listings.map((item, i) => {
-                            return <ListingSliderBox locRate={this.state.locRate} currency={this.props.currency} currencySign={this.props.currencySign} key={i} listing={item} />
+                            return <ListingSliderBox key={i} listing={item} />;
                         })}
                     </OwlCarousel>
                 }
                 <div className="clearfix"></div>
             </section>
-            <Footer />
         </div>
         );
     }

@@ -1,13 +1,12 @@
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { changeListingStatus, contactHost, getAllPublishedListings, getCities, getCountries } from '../../../requester';
 
 import AllListingsFilter from './AllListingsFilter';
 import ContactHostModal from '../../property/ContactHostModal';
-import Footer from '../../Footer';
 import ListingRow from './ListingRow';
 import Pagination from 'rc-pagination';
-import ProfileHeader from '../ProfileHeader';
+import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';
 
@@ -20,7 +19,7 @@ class AllPublishedListings extends React.Component {
             listings: [],
             loading: true,
             totalElements: 0,
-            currentPage: searchMap.page == undefined ? 1 : searchMap.page,
+            currentPage: searchMap.page === undefined ? 1 : searchMap.page,
             country: searchMap.countryId === undefined ? '' : searchMap.countryId,
             city: searchMap.cityId === undefined ? '' : searchMap.cityId,
             cities: [],
@@ -68,7 +67,7 @@ class AllPublishedListings extends React.Component {
         let searchTerm = this.buildSearchTerm();
 
         getAllPublishedListings(searchTerm).then((data) => {
-            this.props.history.push(`/admin/listings/published${searchTerm}`);
+            this.props.history.push(`/profile/admin/listings/published${searchTerm}`);
             this.setState({ listings: data.content, loading: false, totalElements: data.totalElements });
         });
     }
@@ -76,19 +75,19 @@ class AllPublishedListings extends React.Component {
     buildSearchTerm() {
         let searchTerm = `?page=${this.state.currentPage - 1}`;
 
-        if (this.state.city != '') {
+        if (this.state.city !== '') {
             searchTerm += `&cityId=${this.state.city}`;
         }
 
-        if (this.state.name != '') {
+        if (this.state.name !== '') {
             searchTerm += `&listingName=${this.state.name}`;
         }
 
-        if (this.state.country != '') {
+        if (this.state.country !== '') {
             searchTerm += `&countryId=${this.state.country}`;
         }
 
-        if (this.state.hostEmail != '') {
+        if (this.state.hostEmail !== '') {
             searchTerm += `&host=${this.state.hostEmail}`;
         }
         return searchTerm;
@@ -163,7 +162,7 @@ class AllPublishedListings extends React.Component {
             if (res.success) {
                 NotificationManager.success('Successfully changed status to inactive', 'Listings Operations');
                 let allListings = this.state.listings;
-                this.setState({ listings: allListings.filter(x => x.id != id) });
+                this.setState({ listings: allListings.filter(x => x.id !== id) });
             }
             else {
                 NotificationManager.error('Something went wrong', 'Listings Operations');
@@ -209,15 +208,8 @@ class AllPublishedListings extends React.Component {
         return (
             <div className="my-reservations">
                 <NotificationContainer />
-                <ProfileHeader />
                 <section id="profile-my-reservations">
                     <div className="container">
-                        <ul className="tab-navigation">
-                            <li className="active"><Link to="/admin/listings/published"><h2>Published</h2></Link></li>
-                            <li><Link to="/admin/listings/unpublished"><h2>Unpublished</h2></Link></li>
-                        </ul>
-                        <hr />
-
                         <AllListingsFilter
                             countries={this.state.countries}
                             cities={this.state.cities}
@@ -233,7 +225,7 @@ class AllPublishedListings extends React.Component {
 
                         <ContactHostModal id={this.state.selectedListing} isActive={this.state.isShownContactHostModal} closeModal={this.closeModal} sendMessageToHost={this.sendMessageToHost} />
 
-                        {this.state.listings.length === 0 ? <div className="text-center p20"><h3>There isn't any published listings</h3></div> :
+                        {this.state.listings.length === 0 ? <div className="text-center p20"><h3>There isn&#39;t any published listings</h3></div> :
                             <div className="container">
                                 <div className="table-header bold">
                                     <div className="col-md-1">
@@ -266,10 +258,15 @@ class AllPublishedListings extends React.Component {
                             </div>}
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }
 }
+
+AllPublishedListings.propTypes = {
+    location: PropTypes.object,
+    history: PropTypes.object,
+
+};
 
 export default withRouter(AllPublishedListings);

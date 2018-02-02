@@ -1,15 +1,14 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import ProfileHeader from '../ProfileHeader';
-import Footer from '../../Footer';
 import ProfileNav from './ProfileNav';
 import ProfileEditForm from './ProfileEditForm';
+import ProfilePhotosPage from './ProfilePhotosPage';
 
 export default class ProfileEditPage extends React.Component {
     render() {
         return (
             <div>
-                <ProfileHeader />
                 <section id="profile-edit">
                     <div className="container">
                         <div className="row">
@@ -18,13 +17,15 @@ export default class ProfileEditPage extends React.Component {
                                 <ProfileNav />
                             </div>
                             <div className="col-md-8">
-                                <ProfileEditForm />                              
+                                <Switch>
+                                    <Route exact path="/profile/me/edit" render={() => <ProfileEditForm />} />
+                                    <Route exact path="/profile/me/edit/photos" render={() => <ProfilePhotosPage />} />
+                                </Switch>                           
                             </div>
                             <div className="before-footer clear-both" />
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }

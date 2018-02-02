@@ -1,13 +1,13 @@
 import { cancelTrip, getMyTrips } from '../../../requester';
 
-import Footer from '../../Footer';
 import { Link } from 'react-router-dom';
 import MyTripsTable from './MyTripsTable';
 import { NotificationManager } from 'react-notifications';
+import CancellationModal from '../../common/modals/CancellationModal';
 import Pagination from 'rc-pagination';
-import ProfileHeader from '../ProfileHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default class MyTripsPage extends React.Component {
     constructor(props) {
@@ -18,8 +18,18 @@ export default class MyTripsPage extends React.Component {
             loading: true,
             totalTrips: 0,
             currentPage: 1,
-            currentTrip: null,
+            currentTripId: null,
+            selectedTripId: 0,
+            cancellationText: '',
+            showCancelTripModal: false,
         };
+
+        this.onPageChange = this.onPageChange.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.onTripCancel = this.onTripCancel.bind(this);
+        this.onTripSelect = this.onTripSelect.bind(this);
     }
 
     componentDidMount() {
@@ -36,24 +46,40 @@ export default class MyTripsPage extends React.Component {
             }
         }
         getMyTrips('?page=0').then((data) => {
-            this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTrip: id });
+            this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTripId: id });
             if (id) {
                 NotificationManager.success('Booking Request Sent Successfully, your host will get back to you with additional questions.', 'Reservation Operations');
             }
         });
     }
 
-    cancelTrip(id, cancellationText, captchaToken) {
-        this.setState({ loading: true });
-        let cancelTripObj = {
-            message: cancellationText
-        };
+    onTripCancel() {
+        this.cancelCaptcha.execute();
+    }
 
-        cancelTrip(id, cancelTripObj, captchaToken)
-            .then(res => {
-                this.componentDidMount();
-                this._operate(res, id, false);
+    cancelTrip(captchaToken) {
+        const id = this.state.selectedTripId;
+        const message = this.state.cancellationText;
+        let messageObj = { message: message };
+        cancelTrip(id, messageObj, captchaToken)
+            .then(response => {
+                if(response.success) {
+                    this.componentDidMount();
+                    NotificationManager.success(response.message, 'Reservation Operations');
+                } else {
+                    NotificationManager.error(response.message, 'Reservation Operations');
+                }
             });
+    }
+
+    setTripIsAccepted(tripId, isAccepted) {
+        const trips = this.state.trips.map(trip => {
+            if(trip.id === tripId) {
+                trip.accepted = isAccepted;
+            }
+            return trip;
+        });
+        this.setState({ trips: trips });
     }
 
     onPageChange(page) {
@@ -71,7 +97,27 @@ export default class MyTripsPage extends React.Component {
         });
     }
 
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
+    openModal(name) {
+        this.setState({ [name]: true });
+    }
+
+    closeModal(name) {
+        this.setState({ [name]: false });
+    }
+
+    onTripSelect(id) {
+        this.setState({ selectedTripId: id });
+    }
+
     render() {
+        if (this.state.loading) {
+            return <div className="loader"></div>;
+        }
+
         const textItemRender = (current, type, element) => {
             if (type === 'prev') {
                 return <div className="rc-prev">&lsaquo;</div>;
@@ -82,21 +128,33 @@ export default class MyTripsPage extends React.Component {
             return element;
         };
 
-        if (this.state.loading) {
-            return <div className="loader"></div>;
-        }
-
         return (
             <div className="my-reservations">
-                <ProfileHeader />
+                <ReCAPTCHA
+                    ref={el => this.cancelCaptcha = el}
+                    size="invisible"
+                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    onChange={token => { this.cancelTrip(token); this.cancelCaptcha.reset(); }} />
+
+                <CancellationModal
+                    name={'showCancelTripModal'}
+                    value={this.state.cancellationText}
+                    title={'Cancel Trip'}
+                    text={'Tell your host why do you want to cancel your trip.'}
+                    onChange={this.onChange}
+                    isActive={this.state.showCancelTripModal} 
+                    onClose={this.closeModal}
+                    onSubmit={this.onTripCancel} />
+
                 <section id="profile-my-reservations">
                     <div className="container">
                         <h2>Upcoming Trips ({this.state.totalTrips})</h2>
                         <hr />
                         <MyTripsTable
-                            currentTrip={this.state.currentTrip}
-                            cancelTrip={this.cancelTrip.bind(this)}
-                            trips={this.state.trips} />
+                            trips={this.state.trips}
+                            currentTripId={this.state.currentTripId}
+                            onTripSelect={this.onTripSelect}
+                            onTripCancel={() => this.openModal('showCancelTripModal')} />
 
                         <div className="pagination-box">
                             {this.state.totalListings !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalTrips} />}
@@ -107,27 +165,8 @@ export default class MyTripsPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
-    }
-
-    _operate(res, id, isAccepted) {
-        if (res.success) {
-            NotificationManager.success(res.message, 'Reservation Operations');
-
-            let newReservations = this.state.trips.map(r => {
-                if (r.id === id) {
-                    r.accepted = isAccepted;
-                }
-
-                return r;
-            });
-
-            this.setState({ trips: newReservations });
-        } else {
-            NotificationManager.error(res.message, 'Reservation Operations');
-        }
     }
 }
 

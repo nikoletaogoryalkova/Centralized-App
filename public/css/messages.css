@@ -3,12 +3,18 @@
   justify-content: center;
   align-items: center;
   background-color: #FFFFFF;
-  padding: 15px 10px;
   margin: 20px;
   text-align: center;
   border: 1px solid #CCCCCC;
   border-radius: 3px;
+}
+.message-box .message-body {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  padding: 15px 10px;
 }
 .message-box .message-content {
   text-align: justify;
@@ -22,6 +28,9 @@
   height: 55px;
   margin: 5px 0;
 }
+.message-box .read-flag {
+  cursor: pointer;
+}
 @media screen and (max-width: 768px) {
   .message-box {
     flex-direction: column;
@@ -29,8 +38,8 @@
 }
 .unread-messages-box {
   background: url('../images/mail-unread.png');
-  width: 29px;
-  height: 21px;
+  width: 36px;
+  height: 26px;
   position: relative;
 }
 .unread-messages-box span {
@@ -39,7 +48,10 @@
   right: 4px;
   position: absolute;
   color: white;
+  cursor: pointer;
 }
 .unread-messages-box.not {
   background: url('../images/not-mail-unread.png');
+  width: 29px;
+  height: 21px;
 }

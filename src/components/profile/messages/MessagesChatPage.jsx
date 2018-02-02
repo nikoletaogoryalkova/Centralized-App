@@ -1,13 +1,12 @@
 import { getChatMessages, sendMessage } from '../../../requester';
 
 import { Config } from '../../../config';
-import Footer from '../../Footer';
 import InfiniteList from 'react-infinite-scroll-list';
 import Message from './Message';
 import MessagesChat from './MessagesChat';
 import MessagesChatDay from './MessagesChatDay';
 import MessagesChatUser from './MessagesChatUser';
-import ProfileHeader from '../ProfileHeader';
+import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
@@ -92,7 +91,6 @@ class MessagesChatPage extends React.Component {
         let lastRenderedDay = '';
         return (
             <div>
-                <ProfileHeader />
                 <section id="profile-messages-chat-head">
                     <div className="container">
                         <h2>Conversation with {this.state.recipient}</h2>
@@ -145,10 +143,13 @@ class MessagesChatPage extends React.Component {
                         </div>
                     </div>
                 </section>
-                <Footer />
             </div>
         );
     }
 }
+
+MessagesChatPage.propTypes = {
+    match: PropTypes.object
+};
 
 export default withRouter(MessagesChatPage);

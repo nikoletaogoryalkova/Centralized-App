@@ -1,7 +1,7 @@
 import FiltersCheckbox from './FiltersCheckbox';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
-import StarCheckbox from './StarCheckbox';
 import { withRouter } from 'react-router-dom';
 
 class Filters extends React.Component {
@@ -119,7 +119,6 @@ class Filters extends React.Component {
     }
 
     render() {
-        const { loading } = this.state;
 
         if (this.props.cities === [] && this.props.propertyTypes === []) {
             return <div className="loader"></div>;
@@ -127,8 +126,7 @@ class Filters extends React.Component {
 
         let selectedPropertyTypes = this.state.selectedPropertyTypes;
         let selectedCities = this.state.selectedCities;
-        let citiesFilters = this.props.cities;
-        console.log(this.props.cities);
+
         return (
             <div className="filter-box">
                 <div className="form-group">
@@ -136,7 +134,7 @@ class Filters extends React.Component {
                     <div className="filter-check-box">
                         {this.props.cities.map((item, i) => {
                             return (
-                                <div key={i} onClick={() => this.toggleCity(item.text)}>
+                                <div key={i} onClick={(e) => { this.toggleCity(item.text); this.props.handleSearch(e); }}>
                                     <FiltersCheckbox
                                         key={i}
                                         text={item.text}
@@ -155,7 +153,7 @@ class Filters extends React.Component {
                     <div className="filter-price-box">
                         <ReactBootstrapSlider
                             value={this.state.priceValue}
-                            slideStop={this.changeValue}
+                            slideStop={(e) => { this.changeValue(e); this.props.handleSearch(e); }}
                             step={5}
                             max={5000}
                             min={1}
@@ -171,7 +169,7 @@ class Filters extends React.Component {
                     <div className="filter-check-box">
                         {this.props.propertyTypes.map((item, i) => {
                             return (
-                                <div key={i} onClick={() => this.togglePropertyType(item.text)}>
+                                <div key={i} onClick={(e) => { this.togglePropertyType(item.text); this.props.handleSearch(e); }}>
                                     <FiltersCheckbox
                                         key={i}
                                         text={item.text}
@@ -188,12 +186,20 @@ class Filters extends React.Component {
                     <button type="submit" onClick={this.clearFilters} className="btn btn">Clear Filters</button>
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <button type="submit" onClick={this.props.handleSearch} className="btn btn-primary">Apply Filters</button>
-                </div>
+                </div> */}
             </div>
         );
     }
 }
+
+Filters.propTypes = {
+    propertyTypes: PropTypes.array,
+    cities: PropTypes.array,
+    paramsMap: PropTypes.object,
+    updateParamsMap: PropTypes.func,
+    handleSearch: PropTypes.func
+};
 
 export default withRouter(Filters);

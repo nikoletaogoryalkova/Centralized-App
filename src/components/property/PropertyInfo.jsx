@@ -1,11 +1,20 @@
 import ContactHostModal from './ContactHostModal';
-import ListingRating from '../listings/ListingRating';
+import PropTypes from 'prop-types';
 import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyCalendar from './PropertyCalendar';
 import PropertyReservation from './PropertyReservation';
 import PropertyReview from './PropertyReview';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+
+// import ListingRating from '../listings/ListingRating';
+
+
+
+
+
+
+
 
 class PropertyInfo extends React.Component {
     getAmenities(amenities) {
@@ -41,14 +50,18 @@ class PropertyInfo extends React.Component {
                 <div className="container">
                     <div className="hotel-content" id="overview">
                         <ContactHostModal id={this.props.match.params.id} isActive={this.props.isShownContactHostModal} closeModal={this.props.closeModal} sendMessageToHost={this.props.sendMessageToHost} />
-                        <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
+
                         <h1> {this.props.data.name} </h1>
-                        <ListingRating rating={this.props.data.averageRating} reviewsCount={this.props.data.reviews.length} />
                         <div className="clearfix" />
                         <p>{street}, {city.name}, {country.name}</p>
-                        <a className="undreline" onClick={this.props.openModal}>Contact Host</a>
+                        <button className="btn btn-primary" onClick={this.props.openModal}>Contact Host</button>
+
+                        <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
+
                         <div className="list-hotel-description">
-                            {this.props.descriptionText}
+                            <h2>Description</h2>
+                            <hr />
+                            {this.props.data.descriptionText}
                         </div>
 
                         <div id="facilities">
@@ -113,8 +126,6 @@ class PropertyInfo extends React.Component {
                         startDate={this.props.startDate}
                         endDate={this.props.endDate}
                         listing={this.props.data}
-                        currency={this.props.currency}
-                        currencySign={this.props.currencySign}
                         loading={this.props.loading} />
                     <div className="clearfix"></div>
                 </div>
@@ -122,5 +133,28 @@ class PropertyInfo extends React.Component {
         );
     }
 }
+
+PropertyInfo.propTypes = {
+    data: PropTypes.object,
+    locRate: PropTypes.string,
+    showLoginModal: PropTypes.bool,
+    isLogged: PropTypes.bool,
+    userInfo: PropTypes.object,
+    nights: PropTypes.number,
+    onApply: PropTypes.func,
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
+    loading: PropTypes.bool,
+    descriptionsAccessInfo: PropTypes.string,
+    match: PropTypes.object,
+    isShownContactHostModal: PropTypes.bool,
+    closeModal: PropTypes.func,
+    sendMessageToHost: PropTypes.func,
+    allEvents: PropTypes.array,
+    prices: PropTypes.array,
+    openModal: PropTypes.func,
+    calendar: PropTypes.array,
+    descriptionText: PropTypes.string
+};
 
 export default withRouter(PropertyInfo);

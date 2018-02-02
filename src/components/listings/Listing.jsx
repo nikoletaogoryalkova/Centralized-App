@@ -4,22 +4,24 @@ import ListingPictures from '../listings/ListingPictures';
 import ListingRating from './ListingRating';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
 class Listing extends React.Component {
     render() {
-        const { city, country, prices, currencyCode, defaultDailyPrice, pictures, id, name, reviewsCount, averageRating, description } = this.props.listing;
-        const listingPrice = (prices) && this.props.currency === currencyCode ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[this.props.currency], 10).toFixed(2);
-        const listingPriceEur = this.props.listing.currencyCode === 'EUR' ? this.props.listing.defaultDailyPrice : prices['EUR'];
+        const { currency, currencySign, locRate } = this.props.paymentInfo;
+        const { cityName, countryName, prices, currency_code, defaultDailyPrice, pictures, id, name, reviewsCount, averageRating, description } = this.props.listing;
+        const listingPrice = (prices) && currency === currency_code ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[currency], 10).toFixed(2);
+
         return (
             <div className="list-hotel">
                 <div className="list-image">
                     <ListingPictures pictures={pictures} id={id} />
                 </div>
                 <div className="list-content">
-                    <h2><Link to={`/listings/${this.props.listing.id}${this.props.location.search}`}>{name}</Link></h2>
+                    <h2><Link to={`/listings/${id}${this.props.location.search}`}>{name}</Link></h2>
                     <ListingRating rating={averageRating} reviewsCount={reviewsCount} />
                     <div className="clearfix"></div>
-                    <p>{city.name}, {country.name}</p>
+                    <p>{cityName}, {countryName}</p>
                     <div className="list-hotel-text">
                         {description.substr(0, 190)}...
                     </div>
@@ -32,8 +34,8 @@ class Listing extends React.Component {
                 </div>
                 <div className="list-price">
                     <div className="list-hotel-price-bgr">Price for 1 night</div>
-                    <div className="list-hotel-price-curency">{this.props.currencySign}{listingPrice}</div>
-                    <div className="list-hotel-price-loc">(LOC {(listingPriceEur / this.props.locRate).toFixed(2)})</div>
+                    <div className="list-hotel-price-curency">{currencySign}{listingPrice}</div>
+                    <div className="list-hotel-price-loc">(LOC {(listingPrice / locRate).toFixed(2)})</div>
                     <Link to={`/listings/${id}${this.props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
                 </div>
                 <div className="clearfix"></div>
@@ -42,12 +44,20 @@ class Listing extends React.Component {
     }
 }
 
-export default withRouter(Listing);
-
 Listing.propTypes = {
     listing: PropTypes.object,
-    currency: PropTypes.string,
     location: PropTypes.object,
-    currencySign: PropTypes.string,
-    locRate: PropTypes.number
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    paymentInfo: PropTypes.object
 };
+
+export default withRouter(connect(mapStateToProps)(Listing));
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
+    };
+}

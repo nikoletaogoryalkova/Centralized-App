@@ -1,19 +1,19 @@
 import { Link, withRouter } from 'react-router-dom';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
     contactHost,
     getCalendarByListingIdAndDateRange,
     getCurrentLoggedInUserInfo,
-    getLocRateInUserSelectedCurrency,
     getPropertyById
 } from '../../requester';
 
 import { Config } from '../../config';
-import Footer from '../Footer';
 import Lightbox from 'react-images';
-import MainNav from '../MainNav';
+import PropTypes from 'prop-types';
 import PropertyInfo from './PropertyInfo';
 import React from 'react';
 import Search from '../home/Search';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 
@@ -22,7 +22,7 @@ class PropertyPage extends React.Component {
         super(props);
 
         let startDate = moment();
-        let endDate = moment().add(1, 'days');
+        let endDate = moment().add(1, 'day');
 
         if (this.props) {
             let queryParams = parse(this.props.location.search);
@@ -40,13 +40,10 @@ class PropertyPage extends React.Component {
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
-            currencySign: '',
             prices: null,
-            oldCurrency: this.props.currency,
+            oldCurrency: this.props.paymentInfo.currency,
             loaded: false,
-            isLogged: false,
             userInfo: null,
-            locRate: null,
             loading: true,
             isShownContactHostModal: false
         };
@@ -59,7 +56,7 @@ class PropertyPage extends React.Component {
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
         this.initializeCalendar = this.initializeCalendar.bind(this);
-        this.getLocRate = this.getLocRate.bind(this);
+        this.getUserInfo = this.getUserInfo.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.sendMessageToHost = this.sendMessageToHost.bind(this);
@@ -67,7 +64,7 @@ class PropertyPage extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: true });
-        this.getLocRate(nextProps.currency);
+        this.getUserInfo();
     }
 
     componentDidMount() {
@@ -77,35 +74,43 @@ class PropertyPage extends React.Component {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
 
-        this.getLocRate(this.props.currency);
+        this.getUserInfo();
     }
 
-    getLocRate(currency) {
-        getLocRateInUserSelectedCurrency(currency).then((data) => {
-            this.setState({ locRate: data[0][`price_${currency.toLowerCase()}`] });
-            if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-                getCurrentLoggedInUserInfo()
-                    .then(res => {
-                        this.setState({
-                            loaded: true,
-                            isLogged: true,
-                            userInfo: res,
-                            loading: false
-                        });
+    getUserInfo() {
+        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+            getCurrentLoggedInUserInfo()
+                .then(res => {
+                    this.setState({
+                        loaded: true,
+                        userInfo: res,
+                        loading: false
                     });
-            }
-            else {
-                this.setState({ loaded: true, isLogged: false, loading: false });
-            }
-        });
+                });
+        }
+        else {
+            this.setState({ loaded: true, loading: false });
+        }
     }
 
     handleApply(event, picker) {
-        this.setState({
-            startDate: picker.startDate,
-            endDate: picker.endDate,
-        });
-        this.calculateNights(picker.startDate, picker.endDate);
+        let prices = this.state.prices;
+        let range = prices.filter(x => x.start >= picker.startDate && x.end <= picker.endDate);
+
+        let availableDates = prices.filter(x => x.available).sort(function (a, b) { return a.start.diff(b.start); });
+
+        let isInvalidRange = range.filter(x => !x.available).length > 0;
+        if (isInvalidRange) {
+            NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
+            this.setState({ startDate: undefined, endDate: undefined });
+        }
+        else {
+            this.setState({
+                startDate: picker.startDate,
+                endDate: picker.endDate,
+            });
+            this.calculateNights(picker.startDate, picker.endDate);
+        }
     }
 
     openLightbox(event) {
@@ -121,21 +126,25 @@ class PropertyPage extends React.Component {
             lightboxIsOpen: false,
         });
     }
+
     gotoPrevious() {
         this.setState({
             currentImage: this.state.currentImage - 1,
         });
     }
+
     gotoNext() {
         this.setState({
             currentImage: this.state.currentImage + 1,
         });
     }
+
     gotoImage(index) {
         this.setState({
             currentImage: index,
         });
     }
+
     handleClickImage() {
         if (this.state.currentImage === this.state.data.pictures.length - 1) return;
 
@@ -176,19 +185,19 @@ class PropertyPage extends React.Component {
 
         getPropertyById(this.props.match.params.id).then((data) => {
 
-            this.setState({ currencySign: this.props.currencySign, data: data });
+            this.setState({ data: data });
 
             getCalendarByListingIdAndDateRange(
                 this.props.match.params.id,
                 now,
                 end,
-                this.props.currency,
+                this.props.paymentInfo.currency,
                 0,
                 DAY_INTERVAL
             ).then(res => {
                 let prices = [];
                 for (let dateInfo of res.content) {
-                    let price = dateInfo.available ? `${this.state.currencySign}${Math.round(dateInfo.price)}` : '';
+                    let price = dateInfo.available ? `${this.props.paymentInfo.currencySign}${Math.round(dateInfo.price)}` : '';
                     prices.push(
                         {
                             'title': <span className="calendar-price bold">{price}</span>,
@@ -201,7 +210,7 @@ class PropertyPage extends React.Component {
                     );
                 }
 
-                this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.currency });
+                this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.paymentInfo.currency });
             });
         });
     }
@@ -216,7 +225,10 @@ class PropertyPage extends React.Component {
 
     render() {
 
-        if (this.state.data === null || this.state.prices === null || this.state.reservations === null || this.state.loaded === false) {
+        if (this.state.data === null ||
+            this.state.prices === null ||
+            this.state.reservations === null ||
+            this.state.loaded === false) {
             return <div className="loader"></div>;
         }
 
@@ -228,17 +240,13 @@ class PropertyPage extends React.Component {
             });
         }
 
-        if (this.state.oldCurrency !== this.props.currency) {
+        if (this.state.oldCurrency !== this.props.paymentInfo.currency) {
             this.initializeCalendar();
         }
 
         return (
             <div key={1}>
                 <div>
-                    <header id='main-nav' className="navbar">
-                        <MainNav />
-                    </header>
-
                     <nav id="second-nav">
                         <div className="container">
                             <ul className="nav navbar-nav">
@@ -303,28 +311,47 @@ class PropertyPage extends React.Component {
                         </ul>
                     </div>
                 </nav>
-                <PropertyInfo allEvents={allEvents}
+                <PropertyInfo
+                    allEvents={allEvents}
                     calendar={this.state.calendar}
                     nights={this.state.nights}
                     onApply={this.handleApply}
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     data={this.state.data}
-                    currency={this.props.currency}
-                    currencySign={this.props.currencySign}
                     prices={this.state.prices}
-                    isLogged={this.state.isLogged}
+                    isLogged={this.props.userInfo.isLogged}
                     userInfo={this.state.userInfo}
-                    locRate={this.state.locRate}
                     loading={this.state.loading}
                     openModal={this.openModal}
                     closeModal={this.closeModal}
                     isShownContactHostModal={this.state.isShownContactHostModal}
                     sendMessageToHost={this.sendMessageToHost} />
-                <Footer />
+                <NotificationContainer />
             </div>
         );
     }
 }
 
-export default withRouter(PropertyPage);
+PropertyPage.propTypes = {
+    match: PropTypes.object,
+
+    // start Router props
+    history: PropTypes.object,
+    location: PropTypes.object,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    userInfo: PropTypes.object,
+    paymentInfo: PropTypes.object
+};
+
+export default withRouter(connect(mapStateToProps)(PropertyPage));
+
+function mapStateToProps(state) {
+    const { userInfo, paymentInfo } = state;
+    return {
+        userInfo,
+        paymentInfo
+    };
+}

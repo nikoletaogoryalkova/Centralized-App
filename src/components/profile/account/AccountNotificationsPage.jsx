@@ -1,7 +1,6 @@
 import React from 'react';
 
 import ProfileHeader from '../ProfileHeader';
-import Footer from '../../Footer';
 
 export default class AccountNotificationsPage extends React.Component {
     render() {
@@ -9,7 +8,6 @@ export default class AccountNotificationsPage extends React.Component {
             <div>
                 <ProfileHeader />
                 <br />
-                <Footer />
             </div>
         );
     }

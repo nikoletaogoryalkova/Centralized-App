@@ -1,8 +1,5 @@
 import { Config } from '../../../config';
 import Dropzone from 'react-dropzone';
-import Footer from '../../Footer';
-import ProfileHeader from '../ProfileHeader';
-import ProfileNav from './ProfileNav';
 import React from 'react';
 import { getCurrentLoggedInUserInfo } from '../../../requester';
 import request from 'superagent';
@@ -56,7 +53,6 @@ export default class ProfilePhotosPage extends React.Component {
                     console.error(err);
                 }
                 else {
-                    console.log(response.body.thumbnail);
                     this.setState({
                         uploadedFilesThumbUrls: [response.body.thumbnail]
                     });
@@ -74,40 +70,27 @@ export default class ProfilePhotosPage extends React.Component {
 
         return (
             <div>
-                <ProfileHeader />
                 <section id="profile-photos">
-                    <div className="container">
-                        <div className="row">
-                            <div className="after-header" />
-                            <div className="col-md-3">
-                                <ProfileNav />
-                            </div>
-                            <div className="col-md-8">
-                                <div className="pictures-preview col-md-12">
-                                    {this.state.uploadedFilesThumbUrls.length === 0 ? null :
-                                        this.state.uploadedFilesThumbUrls.map((imageUrl, i) =>
-                                            <div key={i} className="uploaded-small-picture col-md-4">
-                                                <img src={imageUrl} height={200} alt={`uploaded-${i}`} />
-                                            </div>
-                                        )
-                                    }
-                                    <Dropzone
-                                        className="pictures-upload col-md-4"
-                                        multiple={false}
-                                        maxSize={10485760}
-                                        accept="image/jpg, image/jpeg, image/png"
-                                        onDrop={this.onImageDrop}
-                                        onDropRejected={this.onDropRejected} >
-                                        <p>Upload a file from your computer</p>
-                                    </Dropzone>
+                    <div className="pictures-preview col-md-12">
+                        {this.state.uploadedFilesThumbUrls.length === 0 ? null :
+                            this.state.uploadedFilesThumbUrls.map((imageUrl, i) =>
+                                <div key={i} className="uploaded-small-picture col-md-4">
+                                    <img src={imageUrl} height={200} alt={`uploaded-${i}`} />
                                 </div>
-                                {this.state.error ? <div className="error">{this.state.error}</div> : null}
-                            </div>
-                            <div className="before-footer clear-both" />
-                        </div>
+                            )
+                        }
+                        <Dropzone
+                            className="pictures-upload col-md-4"
+                            multiple={false}
+                            maxSize={10485760}
+                            accept="image/jpg, image/jpeg, image/png"
+                            onDrop={this.onImageDrop}
+                            onDropRejected={this.onDropRejected} >
+                            <p>Upload a file from your computer</p>
+                        </Dropzone>
                     </div>
+                    {this.state.error ? <div className="error">{this.state.error}</div> : null}
                 </section>
-                <Footer />
             </div>
         );
     }

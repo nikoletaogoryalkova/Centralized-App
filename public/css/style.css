@@ -2023,6 +2023,20 @@ li.dropdown {
     margin-right: 5px;
 }
 
+.my-reservations .reservation-box button {
+    padding-bottom:10px;
+    font-weight: bold;
+    font-family: 'FuturaStd-Light', sans-serif;
+    color: #E98B73;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.my-reservations .reservation-box button:hover {
+    cursor: pointer;
+}
+
 .reservation-image-box {
     text-align: center;
 }
@@ -2627,11 +2641,11 @@ h2+hr {
 }
 
 
-/* 
-FIX FOR MAC OS
+
+/* FIX FOR MAC OS */
 select {
     -webkit-appearance: none
-} */
+}
 
 .clearfix {
     display: block;
@@ -2665,6 +2679,16 @@ select {
     text-align: center;
 }
 
-.tab-navigation li.active {
+.tab-navigation>li>a.active>h2 {
+    padding: 15px;
+    margin-bottom: 0;
     border-bottom: 4px solid #A0C5BE;
+}
+
+.currency-switcher {
+    padding: 15px;
+    color: #000000;
+    width: 100%;
+    border-radius: 3px;
+    outline: none;
 }

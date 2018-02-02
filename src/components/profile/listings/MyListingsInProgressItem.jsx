@@ -3,11 +3,12 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import { Config } from '../../../config';
 import { Link } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { deleteListing } from '../../../requester';
 
-export default class MyListingsActiveItem extends React.Component {
+export default class MyListingsInProgressItem extends React.Component {
     constructor(props) {
         super(props);
 
@@ -157,15 +158,18 @@ export default class MyListingsActiveItem extends React.Component {
                 </Modal>
                 <div className="row my-listing-box">
                     <div className="col-md-2">
-                        <div className="my-listing-image-box">
-                            <img src={this.props.listing.pictures[0] && this.props.listing.pictures[0].thumbnail} alt="user-profile" />
+                        <div className={(this.props.listing.pictures[0] ? '' : 'not ') + 'my-listing-image-box'}>
+                            {this.props.listing.pictures[0] && <img src={this.props.listing.pictures[0].thumbnail} alt="listing-thumbnail" />}
                         </div>
                     </div>
-                    <div className="col-md-8 listing-name">
+                    <div className="col-md-7 listing-name">
                         <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>{this.props.listing.name}</Link>
                     </div>
                     <div className="col-md-2">
                         <Link className="btn btn-primary btn-block bold" to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
+                    </div>
+                    <div className="col-md-1">
+                        <button className="close" onClick={() => this.props.deleteInProgressListing(this.props.id)}>×</button>
                     </div>
                 </div>
                 <div className="row">
@@ -201,10 +205,17 @@ export default class MyListingsActiveItem extends React.Component {
                         })}
                     </div>
                     <div className="col-md-4 progress-image">
-                        <img src={Config.getValue('basePath') + 'images/' + this.calculateProgressImage(this.props.step)} alt="progress-image" />
+                        <img src={Config.getValue('basePath') + 'images/' + this.calculateProgressImage(this.props.step)} alt="progress-thumbnail" />
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+MyListingsInProgressItem.propTypes = {
+    listing: PropTypes.object,
+    step: PropTypes.number,
+    id: PropTypes.number,
+    filterListings: PropTypes.func
+};
