@@ -14,6 +14,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import MainNav from '../mainNav/MainNav';
 import Footer from '../footer/Footer';
+import AttachedFooter from '../footer/AttachedFooter';
 
 import ProfilePage from '../profile/ProfilePage';
 import PropTypes from "prop-types";
@@ -51,6 +52,7 @@ class App extends React.Component {
                     <Route path="/listings/:id" render={() => <PropertyPage />} />
                 </Switch>
                 <Footer />
+                <AttachedFooter />
             </div>
         );
     }

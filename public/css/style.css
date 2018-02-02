@@ -680,11 +680,15 @@ footer a {
 footer h3 {
     color: #fff;
     margin: 40px 0 35px 0;
+    position: relative;
+    z-index: 1050;
 }
 
 footer ul {
     margin: 0 0 40px 0;
     padding: 0;
+    position: relative;
+    z-index: 1050;
 }
 
 footer ul li {
@@ -693,9 +697,11 @@ footer ul li {
     margin: 0 0 10px 0;
 }
 
-.copyright {
+footer .copyright {
     border-top: 1px solid #2f4b59;
     padding: 15px 0;
+    position: relative;
+    z-index: 1050;
 }
 
 footer .select-language a {
@@ -703,12 +709,12 @@ footer .select-language a {
 }
 
 footer .select-language {
+    margin: 10px 0;
     padding: 16px 20px;
     background: #fff;
     border-radius: 4px;
     width: 100%;
     color: #54575a;
-    margin: 45px 0 20px 0;
     text-align: center;
 }
 
@@ -732,6 +738,20 @@ footer .select-curency {
 footer .select-curency .caret {
     margin-top: 5%;
     float: right;
+}
+
+footer #attached-footer {
+    background: #223843;
+    color: #fff;
+}
+
+footer .currency-switcher {
+    margin: 10px 0;
+    padding: 16px 20px;
+    color: #000000;
+    width: 100%;
+    border-radius: 4px;
+    outline: none;
 }
 
 .admin_dashboard #search-bar {
@@ -2683,12 +2703,4 @@ select {
     padding: 15px;
     margin-bottom: 0;
     border-bottom: 4px solid #A0C5BE;
-}
-
-.currency-switcher {
-    padding: 15px;
-    color: #000000;
-    width: 100%;
-    border-radius: 3px;
-    outline: none;
 }
