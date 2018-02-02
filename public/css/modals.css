@@ -12,22 +12,6 @@
   border-bottom: 0;
   padding: 15px 15px 0;
 }
-.myModal .modal-header button.close {
-  border: 2px solid #213843;
-  border-radius: 50px;
-  color: #213843;
-  font-size: 13px;
-  font-weight: 700;
-  height: 35px;
-  margin-top: 10px;
-  opacity: 1;
-  outline: none;
-  user-select: none;
-  width: 35px;
-}
-.myModal .modal-header button.close:hover {
-  opacity: 0.2;
-}
 .myModal h1 {
   float: left;
   font-family: FuturaStd-Light, sans-serif;
@@ -67,4 +51,19 @@
 .login-sign a {
   text-decoration: underline;
   cursor: pointer;
+}
+button.close {
+  border: 2px solid #213843;
+  border-radius: 50px;
+  color: #213843;
+  font-size: 13px;
+  font-weight: 700;
+  height: 35px;
+  opacity: 1;
+  outline: none;
+  user-select: none;
+  width: 35px;
+}
+button.close:hover {
+  opacity: 0.2;
 }

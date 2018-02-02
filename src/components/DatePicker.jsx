@@ -10,6 +10,21 @@ class DatePicker extends React.Component {
             searchNightsWidth = 5;
         }
 
+        let { startDate, endDate } = this.props;
+
+        let label = '';
+        let start = startDate && startDate.format('DD/MM/YYYY') || '';
+        let end = endDate && endDate.format('DD/MM/YYYY') || '';
+        label = start + ' - ' + end;
+        if (start === end) {
+            label = start;
+        }
+
+        let pickerProps = {
+            startDate,
+            endDate,
+        };
+
         return (
             <div>
                 <div className="input-daterange">
@@ -21,16 +36,16 @@ class DatePicker extends React.Component {
                             onApply={this.props.onApply}
                             isInvalidDate={this.props.isInvalidDate}
                             autoApply={true}
-                            startDate={this.props.startDate}
-                            endDate={this.props.endDate}
                             minDate={moment().format('DD/MM/YYYY')}
                             maxDate={moment().add(90, 'days').format('DD/MM/YYYY')}
-                            locale={{ format: 'DD/MM/YYYY' }}>
+                            locale={{ format: 'DD/MM/YYYY' }}
+                            {...pickerProps}>
                             <input className="form-control"
                                 required="required"
                                 autoComplete="off"
                                 placeholder="Select date"
-                                name="stay" />
+                                name="stay"
+                                value={label} />
                         </DateRangePicker>
                     </div>
                 </div>

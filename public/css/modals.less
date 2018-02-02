@@ -2,7 +2,6 @@
 @color_2: #213843;
 @font_family_1: FuturaStd-Light,
 sans-serif;
-
 .myModal {
     .modal-dialog {
         @media screen and (min-width: 768px) {
@@ -17,22 +16,6 @@ sans-serif;
     .modal-header {
         border-bottom: 0;
         padding: 15px 15px 0;
-        button.close {
-            border: 2px solid #213843;
-            border-radius: 50px;
-            color: @color_2;
-            font-size: 13px;
-            font-weight: 700;
-            height: 35px;
-            margin-top: 10px;
-            opacity: 1;
-            outline: none;
-            user-select: none;
-            width: 35px;
-            &:hover {
-                opacity: 0.2;
-            }
-        }
     }
     h1 {
         float: left;
@@ -75,4 +58,20 @@ sans-serif;
         cursor: pointer;
     }
     text-align: center;
+}
+
+button.close {
+    border: 2px solid #213843;
+    border-radius: 50px;
+    color: @color_2;
+    font-size: 13px;
+    font-weight: 700;
+    height: 35px;
+    opacity: 1;
+    outline: none;
+    user-select: none;
+    width: 35px;
+    &:hover {
+        opacity: 0.2;
+    }
 }

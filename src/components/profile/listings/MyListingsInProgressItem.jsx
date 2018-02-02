@@ -162,11 +162,14 @@ export default class MyListingsInProgressItem extends React.Component {
                             {this.props.listing.pictures[0] && <img src={this.props.listing.pictures[0].thumbnail} alt="listing-thumbnail" />}
                         </div>
                     </div>
-                    <div className="col-md-8 listing-name">
+                    <div className="col-md-7 listing-name">
                         <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>{this.props.listing.name}</Link>
                     </div>
                     <div className="col-md-2">
                         <Link className="btn btn-primary btn-block bold" to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
+                    </div>
+                    <div className="col-md-1">
+                        <button className="close" onClick={() => this.props.deleteInProgressListing(this.props.id)}>×</button>
                     </div>
                 </div>
                 <div className="row">

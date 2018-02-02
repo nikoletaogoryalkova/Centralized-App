@@ -366,7 +366,7 @@ class MainNav extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(withRouter(MainNav));
+export default withRouter(connect(mapStateToProps)(MainNav));
 
 function mapStateToProps(state) {
     const { userInfo } = state;
@@ -376,6 +376,7 @@ function mapStateToProps(state) {
 }
 
 MainNav.propTypes = {
+    // start Router props
     location: PropTypes.object,
     history: PropTypes.object,
 
