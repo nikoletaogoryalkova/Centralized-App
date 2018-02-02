@@ -5,7 +5,6 @@ import {
     contactHost,
     getCalendarByListingIdAndDateRange,
     getCurrentLoggedInUserInfo,
-    getLocRateInUserSelectedCurrency,
     getPropertyById
 } from '../../requester';
 
@@ -41,12 +40,10 @@ class PropertyPage extends React.Component {
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
-            currencySign: '',
             prices: null,
-            oldCurrency: this.props.currency,
+            oldCurrency: this.props.paymentInfo.currency,
             loaded: false,
             userInfo: null,
-            locRate: null,
             loading: true,
             isShownContactHostModal: false
         };
@@ -59,7 +56,7 @@ class PropertyPage extends React.Component {
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
         this.initializeCalendar = this.initializeCalendar.bind(this);
-        this.getLocRate = this.getLocRate.bind(this);
+        this.getUserInfo = this.getUserInfo.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.sendMessageToHost = this.sendMessageToHost.bind(this);
@@ -67,7 +64,7 @@ class PropertyPage extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: true });
-        this.getLocRate(nextProps.currency);
+        this.getUserInfo();
     }
 
     componentDidMount() {
@@ -77,26 +74,23 @@ class PropertyPage extends React.Component {
             this.calculateNights(this.state.startDate, this.state.endDate);
         }
 
-        this.getLocRate(this.props.currency);
+        this.getUserInfo();
     }
 
-    getLocRate(currency) {
-        getLocRateInUserSelectedCurrency(currency).then((data) => {
-            this.setState({ locRate: data[0][`price_${currency.toLowerCase()}`] });
-            if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-                getCurrentLoggedInUserInfo()
-                    .then(res => {
-                        this.setState({
-                            loaded: true,
-                            userInfo: res,
-                            loading: false
-                        });
+    getUserInfo() {
+        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+            getCurrentLoggedInUserInfo()
+                .then(res => {
+                    this.setState({
+                        loaded: true,
+                        userInfo: res,
+                        loading: false
                     });
-            }
-            else {
-                this.setState({ loaded: true, loading: false });
-            }
-        });
+                });
+        }
+        else {
+            this.setState({ loaded: true, loading: false });
+        }
     }
 
     handleApply(event, picker) {
@@ -193,19 +187,19 @@ class PropertyPage extends React.Component {
 
         getPropertyById(this.props.match.params.id).then((data) => {
 
-            this.setState({ currencySign: this.props.currencySign, data: data });
+            this.setState({ data: data });
 
             getCalendarByListingIdAndDateRange(
                 this.props.match.params.id,
                 now,
                 end,
-                this.props.currency,
+                this.props.paymentInfo.currency,
                 0,
                 DAY_INTERVAL
             ).then(res => {
                 let prices = [];
                 for (let dateInfo of res.content) {
-                    let price = dateInfo.available ? `${this.state.currencySign}${Math.round(dateInfo.price)}` : '';
+                    let price = dateInfo.available ? `${this.props.paymentInfo.currencySign}${Math.round(dateInfo.price)}` : '';
                     prices.push(
                         {
                             'title': <span className="calendar-price bold">{price}</span>,
@@ -218,7 +212,7 @@ class PropertyPage extends React.Component {
                     );
                 }
 
-                this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.currency });
+                this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.paymentInfo.currency });
             });
         });
     }
@@ -248,7 +242,7 @@ class PropertyPage extends React.Component {
             });
         }
 
-        if (this.state.oldCurrency !== this.props.currency) {
+        if (this.state.oldCurrency !== this.props.paymentInfo.currency) {
             this.initializeCalendar();
         }
 
@@ -327,12 +321,9 @@ class PropertyPage extends React.Component {
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     data={this.state.data}
-                    currency={this.props.currency}
-                    currencySign={this.props.currencySign}
                     prices={this.state.prices}
                     isLogged={this.props.userInfo.isLogged}
                     userInfo={this.state.userInfo}
-                    locRate={this.state.locRate}
                     loading={this.state.loading}
                     openModal={this.openModal}
                     closeModal={this.closeModal}
@@ -345,22 +336,24 @@ class PropertyPage extends React.Component {
 }
 
 PropertyPage.propTypes = {
-    history: PropTypes.object,
     match: PropTypes.object,
-    currencySign: PropTypes.string,
+
+    // start Router props
+    history: PropTypes.object,
     location: PropTypes.object,
-    currency: PropTypes.string,
 
     // start Redux props
     dispatch: PropTypes.func,
-    userInfo: PropTypes.object
+    userInfo: PropTypes.object,
+    paymentInfo: PropTypes.object
 };
 
-export default connect(mapStateToProps)(withRouter(PropertyPage));
+export default withRouter(connect(mapStateToProps)(PropertyPage));
 
 function mapStateToProps(state) {
-  const { userInfo } = state;
-  return {
-    userInfo
-  }
+    const { userInfo, paymentInfo } = state;
+    return {
+        userInfo,
+        paymentInfo
+    }
 }

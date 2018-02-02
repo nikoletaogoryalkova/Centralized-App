@@ -1,4 +1,4 @@
-import { userInfo } from '../actions/actionTypes';
+import { userInfo } from './actionTypes';
 
 export function setIsLogged(isLogged) {
     return {
