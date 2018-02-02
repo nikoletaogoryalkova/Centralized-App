@@ -1,5 +1,4 @@
 import ContactHostModal from './ContactHostModal';
-// import ListingRating from '../listings/ListingRating';
 import PropTypes from 'prop-types';
 import PropertyAmenityColumn from './PropertyAmenityColumn';
 import PropertyCalendar from './PropertyCalendar';
@@ -7,6 +6,15 @@ import PropertyReservation from './PropertyReservation';
 import PropertyReview from './PropertyReview';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+
+// import ListingRating from '../listings/ListingRating';
+
+
+
+
+
+
+
 
 class PropertyInfo extends React.Component {
     getAmenities(amenities) {
@@ -46,12 +54,14 @@ class PropertyInfo extends React.Component {
                         <h1> {this.props.data.name} </h1>
                         <div className="clearfix" />
                         <p>{street}, {city.name}, {country.name}</p>
-                        <a className="undreline" onClick={this.props.openModal}>Contact Host</a>
+                        <button className="btn btn-primary" onClick={this.props.openModal}>Contact Host</button>
 
                         <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
 
                         <div className="list-hotel-description">
-                            {this.props.descriptionText}
+                            <h2>Description</h2>
+                            <hr />
+                            {this.props.data.descriptionText}
                         </div>
 
                         <div id="facilities">
