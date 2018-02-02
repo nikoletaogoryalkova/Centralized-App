@@ -35,22 +35,20 @@ class App extends React.Component {
     }
 
     render() {
-        const { currency, currencySign } = this.props.paymentInfo;
-
         return (
             <div>
                 <MainNav />
                 <Switch>
                     <Route exact path="/" render={() => <HomePage />} />
                     <Route exact path="/listings" render={() => <ListingPage />} />
-                    <Route exact path="/property" render={() => <PropertyPage currency={currency} currencySign={currencySign} />} />
+                    <Route exact path="/property" render={() => <PropertyPage />} />
                     <Route exact path="/profile/listings/edit/:step/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} />
                     <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
                     <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage />} />
                     <Route exact path="/users/resetPassword/:confirm" render={() => <HomePage />} />
                     <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
                     <Route path="/profile/" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfilePage location={this.props.location} />} />
-                    <Route path="/listings/:id" render={() => <PropertyPage currency={currency} currencySign={currencySign} />} />
+                    <Route path="/listings/:id" render={() => <PropertyPage />} />
                 </Switch>
                 <Footer />
             </div>
