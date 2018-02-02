@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 class Footer extends React.Component {
     render() {
@@ -43,17 +41,4 @@ class Footer extends React.Component {
     }
 }
 
-Footer.propTypes = {
-    // start Redux props
-    dispatch: PropTypes.func,
-    paymentInfo: PropTypes.object
-};
-
-export default connect(mapStateToProps)(Footer);
-
-function mapStateToProps(state) {
-    const { paymentInfo } = state;
-    return {
-        paymentInfo
-    };
-}
+export default Footer;
