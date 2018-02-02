@@ -18,7 +18,8 @@ export default class MyTripsPage extends React.Component {
             loading: true,
             totalTrips: 0,
             currentPage: 1,
-            selectedTripId: null,
+            currentTripId: null,
+            selectedTripId: 0,
             cancellationText: '',
             showCancelTripModal: false,
         };
@@ -45,7 +46,7 @@ export default class MyTripsPage extends React.Component {
             }
         }
         getMyTrips('?page=0').then((data) => {
-            this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, selectedTripId: id });
+            this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTripId: id });
             if (id) {
                 NotificationManager.success('Booking Request Sent Successfully, your host will get back to you with additional questions.', 'Reservation Operations');
             }
@@ -151,6 +152,7 @@ export default class MyTripsPage extends React.Component {
                         <hr />
                         <MyTripsTable
                             trips={this.state.trips}
+                            currentTripId={this.state.currentTripId}
                             onTripSelect={this.onTripSelect}
                             onTripCancel={() => this.openModal('showCancelTripModal')} />
 
