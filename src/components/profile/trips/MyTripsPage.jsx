@@ -1,13 +1,14 @@
 import { cancelTrip, getMyTrips } from '../../../requester';
 
+import CancellationModal from '../../common/modals/CancellationModal';
+import LPagination from '../../common/LPagination';
 import { Link } from 'react-router-dom';
 import MyTripsTable from './MyTripsTable';
 import { NotificationManager } from 'react-notifications';
-import CancellationModal from '../../common/modals/CancellationModal';
 import Pagination from 'rc-pagination';
 import PropTypes from 'prop-types';
-import React from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
 
 export default class MyTripsPage extends React.Component {
     constructor(props) {
@@ -63,7 +64,7 @@ export default class MyTripsPage extends React.Component {
         let messageObj = { message: message };
         cancelTrip(id, messageObj, captchaToken)
             .then(response => {
-                if(response.success) {
+                if (response.success) {
                     this.componentDidMount();
                     NotificationManager.success(response.message, 'Reservation Operations');
                 } else {
@@ -74,7 +75,7 @@ export default class MyTripsPage extends React.Component {
 
     setTripIsAccepted(tripId, isAccepted) {
         const trips = this.state.trips.map(trip => {
-            if(trip.id === tripId) {
+            if (trip.id === tripId) {
                 trip.accepted = isAccepted;
             }
             return trip;
@@ -118,16 +119,6 @@ export default class MyTripsPage extends React.Component {
             return <div className="loader"></div>;
         }
 
-        const textItemRender = (current, type, element) => {
-            if (type === 'prev') {
-                return <div className="rc-prev">&lsaquo;</div>;
-            }
-            if (type === 'next') {
-                return <div className="rc-next">&rsaquo;</div>;
-            }
-            return element;
-        };
-
         return (
             <div className="my-reservations">
                 <ReCAPTCHA
@@ -142,7 +133,7 @@ export default class MyTripsPage extends React.Component {
                     title={'Cancel Trip'}
                     text={'Tell your host why do you want to cancel your trip.'}
                     onChange={this.onChange}
-                    isActive={this.state.showCancelTripModal} 
+                    isActive={this.state.showCancelTripModal}
                     onClose={this.closeModal}
                     onSubmit={this.onTripCancel} />
 
@@ -156,9 +147,12 @@ export default class MyTripsPage extends React.Component {
                             onTripSelect={this.onTripSelect}
                             onTripCancel={() => this.openModal('showCancelTripModal')} />
 
-                        <div className="pagination-box">
-                            {this.state.totalListings !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalTrips} />}
-                        </div>
+                        <LPagination
+                            loading={this.state.totalListings === 0}
+                            onPageChange={this.onPageChange}
+                            currentPage={this.state.currentPage}
+                            totalElements={this.state.totalTrips}
+                        />
 
                         <div className="my-listings">
                             <Link className="btn btn-primary create-listing" to="#">Print this page</Link>

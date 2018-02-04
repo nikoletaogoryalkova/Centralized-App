@@ -1,12 +1,12 @@
-import { getListingsByFilter } from '../../requester';
-
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
 import Header from '../Header';
+import LPagination from '../common/LPagination';
 import Listing from './Listing';
 import Pagination from 'rc-pagination';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { getListingsByFilter } from '../../requester';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 
@@ -179,7 +179,7 @@ class ListingsPage extends React.Component {
         const hasListings = hasLoadedListings && listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
 
         let renderListings;
-        let renderPagination;
+
         if (!hasLoadedListings || this.state.listingLoading === true) {
             renderListings = <div className="loader"></div>;
         } else if (!hasListings) {
@@ -188,8 +188,6 @@ class ListingsPage extends React.Component {
             renderListings = listings.map((item, i) => {
                 return <Listing key={i} listing={item} />;
             });
-
-            renderPagination = <div className="pagination-box">{this.state.totalItems !== 0 && <Pagination className="pagination" defaultPageSize={20} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalItems} />} </div>;
         }
 
         return (
@@ -205,7 +203,13 @@ class ListingsPage extends React.Component {
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
                                     {renderListings}
-                                    {renderPagination}
+
+                                    <LPagination
+                                        loading={this.state.totalItems === 0}
+                                        onPageChange={this.onPageChange}
+                                        currentPage={this.state.currentPage}
+                                        totalElements={this.state.totalItems}
+                                    />
                                 </div>
                             </div>
                         </div>
