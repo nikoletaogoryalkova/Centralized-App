@@ -81,10 +81,20 @@ export default class Calendar extends React.Component {
             dateAfterDays.setDate(dateAfterDays.getDate() + afterDaysConst);
 
             let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > dateAfterDays);
+            let isSelected = value.toString() === this.props.selectedDate.toString();
+
+            let className = isPastDate ? 'date-in-past' : 'rbc-day-bg';
+            let borderBottom = isSelected ? '3px solid #d77961' : '1px solid #DDD';
 
             return (
-                <div className={isPastDate ? 'date-in-past' : 'rbc-day-bg'} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto' }}>
-                    {/* onClick={this.props.onSlotClick} */}
+                <div
+                    className={className}
+                    style={{
+                        flexBasis: 14.2857 + '%',
+                        maxWidth: 14.2857 + '%',
+                        cursor: 'auto',
+                        borderBottom
+                    }}>
                     {children}
                 </div>
             );
