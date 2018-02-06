@@ -1,29 +1,25 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class PropertyReview extends React.Component {
     getRatingString(rating) {
-        let result = "";
+        let result = '';
         let ratingRoundedNumber = Math.round(rating);
-        
         if (ratingRoundedNumber === 5) {
-            result += "Excellent";
+            result += 'Excellent';
+        } else if (ratingRoundedNumber === 4) {
+            result += 'Very good';
+        } else if (ratingRoundedNumber === 3) {
+            result += 'Good';
+        } else if (ratingRoundedNumber === 2) {
+            result += 'Sufficient';
+        } else if (ratingRoundedNumber === 1) {
+            result += 'Weak';
+        } else if (ratingRoundedNumber === 0) {
+            result += 'Poor';
         }
-        else if (ratingRoundedNumber === 4) {
-            result += "Very good";
-        }
-        else if (ratingRoundedNumber === 3) {
-            result += "Good";
-        }
-        else if (ratingRoundedNumber === 2) {
-            result += "Sufficient";
-        }
-        else if (ratingRoundedNumber === 1) {
-            result += "Weak";
-        }
-        else if (ratingRoundedNumber === 0) {
-            result += "Poor"
-        }
+
         result += ' ';
         result += Math.round(rating * 100) / 100 + '/5';
         return result;
@@ -35,6 +31,7 @@ class PropertyReview extends React.Component {
         for (let i = 0; i < rounded; i++) {
             starsElements.push(<span key={i} className="full-star" />);
         }
+        
         for (let i = 0; i < 5 - rounded; i++) {
             starsElements.push(<span key={100 - i} className="empty-star" />);
         }
@@ -49,10 +46,15 @@ class PropertyReview extends React.Component {
                 <div className="list-hotel-rating-stars">
                     {this.getStars(this.props.rating)}
                 </div>
-                <p className="list-hotel-rating-review">{this.props.reviewText}</p>
+                <p className="list-hotel-rating-review">{this.props.text}</p>
             </div>
-        )
+        );
     }
 }
 
 export default withRouter(PropertyReview);
+
+PropertyReview.propTypes = {
+    rating: PropTypes.number,
+    text: PropTypes.string,
+};
