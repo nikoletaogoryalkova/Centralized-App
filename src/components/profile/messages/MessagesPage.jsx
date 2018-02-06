@@ -2,7 +2,6 @@ import { changeMessageStatus, getMyConversations } from '../../../requester';
 
 import LPagination from '../../common/LPagination';
 import MessagesItem from './MessagesItem';
-import Pagination from 'rc-pagination';
 import React from 'react';
 
 export default class MessagesPage extends React.Component {
@@ -82,9 +81,7 @@ export default class MessagesPage extends React.Component {
                                 loading={this.state.totalElements === 0}
                                 onPageChange={this.onPageChange}
                                 currentPage={this.state.currentPage}
-                                totalElements={this.state.totalElements}
-                            />
-
+                                totalElements={this.state.totalElements} />
                         </div>
                     }
                 </section>
