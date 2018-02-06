@@ -5,7 +5,6 @@ import Listing from './Listing';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getListingsByFilter, getCountries } from '../../requester';
-import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import ListingTypeNav from './ListingTypeNav';
@@ -17,22 +16,33 @@ class ListingsPage extends React.Component {
         super(props);
 
         this.state = {
+            countryId: '',
+            countries: undefined,
+            startDate: undefined,
+            endDate: undefined,
+            guests: undefined,
+            cities: [],
+            citiesToggled: new Set(),
+            priceValue: [1, 5000],
+            propertyTypes: [],
+            propertyTypesToggled: new Set(),
             searchParams: undefined,
             listings: undefined,
-            listingLoading: true,
-            currentPage: 1,
+            loading: true,
             totalItems: 0,
-            countries: undefined,
-            countryId: '',
-            cities: [],
-            propertyTypes: []
+            currentPage: 1,
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleFilter = this.handleFilter.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
+        this.toggleFilter = this.toggleFilter.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
+        this.clearFilters = this.clearFilters.bind(this);
+        this.setPriceValue = this.setPriceValue.bind(this);
+        this.getPriceValue = this.getPriceValue.bind(this);
     }
 
     componentDidMount() {
@@ -40,12 +50,12 @@ class ListingsPage extends React.Component {
             this.setState({ countries: data.content });
         });
         
-        let searchTerms = this.getSearchTerms();
+        const searchTerms = this.getSearchTerms(this.state.searchParams);
         getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
             this.setState({
                 listings: data.filteredListings.content,
                 totalItems: data.filteredListings.totalElements,
-                listingLoading: false,
+                loading: false,
                 cities: data.cities,
                 propertyTypes: data.types
             });
@@ -55,13 +65,33 @@ class ListingsPage extends React.Component {
     componentWillMount() {
         if (this.props.location.search) {
             const searchParams = this.getSearchParams(this.props.location.search);
+            const priceValue = this.getPriceValue(searchParams);
             this.setState({
                 searchParams: searchParams,
                 countryId: searchParams.get('countryId'),
                 startDate: moment(searchParams.get('startDate'), 'DD/MM/YYYY'),
                 endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
                 guests: searchParams.get('guests'),
+                selectedCities: new Set(),
+                selectedPropertyTypes: new Set(),
+                priceValue: priceValue,
             });
+        }
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            listings: null,
+            loading: true,
+            currentPage: 1,
+            totalItems: 0
+        });
+    }
+
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+        if (this.updateParamsMap) {
+            this.updateParamsMap(e.target.name, e.target.value);
         }
     }
 
@@ -72,42 +102,70 @@ class ListingsPage extends React.Component {
 
         this.setState({
             listings: null,
-            listingLoading: true
+            loading: true
         });
-        
-        let searchTerms = this.getSearchTerms();
+
+        this.clearFilters(e);
+        const searchTerms = this.getSearchTerms(this.state.searchParams);
+        this.getListingsBySearchTerms(searchTerms);
+        const url = `/listings/?${searchTerms}`;
+        this.props.history.push(url);
+    }
+
+    handleFilter(e) {
+        if (e && e.preventDefault) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            listings: null,
+            loading: true
+        });
+
+        let searchTerms = this.getSearchTerms(this.state.searchParams);
+        this.getListingsBySearchTerms(searchTerms);
+        let url = `/listings/?${searchTerms}`;
+        this.props.history.push(url);
+    }
+
+    getListingsBySearchTerms(searchTerms) {
         getListingsByFilter(searchTerms).then(data => {
             this.setState({
                 listings: data.filteredListings.content,
-                listingLoading: false,
+                loading: false,
                 totalItems: data.filteredListings.totalElements,
                 countryId: this.getSearchParams().get('countryId'),
-                // cities: data.cities,
-                // propertyTypes: data.types
+                cities: data.cities,
+                propertyTypes: data.types
             });
+        });
+    }
 
-            if (!this.getSearchParams().get('cities') && !this.getSearchParams().get('propertyTypes')) {
-                this.setState({
-                    cities: data.cities,
-                    propertyTypes: data.types
-                });
-            }
-
-            let oldSearchTerms = queryString.parse(this.props.location.search);
-            let newSearchTerms = this.getSearchParams();
-            if (oldSearchTerms.countryId !== newSearchTerms.get('countryId') ||
-                oldSearchTerms.startDate !== newSearchTerms.get('startDate') ||
-                oldSearchTerms.endDate !== newSearchTerms.get('endDate') ||
-                oldSearchTerms.guests !== newSearchTerms.get('guests')) {
-                this.setState({
-                    cities: data.cities,
-                    propertyTypes: data.types
-                });
-            }
+    clearFilters(e) {
+        this.setState({
+            priceValue: [1, 5000],
+            citiesToggled: new Set(),
+            propertyTypesToggled: new Set(),
         });
 
-        let url = `/listings/?${searchTerms}`;
-        this.props.history.push(url);
+        this.updateParamsMap('priceMin', '1');
+        this.updateParamsMap('priceMax', '5000');
+        this.updateParamsMap('cities', '');
+        this.updateParamsMap('propertyTypes', '');
+        this.handleFilter(e);
+    }
+
+    toggleFilter(key, value) {
+        const stateKey = key + 'Toggled';
+        const set = new Set(this.state[stateKey]);
+        if (set.has(value)) {
+            set.delete(value);
+        } else {
+            set.add(value);
+        }
+
+        this.setState({ [stateKey]: set });
+        this.updateParamsMap(key, Array.from(set).join(','));
     }
 
     handleDatePick(event, picker) {
@@ -120,11 +178,28 @@ class ListingsPage extends React.Component {
         this.updateParamsMap('endDate', picker.endDate.format('DD/MM/YYYY'));
     }
 
-    getSearchTerms() {
-        let keys = Array.from(this.state.searchParams.keys());
+    onPageChange(page) {
+        window.scrollTo(0, 0);
+        this.setState({
+            currentPage: page,
+            loading: true
+        });
+
+        const searchTerms = this.getSearchTerms(this.state.searchParams);
+        getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
+            this.setState({
+                listings: data.filteredListings.content,
+                loading: false,
+                totalItems: data.filteredListings.totalElements
+            });
+        });
+    }
+
+    getSearchTerms(searchParams) {
+        let keys = Array.from(searchParams.keys());
         let pairs = [];
         for (let i = 0; i < keys.length; i++) {
-            pairs.push(keys[i] + '=' + this.createParam(this.state.searchParams.get(keys[i])));
+            pairs.push(keys[i] + '=' + this.createParam(searchParams.get(keys[i])));
         }
 
         return pairs.join('&');
@@ -168,37 +243,21 @@ class ListingsPage extends React.Component {
         return param.split(' ').join('%20');
     }
 
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-        if (this.updateParamsMap) {
-            this.updateParamsMap(e.target.name, e.target.value);
-        }
-    }
+    setPriceValue(e) {
+        let min = e.target.value[0].toString();
+        let max = e.target.value[1].toString();
 
-    onPageChange(page) {
-        window.scrollTo(0, 0);
+        this.updateParamsMap('priceMin', min);
+        this.updateParamsMap('priceMax', max);
         this.setState({
-            currentPage: page,
-            listingLoading: true
-        });
-
-        let searchTerms = this.getSearchTerms();
-        getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
-            this.setState({
-                listings: data.filteredListings.content,
-                listingLoading: false,
-                totalItems: data.filteredListings.totalElements
-            });
+            priceValue: e.target.value
         });
     }
 
-    componentWillUnmount() {
-        this.setState({
-            listings: null,
-            listingLoading: true,
-            currentPage: 1,
-            totalItems: 0
-        });
+    getPriceValue(searchParams) {
+        let min = Number(searchParams.get('priceMin')) > 1 ? Number(searchParams.get('priceMin')) : 1;
+        let max = Number(searchParams.get('priceMax')) < 5000 ? Number(searchParams.get('priceMax')) : 5000;
+        return [min, max];
     }
 
     render() {
@@ -208,7 +267,7 @@ class ListingsPage extends React.Component {
 
         let renderListings;
 
-        if (!hasLoadedListings || this.state.listingLoading === true) {
+        if (!hasLoadedListings || this.state.loading === true) {
             renderListings = <div className="loader"></div>;
         } else if (!hasListings) {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
@@ -220,7 +279,6 @@ class ListingsPage extends React.Component {
 
         return (
             <div>
-                {/* <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} /> */}
                 <ListingTypeNav />
                 <SearchBar
                     countryId={this.state.countryId} 
@@ -231,13 +289,23 @@ class ListingsPage extends React.Component {
                     onChange={this.onChange}
                     handleSearch={this.handleSearch}
                     handleDatePick={this.handleDatePick} />
-                
+
                 <Breadcrumb />
                 <section id="hotel-box">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters cities={this.state.cities} propertyTypes={this.state.propertyTypes} key={this.state.countryId} countryId={this.state.countryId} paramsMap={this.state.searchParams} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
+                                <Filters 
+                                    cities={this.state.cities}
+                                    citiesToggled={this.state.citiesToggled}
+                                    propertyTypes={this.state.propertyTypes}
+                                    propertyTypesToggled={this.state.propertyTypesToggled}
+                                    priceValue={this.state.priceValue}
+                                    setPriceValue={this.setPriceValue}
+                                    countryId={this.state.countryId}
+                                    handleSearch={this.handleFilter} 
+                                    toggleFilter={this.toggleFilter}
+                                    clearFilters={this.clearFilters} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
