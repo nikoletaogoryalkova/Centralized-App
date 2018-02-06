@@ -7,11 +7,10 @@ import React from 'react';
 import { getListingsByFilter, getCountries } from '../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-import ListingTypeNav from './ListingTypeNav';
 
 import SearchBar from '../common/searchbar/SearchBar';
 
-class ListingsPage extends React.Component {
+class ListingSearchPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -279,7 +278,6 @@ class ListingsPage extends React.Component {
 
         return (
             <div>
-                <ListingTypeNav />
                 <SearchBar
                     countryId={this.state.countryId} 
                     countries={this.state.countries}
@@ -327,9 +325,9 @@ class ListingsPage extends React.Component {
     }
 }
 
-ListingsPage.propTypes = {
+ListingSearchPage.propTypes = {
     location: PropTypes.object,
     history: PropTypes.object
 };
 
-export default withRouter(ListingsPage);
+export default withRouter(ListingSearchPage);
