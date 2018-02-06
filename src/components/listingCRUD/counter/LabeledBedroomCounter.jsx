@@ -1,5 +1,5 @@
-import React from 'react';
 import BedroomCounter from './BedroomCounter';
+import React from 'react';
 
 export default class LabeledBedroomCounter extends React.Component {
     render() {
@@ -8,7 +8,7 @@ export default class LabeledBedroomCounter extends React.Component {
         return (
             <div>
                 <label>
-                    {label}
+                    <span className="counter-label">{label}</span>
                     <BedroomCounter
                         name={name}
                         bedroom={bedroom}
@@ -16,7 +16,7 @@ export default class LabeledBedroomCounter extends React.Component {
                         onChange={onChange}
                         {...props} />
                 </label>
-            </div>  
+            </div>
         );
     }
 }

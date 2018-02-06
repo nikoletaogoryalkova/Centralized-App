@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import { Config } from '../../../config';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default class BedroomCounter extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.increment = this.increment.bind(this);
@@ -25,27 +24,22 @@ export default class BedroomCounter extends React.Component {
 
     render() {
         return (
-            <div style={{display: "inline-block"}}>
-                <img
-                    src={Config.getValue("basePath") + "images/left.png"}
-                    alt="plus"
-                    onClick={(e) => this.decrement(e)}/>
-                
-                <span 
-                    style={{margin: '10px', padding: '10px'}}>
+            <div style={{ display: 'inline-block' }}>
+                <span className="counter" onClick={(e) => this.decrement(e)}>&#8722;</span>
+
+                <span
+                    style={{ margin: '10px', padding: '10px' }}>
                     {this.props.value}
                 </span>
-                
-                <img
-                    src={Config.getValue("basePath") + "images/right.png"}
-                    alt="minus"
-                    onClick={(e) => this.increment(e)} />
+
+                <span className="counter" onClick={(e) => this.increment(e)}>&#43;</span>
             </div>
         );
     }
 }
 
-BedroomCounter.propTypes ={
+BedroomCounter.propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-}
+    value: PropTypes.number
+};

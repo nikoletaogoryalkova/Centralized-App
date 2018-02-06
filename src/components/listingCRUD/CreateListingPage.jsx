@@ -49,7 +49,7 @@ class CreateListingPage extends React.Component {
             dedicatedSpace: 'true',
             propertySize: '',
             guestsIncluded: 1,
-            bedroomsCount: 1,
+            bedroomsCount: '1 bedroom',
             bedrooms: [this.createBedroom(),],
             bathrooms: 1,
             facilities: new Set(),
@@ -156,8 +156,8 @@ class CreateListingPage extends React.Component {
     }
 
     updateBedrooms(event) {
-        let bedroomsCount = this.state.bedroomsCount;
-        let value = Number(event.target.value);
+        let bedroomsCount = Number(this.state.bedroomsCount.split(' ')[0]);
+        let value = Number(event.target.value.split(' ')[0]);
         if (value < 0) { value = 0; }
 
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
@@ -171,7 +171,7 @@ class CreateListingPage extends React.Component {
         }
 
         this.setState({
-            bedroomsCount: value,
+            bedroomsCount: value + ' ' + event.target.value.split(' ')[1],
             bedrooms: newBedrooms,
         });
     }

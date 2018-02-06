@@ -19,6 +19,14 @@ a.dropdown-toggle {
 .navbar-brand {
   height: auto;
 }
+.form-control {
+  background-image: auto;
+}
+.pac-logo:after {
+  background: none;
+  height: auto;
+  padding: 0;
+}
 @media screen and (min-width: 768px) {
   .navbar-collapse.collapse {
     display: flex!important;

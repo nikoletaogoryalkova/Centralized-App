@@ -29,6 +29,7 @@
     "react-dom": "^16.2.0",
     "react-drag-sortable": "^1.0.5",
     "react-dropzone": "^4.2.3",
+    "react-google-autocomplete": "^1.0.15",
     "react-google-invisible-recaptcha": "^0.2.1",
     "react-google-recaptcha": "^0.9.9",
     "react-image-preview": "^0.1.0",

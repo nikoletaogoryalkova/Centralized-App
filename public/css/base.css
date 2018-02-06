@@ -120,3 +120,7 @@ a:focus {
     background-color: #e98b73;
     color: #fff;
 }
+
+select {
+    background: url('../images/icon-arrow-dropdown.png') no-repeat 100% 50% #FFFFFF!important;
+}

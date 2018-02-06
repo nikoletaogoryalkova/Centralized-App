@@ -44,15 +44,15 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
     let requestHeaders = {};
 
     switch (method) {
-    case RequestMethod.GET:
-        requestHeaders = getParams;
-        break;
-    case RequestMethod.POST:
-        requestHeaders = postParams;
-        break;
-    case RequestMethod.DELETE:
-        requestHeaders = deleteParams;
-        break;
+        case RequestMethod.GET:
+            requestHeaders = getParams;
+            break;
+        case RequestMethod.POST:
+            requestHeaders = postParams;
+            break;
+        case RequestMethod.DELETE:
+            requestHeaders = deleteParams;
+            break;
     }
 
     return fetch(endpoint, requestHeaders)
@@ -79,7 +79,7 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
 }
 
 export function getListings() {
-    return sendRequest(`${host}listings?page=1&size=10`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}listings/top`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

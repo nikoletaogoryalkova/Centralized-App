@@ -1,11 +1,12 @@
 import 'react-select/dist/react-select.css';
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import PropTypes from 'prop-types';
 
+import Autocomplete from 'react-google-autocomplete';
 import BasicsAside from '../aside/BasicsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -69,6 +70,19 @@ export default function CreateListingLocation(props) {
                                         <div className="form-group">
                                             <label htmlFor="street">Address</label>
                                             <input onChange={props.onChange} className="form-control" id="street" name="street" value={street} />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="form-group">
+                                            <label htmlFor="street">Test Address</label>
+                                            <Autocomplete
+                                                className="form-control"
+                                                onPlaceSelected={(place) => {
+
+                                                    console.log(place.address_components[2].long_name);
+                                                }}
+                                                types={['(cities)']}
+                                            />
                                         </div>
                                     </div>
                                 </div>
