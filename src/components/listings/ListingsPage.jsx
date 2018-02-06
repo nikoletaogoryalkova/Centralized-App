@@ -1,89 +1,100 @@
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters';
-import Header from '../Header';
 import LPagination from '../common/LPagination';
 import Listing from './Listing';
-import Pagination from 'rc-pagination';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getListingsByFilter } from '../../requester';
+import { getListingsByFilter, getCountries } from '../../requester';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
+import ListingTypeNav from './ListingTypeNav';
+
+import SearchBar from '../common/searchbar/SearchBar';
 
 class ListingsPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            listings: null,
+            searchParams: undefined,
+            listings: undefined,
             listingLoading: true,
             currentPage: 1,
             totalItems: 0,
+            countries: undefined,
             countryId: '',
             cities: [],
             propertyTypes: []
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleDatePick = this.handleDatePick.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
     }
 
     componentDidMount() {
-        if (this.props.location.search) {
-            let searchTerms = this.getSearchTerms();
-            getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-                this.setState({
-                    listings: data.filteredListings.content,
-                    totalItems: data.filteredListings.totalElements,
-                    listingLoading: false,
-                    cities: data.cities,
-                    propertyTypes: data.types
-                });
+        getCountries(true).then(data => {
+            this.setState({ countries: data.content });
+        });
+        
+        let searchTerms = this.getSearchTerms();
+        getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
+            this.setState({
+                listings: data.filteredListings.content,
+                totalItems: data.filteredListings.totalElements,
+                listingLoading: false,
+                cities: data.cities,
+                propertyTypes: data.types
             });
-        }
-        else {
-            this.props.history.push('/');
-        }
+        });
     }
 
     componentWillMount() {
         if (this.props.location.search) {
-            this.paramsMap = this.getParamsMap();
-            this.setState({ countryId: this.getParamsMap().get('countryId') });
+            const searchParams = this.getSearchParams(this.props.location.search);
+            this.setState({
+                searchParams: searchParams,
+                countryId: searchParams.get('countryId'),
+                startDate: moment(searchParams.get('startDate'), 'DD/MM/YYYY'),
+                endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
+                guests: searchParams.get('guests'),
+            });
         }
     }
 
     handleSearch(e) {
-        if (e.preventDefault !== 'undefined' && typeof e.preventDefault === 'function') {
+        if (e) {
             e.preventDefault();
         }
+
         this.setState({
             listings: null,
             listingLoading: true
         });
-
-        let oldSearchTerms = queryString.parse(this.props.location.search);
-        let newSearchTerms = this.getParamsMap();
+        
         let searchTerms = this.getSearchTerms();
-
-
-
         getListingsByFilter(searchTerms).then(data => {
             this.setState({
                 listings: data.filteredListings.content,
                 listingLoading: false,
                 totalItems: data.filteredListings.totalElements,
-                countryId: this.getParamsMap().get('countryId')
+                countryId: this.getSearchParams().get('countryId'),
+                // cities: data.cities,
+                // propertyTypes: data.types
             });
 
-            if (!this.getParamsMap().get('cities') && !this.getParamsMap().get('propertyTypes')) {
+            if (!this.getSearchParams().get('cities') && !this.getSearchParams().get('propertyTypes')) {
                 this.setState({
                     cities: data.cities,
                     propertyTypes: data.types
                 });
             }
 
+            let oldSearchTerms = queryString.parse(this.props.location.search);
+            let newSearchTerms = this.getSearchParams();
             if (oldSearchTerms.countryId !== newSearchTerms.get('countryId') ||
                 oldSearchTerms.startDate !== newSearchTerms.get('startDate') ||
                 oldSearchTerms.endDate !== newSearchTerms.get('endDate') ||
@@ -99,17 +110,27 @@ class ListingsPage extends React.Component {
         this.props.history.push(url);
     }
 
+    handleDatePick(event, picker) {
+        this.setState({
+            startDate: picker.startDate,
+            endDate: picker.endDate,
+        });
+
+        this.updateParamsMap('startDate', picker.startDate.format('DD/MM/YYYY'));
+        this.updateParamsMap('endDate', picker.endDate.format('DD/MM/YYYY'));
+    }
+
     getSearchTerms() {
-        let keys = Array.from(this.paramsMap.keys());
+        let keys = Array.from(this.state.searchParams.keys());
         let pairs = [];
         for (let i = 0; i < keys.length; i++) {
-            pairs.push(keys[i] + '=' + this.createParam(this.paramsMap.get(keys[i])));
+            pairs.push(keys[i] + '=' + this.createParam(this.state.searchParams.get(keys[i])));
         }
 
         return pairs.join('&');
     }
 
-    getParamsMap() {
+    getSearchParams() {
         const map = new Map();
         const pairs = this.props.location.search.substr(1).split('&');
         for (let i = 0; i < pairs.length; i++) {
@@ -130,12 +151,12 @@ class ListingsPage extends React.Component {
 
     updateParamsMap(key, value) {
         if (!value || value === '') {
-            this.paramsMap.delete(key);
+            this.state.searchParams.delete(key);
         } else {
-            this.paramsMap.set(key, this.createParam(value));
+            this.state.searchParams.set(key, this.createParam(value));
         }
         if (key === 'countryId') {
-            this.paramsMap.delete('cities');
+            this.state.searchParams.delete('cities');
         }
     }
 
@@ -145,6 +166,13 @@ class ListingsPage extends React.Component {
 
     createParam(param) {
         return param.split(' ').join('%20');
+    }
+
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+        if (this.updateParamsMap) {
+            this.updateParamsMap(e.target.name, e.target.value);
+        }
     }
 
     onPageChange(page) {
@@ -192,13 +220,24 @@ class ListingsPage extends React.Component {
 
         return (
             <div>
-                <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
+                {/* <Header paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} /> */}
+                <ListingTypeNav />
+                <SearchBar
+                    countryId={this.state.countryId} 
+                    countries={this.state.countries}
+                    startDate={this.state.startDate}
+                    endDate={this.state.endDate}
+                    guests={this.state.guests}
+                    onChange={this.onChange}
+                    handleSearch={this.handleSearch}
+                    handleDatePick={this.handleDatePick} />
+                
                 <Breadcrumb />
                 <section id="hotel-box">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters cities={this.state.cities} propertyTypes={this.state.propertyTypes} key={this.state.countryId} countryId={this.state.countryId} paramsMap={this.paramsMap} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
+                                <Filters cities={this.state.cities} propertyTypes={this.state.propertyTypes} key={this.state.countryId} countryId={this.state.countryId} paramsMap={this.state.searchParams} updateParamsMap={this.updateParamsMap} handleSearch={this.handleSearch} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
