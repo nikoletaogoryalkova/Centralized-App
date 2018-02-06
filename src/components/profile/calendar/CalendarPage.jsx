@@ -186,13 +186,6 @@ class CalendarPage extends React.Component {
         this.componentDidMount();
     }
 
-    onSlotClick(e) {
-        if (document.getElementsByClassName('slot-selected').length > 0) {
-            document.getElementsByClassName('slot-selected')[0].className = '';
-        }
-        e.target.className = 'slot-selected';
-    }
-
     updateDailyPrice(captchaToken) {
         const listingId = this.props.match.params.id;
         const priceObj = {
@@ -235,8 +228,7 @@ class CalendarPage extends React.Component {
                             currencySign={this.state.currencySign}
                             // myListings={this.state.myListings}
                             selectedListing={this.state.selectedListing}
-                            onListingChange={this.onListingChange}
-                            onSlotClick={this.onSlotClick} />
+                            onListingChange={this.onListingChange} />
                     </div>
                 </div>
             </div>
