@@ -24,9 +24,9 @@ class CalendarPage extends React.Component {
             defaultDailyPrice: '',
             // myListings: null,
             selectedDay: '',
-            selectedDate: '',
+            selectedDate: {},
             available: 'true',
-            price: '',
+            price: null,
             currencySign: '',
             selectedListing: this.props.match.params.id
         };
@@ -133,7 +133,7 @@ class CalendarPage extends React.Component {
     }
 
     onCancel() {
-        this.setState({ selectedDay: null, date: null, price: '', available: 'true' });
+        this.setState({ selectedDay: null, date: null, price: null, available: 'true' });
     }
 
     onSelectSlot(e) {
@@ -145,7 +145,7 @@ class CalendarPage extends React.Component {
             this.setState({ selectedDay: day, selectedDate: date, price: selectedPriceEvent.price, available: `${selectedPriceEvent.available}` });
         }
         else {
-            this.setState({ selectedDay: day, selectedDate: date, price: '', available: 'true' });
+            this.setState({ selectedDay: day, selectedDate: date, price: null, available: 'true' });
         }
     }
 
@@ -176,9 +176,9 @@ class CalendarPage extends React.Component {
             reservations: null,
             myListings: null,
             selectedDay: '',
-            selectedDate: '',
+            selectedDate: {},
             available: 'true',
-            price: '',
+            price: null,
             currencySign: '',
             selectedListing: e.target.value
         });

@@ -57,9 +57,9 @@ export default class CalendarAside extends React.Component {
 }
 
 CalendarAside.propTypes = {
-    date: PropTypes.string,
+    date: PropTypes.instanceOf(Date),
     onCancel: PropTypes.func,
-    available: PropTypes.bool,
+    available: PropTypes.string,
     onChange: PropTypes.func,
     currencySign: PropTypes.string,
     price: PropTypes.number,
