@@ -116,7 +116,8 @@ export default class Calendar extends React.Component {
         return (
             <div className={(this.props.selectedDay !== null && this.props.selectedDay !== '') ? 'col-md-12 calendar dynamic-aside' : 'col-md-12 calendar'}>
                 <div className="col-md-8">
-                    <BigCalendar selectable
+                    <BigCalendar
+                        selectable
                         popup
                         events={this.props.allEvents}
                         defaultView='month'

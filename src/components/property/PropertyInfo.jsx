@@ -56,7 +56,12 @@ class PropertyInfo extends React.Component {
                         <p>{street}, {city.name}, {country.name}</p>
                         <button className="btn btn-primary" onClick={this.props.openModal}>Contact Host</button>
 
-                        <PropertyCalendar allEvents={this.props.allEvents} prices={this.props.prices} />
+                        <PropertyCalendar
+                            onApply={this.props.onApply}
+                            startDate={this.props.startDate}
+                            endDate={this.props.endDate}
+                            allEvents={this.props.allEvents}
+                            prices={this.props.prices} />
 
                         <div className="list-hotel-description">
                             <h2>Description</h2>
@@ -116,7 +121,8 @@ class PropertyInfo extends React.Component {
                             <div className="clearfix" />
                         </div>
                     </div>
-                    <PropertyReservation locRate={this.props.locRate}
+                    <PropertyReservation
+                        locRate={this.props.locRate}
                         showLoginModal={this.props.showLoginModal}
                         isLogged={this.props.isLogged}
                         userInfo={this.props.userInfo}
