@@ -2,8 +2,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { getCountOfUnreadMessages, login, register } from '../../requester';
-import { setIsLogged } from '../../actions/userInfo';
+import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo } from '../../requester';
+import { setIsLogged, setFirstName, setLastName, setPhoneNumber } from '../../actions/userInfo';
 
 import ChangePasswordModal from './modals/ChangePasswordModal';
 import { Config } from '../../config';
@@ -58,7 +58,7 @@ class MainNav extends React.Component {
         if (
             localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] &&
             localStorage[Config.getValue('domainPrefix') + '.auth.username']
-        ) this.props.dispatch(setIsLogged(true));
+        ) this.setUserInfo();
 
         const search = this.props.location.search;
         const searchParams = search.split('=');
@@ -157,7 +157,7 @@ class MainNav extends React.Component {
                     localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
 
                     // reflect that the user is logged in, both in Redux and in the local component state
-                    this.props.dispatch(setIsLogged(true));
+                    this.setUserInfo();
                     this.setState({ userName: user.email });
 
                     if (this.state.recoveryToken !== '') {
@@ -184,6 +184,22 @@ class MainNav extends React.Component {
                 this.captcha.reset();
             }
         });
+    }
+
+    setUserInfo() {
+        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+            getCurrentLoggedInUserInfo()
+                .then(res => {
+                    const { firstName, lastName, phoneNumber } = res;
+                    this.props.dispatch(setIsLogged(true));
+                    this.props.dispatch(setFirstName(firstName));
+                    this.props.dispatch(setLastName(lastName));
+                    this.props.dispatch(setPhoneNumber(phoneNumber));
+                });
+        }
+        else {
+            this.setState({ loaded: true, loading: false });
+        }
     }
 
     logout(e) {

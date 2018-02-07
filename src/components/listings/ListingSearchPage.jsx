@@ -16,7 +16,6 @@ class ListingSearchPage extends React.Component {
 
         this.state = {
             countryId: '',
-            countries: undefined,
             startDate: undefined,
             endDate: undefined,
             guests: undefined,
@@ -45,9 +44,9 @@ class ListingSearchPage extends React.Component {
     }
 
     componentDidMount() {
-        getCountries(true).then(data => {
-            this.setState({ countries: data.content });
-        });
+        // getCountries(true).then(data => {
+        //     this.setState({ countries: data.content });
+        // });
         
         const searchTerms = this.getSearchTerms(this.state.searchParams);
         getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
@@ -280,7 +279,7 @@ class ListingSearchPage extends React.Component {
             <div>
                 <SearchBar
                     countryId={this.state.countryId} 
-                    countries={this.state.countries}
+                    countries={this.props.countries}
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     guests={this.state.guests}

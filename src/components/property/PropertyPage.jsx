@@ -12,7 +12,7 @@ import Lightbox from 'react-images';
 import PropTypes from 'prop-types';
 import PropertyInfo from './PropertyInfo';
 import React from 'react';
-import Search from '../home/Search';
+import SearchBar from '../common/searchbar/SearchBar';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
@@ -20,23 +20,33 @@ import { parse } from 'query-string';
 class PropertyPage extends React.Component {
     constructor(props) {
         super(props);
-
+        
+        let countryId = '';
+        let guests = 2;
         let startDate = moment();
         let endDate = moment().add(1, 'day');
 
         if (this.props) {
             let queryParams = parse(this.props.location.search);
-
+            if (queryParams.guests) {
+                guests = queryParams.guests;
+            }
             if (queryParams.startDate && queryParams.endDate) {
                 startDate = moment(queryParams.startDate, 'DD/MM/YYYY');
                 endDate = moment(queryParams.endDate, 'DD/MM/YYYY');
             }
+            if (queryParams.countryId) {
+                countryId = queryParams.countryId;
+            }
         }
 
         this.state = {
+            countryId: countryId,
             startDate: startDate,
             endDate: endDate,
-            nights: 0,
+            calendarStartDate: startDate,
+            calendarEndDate: endDate,
+            guests: guests,
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
@@ -49,6 +59,8 @@ class PropertyPage extends React.Component {
         };
 
         this.handleApply = this.handleApply.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.gotoNext = this.gotoNext.bind(this);
         this.gotoPrevious = this.gotoPrevious.bind(this);
@@ -70,11 +82,31 @@ class PropertyPage extends React.Component {
     componentDidMount() {
         this.initializeCalendar();
 
-        if (this.state.startDate && this.state.endDate) {
-            this.calculateNights(this.state.startDate, this.state.endDate);
-        }
+        // if (this.state.startDate && this.state.endDate) {
+        //     this.calculateNights(this.state.startDate, this.state.endDate);
+        // }
 
         this.getUserInfo();
+    }
+    
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+        if (this.updateParamsMap) {
+            this.updateParamsMap(e.target.name, e.target.value);
+        }
+    }
+
+    handleSearch(e) {
+        e.preventDefault();
+        
+        let queryString = '?';
+
+        queryString += 'countryId=' + this.state.countryId;
+        queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
+        queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
+        queryString += '&guests=' + this.state.guests;
+
+        this.props.history.push('/listings' + queryString);
     }
 
     getUserInfo() {
@@ -102,12 +134,12 @@ class PropertyPage extends React.Component {
         let isInvalidRange = range.filter(x => !x.available).length > 0;
         if (isInvalidRange) {
             NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
-            this.setState({ startDate: undefined, endDate: undefined });
+            this.setState({ calendarStartDate: undefined, calendarEndDate: undefined });
         }
         else {
             this.setState({
-                startDate: picker.startDate,
-                endDate: picker.endDate,
+                calendarStartDate: picker.startDate,
+                calendarEndDate: picker.endDate,
             });
             this.calculateNights(picker.startDate, picker.endDate);
         }
@@ -147,7 +179,6 @@ class PropertyPage extends React.Component {
 
     handleClickImage() {
         if (this.state.currentImage === this.state.data.pictures.length - 1) return;
-
         this.gotoNext();
     }
 
@@ -187,14 +218,7 @@ class PropertyPage extends React.Component {
 
             this.setState({ data: data });
 
-            getCalendarByListingIdAndDateRange(
-                this.props.match.params.id,
-                now,
-                end,
-                this.props.paymentInfo.currency,
-                0,
-                DAY_INTERVAL
-            ).then(res => {
+            getCalendarByListingIdAndDateRange(this.props.match.params.id, now, end, this.props.paymentInfo.currency, 0, DAY_INTERVAL).then(res => {
                 let prices = [];
                 for (let dateInfo of res.content) {
                     let price = dateInfo.available ? `${this.props.paymentInfo.currencySign}${Math.round(dateInfo.price)}` : '';
@@ -224,97 +248,106 @@ class PropertyPage extends React.Component {
     }
 
     render() {
-
+        let loading, allEvents, images;
         if (this.state.data === null ||
             this.state.prices === null ||
             this.state.reservations === null ||
             this.state.loaded === false) {
-            return <div className="loader"></div>;
-        }
-
-        let allEvents = this.state.prices;
-        let images = null;
-        if (this.state.data.pictures !== undefined) {
-            images = this.state.data.pictures.map(x => {
-                return { src: x.original };
-            });
-        }
-
-        if (this.state.oldCurrency !== this.props.paymentInfo.currency) {
-            this.initializeCalendar();
+            loading = true;
+        } else {
+            allEvents = this.state.prices;
+            images = null;
+            if (this.state.data.pictures !== undefined) {
+                images = this.state.data.pictures.map(x => {
+                    return { src: x.original };
+                });
+            }
+    
+            if (this.state.oldCurrency !== this.props.paymentInfo.currency) {
+                this.initializeCalendar();
+            }
         }
 
         return (
-            <div key={1}>
+            <div>
                 <div>
-                    <section id="search-bar">
-                        <div className="container">
-                            <Search />
-                        </div>
-                    </section>
+                    <SearchBar
+                        countryId={this.state.countryId} 
+                        countries={this.props.countries}
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        guests={this.state.guests}
+                        onChange={this.onChange}
+                        handleSearch={this.handleSearch}
+                        handleDatePick={this.handleDatePick} />
                 </div>
-                <section className="hotel-gallery">
-                    <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url("' + this.state.data.pictures[0].original + '")' } : { backgroundColor: '#AAA' }}>
-                        <div className="container">
-                            <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
-                            {images !== null && <Lightbox
-                                currentImage={this.state.currentImage}
-                                images={images}
-                                isOpen={this.state.lightboxIsOpen}
-                                onClickImage={this.handleClickImage}
-                                onClickNext={this.gotoNext}
-                                onClickPrev={this.gotoPrevious}
-                                onClickThumbnail={this.gotoImage}
-                                onClose={this.closeLightbox}
-                            />}
-                        </div>
+                
+                {loading ? 
+                    <div className="loader"></div> :
+                    <div>
+                        <section className="hotel-gallery">
+                            <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url("' + this.state.data.pictures[0].original + '")' } : { backgroundColor: '#AAA' }}>
+                                <div className="container">
+                                    <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
+                                    {images !== null && <Lightbox
+                                        currentImage={this.state.currentImage}
+                                        images={images}
+                                        isOpen={this.state.lightboxIsOpen}
+                                        onClickImage={this.handleClickImage}
+                                        onClickNext={this.gotoNext}
+                                        onClickPrev={this.gotoPrevious}
+                                        onClickThumbnail={this.gotoImage}
+                                        onClose={this.closeLightbox}
+                                    />}
+                                </div>
+                            </div>
+                        </section>
+                        <nav id="hotel-nav">
+                            <div className="container">
+                                <ul className="nav navbar-nav">
+
+                                    <li>
+                                        <a href="#overview">Overview</a>
+                                    </li>
+                                    <li>
+                                        <a href="#facilities">Facilities</a>
+                                    </li>
+                                    {this.state.data.descriptionsAccessInfo &&
+                                        <li>
+                                            <a href="#reviews">Access Info</a>
+                                        </li>
+                                    }
+                                    {this.state.data.reviews && this.state.data.reviews.lenght > 0 &&
+                                        <li>
+                                            <a href="#reviews">Reviews</a>
+                                        </li>
+                                    }
+                                    <li>
+                                        <a href="#map">Location</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </nav>
+                        <PropertyInfo
+                            allEvents={allEvents}
+                            calendar={this.state.calendar}
+                            nights={this.state.nights}
+                            onApply={this.handleApply}
+                            startDate={this.state.calendarStartDate}
+                            endDate={this.state.calendarEndDate}
+                            data={this.state.data}
+                            prices={this.state.prices}
+                            isLogged={this.props.userInfo.isLogged}
+                            // userInfo={this.state.userInfo}
+                            loading={this.state.loading}
+                            openModal={this.openModal}
+                            closeModal={this.closeModal}
+                            isShownContactHostModal={this.state.isShownContactHostModal}
+                            sendMessageToHost={this.sendMessageToHost} />
+                        <NotificationContainer />
                     </div>
-                </section>
-
-                <nav id="hotel-nav">
-                    <div className="container">
-                        <ul className="nav navbar-nav">
-
-                            <li>
-                                <a href="#overview">Overview</a>
-                            </li>
-                            <li>
-                                <a href="#facilities">Facilities</a>
-                            </li>
-                            {this.state.data.descriptionsAccessInfo &&
-                                <li>
-                                    <a href="#reviews">Access Info</a>
-                                </li>
-                            }
-                            {this.state.data.reviews && this.state.data.reviews.lenght > 0 &&
-                                <li>
-                                    <a href="#reviews">Reviews</a>
-                                </li>
-                            }
-                            <li>
-                                <a href="#map">Location</a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </nav>
-                <PropertyInfo
-                    allEvents={allEvents}
-                    calendar={this.state.calendar}
-                    nights={this.state.nights}
-                    onApply={this.handleApply}
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate}
-                    data={this.state.data}
-                    prices={this.state.prices}
-                    isLogged={this.props.userInfo.isLogged}
-                    userInfo={this.state.userInfo}
-                    loading={this.state.loading}
-                    openModal={this.openModal}
-                    closeModal={this.closeModal}
-                    isShownContactHostModal={this.state.isShownContactHostModal}
-                    sendMessageToHost={this.sendMessageToHost} />
-                <NotificationContainer />
+                }
             </div>
         );
     }
