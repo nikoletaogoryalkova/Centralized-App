@@ -10,7 +10,7 @@ const Filters = (props) => (
             <div className="filter-check-box">
                 {props.cities.map((item, i) => {
                     return (
-                        <div key={i} onClick={(e) => { props.toggleFilter('cities', item.text); props.handleFilter(e); }}>
+                        <div key={i} onClick={(e) => { props.toggleFilter('cities', item.text); props.handleSearch(e); }}>
                             <FiltersCheckbox
                                 key={i}
                                 text={item.text}
@@ -29,7 +29,7 @@ const Filters = (props) => (
             <div className="filter-price-box">
                 <ReactBootstrapSlider
                     value={props.priceValue}
-                    slideStop={(e) => { props.setPriceValue(e); props.handleFilter(e); }}
+                    slideStop={(e) => { props.setPriceValue(e); props.handleSearch(e); }}
                     step={5}
                     max={5000}
                     min={1}
@@ -45,7 +45,7 @@ const Filters = (props) => (
             <div className="filter-check-box">
                 {props.propertyTypes.map((item, i) => {
                     return (
-                        <div key={i} onClick={(e) => { props.toggleFilter('propertyTypes', item.text); props.handleFilter(e); }}>
+                        <div key={i} onClick={(e) => { props.toggleFilter('propertyTypes', item.text); props.handleSearch(e); }}>
                             <FiltersCheckbox
                                 key={i}
                                 text={item.text}
@@ -72,7 +72,7 @@ Filters.propTypes = {
     priceValue: PropTypes.array,
     setPriceValue: PropTypes.func,
     countryId: PropTypes.string,
-    handleFilter: PropTypes.func,
+    handleSearch: PropTypes.func,
     toggleFilter: PropTypes.func,
     clearFilters: PropTypes.func,
 };

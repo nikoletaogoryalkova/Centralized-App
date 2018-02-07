@@ -245,7 +245,14 @@ class PropertyPage extends React.Component {
         }
 
         return (
-            <div>
+            <div key={1}>
+                <div>
+                    <section id="search-bar">
+                        <div className="container">
+                            <Search />
+                        </div>
+                    </section>
+                </div>
                 <section className="hotel-gallery">
                     <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url("' + this.state.data.pictures[0].original + '")' } : { backgroundColor: '#AAA' }}>
                         <div className="container">
