@@ -53,16 +53,18 @@ class ListingPage extends React.Component {
             this.setState({ countries: data.content });
         });
         
-        const searchTerms = this.getSearchTerms(this.state.searchParams);
-        getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
-            this.setState({
-                listings: data.filteredListings.content,
-                totalItems: data.filteredListings.totalElements,
-                loading: false,
-                cities: data.cities,
-                propertyTypes: data.types
+        if (this.state.searchParams) {
+            const searchTerms = this.getSearchTerms(this.state.searchParams);
+            getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
+                this.setState({
+                    listings: data.filteredListings.content,
+                    totalItems: data.filteredListings.totalElements,
+                    loading: false,
+                    cities: data.cities,
+                    propertyTypes: data.types
+                });
             });
-        });
+        }
     }
 
     componentWillMount() {
