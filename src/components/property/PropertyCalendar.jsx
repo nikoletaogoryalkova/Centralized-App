@@ -67,14 +67,25 @@ export default class PropertyCalendar extends React.Component {
             now.setHours(0, 0, 0, 0);
 
             let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > moment().add(89, 'days'));
+            let isSelected = value.getTime() >=  this.props.startDate.toDate().getTime() && value <= this.props.endDate.toDate().getTime();
 
             let currentDay = this.props.prices.find(p => p.start.diff(value) === 0);
             if ((currentDay && !currentDay.available) || currentDay === undefined) {
                 isPastDate = true;
             }
 
+            let className = isPastDate ? 'date-in-past' : 'rbc-day-bg';
+            let borderBottom = isSelected ? '3px solid #d77961' : '1px solid #DDD';
+
             return (
-                <div className={isPastDate ? 'date-in-past' : 'rbc-day-bg'} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto' }}>
+                <div
+                    className={className}
+                    style={{
+                        flexBasis: 14.2857 + '%',
+                        maxWidth: 14.2857 + '%',
+                        cursor: 'auto',
+                        borderBottom
+                    }}>
                     {children}
                 </div>
             );
@@ -96,12 +107,19 @@ export default class PropertyCalendar extends React.Component {
         return (
             <div className="col-md-12 calendar" style={{ margin: '30px 0' }}>
                 <div className="col-md-12">
-                    <BigCalendar selectable
+                    <BigCalendar
+                        selectable
                         popup
                         events={this.props.allEvents}
                         defaultView='month'
                         step={60}
                         defaultDate={new Date()}
+                        onSelectSlot={e => {
+                            this.props.onApply(e.action, {
+                                startDate: moment(e.start),
+                                endDate: moment(e.end)
+                            });
+                        }}
                         views={['month']}
                         components={{
                             toolbar: CustomToolbar,
@@ -118,5 +136,8 @@ export default class PropertyCalendar extends React.Component {
 
 PropertyCalendar.propTypes = {
     prices: PropTypes.array,
-    allEvents: PropTypes.array
+    allEvents: PropTypes.array,
+    startDate: PropTypes.object,
+    endDate: PropTypes.object,
+    onApply: PropTypes.func
 };

@@ -40,7 +40,9 @@ class DatePicker extends React.Component {
                             maxDate={moment().add(90, 'days').format('DD/MM/YYYY')}
                             locale={{ format: 'DD/MM/YYYY' }}
                             {...pickerProps}>
-                            <input className="form-control"
+                            <input
+                                readOnly
+                                className="form-control"
                                 required="required"
                                 autoComplete="off"
                                 placeholder="Select date"
