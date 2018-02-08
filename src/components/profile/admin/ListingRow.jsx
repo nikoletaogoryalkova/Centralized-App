@@ -18,10 +18,10 @@ export default class ListingRow extends React.Component {
                         <span>{this.props.listing.defaultDailyPrice}</span>
                     </div>
                     <div className="col-md-3">
-                        <a onClick={() => this.props.updateListingStatus(this.props.listing.id)}>{this.props.action}</a>
+                        <a className={this.props.actionClass} onClick={() => this.props.updateListingStatus(this.props.listing.id)}>{this.props.action}</a>
                     </div>
                     <div className="col-md-2">
-                        <a onClick={() => this.props.openModal(this.props.listing.id)}>Contact host</a>
+                        <a className="btn btn-info" onClick={() => this.props.openModal(this.props.listing.id)}>Contact host</a>
                     </div>
                 </div>
             </div>
@@ -33,6 +33,7 @@ ListingRow.propTypes = {
     listing: PropTypes.object,
     updateListingStatus: PropTypes.func,
     action: PropTypes.string,
+    actionClass: PropTypes.string,
     contactHost: PropTypes.func,
     openModal: PropTypes.func
 };

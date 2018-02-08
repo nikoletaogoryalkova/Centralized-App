@@ -237,6 +237,7 @@ class AllPublishedListings extends React.Component {
                                     return <ListingRow
                                         action="Unpublish"
                                         updateListingStatus={this.updateListingStatus}
+                                        actionClass="btn btn-danger"
                                         listing={item}
                                         key={i}
                                         openModal={this.openModal} />;
