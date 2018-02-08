@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo } from '../../requester';
-import { setIsLogged, setFirstName, setLastName, setPhoneNumber } from '../../actions/userInfo';
+import { setIsLogged, setUserInfo } from '../../actions/userInfo';
 
 import ChangePasswordModal from './modals/ChangePasswordModal';
 import { Config } from '../../config';
@@ -190,11 +190,9 @@ class MainNav extends React.Component {
         if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
             getCurrentLoggedInUserInfo()
                 .then(res => {
-                    const { firstName, lastName, phoneNumber } = res;
+                    const { firstName, lastName, phoneNumber, email } = res;
                     this.props.dispatch(setIsLogged(true));
-                    this.props.dispatch(setFirstName(firstName));
-                    this.props.dispatch(setLastName(lastName));
-                    this.props.dispatch(setPhoneNumber(phoneNumber));
+                    this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email));
                 });
         }
         else {

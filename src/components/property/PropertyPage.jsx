@@ -22,7 +22,7 @@ class PropertyPage extends React.Component {
         super(props);
         
         let countryId = '';
-        let guests = 2;
+        let guests = '';
         let startDate = moment();
         let endDate = moment().add(1, 'day');
 
@@ -40,12 +40,15 @@ class PropertyPage extends React.Component {
             }
         }
 
+        let nights = this.calculateNights(startDate, endDate);
+
         this.state = {
             countryId: countryId,
             startDate: startDate,
             endDate: endDate,
             calendarStartDate: startDate,
             calendarEndDate: endDate,
+            nigths: nights,
             guests: guests,
             data: null,
             lightboxIsOpen: false,
@@ -82,9 +85,9 @@ class PropertyPage extends React.Component {
     componentDidMount() {
         this.initializeCalendar();
 
-        // if (this.state.startDate && this.state.endDate) {
-        //     this.calculateNights(this.state.startDate, this.state.endDate);
-        // }
+        if (this.state.startDate && this.state.endDate) {
+            this.calculateNights(this.state.startDate, this.state.endDate);
+        }
 
         this.getUserInfo();
     }

@@ -9,26 +9,21 @@ export default function reducer(state = initialState, action) {
         case userInfo.SET_IS_LOGGED:
             return {
                 ...state,
-                isLogged: action.isLogged
+                isLogged: action.isLogged,
+                firstName: action.isLogged ? state.firstName : undefined,
+                lastName: action.isLogged ? state.lastName : undefined,
+                phoneNumber: action.isLogged ? state.phoneNumber : undefined,
+                email: action.isLogged ? state.email : undefined,
             };
 
-        case userInfo.SET_FIRST_NAME:
+        case userInfo.SET_USER_INFO:
             return {
                 ...state,
-                firstName: action.firstName
-            };
-
-        case userInfo.SET_LAST_NAME:
-            return {
-                ...state,
-                lastName: action.lastName
-            };
-            
-        case userInfo.SET_PHONE_NUMBER:
-            return {
-                ...state,
-                phoneNumber: action.phoneNumber
-            };
+                firstName: action.firstName,
+                lastName: action.lastName,
+                phoneNumber: action.phoneNumber,
+                email: action.email,
+            }
 
         default:
             return state;
