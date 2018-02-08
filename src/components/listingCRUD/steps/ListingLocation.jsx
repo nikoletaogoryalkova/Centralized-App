@@ -36,7 +36,23 @@ export default function CreateListingLocation(props) {
                                 <div className="col-md-12">
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <Select
+                                            <label htmlFor="city">City</label>
+                                            <Autocomplete
+                                                className="form-control"
+                                                value={city}
+                                                onChange={props.onChange}
+                                                name="city"
+                                                onPlaceSelected={(place) => {
+                                                    let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
+                                                    let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
+                                                    let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
+                                                    props.onChange({ target: { name: 'city', value: addressCityName } });
+                                                    props.onChange({ target: { name: 'country', value: addressCountryName } });
+                                                }}
+                                                types={['(cities)']}
+                                            />
+
+                                            {/* <Select
                                                 name="country"
                                                 placeholder="Country"
                                                 className="form-control form-control-select"
@@ -45,12 +61,15 @@ export default function CreateListingLocation(props) {
                                                 value={country}
                                                 onChange={(option) => updateCountry(props, option)}
                                                 options={renderCountries}
-                                            />
+                                            /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <Select
+                                            <label htmlFor="country">Country</label>
+                                            <input style={{ background: '#AAA', opacity: 0.5 }} disabled className="form-control" id="country" name="country" value={country} />
+
+                                            {/* <Select
                                                 name="city"
                                                 placeholder="City"
                                                 className="form-control form-control-select"
@@ -59,7 +78,7 @@ export default function CreateListingLocation(props) {
                                                 value={city}
                                                 onChange={option => props.onSelect('city', option)}
                                                 options={renderCities}
-                                            />
+                                            /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -69,20 +88,32 @@ export default function CreateListingLocation(props) {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="street">Address</label>
-                                            <input onChange={props.onChange} className="form-control" id="street" name="street" value={street} />
+                                            <Autocomplete
+                                                className="form-control"
+                                                name="street"
+                                                value={street}
+                                                onChange={props.onChange}
+                                                onPlaceSelected={(place) => {
+                                                    let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
+                                                    let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
+                                                    let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
+                                                    let addressStreetName = addressComponentsMap.filter(x => x.type === 'route')[0];
+                                                    let addressStreetNumber = addressComponentsMap.filter(x => x.type === 'street_number')[0];
+                                                    console.log(addressStreetName);
+                                                    let addressStreet = (addressStreetName !== undefined ? addressStreetName.name : '') + (addressStreetNumber !== undefined ? ' ' + addressStreetNumber.name : '');
+
+                                                    props.onChange({ target: { name: 'city', value: addressCityName !== undefined ? addressCityName.name : '' } });
+                                                    props.onChange({ target: { name: 'country', value: addressCountryName } });
+                                                    props.onChange({ target: { name: 'street', value: addressStreet } });
+                                                    console.log(place);
+                                                }}
+                                                types={['geocode']}
+                                            />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-                                            <label htmlFor="street">Test Address</label>
-                                            <Autocomplete
-                                                className="form-control"
-                                                onPlaceSelected={(place) => {
 
-                                                    console.log(place.address_components[2].long_name);
-                                                }}
-                                                types={['(cities)']}
-                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -163,4 +194,5 @@ CreateListingLocation.propTypes = {
     updateProgress: PropTypes.func,
     prev: PropTypes.string,
     next: PropTypes.string,
+    convertGoogleApiAddressComponents: PropTypes.func
 };

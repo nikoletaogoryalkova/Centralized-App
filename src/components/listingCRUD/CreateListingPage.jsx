@@ -43,7 +43,7 @@ class CreateListingPage extends React.Component {
         this.state = {
             progressId: null,
             listingType: '1',
-            country: '1',
+            country: '',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
@@ -463,6 +463,23 @@ class CreateListingPage extends React.Component {
         });
     }
 
+    convertGoogleApiAddressComponents(place) {
+        let addressComponents = place.address_components;
+
+        let addressComponentsArr = [];
+
+        for (let i = 0; i < addressComponents.length; i++) {
+
+            let addressComponent = {
+                name: addressComponents[i].long_name,
+                type: addressComponents[i].types[0]
+            };
+            addressComponentsArr.push(addressComponent);
+        }
+
+        return addressComponentsArr;
+    }
+
     render() {
         if (this.state.countries === [] || this.state.currencies === [] ||
             this.state.propertyTypes === [] || this.state.categories === [] ||
@@ -531,6 +548,7 @@ class CreateListingPage extends React.Component {
                         updateProgress={this.updateProgress}
                         routes={routes}
                         prev={routes.safetyamenities}
+                        convertGoogleApiAddressComponents={this.convertGoogleApiAddressComponents}
                         next={routes.description} />} />
                     <Route exact path={routes.description} render={() => <ListingDescription
                         values={this.state}
