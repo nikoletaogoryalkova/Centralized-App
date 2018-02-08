@@ -235,7 +235,14 @@ class AllUnpublishedListings extends React.Component {
                                     </div>
                                 </div>
                                 {this.state.listings.map((item, i) => {
-                                    return <ListingRow action="Publish" canDelete={true} updateListingStatus={this.updateListingStatus} actionClass="btn btn-success" listing={item} key={i} openModal={this.openModal} />;
+                                    return <ListingRow
+                                        action="Publish"
+                                        canDelete={true}
+                                        updateListingStatus={this.updateListingStatus}
+                                        actionClass="btn btn-success"
+                                        listing={item}
+                                        key={i}
+                                        openModal={this.openModal} />;
                                 })}
 
                                 <LPagination
