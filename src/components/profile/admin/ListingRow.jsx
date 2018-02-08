@@ -10,12 +10,17 @@ export default class ListingRow extends React.Component {
         this.state = {
             isDeleting: false,
             deletingId: -1,
-            deletingName: ''
+            deletingName: '',
+            isPublishing: false
         };
 
         this.onHide = this.onHide.bind(this);
         this.onOpen = this.onOpen.bind(this);
         this.filterListings = filterListings.bind(this);
+    }
+
+    componentWillReceiveProps() {
+        this.setState({ isPublishing: false });
     }
 
     onHide() {
@@ -63,14 +68,20 @@ export default class ListingRow extends React.Component {
                         <span>{this.props.listing.defaultDailyPrice}</span>
                     </div>
                     <div className="col-md-3">
-                        <a className={this.props.actionClass}
-                           onClick={() => this.props.updateListingStatus(this.props.listing.id)}>{this.props.action}</a>
-                        &nbsp;
-                        {this.props.canDelete &&
-                        <a className="btn btn-danger"
-                           onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
-                            Delete
-                        </a>
+                        { this.state.isPublishing ?
+                            <div className="loader" style={{ width: 110 }}></div> :
+                            <div><a className={this.props.actionClass}
+                                onClick={() => {
+                                    this.setState({ isPublishing: true });
+                                    this.props.updateListingStatus(this.props.listing.id);
+                                }}>{this.props.action}</a>
+                            &nbsp;
+                            {this.props.canDelete &&
+                                <a className="btn btn-danger"
+                                    onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
+                                    Delete
+                                </a>
+                            }</div>
                         }
                     </div>
                     <div className="col-md-2">
