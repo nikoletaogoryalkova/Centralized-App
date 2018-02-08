@@ -2,8 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-class PropertyReview extends React.Component {
-    getRatingString(rating) {
+function PropertyReview(props) {
+    const getRatingString = (rating) => {
         let result = '';
         let ratingRoundedNumber = Math.round(rating);
         if (ratingRoundedNumber === 5) {
@@ -23,9 +23,9 @@ class PropertyReview extends React.Component {
         result += ' ';
         result += Math.round(rating * 100) / 100 + '/5';
         return result;
-    }
+    };
 
-    getStars(rating) {
+    const getStars = (rating) => {
         let starsElements = [];
         let rounded = Math.round(rating);
         for (let i = 0; i < rounded; i++) {
@@ -37,19 +37,17 @@ class PropertyReview extends React.Component {
         }
 
         return starsElements;
-    }
+    };
 
-    render() {
-        return (
-            <div className="list-hotel-rating">
-                <div className="list-hotel-rating-count">{this.getRatingString(this.props.rating)}</div>
-                <div className="list-hotel-rating-stars">
-                    {this.getStars(this.props.rating)}
-                </div>
-                <p className="list-hotel-rating-review">{this.props.text}</p>
+    return (
+        <div className="list-hotel-rating">
+            <div className="list-hotel-rating-count">{getRatingString(props.rating)}</div>
+            <div className="list-hotel-rating-stars">
+                {getStars(props.rating)}
             </div>
-        );
-    }
+            <p className="list-hotel-rating-review">{props.text}</p>
+        </div>
+    );
 }
 
 export default withRouter(PropertyReview);

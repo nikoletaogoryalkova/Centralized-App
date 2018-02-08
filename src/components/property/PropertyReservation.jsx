@@ -221,6 +221,15 @@ class PropertyReservation extends React.Component {
 }
 
 PropertyReservation.propTypes = {
+    startDate: PropTypes.any,
+    endDate: PropTypes.any,
+    isLogged: PropTypes.bool,
+    calendar: PropTypes.any,
+    nights: PropTypes.number,
+    listing: PropTypes.any,
+    loading: PropTypes.bool,
+    onApply: PropTypes.func,
+
     // start Redux props
     dispatch: PropTypes.func,
     userInfo: PropTypes.object,

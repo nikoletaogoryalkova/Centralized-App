@@ -5,7 +5,6 @@ import AllListingsFilter from './AllListingsFilter';
 import ContactHostModal from '../../property/ContactHostModal';
 import LPagination from '../../common/LPagination';
 import ListingRow from './ListingRow';
-import Pagination from 'rc-pagination';
 import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';

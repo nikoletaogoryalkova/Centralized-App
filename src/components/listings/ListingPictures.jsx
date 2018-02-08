@@ -41,6 +41,6 @@ function ListingPictures(props) {
 export default withRouter(ListingPictures);
 
 ListingPictures.propTypes = {
-    pictures: PropTypes.array,
+    pictures: PropTypes.string,
     id: PropTypes.number
 };

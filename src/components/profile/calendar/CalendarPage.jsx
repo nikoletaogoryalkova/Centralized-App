@@ -37,7 +37,7 @@ class CalendarPage extends React.Component {
         this.onSelectSlot = this.onSelectSlot.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.onListingChange = this.onListingChange.bind(this);
+        // this.onListingChange = this.onListingChange.bind(this);
         this.updateDailyPrice = this.updateDailyPrice.bind(this);
     }
 
@@ -174,22 +174,22 @@ class CalendarPage extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    onListingChange(e) {
-        this.setState({
-            listing: null,
-            prices: null,
-            reservations: null,
-            myListings: null,
-            selectedDay: '',
-            selectedDate: {},
-            available: 'true',
-            price: null,
-            currencySign: '',
-            selectedListing: e.target.value
-        });
-        this.props.history.push(`/profile/listings/calendar/${e.target.value}`);
-        this.componentDidMount();
-    }
+    // onListingChange(e) {
+    //     this.setState({
+    //         listing: null,
+    //         prices: null,
+    //         reservations: null,
+    //         myListings: null,
+    //         selectedDay: '',
+    //         selectedDate: {},
+    //         available: 'true',
+    //         price: null,
+    //         currencySign: '',
+    //         selectedListing: e.target.value
+    //     });
+    //     this.props.history.push(`/profile/listings/calendar/${e.target.value}`);
+    //     this.componentDidMount();
+    // }
 
     updateDailyPrice(captchaToken) {
         this.setState({ calendarLoading: true });
@@ -236,8 +236,7 @@ class CalendarPage extends React.Component {
                             updateDailyPrice={this.updateDailyPrice}
                             currencySign={this.state.currencySign}
                             // myListings={this.state.myListings}
-                            selectedListing={this.state.selectedListing}
-                            onListingChange={this.onListingChange} />
+                            selectedListing={this.state.selectedListing} />
                     </div>
                 </div>
             </div>

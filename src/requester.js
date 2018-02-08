@@ -44,15 +44,17 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
     let requestHeaders = {};
 
     switch (method) {
-        case RequestMethod.GET:
-            requestHeaders = getParams;
-            break;
-        case RequestMethod.POST:
-            requestHeaders = postParams;
-            break;
-        case RequestMethod.DELETE:
-            requestHeaders = deleteParams;
-            break;
+    case RequestMethod.GET:
+        requestHeaders = getParams;
+        break;
+    case RequestMethod.POST:
+        requestHeaders = postParams;
+        break;
+    case RequestMethod.DELETE:
+        requestHeaders = deleteParams;
+        break;
+    default:
+        break;
     }
 
     return fetch(endpoint, requestHeaders)

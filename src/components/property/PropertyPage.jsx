@@ -1,4 +1,4 @@
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
     contactHost,
@@ -129,12 +129,9 @@ class PropertyPage extends React.Component {
     }
 
     handleApply(event, picker) {
-        let prices = this.state.prices;
-        let range = prices.filter(x => x.start >= picker.startDate && x.end <= picker.endDate);
-
-        let availableDates = prices.filter(x => x.available).sort(function (a, b) { return a.start.diff(b.start); });
-
-        let isInvalidRange = range.filter(x => !x.available).length > 0;
+        const prices = this.state.prices;
+        const range = prices.filter(x => x.start >= picker.startDate && x.end <= picker.endDate);
+        const isInvalidRange = range.filter(x => !x.available).length > 0;
         if (isInvalidRange) {
             NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
             this.setState({ calendarStartDate: undefined, calendarEndDate: undefined });

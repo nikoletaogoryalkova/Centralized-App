@@ -29,12 +29,6 @@ export default class Calendar extends React.Component {
                     </div>
 
                     <span className="rbc-toolbar-label">{label()}</span>
-                    {/* 
-                    <select value={this.props.selectedListing} onChange={this.props.onListingChange}>
-                        {this.props.myListings.map((item, i) => {
-                            return <option key={i} value={item.id}>{item.name}</option>
-                        })}
-                    </select> */}
                 </div>
             );
         };
