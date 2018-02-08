@@ -4,7 +4,7 @@ import LPagination from '../common/LPagination';
 import Listing from './Listing';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getListingsByFilter, getCountries } from '../../requester';
+import { getListingsByFilter } from '../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
@@ -105,7 +105,16 @@ class ListingSearchPage extends React.Component {
 
         this.clearFilters(e);
         const searchTerms = this.getSearchTerms(this.state.searchParams);
-        this.getListingsBySearchTerms(searchTerms);
+        getListingsByFilter(searchTerms).then(data => {
+            this.setState({
+                listings: data.filteredListings.content,
+                loading: false,
+                totalItems: data.filteredListings.totalElements,
+                countryId: this.getSearchParams().get('countryId'),
+                cities: data.cities,
+                propertyTypes: data.types
+            });
+        });
         const url = `/listings/?${searchTerms}`;
         this.props.history.push(url);
     }
@@ -121,22 +130,15 @@ class ListingSearchPage extends React.Component {
         });
 
         let searchTerms = this.getSearchTerms(this.state.searchParams);
-        this.getListingsBySearchTerms(searchTerms);
-        let url = `/listings/?${searchTerms}`;
-        this.props.history.push(url);
-    }
-
-    getListingsBySearchTerms(searchTerms) {
         getListingsByFilter(searchTerms).then(data => {
-            this.setState({
-                listings: data.filteredListings.content,
+            this.setState({listings: data.filteredListings.content,
                 loading: false,
                 totalItems: data.filteredListings.totalElements,
                 countryId: this.getSearchParams().get('countryId'),
-                cities: data.cities,
-                propertyTypes: data.types
             });
         });
+        let url = `/listings/?${searchTerms}`;
+        this.props.history.push(url);
     }
 
     clearFilters(e) {
@@ -325,6 +327,7 @@ class ListingSearchPage extends React.Component {
 }
 
 ListingSearchPage.propTypes = {
+    countries: PropTypes.array,
     location: PropTypes.object,
     history: PropTypes.object
 };

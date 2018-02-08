@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-class ListingRating extends React.Component {
-    getRatingString(ratingNumber, reviewsCount) {
+function ListingRating(props) {
+    const getRatingString = (ratingNumber, reviewsCount) => {
         if (reviewsCount === 0) {
             return '';
         }
@@ -32,9 +31,9 @@ class ListingRating extends React.Component {
         result += ' ';
         result += Math.round(ratingNumber * 100) / 100 + '/5';
         return result;
-    }
+    };
 
-    calculateStars(ratingNumber) {
+    const calculateStars = (ratingNumber) => {
         let starsElements = [];
         let rating = Math.round(ratingNumber);
         for (let i = 0; i < rating; i++) {
@@ -45,19 +44,17 @@ class ListingRating extends React.Component {
         }
 
         return starsElements;
-    }
+    };
 
-    render() {
-        return (
-            <div className="list-hotel-rating">
-                <div className="list-hotel-rating-count">{this.getRatingString(this.props.rating, this.props.reviewsCount)}</div>
-                <div className="list-hotel-rating-stars">
-                    {this.calculateStars(this.props.rating)}
-                </div>
-                <div className="list-hotel-rating-review">{this.props.reviewsCount} Reviews</div>
+    return (
+        <div className="list-hotel-rating">
+            <div className="list-hotel-rating-count">{getRatingString(props.rating, props.reviewsCount)}</div>
+            <div className="list-hotel-rating-stars">
+                {calculateStars(props.rating)}
             </div>
-        );
-    }
+            <div className="list-hotel-rating-review">{props.reviewsCount} Reviews</div>
+        </div>
+    );
 }
 
 ListingRating.propTypes = {
@@ -65,4 +62,4 @@ ListingRating.propTypes = {
     reviewsCount: PropTypes.number
 };
 
-export default withRouter(ListingRating);
+export default ListingRating;

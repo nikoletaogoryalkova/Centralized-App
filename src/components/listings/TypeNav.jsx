@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ListingTypeNav = () => (
+const TypeNav = () => (
     <div>
         <nav id="second-nav">
             <div className="container">
@@ -18,4 +18,4 @@ const ListingTypeNav = () => (
     </div>
 );
 
-export default ListingTypeNav;
+export default TypeNav;
