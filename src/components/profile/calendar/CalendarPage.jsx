@@ -28,6 +28,8 @@ class CalendarPage extends React.Component {
             available: 'true',
             price: null,
             currencySign: '',
+            currencyCode: '',
+            calendarLoading: false,
             selectedListing: this.props.match.params.id
         };
 
@@ -41,10 +43,6 @@ class CalendarPage extends React.Component {
 
 
     componentDidMount() {
-        let now = new Date();
-        let end = new Date();
-        const DAY_INTERVAL = 90;
-        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
 
         // getAllMyListings().then((data) => {
         //     this.setState({ myListings: data.content });
@@ -64,54 +62,61 @@ class CalendarPage extends React.Component {
             default: currencySign = 'null';
             }
 
-            this.setState({ currencySign: currencySign, listing: data.content, defaultDailyPrice: data.defaultDailyPrice });
-
-            getCalendarByListingIdAndDateRange(
-                this.props.match.params.id,
-                now,
-                end,
-                currencyCode,
-                0,
-                DAY_INTERVAL
-            ).then(res => {
-                let prices = [];
-                for (let dateInfo of res.content) {
-                    let availableStyle = dateInfo.available ? 1 : 0.5;
-                    let price = {
-                        'title': <span className="calendar-price bold" style={{ opacity: availableStyle }}>{currencySign}{Math.round(dateInfo.price)}</span>,
-                        'start': moment(dateInfo.date, 'DD/MM/YYYY'),
-                        'end': moment(dateInfo.date, 'DD/MM/YYYY'),
-                        'allDay': true,
-                        'price': Math.round(dateInfo.price),
-                        'available': dateInfo.available
-                    };
-                    prices.push(price);
-                }
-
-                this.setState({ prices: prices });
+            this.setState({ 
+                currencySign: currencySign, 
+                currencyCode: currencyCode, 
+                listing: data.content, 
+                defaultDailyPrice: data.defaultDailyPrice 
+            }, () => {
+                this.updateCalendar();
             });
-
-            getMyReservations()
-                .then(res => {
-                    let reservations = res.content.filter(r => r.listingId === this.props.match.params.id);
-                    let events = [];
-                    for (let reservation of reservations) {
-                        let event = {
-                            'title': <span className="calendar-reservation-event">{reservation.guestName}</span>,
-                            'start': new Date(reservation.startDate),
-                            'end': new Date(reservation.endDate),
-                            'isReservation': true,
-                            'price': reservation.price,
-                            'guests': reservation.guests
-                        };
-                        events.push(event);
-                    }
-
-                    this.setState({
-                        reservations: events
-                    });
-                });
         });
+    }
+
+    updateCalendar() {
+        let now = new Date();
+        let end = new Date();
+        const DAY_INTERVAL = 90;
+        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
+        const { currencyCode, currencySign } = this.state;
+        getCalendarByListingIdAndDateRange(this.props.match.params.id, now, end, currencyCode, 0, DAY_INTERVAL).then(res => {
+            let prices = [];
+            for (let dateInfo of res.content) {
+                let availableStyle = dateInfo.available ? 1 : 0.5;
+                let price = {
+                    'title': <span className="calendar-price bold" style={{ opacity: availableStyle }}>{currencySign}{Math.round(dateInfo.price)}</span>,
+                    'start': moment(dateInfo.date, 'DD/MM/YYYY'),
+                    'end': moment(dateInfo.date, 'DD/MM/YYYY'),
+                    'allDay': true,
+                    'price': Math.round(dateInfo.price),
+                    'available': dateInfo.available
+                };
+                prices.push(price);
+            }
+    
+            this.setState({ prices: prices });
+        });
+    
+        getMyReservations()
+            .then(res => {
+                let reservations = res.content.filter(r => r.listingId === this.props.match.params.id);
+                let events = [];
+                for (let reservation of reservations) {
+                    let event = {
+                        'title': <span className="calendar-reservation-event">{reservation.guestName}</span>,
+                        'start': new Date(reservation.startDate),
+                        'end': new Date(reservation.endDate),
+                        'isReservation': true,
+                        'price': reservation.price,
+                        'guests': reservation.guests
+                    };
+                    events.push(event);
+                }
+    
+                this.setState({
+                    reservations: events
+                });
+            });
     }
 
     mergeEvents(prices, reservations) {
@@ -187,6 +192,8 @@ class CalendarPage extends React.Component {
     }
 
     updateDailyPrice(captchaToken) {
+        this.setState({ calendarLoading: true });
+        
         const listingId = this.props.match.params.id;
         const priceObj = {
             defaultDailyPrice: this.state.defaultDailyPrice
@@ -194,12 +201,12 @@ class CalendarPage extends React.Component {
 
         editDefaultDailyPrice(listingId, priceObj, captchaToken).then(res => {
             if (res.success) {
-                window.location.reload();
+                this.updateCalendar();
+                this.setState({ calendarLoading: false });
             } else {
                 alert('failure');
             }
         });
-
     }
 
     render() {
@@ -214,7 +221,9 @@ class CalendarPage extends React.Component {
             <div>
                 <div className="col-md-12">
                     <div className="container">
-                        <Calendar allEvents={allEvents}
+                        <Calendar 
+                            allEvents={allEvents}
+                            calendarLoading={this.state.calendarLoading}
                             onCancel={this.onCancel}
                             onSelectSlot={this.onSelectSlot}
                             selectedDay={this.state.selectedDay}
