@@ -6,6 +6,7 @@ import MyListingsActiveItem from './MyListingsActiveItem';
 import MyListingsInProgressItem from './MyListingsInProgressItem';
 import { NotificationContainer } from 'react-notifications';
 import React from 'react';
+import filterListings from '../../../actions/filterListings';
 
 export default class MyListingsPage extends React.Component {
     constructor(props) {
@@ -20,14 +21,9 @@ export default class MyListingsPage extends React.Component {
             totalListingsInProgress: 0
         };
 
-        this.filterListings = this.filterListings.bind(this);
+        this.filterListings = filterListings.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
         this.deleteInProgressListing = this.deleteInProgressListing.bind(this);
-    }
-
-    filterListings(id) {
-        let newListings = this.state.listings.filter(l => l.id !== id);
-        this.setState({ listings: newListings });
     }
 
     componentDidMount() {

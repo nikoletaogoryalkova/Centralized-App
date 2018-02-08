@@ -236,6 +236,7 @@ class AllPublishedListings extends React.Component {
                                 {this.state.listings.map((item, i) => {
                                     return <ListingRow
                                         action="Unpublish"
+                                        canDelete={false}
                                         updateListingStatus={this.updateListingStatus}
                                         actionClass="btn btn-danger"
                                         listing={item}
