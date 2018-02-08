@@ -13,7 +13,6 @@ import { withRouter } from 'react-router-dom';
 class PropertyReservation extends React.Component {
     constructor(props) {
         super(props);
-
         let guests = '';
 
         if (this.props) {
@@ -38,6 +37,14 @@ class PropertyReservation extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.captchaChange = this.captchaChange.bind(this);
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            name: !newProps.isLogged ? '' : newProps.userInfo.firstName + ' ' + newProps.userInfo.lastName,
+            email: !newProps.isLogged ? '' : newProps.userInfo.email,
+            phone: !newProps.isLogged ? '' : newProps.userInfo.phoneNumber || '',
+        });
     }
 
     onChange(e) {
@@ -216,14 +223,16 @@ class PropertyReservation extends React.Component {
 PropertyReservation.propTypes = {
     // start Redux props
     dispatch: PropTypes.func,
+    userInfo: PropTypes.object,
     paymentInfo: PropTypes.object
 };
 
 export default withRouter(connect(mapStateToProps)(PropertyReservation));
 
 function mapStateToProps(state) {
-    const { paymentInfo } = state;
+    const { userInfo, paymentInfo } = state;
     return {
+        userInfo,
         paymentInfo
     };
 }

@@ -125,7 +125,7 @@ class PropertyInfo extends React.Component {
                         locRate={this.props.locRate}
                         showLoginModal={this.props.showLoginModal}
                         isLogged={this.props.isLogged}
-                        userInfo={this.props.userInfo}
+                        // userInfo={this.props.userInfo}
                         calendar={calendar}
                         nights={this.props.nights}
                         onApply={this.props.onApply}

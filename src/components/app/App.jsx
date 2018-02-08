@@ -7,7 +7,7 @@ import { Config } from '../../config';
 import CreateListingPage from '../listingCRUD/CreateListingPage';
 import EditListingPage from '../listingCRUD/EditListingPage';
 import HomePage from '../home/HomePage.jsx';
-import ListingPage from '../listings/ListingsPage';
+import ListingPage from '../listings/ListingPage';
 import PropertyPage from '../property/PropertyPage';
 import React from 'react';
 import moment from 'moment';
@@ -41,15 +41,14 @@ class App extends React.Component {
                 <MainNav />
                 <Switch>
                     <Route exact path="/" render={() => <HomePage />} />
-                    <Route exact path="/listings" render={() => <ListingPage />} />
-                    <Route exact path="/property" render={() => <PropertyPage />} />
                     <Route exact path="/profile/listings/edit/:step/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} />
                     <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
                     <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage />} />
                     <Route exact path="/users/resetPassword/:confirm" render={() => <HomePage />} />
+                    <Route path="/listings" render={() => <ListingPage />} />
                     <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
                     <Route path="/profile/" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfilePage location={this.props.location} />} />
-                    <Route path="/listings/:id" render={() => <PropertyPage />} />
+                    <Route render={() => <HomePage />} />
                 </Switch>
                 <Footer />
                 <AttachedFooter />
