@@ -12,7 +12,7 @@ import Select from 'react-select';
 
 export default function CreateListingLocation(props) {
 
-    const { country, countries, city, cities, street } = props.values;
+    const { country, countries, city, cities, street, state } = props.values;
     const renderCountries = countries.map((item) => {
         return { value: item.id, label: item.name };
     });
@@ -46,8 +46,13 @@ export default function CreateListingLocation(props) {
                                                     let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
                                                     let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
                                                     let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
+                                                    let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
+
                                                     props.onChange({ target: { name: 'city', value: addressCityName } });
                                                     props.onChange({ target: { name: 'country', value: addressCountryName } });
+                                                    props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
+
+                                                    console.log(place);
                                                 }}
                                                 types={['(cities)']}
                                             />
@@ -93,27 +98,31 @@ export default function CreateListingLocation(props) {
                                                 name="street"
                                                 value={street}
                                                 onChange={props.onChange}
+                                                componentRestrictions={{ administrativeArea: state }}
                                                 onPlaceSelected={(place) => {
                                                     let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
                                                     let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
                                                     let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
                                                     let addressStreetName = addressComponentsMap.filter(x => x.type === 'route')[0];
                                                     let addressStreetNumber = addressComponentsMap.filter(x => x.type === 'street_number')[0];
-                                                    console.log(addressStreetName);
+                                                    let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
+
                                                     let addressStreet = (addressStreetName !== undefined ? addressStreetName.name : '') + (addressStreetNumber !== undefined ? ' ' + addressStreetNumber.name : '');
 
                                                     props.onChange({ target: { name: 'city', value: addressCityName !== undefined ? addressCityName.name : '' } });
                                                     props.onChange({ target: { name: 'country', value: addressCountryName } });
                                                     props.onChange({ target: { name: 'street', value: addressStreet } });
+                                                    props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
                                                     console.log(place);
                                                 }}
-                                                types={['geocode']}
+                                                types={['(regions)']}
                                             />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-
+                                            <label htmlFor="country">State</label>
+                                            <input style={{ background: '#AAA', opacity: 0.5 }} disabled className="form-control" id="state" name="state" value={state} />
                                         </div>
                                     </div>
                                 </div>
