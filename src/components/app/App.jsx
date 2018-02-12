@@ -6,7 +6,7 @@ import CalendarPage from '../profile/calendar/CalendarPage';
 import { Config } from '../../config';
 import CreateListingPage from '../listingCRUD/CreateListingPage';
 import EditListingPage from '../listingCRUD/EditListingPage';
-import HomePage from '../home/HomePage.jsx';
+import HomePageRouter from '../home/HomePageRouter';
 import ListingPage from '../listings/ListingPage';
 import React from 'react';
 import moment from 'moment';
@@ -39,15 +39,15 @@ class App extends React.Component {
             <div>
                 <MainNav />
                 <Switch>
-                    <Route exact path="/" render={() => <HomePage />} />
+                    <Route exact path="/" render={() => <HomePageRouter />} />
                     <Route exact path="/profile/listings/edit/:step/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} />
                     <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
                     <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage />} />
-                    <Route exact path="/users/resetPassword/:confirm" render={() => <HomePage />} />
+                    <Route exact path="/users/resetPassword/:confirm" render={() => <HomePageRouter />} />
                     <Route path="/listings" render={() => <ListingPage />} />
                     <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
                     <Route path="/profile/" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfilePage location={this.props.location} />} />
-                    <Route render={() => <HomePage />} />
+                    <Route render={() => <HomePageRouter />} />
                 </Switch>
                 <Footer />
                 <AttachedFooter />

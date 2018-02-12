@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import SearchBar from '../common/searchbar/SearchBar';
 import PopularPropertiesCarousel from './PopularPropertiesCarousel';
+import PropertyTypeNav from '../common/propertyTypeNav/PropertyTypeNav';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -69,16 +70,7 @@ class HomePage extends React.Component {
                         <h1 className="home_title">Discover your next experience</h1>
                         <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
                         <div className="container absolute_box">
-                            <nav id="second-nav">
-                                <div className="container">
-                                    <ul className="nav navbar-nav">
-                                        <li className="active">
-                                            <a>HOMES</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </nav>
-                            
+                            <PropertyTypeNav />
                             <SearchBar
                                 countryId={this.state.countryId} 
                                 countries={this.state.countries}

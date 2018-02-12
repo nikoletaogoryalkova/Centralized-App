@@ -166,7 +166,7 @@ header form button {
 }
 
 #second-nav .navbar-nav a:hover,
-#second-nav .navbar-nav li.active a {
+#second-nav .navbar-nav li a.active {
     font-size: 18px;
     border-radius: 0;
     font-weight: 400;
@@ -780,7 +780,7 @@ footer .currency-switcher {
 }
 
 #main-nav #second-nav .navbar-nav a:hover,
-#main-nav #second-nav .navbar-nav li.active a {
+#main-nav #second-nav .navbar-nav li a.active {
     font-size: 18px;
     border-radius: 0;
     font-weight: 400;

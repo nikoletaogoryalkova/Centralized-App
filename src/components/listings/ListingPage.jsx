@@ -2,7 +2,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import TypeNav from './TypeNav';
+import PropertyTypeNav from '../common/propertyTypeNav/PropertyTypeNav';
 import ListingSearchPage from './ListingSearchPage';
 import PropertyPage from '../property/PropertyPage';
 import { getCountries } from '../../requester';
@@ -25,7 +25,7 @@ class ListingPage extends React.Component {
     render() {
         return (
             <div>
-                <TypeNav />
+                <PropertyTypeNav />
                 <Switch>
                     <Route exact path="/listings" render={() => <ListingSearchPage countries={this.state.countries} />} />
                     <Route exact path="/listings/:id" render={() => <PropertyPage countries={this.state.countries} />} />
