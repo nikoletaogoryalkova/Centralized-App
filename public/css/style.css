@@ -804,6 +804,14 @@ footer .currency-switcher {
     box-shadow: 0 0 40px #223843;
 }
 
+#main-nav #search-bar .form-group {
+    margin-bottom: 0;
+}
+
+#main-nav #search-bar #search #location {
+    width: 23%;
+}
+
 #localization-nav div.container {
     padding: 15px 0;
 }

@@ -87,7 +87,8 @@ class HomePage extends React.Component {
                                 guests={this.state.guests}
                                 onChange={this.onChange}
                                 handleSearch={this.handleSearch}
-                                handleDatePick={this.handleDatePick} />
+                                handleDatePick={this.handleDatePick} 
+                            />
                         </div>
                     </div>
                 </header>
