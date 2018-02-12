@@ -44,8 +44,8 @@ class PropertyPage extends React.Component {
 
         this.state = {
             countryId: countryId,
-            startDate: startDate,
-            endDate: endDate,
+            searchStartDate: startDate,
+            searchEndDate: endDate,
             calendarStartDate: startDate,
             calendarEndDate: endDate,
             nigths: nights,
@@ -63,6 +63,7 @@ class PropertyPage extends React.Component {
 
         this.handleApply = this.handleApply.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleDatePick = this.handleDatePick.bind(this);
         this.onChange = this.onChange.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.gotoNext = this.gotoNext.bind(this);
@@ -85,8 +86,9 @@ class PropertyPage extends React.Component {
     componentDidMount() {
         this.initializeCalendar();
 
-        if (this.state.startDate && this.state.endDate) {
-            this.calculateNights(this.state.startDate, this.state.endDate);
+        const { searchStartDate, searchEndDate } = this.state;
+        if (searchStartDate && searchEndDate) {
+            this.calculateNights(searchStartDate, searchEndDate);
         }
 
         this.getUserInfo();
@@ -105,8 +107,8 @@ class PropertyPage extends React.Component {
         let queryString = '?';
 
         queryString += 'countryId=' + this.state.countryId;
-        queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
-        queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
+        queryString += '&startDate=' + this.state.searchStartDate.format('DD/MM/YYYY');
+        queryString += '&endDate=' + this.state.searchEndDate.format('DD/MM/YYYY');
         queryString += '&guests=' + this.state.guests;
 
         this.props.history.push('/listings' + queryString);
@@ -147,6 +149,13 @@ class PropertyPage extends React.Component {
 
             this.calculateNights(startDate, endDate);
         }
+    }
+
+    handleDatePick(event, picker) {
+        this.setState({
+            searchStartDate: picker.startDate,
+            searchEndDate: picker.endDate,
+        });
     }
 
     openLightbox(event) {
@@ -278,8 +287,8 @@ class PropertyPage extends React.Component {
                     <SearchBar
                         countryId={this.state.countryId} 
                         countries={this.props.countries}
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
+                        startDate={this.state.searchStartDate}
+                        endDate={this.state.searchEndDate}
                         guests={this.state.guests}
                         onChange={this.onChange}
                         handleSearch={this.handleSearch}
@@ -358,6 +367,7 @@ class PropertyPage extends React.Component {
 }
 
 PropertyPage.propTypes = {
+    countries: PropTypes.array,
     match: PropTypes.object,
 
     // start Router props
