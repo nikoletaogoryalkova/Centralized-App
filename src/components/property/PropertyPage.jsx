@@ -129,8 +129,11 @@ class PropertyPage extends React.Component {
     }
 
     handleApply(event, picker) {
+        const { startDate, endDate } = picker;
+        const today = moment();
         const prices = this.state.prices;
-        const range = prices.filter(x => x.start >= picker.startDate && x.end <= picker.endDate);
+        const range = prices.filter(x => x.start >= startDate && x.end < endDate);
+        console.log(startDate, today);
         const isInvalidRange = range.filter(x => !x.available).length > 0;
         if (isInvalidRange) {
             NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
@@ -138,10 +141,11 @@ class PropertyPage extends React.Component {
         }
         else {
             this.setState({
-                calendarStartDate: picker.startDate,
-                calendarEndDate: picker.endDate,
+                calendarStartDate: startDate,
+                calendarEndDate: endDate,
             });
-            this.calculateNights(picker.startDate, picker.endDate);
+
+            this.calculateNights(startDate, endDate);
         }
     }
 
