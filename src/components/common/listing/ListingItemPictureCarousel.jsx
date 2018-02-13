@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { React_Bootstrap_Carousel } from 'react-bootstrap-carousel';
 
-function ListingPictures(props) {
+function HomeItemPictureCarousel(props) {
+    const listingType = props.listingType;
     const leftIcon = <span className="left-carousel"> </span>;
     const rightIcon = <span className="right-carousel"> </span>;
     let { pictures } = props;
@@ -28,7 +29,7 @@ function ListingPictures(props) {
                     {pictures.map((item, i) => {
                         return (
                             <div className="item" key={i}>
-                                <Link to={`/listings/${props.id}${props.location.search}`}><img src={item.thumbnail} alt="" /></Link>
+                                <Link to={`${listingType}/listings/${props.id}${props.location.search}`}><img src={item.thumbnail} alt="" /></Link>
                             </div>
                         );
                     })}
@@ -38,9 +39,10 @@ function ListingPictures(props) {
     );
 }
 
-export default withRouter(ListingPictures);
+export default withRouter(HomeItemPictureCarousel);
 
-ListingPictures.propTypes = {
+HomeItemPictureCarousel.propTypes = {
     pictures: PropTypes.string,
-    id: PropTypes.number
+    id: PropTypes.number,
+    listingType: PropTypes.string,
 };

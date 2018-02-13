@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import ListingRating from '../../listings/ListingRating';
+import ListingItemRatingBox from '../../../components/common/listing/ListingItemRatingBox';
 import PropTypes from 'prop-types';
 import React from 'react';
 import DeletionModal from "../../common/modals/DeletionModal";
@@ -57,9 +57,10 @@ export default class MyListingsActiveItem extends React.Component {
                         style={{backgroundImage: `url(${this.props.listing.thumbnail})`}}></span></li>
                     <li className="details">
                         <Link to={'/listings/' + this.props.listing.id}>{this.props.listing.name}</Link>
-
-                        <ListingRating rating={this.props.listing.averageRating}
-                                       reviewsCount={this.props.listing.reviewsCount}/>
+                        <ListingItemRatingBox 
+                            rating={this.props.listing.averageRating}
+                            reviewsCount={this.props.listing.reviewsCount}
+                        />
                     </li>
                     <li className="price">
                         <span>{this.props.listing.defaultDailyPrice} {this.props.listing.currencyCode}</span>

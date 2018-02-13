@@ -2,7 +2,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import { changeListingStatus, contactHost, getAllUnpublishedListings, getCities, getCountries } from '../../../requester';
 
 import AllListingsFilter from './AllListingsFilter';
-import ContactHostModal from '../../property/ContactHostModal';
+import ContactHostModal from '../../common/modals/ContactHostModal';
 import LPagination from '../../common/LPagination';
 import ListingRow from './ListingRow';
 import PropTypes from 'prop-types';

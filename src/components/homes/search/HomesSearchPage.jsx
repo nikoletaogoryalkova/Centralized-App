@@ -1,14 +1,15 @@
-import Breadcrumb from '../Breadcrumb';
-import Filters from './Filters';
-import LPagination from '../common/LPagination';
-import Listing from './Listing';
+import Breadcrumb from '../../Breadcrumb';
+import FilterPanel from './filter/FilterPanel';
+import LPagination from '../../common/LPagination';
+import HomeItem from './HomeItem';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getListingsByFilter } from '../../requester';
+import { getListingsByFilter } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
-import SearchBar from '../common/searchbar/SearchBar';
+import SearchBar from '../../common/searchbar/SearchBar';
+import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
 class ListingSearchPage extends React.Component {
     constructor(props) {
@@ -115,7 +116,7 @@ class ListingSearchPage extends React.Component {
                 propertyTypes: data.types
             });
         });
-        const url = `/listings/?${searchTerms}`;
+        const url = `/homes/listings/?${searchTerms}`;
         this.props.history.push(url);
     }
 
@@ -273,12 +274,13 @@ class ListingSearchPage extends React.Component {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <Listing key={i} listing={item} />;
+                return <HomeItem key={i} listing={item} />;
             });
         }
 
         return (
             <div>
+                <ListingTypeNav />
                 <SearchBar
                     countryId={this.state.countryId} 
                     countries={this.props.countries}
@@ -294,7 +296,7 @@ class ListingSearchPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <Filters 
+                                <FilterPanel 
                                     cities={this.state.cities}
                                     citiesToggled={this.state.citiesToggled}
                                     propertyTypes={this.state.propertyTypes}

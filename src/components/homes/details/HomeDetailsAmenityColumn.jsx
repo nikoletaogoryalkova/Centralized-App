@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function PropertyAmenityColumn(props) {
+function HomeDetailsAmenityColumn(props) {
     return (
         <div className="col-md-4">
             {props.amenities.map((item, i) => {
@@ -11,8 +11,8 @@ function PropertyAmenityColumn(props) {
     );
 }
 
-PropertyAmenityColumn.propTypes = {
+HomeDetailsAmenityColumn.propTypes = {
     amenities: PropTypes.array
 };
 
-export default PropertyAmenityColumn;
+export default HomeDetailsAmenityColumn;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function StarCheckbox(props) {
+function FilterStarCheckbox(props) {
     return (
         <div>
             <span className={`star ${props.checked ? 'active' : ''}`}>
@@ -11,9 +11,9 @@ function StarCheckbox(props) {
     );
 }
 
-StarCheckbox.propTypes = {
+FilterStarCheckbox.propTypes = {
     checked: PropTypes.bool,
     text: PropTypes.string
 };
 
-export default StarCheckbox;
+export default FilterStarCheckbox;

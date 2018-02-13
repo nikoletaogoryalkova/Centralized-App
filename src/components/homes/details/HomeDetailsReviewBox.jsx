@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function PropertyReview(props) {
+function HomeDetailsReviewBox(props) {
     const getRatingString = (rating) => {
         let result = '';
         let ratingRoundedNumber = Math.round(rating);
@@ -50,9 +50,9 @@ function PropertyReview(props) {
     );
 }
 
-export default withRouter(PropertyReview);
+export default withRouter(HomeDetailsReviewBox);
 
-PropertyReview.propTypes = {
+HomeDetailsReviewBox.propTypes = {
     rating: PropTypes.number,
     text: PropTypes.string,
 };

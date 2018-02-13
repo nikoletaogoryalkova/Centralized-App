@@ -1,8 +1,8 @@
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import React from 'react';
-import HotelsHomePage from './HotelsHomePage';
-import HomesHomePage from './HomesHomePage';
+import HotelsHomePage from '../hotels/HotelsHomePage';
+import HomesHomePage from '../homes/HomesHomePage';
 
 class HomePageRouter extends React.Component {
     render() {
@@ -11,7 +11,7 @@ class HomePageRouter extends React.Component {
                 <Switch>
                     <Route exact path="/hotels" render={() => <HotelsHomePage />} />
                     <Route exact path="/homes" render={() => <HomesHomePage />} />
-                    <Redirect to="/hotels" />
+                    <Redirect from="/" to="/hotels" />
                 </Switch>
             </div>
         );

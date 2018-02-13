@@ -1,13 +1,13 @@
-import ContactHostModal from './ContactHostModal';
+import ContactHostModal from '../../common/modals/ContactHostModal';
 import PropTypes from 'prop-types';
-import PropertyAmenityColumn from './PropertyAmenityColumn';
-import PropertyCalendar from './PropertyCalendar';
-import PropertyReservation from './PropertyReservation';
-import PropertyReview from './PropertyReview';
+import HomeDetailsAmenityColumn from './HomeDetailsAmenityColumn';
+import HomeDetailsCalendar from './HomeDetailsCalendar';
+import HomeReservationPanel from './HomeReservationPanel';
+import HomeDetailsReviewBox from './HomeDetailsReviewBox';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-function PropertyInfo(props) {
+function HomeDetailsInfoSection(props) {
     const getAmenities = (amenities) => {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
@@ -46,7 +46,7 @@ function PropertyInfo(props) {
                     <p>{street}, {city.name}, {country.name}</p>
                     <button className="btn btn-primary" onClick={props.openModal}>Contact Host</button>
 
-                    <PropertyCalendar
+                    <HomeDetailsCalendar
                         onApply={props.onApply}
                         startDate={props.startDate}
                         endDate={props.endDate}
@@ -76,9 +76,9 @@ function PropertyInfo(props) {
 
                     <div className="hotel-extras">
                         <div className="row">
-                            <PropertyAmenityColumn amenities={amenities[0]} />
-                            <PropertyAmenityColumn amenities={amenities[1]} />
-                            <PropertyAmenityColumn amenities={amenities[2]} />
+                            <HomeDetailsAmenityColumn amenities={amenities[0]} />
+                            <HomeDetailsAmenityColumn amenities={amenities[1]} />
+                            <HomeDetailsAmenityColumn amenities={amenities[2]} />
                         </div>
                         <div className="clearfix" />
 
@@ -95,7 +95,13 @@ function PropertyInfo(props) {
                             <div id="reviews">
                                 <h2>User Rating &amp; Reviews</h2>
                                 {props.data.reviews.map((item, i) => {
-                                    return <PropertyReview key={i} rating={item.average} reviewText={item.comments} />;
+                                    return (
+                                        <HomeDetailsReviewBox 
+                                            key={i} 
+                                            rating={item.average} 
+                                            reviewText={item.comments} 
+                                        />
+                                    );
                                 })}
                                 <hr />
                             </div>
@@ -111,7 +117,7 @@ function PropertyInfo(props) {
                         <div className="clearfix" />
                     </div>
                 </div>
-                <PropertyReservation
+                <HomeReservationPanel
                     locRate={props.locRate}
                     showLoginModal={props.showLoginModal}
                     isLogged={props.isLogged}
@@ -121,14 +127,15 @@ function PropertyInfo(props) {
                     startDate={props.startDate}
                     endDate={props.endDate}
                     listing={props.data}
-                    loading={props.loading} />
+                    loading={props.loading} 
+                />
                 <div className="clearfix"></div>
             </div>
         </section>
     );
 }
 
-PropertyInfo.propTypes = {
+HomeDetailsInfoSection.propTypes = {
     data: PropTypes.object,
     locRate: PropTypes.string,
     showLoginModal: PropTypes.bool,
@@ -151,4 +158,4 @@ PropertyInfo.propTypes = {
     descriptionText: PropTypes.string
 };
 
-export default withRouter(PropertyInfo);
+export default withRouter(HomeDetailsInfoSection);

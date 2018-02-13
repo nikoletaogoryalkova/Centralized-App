@@ -4,8 +4,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import SearchBar from '../common/searchbar/SearchBar';
-import PopularPropertiesCarousel from './PopularPropertiesCarousel';
-import PropertyTypeNav from '../common/propertyTypeNav/PropertyTypeNav';
+import PopularListingsCarousel from '../common/popularListings/PopularListingsCarousel';
+import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -70,7 +70,7 @@ class HomePage extends React.Component {
                         <h1 className="home_title">Discover your next experience</h1>
                         <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
                         <div className="container absolute_box">
-                            <PropertyTypeNav />
+                            <ListingTypeNav />
                             <SearchBar
                                 countryId={this.state.countryId} 
                                 countries={this.state.countries}
@@ -89,7 +89,10 @@ class HomePage extends React.Component {
                     <h2>Popular Properties</h2>
                     {!this.state.listings ? <div className="loader"></div> : 
                         this.state.listings && this.state.listings.length > 1 &&
-                        <PopularPropertiesCarousel listings={this.state.listings} />
+                        <PopularListingsCarousel 
+                            listings={this.state.listings} 
+                            listingType="hotels" 
+                        />
                     }
                     <div className="clearfix"></div>
                 </section>

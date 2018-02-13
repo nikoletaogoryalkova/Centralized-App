@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FiltersCheckbox from './FiltersCheckbox';
+import FilterCheckbox from '../../../common/filter/FilterCheckbox';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 
-const Filters = (props) => (
+const FilterPanel = (props) => (
     <div className="filter-box">
         <div className="form-group">
             <label>City</label>
@@ -11,7 +11,7 @@ const Filters = (props) => (
                 {props.cities.map((item, i) => {
                     return (
                         <div key={i} onClick={(e) => { props.toggleFilter('cities', item.text); props.handleSearch(e); }}>
-                            <FiltersCheckbox
+                            <FilterCheckbox
                                 key={i}
                                 text={item.text}
                                 count={item.count}
@@ -46,7 +46,7 @@ const Filters = (props) => (
                 {props.propertyTypes.map((item, i) => {
                     return (
                         <div key={i} onClick={(e) => { props.toggleFilter('propertyTypes', item.text); props.handleSearch(e); }}>
-                            <FiltersCheckbox
+                            <FilterCheckbox
                                 key={i}
                                 text={item.text}
                                 count={item.count}
@@ -64,7 +64,7 @@ const Filters = (props) => (
     </div>
 );
 
-Filters.propTypes = {
+FilterPanel.propTypes = {
     cities: PropTypes.array,
     citiesToggled: PropTypes.any,
     propertyTypes: PropTypes.array,
@@ -77,4 +77,4 @@ Filters.propTypes = {
     clearFilters: PropTypes.func,
 };
 
-export default Filters;
+export default FilterPanel;

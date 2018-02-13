@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ListingRating(props) {
+function ListingItemRatingBox(props) {
     const getRatingString = (ratingNumber, reviewsCount) => {
         if (reviewsCount === 0) {
             return '';
@@ -57,9 +57,9 @@ function ListingRating(props) {
     );
 }
 
-ListingRating.propTypes = {
+ListingItemRatingBox.propTypes = {
     rating: PropTypes.number,
     reviewsCount: PropTypes.number
 };
 
-export default ListingRating;
+export default ListingItemRatingBox;

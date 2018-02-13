@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 
-function PropertyTypeNav(props) {
+function ListingTypeNav() {
     return (
         <div>
             <nav id="second-nav">
@@ -16,4 +16,4 @@ function PropertyTypeNav(props) {
     );
 }
 
-export default withRouter(PropertyTypeNav);
+export default withRouter(ListingTypeNav);

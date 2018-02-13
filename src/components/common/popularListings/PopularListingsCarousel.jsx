@@ -1,9 +1,9 @@
 import React from 'react';
-import ListingSliderBox from './ListingSliderBox';
+import PopularListingItem from './PopularListingItem';
 import OwlCarousel from 'react-owl-carousel';
+import PropTypes from 'prop-types';
 
-export default class PopularPropertiesCarousel extends React.Component {
-
+export default class PopularListingsCarousel extends React.Component {
     shouldComponentUpdate () {
         return false;
     }
@@ -37,10 +37,21 @@ export default class PopularPropertiesCarousel extends React.Component {
                         }
                     }}>
                     {this.props.listings.map((item, i) => {
-                        return <ListingSliderBox key={i} listing={item} />;
+                        return (
+                            <PopularListingItem 
+                                key={i} 
+                                listing={item} 
+                                listingType={this.props.listingType} 
+                            />
+                        );
                     })}
                 </OwlCarousel>
             </div>
         );
     }
-} 
+}
+
+PopularListingsCarousel.propTypes = {
+    listings: PropTypes.array,
+    listingType: PropTypes.string,
+};

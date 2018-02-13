@@ -1,16 +1,16 @@
 // import '../../../public/css/calendar.css';
 
-import DatePicker from '../DatePicker';
+import DatePicker from '../../DatePicker';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
-import { requestBooking } from '../../requester';
+import { requestBooking } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 
-class PropertyReservation extends React.Component {
+class HomeReservationPanel extends React.Component {
     constructor(props) {
         super(props);
         let guests = '';
@@ -220,7 +220,7 @@ class PropertyReservation extends React.Component {
     }
 }
 
-PropertyReservation.propTypes = {
+HomeReservationPanel.propTypes = {
     startDate: PropTypes.any,
     endDate: PropTypes.any,
     isLogged: PropTypes.bool,
@@ -236,7 +236,7 @@ PropertyReservation.propTypes = {
     paymentInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(PropertyReservation));
+export default withRouter(connect(mapStateToProps)(HomeReservationPanel));
 
 function mapStateToProps(state) {
     const { userInfo, paymentInfo } = state;

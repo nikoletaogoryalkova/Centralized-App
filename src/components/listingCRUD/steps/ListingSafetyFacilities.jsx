@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import FiltersCheckbox from '../../listings/FiltersCheckbox';
+import FilterCheckbox from '../../common/filter/FilterCheckbox';
 import BasicsAside from '../aside/BasicsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
 
@@ -16,7 +16,7 @@ export default function CreateListingSafetyAmenities(props) {
                     <h3>{c.name}</h3>
                     {c.amenities.map((item, i) => {
                         return <div key={i} onClick={() => props.toggle(item.id)}>
-                            <FiltersCheckbox
+                            <FilterCheckbox
                                 key={i}
                                 text={item.name}
                                 checked={props.values.facilities.has(item.id)} />

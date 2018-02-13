@@ -5,19 +5,20 @@ import {
     getCalendarByListingIdAndDateRange,
     getCurrentLoggedInUserInfo,
     getPropertyById
-} from '../../requester';
+} from '../../../requester';
 
-import { Config } from '../../config';
+import { Config } from '../../../config';
 import Lightbox from 'react-images';
 import PropTypes from 'prop-types';
-import PropertyInfo from './PropertyInfo';
+import HomeDetailsInfoSection from './HomeDetailsInfoSection';
 import React from 'react';
-import SearchBar from '../common/searchbar/SearchBar';
+import SearchBar from '../../common/searchbar/SearchBar';
+import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 
-class PropertyPage extends React.Component {
+class HomeDetailsPage extends React.Component {
     constructor(props) {
         super(props);
         
@@ -111,7 +112,7 @@ class PropertyPage extends React.Component {
         queryString += '&endDate=' + this.state.searchEndDate.format('DD/MM/YYYY');
         queryString += '&guests=' + this.state.guests;
 
-        this.props.history.push('/listings' + queryString);
+        this.props.history.push('/homes/listings' + queryString);
     }
 
     getUserInfo() {
@@ -284,6 +285,7 @@ class PropertyPage extends React.Component {
         return (
             <div>
                 <div>
+                    <ListingTypeNav />
                     <SearchBar
                         countryId={this.state.countryId} 
                         countries={this.props.countries}
@@ -318,7 +320,6 @@ class PropertyPage extends React.Component {
                         <nav id="hotel-nav">
                             <div className="container">
                                 <ul className="nav navbar-nav">
-
                                     <li>
                                         <a href="#overview">Overview</a>
                                     </li>
@@ -338,11 +339,11 @@ class PropertyPage extends React.Component {
                                     <li>
                                         <a href="#map">Location</a>
                                     </li>
-
                                 </ul>
                             </div>
                         </nav>
-                        <PropertyInfo
+
+                        <HomeDetailsInfoSection
                             allEvents={allEvents}
                             calendar={this.state.calendar}
                             nights={this.state.nights}
@@ -352,12 +353,12 @@ class PropertyPage extends React.Component {
                             data={this.state.data}
                             prices={this.state.prices}
                             isLogged={this.props.userInfo.isLogged}
-                            // userInfo={this.state.userInfo}
                             loading={this.state.loading}
                             openModal={this.openModal}
                             closeModal={this.closeModal}
                             isShownContactHostModal={this.state.isShownContactHostModal}
                             sendMessageToHost={this.sendMessageToHost} />
+
                         <NotificationContainer />
                     </div>
                 }
@@ -366,7 +367,7 @@ class PropertyPage extends React.Component {
     }
 }
 
-PropertyPage.propTypes = {
+HomeDetailsPage.propTypes = {
     countries: PropTypes.array,
     match: PropTypes.object,
 
@@ -380,7 +381,7 @@ PropertyPage.propTypes = {
     paymentInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(PropertyPage));
+export default withRouter(connect(mapStateToProps)(HomeDetailsPage));
 
 function mapStateToProps(state) {
     const { userInfo, paymentInfo } = state;

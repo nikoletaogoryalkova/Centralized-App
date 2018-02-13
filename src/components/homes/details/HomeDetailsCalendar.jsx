@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 
-function PropertyCalendar(props) {
+function HomeDetailsCalendar(props) {
     const CustomToolbar = (toolbar) => {
         const goToBack = () => { toolbar.onNavigate('PREV'); };
         const goToNext = () => { toolbar.onNavigate('NEXT'); };
@@ -128,7 +128,7 @@ function PropertyCalendar(props) {
     );
 }
 
-PropertyCalendar.propTypes = {
+HomeDetailsCalendar.propTypes = {
     prices: PropTypes.array,
     allEvents: PropTypes.array,
     startDate: PropTypes.object,
@@ -136,4 +136,4 @@ PropertyCalendar.propTypes = {
     onApply: PropTypes.func
 };
 
-export default PropertyCalendar;
+export default HomeDetailsCalendar;
