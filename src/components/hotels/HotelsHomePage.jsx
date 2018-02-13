@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import SearchBar from '../common/searchbar/SearchBar';
-import PopularListingsCarousel from '../common/popularListings/PopularListingsCarousel';
+import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
 class HomePage extends React.Component {
