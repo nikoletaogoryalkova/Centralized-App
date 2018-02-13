@@ -138,7 +138,7 @@ class ListingSearchPage extends React.Component {
                 countryId: this.getSearchParams().get('countryId'),
             });
         });
-        let url = `/listings/?${searchTerms}`;
+        let url = `/homes/listings/?${searchTerms}`;
         this.props.history.push(url);
     }
 
