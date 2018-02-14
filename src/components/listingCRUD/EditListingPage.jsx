@@ -73,6 +73,7 @@ class EditListingPage extends React.Component {
             facilities: new Set(),
             street: '',
             city: '',
+            state: '',
             name: '',
             text: '',
             interaction: '',
@@ -159,7 +160,9 @@ class EditListingPage extends React.Component {
     setListingData(data) {
         this.setState({
             type: data.listingType.toString(),
-            country: data.country,
+            city: data.location.split(', ')[0],
+            state: data.location.split(', ')[1],
+            country: data.location.split(', ')[2],
             propertyType: data.type.toString(),
             roomType: data.details.roomType ? data.details.roomType : this.getDetailValue(data, 'roomType'),
             dedicatedSpace: data.details.dedicatedSpace ? data.details.dedicatedSpace : this.getDetailValue(data, 'dedicatedSpace'),
@@ -170,7 +173,6 @@ class EditListingPage extends React.Component {
             bathrooms: data.details.bathrooms ? Number(data.details.bathrooms) : this.getDetailValue(data, 'bathrooms'),
             amenities: data.amenities ? new Set(this.getAmenities(data)) : new Set(),
             street: data.description.street,
-            city: data.city,
             name: data.name,
             text: this.getText(data.description.text),
             interaction: data.description.interaction,
@@ -494,6 +496,7 @@ class EditListingPage extends React.Component {
             rooms: this.state.bedrooms,
             amenities: this.state.facilities,
             city: this.state.city,
+            state: this.state.state,
             name: this.state.name,
             pictures: this.getPhotos(),
             checkinStart: moment(this.state.checkinStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
@@ -591,6 +594,23 @@ class EditListingPage extends React.Component {
         });
     }
 
+    convertGoogleApiAddressComponents(place) {
+        let addressComponents = place.address_components;
+
+        let addressComponentsArr = [];
+
+        for (let i = 0; i < addressComponents.length; i++) {
+
+            let addressComponent = {
+                name: addressComponents[i].long_name,
+                type: addressComponents[i].types[0]
+            };
+            addressComponentsArr.push(addressComponent);
+        }
+
+        return addressComponentsArr;
+    }
+
     render() {
         return (
             <div>
@@ -642,7 +662,8 @@ class EditListingPage extends React.Component {
                         updateProgress={this.updateProgress}
                         routes={routes}
                         prev={routes.safetyamenities}
-                        next={routes.description} />} />
+                        next={routes.description}
+                        convertGoogleApiAddressComponents={this.convertGoogleApiAddressComponents} />} />
                     <Route exact path={routes.description} render={() => <ListingDescription
                         values={this.state}
                         onChange={this.onChange}

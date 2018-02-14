@@ -544,6 +544,7 @@ class CreateListingPage extends React.Component {
                         next={routes.location} />} />
                     <Route exact path={routes.location} render={() => <ListingLocation
                         values={this.state}
+                        onChangeLocation={this.onChangeLocation}
                         onChange={this.onChange}
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}

@@ -8,17 +8,10 @@ import ListingCrudNav from '../navigation/ListingCrudNav';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Select from 'react-select';
 
 export default function CreateListingLocation(props) {
 
-    const { country, countries, city, cities, street, state } = props.values;
-    const renderCountries = countries.map((item) => {
-        return { value: item.id, label: item.name };
-    });
-    const renderCities = cities.map((item) => {
-        return { value: item.id, label: item.name };
-    });
+    const { country, city, street, state } = props.values;
     return (
         <div>
             <ListingCrudNav progress='33%' />
@@ -43,47 +36,25 @@ export default function CreateListingLocation(props) {
                                                 onChange={props.onChange}
                                                 name="city"
                                                 onPlaceSelected={(place) => {
-                                                    let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
-                                                    let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
-                                                    let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
-                                                    let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
+                                                    if (place.address_components !== undefined) {
+                                                        let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
+                                                        let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
+                                                        let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
+                                                        let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
 
-                                                    props.onChange({ target: { name: 'city', value: addressCityName } });
-                                                    props.onChange({ target: { name: 'country', value: addressCountryName } });
-                                                    props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
-
-                                                    console.log(place);
+                                                        props.onChange({ target: { name: 'city', value: addressCityName } });
+                                                        props.onChange({ target: { name: 'country', value: addressCountryName } });
+                                                        props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
+                                                    }
                                                 }}
                                                 types={['(cities)']}
                                             />
-
-                                            {/* <Select
-                                                name="country"
-                                                placeholder="Country"
-                                                className="form-control form-control-select"
-                                                clearable={false}
-                                                style={{ border: 'none' }}
-                                                value={country}
-                                                onChange={(option) => updateCountry(props, option)}
-                                                options={renderCountries}
-                                            /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="country">Country</label>
                                             <input style={{ background: '#AAA', opacity: 0.5 }} disabled className="form-control" id="country" name="country" value={country} />
-
-                                            {/* <Select
-                                                name="city"
-                                                placeholder="City"
-                                                className="form-control form-control-select"
-                                                clearable={false}
-                                                style={{ border: 'none' }}
-                                                value={city}
-                                                onChange={option => props.onSelect('city', option)}
-                                                options={renderCities}
-                                            /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -93,30 +64,7 @@ export default function CreateListingLocation(props) {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="street">Address</label>
-                                            <Autocomplete
-                                                className="form-control"
-                                                name="street"
-                                                value={street}
-                                                onChange={props.onChange}
-                                                componentRestrictions={{ administrativeArea: state }}
-                                                onPlaceSelected={(place) => {
-                                                    let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
-                                                    let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
-                                                    let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
-                                                    let addressStreetName = addressComponentsMap.filter(x => x.type === 'route')[0];
-                                                    let addressStreetNumber = addressComponentsMap.filter(x => x.type === 'street_number')[0];
-                                                    let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
-
-                                                    let addressStreet = (addressStreetName !== undefined ? addressStreetName.name : '') + (addressStreetNumber !== undefined ? ' ' + addressStreetNumber.name : '');
-
-                                                    props.onChange({ target: { name: 'city', value: addressCityName !== undefined ? addressCityName.name : '' } });
-                                                    props.onChange({ target: { name: 'country', value: addressCountryName } });
-                                                    props.onChange({ target: { name: 'street', value: addressStreet } });
-                                                    props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
-                                                    console.log(place);
-                                                }}
-                                                types={['(regions)']}
-                                            />
+                                            <input className="form-control" id="street" name="street" value={street} onChange={props.onChange} />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -158,22 +106,17 @@ export default function CreateListingLocation(props) {
     );
 }
 
-async function updateCountry(props, option) {
-    if (!option) {
-        return;
-    }
-
-    await props.onSelect('country', option);
-    props.updateCities();
-}
-
 function validateInput(values) {
-    const { street, city } = values;
+    const { street, city, country } = values;
     if (street.length < 6) {
         return false;
     }
 
-    if (!city || city === '') {
+    if (!city || city.trim() === '') {
+        return false;
+    }
+
+    if (!country || country.trim() === '') {
         return false;
     }
 
@@ -186,11 +129,11 @@ function showErrors(values) {
         NotificationManager.warning('Address should be at least 6 characters long');
     }
 
-    if (!city || city === '') {
+    if (!city || city.trim() === '') {
         NotificationManager.warning('City is required');
     }
 
-    if (!country || country === '') {
+    if (!country || country.trim() === '') {
         NotificationManager.warning('Country is required');
     }
 }
