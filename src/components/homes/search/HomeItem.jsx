@@ -22,7 +22,7 @@ function HomeItem(props) {
                 <div className="clearfix"></div>
                 <p>{cityName}, {countryName}</p>
                 <div className="list-hotel-text">
-                    {description.substr(0, 190)}...
+                    {description && description.length > 0 ? description.substr(0, 190) + '...' : ''}
                 </div>
                 <div className="list-hotel-comfort">
                     <div className="icon-hotel-4"></div>
