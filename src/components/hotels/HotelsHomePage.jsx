@@ -1,11 +1,13 @@
-import { getListings, getCountries } from '../../requester';
+import { getListings } from '../../requester';
 
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-import SearchBar from '../common/searchbar/SearchBar';
+import HotelsSearchBar from './search/HotelsSearchBar';
 import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
+
+import { getCountries, getCitiesByRegionId } from './dbAccessMock';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -15,8 +17,10 @@ class HomePage extends React.Component {
         let endDate = moment().add(1, 'day');
 
         this.state = {
-            countryId: '',
+            country: '',
             countries: undefined,
+            city: '',
+            cities: undefined,
             startDate: startDate,
             endDate: endDate,
             guests: '2',
@@ -24,6 +28,8 @@ class HomePage extends React.Component {
         };
 
         this.onChange = this.onChange.bind(this);
+        this.handleSelectCountry = this.handleSelectCountry.bind(this);
+        this.handleSelectCity = this.handleSelectCity.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
     }
@@ -33,14 +39,25 @@ class HomePage extends React.Component {
             this.setState({ listings: data.content });
         });
 
-        getCountries(true).then(data => {
+        getCountries().then(data => {
             this.setState({ countries: data.content });
         });
     }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-    }    
+    }  
+    
+    handleSelectCountry(country) {
+        this.setState({ country: country });
+        getCitiesByRegionId(country.value).then(data => {
+            this.setState({ cities: data.content });
+        });
+    }
+
+    handleSelectCity(city) {
+        this.setState({ city: city });
+    }
     
     handleSearch(e) {
         e.preventDefault();
@@ -71,13 +88,17 @@ class HomePage extends React.Component {
                         <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
                         <div className="container absolute_box">
                             <ListingTypeNav />
-                            <SearchBar
-                                countryId={this.state.countryId} 
+                            <HotelsSearchBar
+                                country={this.state.country}
                                 countries={this.state.countries}
+                                city={this.state.city}
+                                cities={this.state.cities}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
                                 guests={this.state.guests}
                                 onChange={this.onChange}
+                                handleSelectCountry={this.handleSelectCountry}
+                                handleSelectCity={this.handleSelectCity}
                                 handleSearch={this.handleSearch}
                                 handleDatePick={this.handleDatePick} 
                             />

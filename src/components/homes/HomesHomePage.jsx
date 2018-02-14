@@ -3,7 +3,7 @@ import { getListings, getCountries } from '../../requester';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-import SearchBar from '../common/searchbar/SearchBar';
+import HomesSearchBar from './search/HomesSearchBar';
 import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
@@ -71,7 +71,7 @@ class HomePage extends React.Component {
                         <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
                         <div className="container absolute_box">
                             <ListingTypeNav />
-                            <SearchBar
+                            <HomesSearchBar
                                 countryId={this.state.countryId} 
                                 countries={this.state.countries}
                                 startDate={this.state.startDate}
