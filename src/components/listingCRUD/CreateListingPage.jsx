@@ -44,6 +44,7 @@ class CreateListingPage extends React.Component {
             progressId: null,
             listingType: '1',
             country: '',
+            countryCode: '',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
@@ -54,6 +55,7 @@ class CreateListingPage extends React.Component {
             bathrooms: 1,
             facilities: new Set(),
             street: '',
+            state: '',
             city: '',
             apartment: '',
             zipCode: '',
@@ -329,6 +331,14 @@ class CreateListingPage extends React.Component {
             listingType: this.state.listingType,
             type: this.state.propertyType,
             country: this.state.country,
+            city: this.state.city,
+            state: this.state.state,
+            description: {
+                street: this.state.street,
+                text: this.state.text,
+                interaction: this.state.interaction,
+                houseRules: Array.from(this.state.otherHouseRules).join('\r\n'),
+            },
             details: [
                 {
                     value: this.state.roomType,
@@ -371,16 +381,9 @@ class CreateListingPage extends React.Component {
                     detail: { name: 'dedicatedSpace' }
                 },
             ],
-            description: {
-                street: this.state.street,
-                text: this.state.text,
-                interaction: this.state.interaction,
-                houseRules: Array.from(this.state.otherHouseRules).join('\r\n'),
-            },
             guestsIncluded: this.state.guestsIncluded,
             rooms: this.state.bedrooms,
             amenities: this.state.facilities,
-            city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
             checkinStart: moment(this.state.checkinStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
@@ -541,6 +544,7 @@ class CreateListingPage extends React.Component {
                         next={routes.location} />} />
                     <Route exact path={routes.location} render={() => <ListingLocation
                         values={this.state}
+                        onChangeLocation={this.onChangeLocation}
                         onChange={this.onChange}
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}
