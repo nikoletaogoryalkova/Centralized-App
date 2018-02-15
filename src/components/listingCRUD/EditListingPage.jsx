@@ -443,7 +443,11 @@ class EditListingPage extends React.Component {
             progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
-            country: this.state.country,
+            location: {
+                country: this.state.country,
+                city: this.state.city,
+                state: this.state.state,
+            },
             details: [
                 {
                     value: this.state.roomType,
@@ -495,8 +499,6 @@ class EditListingPage extends React.Component {
             guestsIncluded: this.state.guestsIncluded,
             rooms: this.state.bedrooms,
             amenities: this.state.facilities,
-            city: this.state.city,
-            state: this.state.state,
             name: this.state.name,
             pictures: this.getPhotos(),
             checkinStart: moment(this.state.checkinStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
