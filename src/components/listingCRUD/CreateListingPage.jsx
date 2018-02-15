@@ -4,8 +4,6 @@ import {
     createListing,
     createListingProgress,
     getAmenitiesByCategory,
-    getCities,
-    getCountries,
     getCurrencies,
     getCurrentLoggedInUserInfo,
     getPropertyTypes,
@@ -113,20 +111,12 @@ class CreateListingPage extends React.Component {
     }
 
     componentDidMount() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
-
         getAmenitiesByCategory().then(data => {
             this.setState({ categories: data.content });
         });
 
         getPropertyTypes().then(data => {
             this.setState({ propertyTypes: data.content });
-        });
-
-        getCities(this.state.country).then(data => {
-            this.setState({ cities: data.content });
         });
 
         getCurrencies().then(data => {
@@ -231,18 +221,9 @@ class CreateListingPage extends React.Component {
     }
 
     updateCities() {
-        getCities(this.state.country).then(data => {
-            this.setState({
-                city: '',
-                cities: data.content,
-            });
-        });
     }
 
     updateCountries() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
     }
 
     onSelect(name, option) {

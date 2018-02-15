@@ -4,8 +4,6 @@ import {
     createListing,
     editListing,
     getAmenitiesByCategory,
-    getCities,
-    getCountries,
     getCurrencies,
     getListingProgress,
     getMyListingById,
@@ -205,14 +203,6 @@ class EditListingPage extends React.Component {
     }
 
     componentDidMount() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-
-            getCities(this.state.country).then(data => {
-                this.setState({ cities: data.content });
-            });
-        });
-
         getAmenitiesByCategory().then(data => {
             this.setState({ categories: data.content });
         });
@@ -334,18 +324,9 @@ class EditListingPage extends React.Component {
     }
 
     updateCities() {
-        getCities(this.state.country).then(data => {
-            this.setState({
-                city: '',
-                cities: data.content,
-            });
-        });
     }
 
     updateCountries() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
     }
 
     onSelect(name, option) {
