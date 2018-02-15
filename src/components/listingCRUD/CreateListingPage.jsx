@@ -85,6 +85,7 @@ class CreateListingPage extends React.Component {
             cities: [],
             currencies: [],
 
+            isAddressSelected: false,
             userHasLocAddress: null,
             locAddress: ''
         };
@@ -361,6 +362,14 @@ class CreateListingPage extends React.Component {
                 {
                     value: this.state.dedicatedSpace,
                     detail: { name: 'dedicatedSpace' }
+                },
+                {
+                    value: this.state.lng,
+                    detail: { name: 'lng' }
+                },
+                {
+                    value: this.state.lat,
+                    detail: { name: 'lat' }
                 },
             ],
             guestsIncluded: this.state.guestsIncluded,
