@@ -52,6 +52,11 @@ export default function CreateListingLocation(props) {
         props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
     };
 
+    const onAddressChange = (e) => {
+        props.onChange({ target: { name: 'isAddressSelected', value: false }});
+        props.onChange(e);
+    };
+
     const { country, city, street, state } = props.values;
     return (
         <div>
@@ -97,7 +102,7 @@ export default function CreateListingLocation(props) {
                                             <Autocomplete
                                                 className="form-control"
                                                 value={street}
-                                                onChange={props.onChange}
+                                                onChange={onAddressChange}
                                                 name="street"
                                                 onPlaceSelected={handleStreetSelected}
                                                 types={['geocode']}
