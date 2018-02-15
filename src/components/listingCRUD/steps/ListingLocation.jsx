@@ -87,7 +87,7 @@ export default function CreateListingLocation(props) {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
             <div className="navigation col-md-12">
                 <div className="col-md-3">
                 </div>
@@ -102,7 +102,7 @@ export default function CreateListingLocation(props) {
                     }
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 
