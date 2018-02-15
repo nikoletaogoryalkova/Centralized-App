@@ -95,7 +95,7 @@ class AllPublishedListings extends React.Component {
 
     onSelect(name, option) {
         this.setState({
-            [name]: option.value
+            [name]: (option ? option.value : '')
         });
     }
 
@@ -106,10 +106,6 @@ class AllPublishedListings extends React.Component {
     }
 
     async updateCountry(option) {
-        if (!option) {
-            return;
-        }
-
         await this.onSelect('country', option);
         this.updateCities();
     }

@@ -9,9 +9,9 @@ class HomePageRouter extends React.Component {
         return (
             <div>
                 <Switch>
-                    <Route exact path="/hotels" render={() => <HotelsHomePage />} />
                     <Route exact path="/homes" render={() => <HomesHomePage />} />
-                    <Redirect from="/" to="/hotels" />
+                    <Route exact path="/hotels" render={() => <HotelsHomePage />} />
+                    <Redirect from="/" to="/homes" />
                 </Switch>
             </div>
         );
