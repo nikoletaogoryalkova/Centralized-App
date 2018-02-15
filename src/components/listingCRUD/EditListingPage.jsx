@@ -443,11 +443,7 @@ class EditListingPage extends React.Component {
             progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
-            location: {
-                country: this.state.country,
-                city: this.state.city,
-                state: this.state.state,
-            },
+            location: `${this.state.city}, ${this.state.state}, ${this.state.country}`,
             details: [
                 {
                     value: this.state.roomType,
