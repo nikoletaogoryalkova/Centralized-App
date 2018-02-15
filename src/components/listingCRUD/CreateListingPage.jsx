@@ -282,7 +282,7 @@ class CreateListingPage extends React.Component {
     createListing(captchaToken) {
         this.setState({ loading: true });
         let listing = this.createListingObject();
-
+        console.log(listing);
         createListing(listing, captchaToken).then((res) => {
             if (res.success) {
                 this.setState({ loading: false });

@@ -156,7 +156,6 @@ class EditListingPage extends React.Component {
     }
 
     setListingData(data) {
-        console.log(data);
         this.setState({
             type: data.listingType.toString(),
             city: data.location.split(', ')[0],
