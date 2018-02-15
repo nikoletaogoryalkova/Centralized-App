@@ -11,6 +11,47 @@ import React from 'react';
 
 export default function CreateListingLocation(props) {
 
+    const handleOnPlaceSelected = (place) => {
+        if (place.address_components !== undefined) {
+            let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
+            changeAddressComponents(addressComponentsMap);
+        }
+    };
+
+    const handleStreetSelected = (place) => {
+        if (place.address_components !== undefined) {
+            const addressComponentsMap = props.convertGoogleApiAddressComponents(place);
+            // console.log(place)
+            let address = '';
+            if (addressComponentsMap.filter(x => x.type === 'route')[0]) {
+                const addressNumber = addressComponentsMap.filter(x => x.type === 'street_number')[0] ? addressComponentsMap.filter(x => x.type === 'street_number')[0].name : '';
+                const addressRoute = addressComponentsMap.filter(x => x.type === 'route')[0].name;
+                address = `${addressNumber}, ${addressRoute}`;
+                props.onChange({ target: { name: 'street', value: address }});
+                props.onChange({ target: { name: 'isAddressSelected', value: true }});
+                props.onChange({ target: { name: 'lng', value: place.geometry.location.lng() }});
+                props.onChange({ target: { name: 'lat', value: place.geometry.location.lat() }});
+                changeAddressComponents(addressComponentsMap);
+            } else {
+                NotificationManager.warning('Invalid address');
+                props.onChange({ target: { name: 'street', value: '' }});
+                props.onChange({ target: { name: 'lng', value: '' }});
+                props.onChange({ target: { name: 'lat', value: '' }});
+                props.onChange({ target: { name: 'isAddressSelected', value: false }});
+            }
+        }
+    };
+
+    const changeAddressComponents = (addressComponentsMap) => {
+        let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
+        let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
+        let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
+
+        props.onChange({ target: { name: 'city', value: addressCityName } });
+        props.onChange({ target: { name: 'country', value: addressCountryName } });
+        props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
+    };
+
     const { country, city, street, state } = props.values;
     return (
         <div>
@@ -35,18 +76,7 @@ export default function CreateListingLocation(props) {
                                                 value={city}
                                                 onChange={props.onChange}
                                                 name="city"
-                                                onPlaceSelected={(place) => {
-                                                    if (place.address_components !== undefined) {
-                                                        let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
-                                                        let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
-                                                        let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
-                                                        let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
-
-                                                        props.onChange({ target: { name: 'city', value: addressCityName } });
-                                                        props.onChange({ target: { name: 'country', value: addressCountryName } });
-                                                        props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
-                                                    }
-                                                }}
+                                                onPlaceSelected={handleOnPlaceSelected}
                                                 types={['(cities)']}
                                             />
                                         </div>
@@ -64,7 +94,15 @@ export default function CreateListingLocation(props) {
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="street">Address</label>
-                                            <input className="form-control" id="street" name="street" value={street} onChange={props.onChange} />
+                                            <Autocomplete
+                                                className="form-control"
+                                                value={street}
+                                                onChange={props.onChange}
+                                                name="street"
+                                                onPlaceSelected={handleStreetSelected}
+                                                types={['geocode']}
+                                            />
+                                            {/* <input className="form-control" id="street" name="street" value={street} onChange={props.onChange} /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -107,7 +145,11 @@ export default function CreateListingLocation(props) {
 }
 
 function validateInput(values) {
-    const { street, city, country } = values;
+    const { street, city, country, isAddressSelected } = values;
+    if (!isAddressSelected) {
+        return false;
+    }
+
     if (street.length < 6) {
         return false;
     }
@@ -124,7 +166,11 @@ function validateInput(values) {
 }
 
 function showErrors(values) {
-    const { street, city, country } = values;
+    const { street, city, country, isAddressSelected } = values;
+    if (!isAddressSelected) {
+        NotificationManager.warning('Select a valid address');
+    }
+
     if (street.length < 6) {
         NotificationManager.warning('Address should be at least 6 characters long');
     }

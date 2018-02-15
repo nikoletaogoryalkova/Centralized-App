@@ -99,6 +99,8 @@ class EditListingPage extends React.Component {
             categories: [],
             cities: [],
             currencies: [],
+
+            isAddressSelected: false,
         };
 
         this.onChange = this.onChange.bind(this);
@@ -467,6 +469,14 @@ class EditListingPage extends React.Component {
                 {
                     value: this.state.dedicatedSpace,
                     detail: { name: 'dedicatedSpace' }
+                },
+                {
+                    value: this.state.lng,
+                    detail: { name: 'lng' }
+                },
+                {
+                    value: this.state.lat,
+                    detail: { name: 'lat' }
                 },
             ],
             description: {
