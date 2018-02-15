@@ -156,6 +156,7 @@ class EditListingPage extends React.Component {
     }
 
     setListingData(data) {
+        console.log(data);
         this.setState({
             type: data.listingType.toString(),
             city: data.location.split(', ')[0],
@@ -169,7 +170,7 @@ class EditListingPage extends React.Component {
             bedroomsCount: data.details.bedroomsCount ? data.details.bedroomsCount : this.getDetailValue(data, 'bedroomsCount'),
             bedrooms: data.rooms,
             bathrooms: data.details.bathrooms ? Number(data.details.bathrooms) : this.getDetailValue(data, 'bathrooms'),
-            amenities: data.amenities ? new Set(this.getAmenities(data)) : new Set(),
+            facilities: data.amenities ? new Set(this.getAmenities(data)) : new Set(),
             street: data.description.street,
             name: data.name,
             text: this.getText(data.description.text),
