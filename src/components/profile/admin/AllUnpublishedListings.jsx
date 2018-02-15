@@ -1,14 +1,14 @@
-import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { changeListingStatus, contactHost, getAllUnpublishedListings, getCities, getCountries } from '../../../requester';
 
 import AllListingsFilter from './AllListingsFilter';
-import ContactHostModal from '../../property/ContactHostModal';
+import ContactHostModal from '../../common/modals/ContactHostModal';
+import LPagination from '../../common/LPagination';
 import ListingRow from './ListingRow';
-import Pagination from 'rc-pagination';
 import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 
 class AllUnpublishedListings extends React.Component {
     constructor(props) {
@@ -195,16 +195,6 @@ class AllUnpublishedListings extends React.Component {
             return <div className="loader"></div>;
         }
 
-        const textItemRender = (current, type, element) => {
-            if (type === 'prev') {
-                return <div className="rc-prev">&lsaquo;</div>;
-            }
-            if (type === 'next') {
-                return <div className="rc-next">&rsaquo;</div>;
-            }
-            return element;
-        };
-
         return (
             <div className="my-reservations">
                 <NotificationContainer />
@@ -245,12 +235,22 @@ class AllUnpublishedListings extends React.Component {
                                     </div>
                                 </div>
                                 {this.state.listings.map((item, i) => {
-                                    return <ListingRow action="Publish" updateListingStatus={this.updateListingStatus} listing={item} key={i} openModal={this.openModal} />;
+                                    return <ListingRow
+                                        action="Publish"
+                                        canDelete={true}
+                                        updateListingStatus={this.updateListingStatus}
+                                        actionClass="btn btn-success"
+                                        listing={item}
+                                        key={i}
+                                        openModal={this.openModal} />;
                                 })}
 
-                                <div className="pagination-box">
-                                    {this.state.totalReservations !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalElements} />}
-                                </div>
+                                <LPagination
+                                    loading={this.state.totalReservations === 0}
+                                    onPageChange={this.onPageChange}
+                                    currentPage={this.state.currentPage}
+                                    totalElements={this.state.totalElements}
+                                />
 
                             </div>}
                     </div>

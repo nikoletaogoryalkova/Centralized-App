@@ -4,8 +4,6 @@ import {
     createListing,
     editListing,
     getAmenitiesByCategory,
-    getCities,
-    getCountries,
     getCurrencies,
     getListingProgress,
     getMyListingById,
@@ -67,12 +65,13 @@ class EditListingPage extends React.Component {
             dedicatedSpace: DefaultListing.dedicatedSpace,
             propertySize: DefaultListing.size,
             guestsIncluded: 1,
-            bedroomsCount: 1,
+            bedroomsCount: '1 bedroom',
             bedrooms: [this.createBedroom(),],
             bathrooms: 1,
             facilities: new Set(),
             street: '',
             city: '',
+            state: '',
             name: '',
             text: '',
             interaction: '',
@@ -159,7 +158,9 @@ class EditListingPage extends React.Component {
     setListingData(data) {
         this.setState({
             type: data.listingType.toString(),
-            country: data.country,
+            city: data.location.split(', ')[0],
+            state: data.location.split(', ')[1],
+            country: data.location.split(', ')[2],
             propertyType: data.type.toString(),
             roomType: data.details.roomType ? data.details.roomType : this.getDetailValue(data, 'roomType'),
             dedicatedSpace: data.details.dedicatedSpace ? data.details.dedicatedSpace : this.getDetailValue(data, 'dedicatedSpace'),
@@ -168,9 +169,8 @@ class EditListingPage extends React.Component {
             bedroomsCount: data.details.bedroomsCount ? data.details.bedroomsCount : this.getDetailValue(data, 'bedroomsCount'),
             bedrooms: data.rooms,
             bathrooms: data.details.bathrooms ? Number(data.details.bathrooms) : this.getDetailValue(data, 'bathrooms'),
-            amenities: data.amenities ? new Set(this.getAmenities(data)) : new Set(),
+            facilities: data.amenities ? new Set(this.getAmenities(data)) : new Set(),
             street: data.description.street,
-            city: data.city,
             name: data.name,
             text: this.getText(data.description.text),
             interaction: data.description.interaction,
@@ -203,14 +203,6 @@ class EditListingPage extends React.Component {
     }
 
     componentDidMount() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-
-            getCities(this.state.country).then(data => {
-                this.setState({ cities: data.content });
-            });
-        });
-
         getAmenitiesByCategory().then(data => {
             this.setState({ categories: data.content });
         });
@@ -244,8 +236,8 @@ class EditListingPage extends React.Component {
     }
 
     updateBedrooms(event) {
-        let bedroomsCount = this.state.bedroomsCount;
-        let value = Number(event.target.value);
+        let bedroomsCount = Number(this.state.bedroomsCount.split(' ')[0]);
+        let value = Number(event.target.value.split(' ')[0]);
         if (value < 0) { value = 0; }
 
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
@@ -258,8 +250,11 @@ class EditListingPage extends React.Component {
             newBedrooms = newBedrooms.slice(0, value);
         }
 
+        console.log(value + ' ' + event.target.value.split(' ')[1]);
+        console.log(newBedrooms);
+
         this.setState({
-            bedroomsCount: value,
+            bedroomsCount: value + ' ' + event.target.value.split(' ')[1],
             bedrooms: newBedrooms,
         });
     }
@@ -269,7 +264,6 @@ class EditListingPage extends React.Component {
         const name = e.target.name;
         let value = Number(e.target.value);
         if (value < 0) { value = 0; }
-
         bedrooms[bedroom][name] = value;
         this.setState({
             bedrooms: bedrooms,
@@ -332,18 +326,9 @@ class EditListingPage extends React.Component {
     }
 
     updateCities() {
-        getCities(this.state.country).then(data => {
-            this.setState({
-                city: '',
-                cities: data.content,
-            });
-        });
     }
 
     updateCountries() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
     }
 
     onSelect(name, option) {
@@ -441,7 +426,7 @@ class EditListingPage extends React.Component {
             progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
-            country: this.state.country,
+            location: `${this.state.city}, ${this.state.state}, ${this.state.country}`,
             details: [
                 {
                     value: this.state.roomType,
@@ -493,7 +478,6 @@ class EditListingPage extends React.Component {
             guestsIncluded: this.state.guestsIncluded,
             rooms: this.state.bedrooms,
             amenities: this.state.facilities,
-            city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
             checkinStart: moment(this.state.checkinStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
@@ -591,6 +575,23 @@ class EditListingPage extends React.Component {
         });
     }
 
+    convertGoogleApiAddressComponents(place) {
+        let addressComponents = place.address_components;
+
+        let addressComponentsArr = [];
+
+        for (let i = 0; i < addressComponents.length; i++) {
+
+            let addressComponent = {
+                name: addressComponents[i].long_name,
+                type: addressComponents[i].types[0]
+            };
+            addressComponentsArr.push(addressComponent);
+        }
+
+        return addressComponentsArr;
+    }
+
     render() {
         return (
             <div>
@@ -642,7 +643,8 @@ class EditListingPage extends React.Component {
                         updateProgress={this.updateProgress}
                         routes={routes}
                         prev={routes.safetyamenities}
-                        next={routes.description} />} />
+                        next={routes.description}
+                        convertGoogleApiAddressComponents={this.convertGoogleApiAddressComponents} />} />
                     <Route exact path={routes.description} render={() => <ListingDescription
                         values={this.state}
                         onChange={this.onChange}

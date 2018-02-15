@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
-
 import BasicsAside from '../aside/BasicsAside';
-import ListingCrudNav from '../navigation/ListingCrudNav';
 import Counter from '../counter/Counter';
 import Dropdown from '../dropdown/Dropdown';
 import LabeledBedroomCounter from '../counter/LabeledBedroomCounter';
+import ListingCrudNav from '../navigation/ListingCrudNav';
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default function CreateListingAccommodation(props) {
     const { guestsIncluded, bedroomsCount, bedrooms, bathrooms } = props.values;
@@ -39,6 +38,12 @@ export default function CreateListingAccommodation(props) {
         </div>;
     });
 
+    let bedroomsArray = ['1 bedroom'];
+
+    for (let i = 2; i <= 10; i++) {
+        bedroomsArray.push(i + ' bedrooms');
+    }
+
     return (
         <div>
             <ListingCrudNav progress='33%' />
@@ -46,7 +51,7 @@ export default function CreateListingAccommodation(props) {
                 <div className="row">
                     <div className="listings create">
                         <div className="col-md-3">
-                            <BasicsAside routes={props.routes}/>
+                            <BasicsAside routes={props.routes} />
                         </div>
                         <div className="reservation-hotel-review-room col-md-9">
 
@@ -57,11 +62,13 @@ export default function CreateListingAccommodation(props) {
 
                             <div>
                                 <h3>How many guests can stay in your place?</h3>
-                                <label>Guests:</label>
-                                <Counter
-                                    name="guestsIncluded"
-                                    value={guestsIncluded}
-                                    onChange={props.updateCounter} />
+                                <label>
+                                    <span className="counter-label">Guests:</span>
+                                    <Counter
+                                        name="guestsIncluded"
+                                        value={guestsIncluded}
+                                        onChange={props.updateCounter} />
+                                </label>
                             </div>
 
                             <br />
@@ -69,10 +76,12 @@ export default function CreateListingAccommodation(props) {
                             <div>
                                 <h3>How many bedrooms can your guests use?</h3>
                                 <Dropdown
+                                    className="bedroom-counter l-select"
                                     name="bedroomCount"
-                                    options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                                    options={bedroomsArray}
                                     value={bedroomsCount}
-                                    onChange={props.updateBedrooms} />
+                                    onChange={props.updateBedrooms}
+                                />
                             </div>
 
                             <div>
@@ -86,11 +95,13 @@ export default function CreateListingAccommodation(props) {
                                 <hr />
                                 <h3>How many bathrooms can your guests use?</h3>
 
-                                <label>Bathrooms:</label>
-                                <Counter
-                                    name="bathrooms"
-                                    value={bathrooms}
-                                    onChange={props.updateCounter} />
+                                <label>
+                                    <span className="counter-label">Bathrooms:</span>
+                                    <Counter
+                                        name="bathrooms"
+                                        value={bathrooms}
+                                        onChange={props.updateCounter} />
+                                </label>
                             </div>
 
                             <br />

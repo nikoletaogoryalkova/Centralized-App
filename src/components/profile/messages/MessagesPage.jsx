@@ -1,7 +1,7 @@
 import { changeMessageStatus, getMyConversations } from '../../../requester';
 
+import LPagination from '../../common/LPagination';
 import MessagesItem from './MessagesItem';
-import Pagination from 'rc-pagination';
 import React from 'react';
 
 export default class MessagesPage extends React.Component {
@@ -62,16 +62,6 @@ export default class MessagesPage extends React.Component {
     }
 
     render() {
-        const textItemRender = (current, type, element) => {
-            if (type === 'prev') {
-                return <div className="rc-prev">&lsaquo;</div>;
-            }
-            if (type === 'next') {
-                return <div className="rc-next">&rsaquo;</div>;
-            }
-            return element;
-        };
-
         if (this.state.loading) {
             return <div className="loader"></div>;
         }
@@ -86,9 +76,12 @@ export default class MessagesPage extends React.Component {
                                     return <MessagesItem message={message} changeMessageFlag={this.changeMessageFlag} key={i} />;
                                 })}
                             </div>
-                            <div className="pagination-box">
-                                {this.state.totalElements !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalElements} />}
-                            </div>
+
+                            <LPagination
+                                loading={this.state.totalElements === 0}
+                                onPageChange={this.onPageChange}
+                                currentPage={this.state.currentPage}
+                                totalElements={this.state.totalElements} />
                         </div>
                     }
                 </section>

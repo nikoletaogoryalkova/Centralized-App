@@ -166,7 +166,7 @@ header form button {
 }
 
 #second-nav .navbar-nav a:hover,
-#second-nav .navbar-nav li.active a {
+#second-nav .navbar-nav li a.active {
     font-size: 18px;
     border-radius: 0;
     font-weight: 400;
@@ -680,11 +680,15 @@ footer a {
 footer h3 {
     color: #fff;
     margin: 40px 0 35px 0;
+    position: relative;
+    z-index: 1050;
 }
 
 footer ul {
     margin: 0 0 40px 0;
     padding: 0;
+    position: relative;
+    z-index: 1050;
 }
 
 footer ul li {
@@ -693,9 +697,11 @@ footer ul li {
     margin: 0 0 10px 0;
 }
 
-.copyright {
+footer .copyright {
     border-top: 1px solid #2f4b59;
     padding: 15px 0;
+    position: relative;
+    z-index: 1050;
 }
 
 footer .select-language a {
@@ -703,12 +709,12 @@ footer .select-language a {
 }
 
 footer .select-language {
+    margin: 10px 0;
     padding: 16px 20px;
     background: #fff;
     border-radius: 4px;
     width: 100%;
     color: #54575a;
-    margin: 45px 0 20px 0;
     text-align: center;
 }
 
@@ -732,6 +738,20 @@ footer .select-curency {
 footer .select-curency .caret {
     margin-top: 5%;
     float: right;
+}
+
+footer #attached-footer {
+    background: #223843;
+    color: #fff;
+}
+
+footer .currency-switcher {
+    margin: 10px 0;
+    padding: 16px 20px;
+    color: #000000;
+    width: 100%;
+    border-radius: 4px;
+    outline: none;
 }
 
 .admin_dashboard #search-bar {
@@ -760,7 +780,7 @@ footer .select-curency .caret {
 }
 
 #main-nav #second-nav .navbar-nav a:hover,
-#main-nav #second-nav .navbar-nav li.active a {
+#main-nav #second-nav .navbar-nav li a.active {
     font-size: 18px;
     border-radius: 0;
     font-weight: 400;
@@ -782,6 +802,14 @@ footer .select-curency .caret {
     min-height: 92px;
     border-radius: 5px;
     box-shadow: 0 0 40px #223843;
+}
+
+#main-nav #search-bar .form-group {
+    margin-bottom: 0;
+}
+
+#main-nav #search-bar #search #location {
+    width: 23%;
 }
 
 #localization-nav div.container {
@@ -2024,7 +2052,7 @@ li.dropdown {
 }
 
 .my-reservations .reservation-box button {
-    padding-bottom:10px;
+    padding-bottom: 10px;
     font-weight: bold;
     font-family: 'FuturaStd-Light', sans-serif;
     color: #E98B73;
@@ -2382,22 +2410,28 @@ input::-webkit-inner-spin-button {
         float: none;
         min-height: 60px;
     }
+    .list-hotel-box .list-hotel {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
     .list-hotel-box .list-image {
         width: 100%;
         float: none;
         margin-bottom: 15px;
+        min-height: 70px;
     }
     .list-hotel-box .list-content {
-        float: none;
-        width: 100%;
-        padding: 15px;
+        width: 100% !important;
+    }
+    .list-hotel-box .list-content h2, .list-hotel-box .list-content p {
+        padding-right: 130px;
     }
     .list-hotel-box .list-price {
-        width: 100%;
-        float: none;
-        background: #f0f1f3;
-        min-height: 40px;
-        margin-top: 30px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 130px;
     }
     .list-hotel-box .list-hotel-price-button {
         padding: 10px 25px;
@@ -2554,7 +2588,7 @@ input[type="checkbox"].tick:checked+label:after {
 /* Temp solution */
 
 .owl-theme .owl-nav [class*=owl-] {
-    background: transparent!important;
+    background: transparent !important;
 }
 
 .owl-carousel .owl-stage::after {
@@ -2641,8 +2675,8 @@ h2+hr {
 }
 
 
-
 /* FIX FOR MAC OS */
+
 select {
     -webkit-appearance: none
 }
@@ -2685,10 +2719,33 @@ select {
     border-bottom: 4px solid #A0C5BE;
 }
 
-.currency-switcher {
-    padding: 15px;
-    color: #000000;
-    width: 100%;
-    border-radius: 3px;
+.counter {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #D87A61;
+    color: #D87A61;
+    border-radius: 2px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    user-select: none;
+    cursor: pointer;
+    line-height: 18px;
+}
+
+.counter-label {
+    font-size: 16px;
+    margin-right: 10px;
+    width: 100px;
+    display: inline-block;
+}
+
+.bedroom-counter {
+    font-size: 16px;
+    padding: 15px 39px 15px 15px;
+    width: 34%;
     outline: none;
+    border-radius: 3px;
 }

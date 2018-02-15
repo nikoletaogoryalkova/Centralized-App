@@ -1,12 +1,12 @@
 import { acceptReservation, cancelReservation, cancelTrip, getMyReservations } from '../../../requester';
 
+import CancellationModal from '../../common/modals/CancellationModal';
+import LPagination from '../../common/LPagination';
 import { Link } from 'react-router-dom';
 import MyReservationsTable from './MyReservationsTable';
 import { NotificationManager } from 'react-notifications';
-import Pagination from 'rc-pagination';
-import React from 'react';
-import CancellationModal from '../../common/modals/CancellationModal';
 import ReCAPTCHA from 'react-google-recaptcha';
+import React from 'react';
 
 export default class MyReservationsPage extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ export default class MyReservationsPage extends React.Component {
             totalReservations: 0,
             currentPage: 1,
             selectedReservationId: 0,
-            showRejectReservationModal: false, 
+            showRejectReservationModal: false,
         };
 
         this.onPageChange = this.onPageChange.bind(this);
@@ -56,7 +56,7 @@ export default class MyReservationsPage extends React.Component {
         const id = this.state.selectedReservationId;
         acceptReservation(id, captchaToken)
             .then(response => {
-                if(response.success) {
+                if (response.success) {
                     this.setReservationIsAccepted(id, true);
                     NotificationManager.success(response.message, 'Reservation Operations');
                 } else {
@@ -69,7 +69,7 @@ export default class MyReservationsPage extends React.Component {
         const id = this.state.selectedReservationId;
         cancelReservation(id, captchaToken)
             .then(response => {
-                if(response.success) {
+                if (response.success) {
                     this.setReservationIsAccepted(id, false);
                     NotificationManager.success(response.message, 'Reservation Operations');
                 } else {
@@ -84,7 +84,7 @@ export default class MyReservationsPage extends React.Component {
         let messageObj = { message: message };
         cancelTrip(id, messageObj, captchaToken)
             .then(response => {
-                if(response.success) {
+                if (response.success) {
                     this.deleteReservationFromState(id);
                     NotificationManager.success(response.message, 'Reservation Operations');
                 } else {
@@ -100,7 +100,7 @@ export default class MyReservationsPage extends React.Component {
 
     setReservationIsAccepted(reservationId, isAccepted) {
         const reservations = this.state.reservations.map(reservation => {
-            if(reservation.id === reservationId) {
+            if (reservation.id === reservationId) {
                 reservation.accepted = isAccepted;
             }
             return reservation;
@@ -144,16 +144,6 @@ export default class MyReservationsPage extends React.Component {
             return <div className="loader"></div>;
         }
 
-        const renderPaginationArrow = (current, type, element) => {
-            if (type === 'prev') {
-                return <div className="rc-prev">&lsaquo;</div>;
-            }
-            if (type === 'next') {
-                return <div className="rc-next">&rsaquo;</div>;
-            }
-            return element;
-        };
-
         return (
             <div className="my-reservations">
                 <ReCAPTCHA
@@ -178,7 +168,7 @@ export default class MyReservationsPage extends React.Component {
                     title={'Delete Reservation'}
                     text={'Tell your guest why do you want to reject his reservation.'}
                     onChange={this.onChange}
-                    isActive={this.state.showRejectReservationModal} 
+                    isActive={this.state.showRejectReservationModal}
                     onClose={this.closeModal}
                     onSubmit={this.onReservationReject} />
 
@@ -193,17 +183,12 @@ export default class MyReservationsPage extends React.Component {
                             onReservationSelect={this.onReservationSelect}
                             onReservationReject={() => { this.openModal('showRejectReservationModal'); }} />
 
-                        <div className="pagination-box">
-                            {this.state.totalReservations !== 0 && 
-                                <Pagination 
-                                    itemRender={renderPaginationArrow} 
-                                    className="pagination" 
-                                    defaultPageSize={20} 
-                                    showTitle={false} 
-                                    onChange={this.onPageChange} 
-                                    current={this.state.currentPage} 
-                                    total={this.state.totalReservations} />}
-                        </div>
+                        <LPagination
+                            loading={this.state.totalReservations === 0}
+                            onPageChange={this.onPageChange}
+                            currentPage={this.state.currentPage}
+                            totalElements={this.state.totalReservations}
+                        />
 
                         <div className="my-listings">
                             <Link className="btn btn-primary create-listing" to="#">Print this page</Link>

@@ -1,19 +1,18 @@
 // import '../../../public/css/calendar.css';
 
-import DatePicker from '../DatePicker';
+import DatePicker from '../../DatePicker';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
-import { requestBooking } from '../../requester';
+import { requestBooking } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 
-class PropertyReservation extends React.Component {
+class HomeReservationPanel extends React.Component {
     constructor(props) {
         super(props);
-
         let guests = '';
 
         if (this.props) {
@@ -38,6 +37,14 @@ class PropertyReservation extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.captchaChange = this.captchaChange.bind(this);
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            name: !newProps.isLogged ? '' : newProps.userInfo.firstName + ' ' + newProps.userInfo.lastName,
+            email: !newProps.isLogged ? '' : newProps.userInfo.email,
+            phone: !newProps.isLogged ? '' : newProps.userInfo.phoneNumber || '',
+        });
     }
 
     onChange(e) {
@@ -213,17 +220,28 @@ class PropertyReservation extends React.Component {
     }
 }
 
-PropertyReservation.propTypes = {
+HomeReservationPanel.propTypes = {
+    startDate: PropTypes.any,
+    endDate: PropTypes.any,
+    isLogged: PropTypes.bool,
+    calendar: PropTypes.any,
+    nights: PropTypes.number,
+    listing: PropTypes.any,
+    loading: PropTypes.bool,
+    onApply: PropTypes.func,
+
     // start Redux props
     dispatch: PropTypes.func,
+    userInfo: PropTypes.object,
     paymentInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(PropertyReservation));
+export default withRouter(connect(mapStateToProps)(HomeReservationPanel));
 
 function mapStateToProps(state) {
-    const { paymentInfo } = state;
+    const { userInfo, paymentInfo } = state;
     return {
+        userInfo,
         paymentInfo
     };
 }

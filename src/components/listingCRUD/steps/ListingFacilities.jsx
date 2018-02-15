@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import BasicsAside from '../aside/BasicsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
-import FiltersCheckbox from '../../listings/FiltersCheckbox';
+import FilterCheckbox from '../../common/filter/FilterCheckbox';
 
 export default function CreateListingFacilities(props) {
     if (!props) {
@@ -20,7 +20,7 @@ export default function CreateListingFacilities(props) {
                     {category.amenities.map((item, i) => {
                         return (
                             <div key={i} onClick={() => props.toggle(item.id)}>
-                                <FiltersCheckbox
+                                <FilterCheckbox
                                     key={i}
                                     text={item.name}
                                     checked={props.values.facilities.has(item.id)} />
