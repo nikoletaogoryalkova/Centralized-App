@@ -42,7 +42,7 @@ export default function MyTripsTable(props) {
                                 {trip.hostEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${trip.hostEmail}`}>Send Message</a></div> : ''}
                             </div>
                             <div className="col-md-2">
-                                <div><Link to={`/listings/${trip.listingId}`}><u>{trip.listingName}</u></Link></div>
+                                <div><Link to={`/homes/listings/${trip.listingId}`}><u>{trip.listingName}</u></Link></div>
                             </div>
                             <div className="col-md-3">
                                 <div>{moment(new Date(trip.startDate)).format('DD MMM, YYYY')}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.endDate)).format('DD MMM, YYYY')}</div>

@@ -1,11 +1,12 @@
 import { deleeteInProgressListing, getMyListings, getMyListingsInProgress } from '../../../requester';
 
+import LPagination from '../../common/LPagination';
 import { Link } from 'react-router-dom';
 import MyListingsActiveItem from './MyListingsActiveItem';
 import MyListingsInProgressItem from './MyListingsInProgressItem';
 import { NotificationContainer } from 'react-notifications';
-import Pagination from 'rc-pagination';
 import React from 'react';
+import filterListings from '../../../actions/filterListings';
 
 export default class MyListingsPage extends React.Component {
     constructor(props) {
@@ -20,14 +21,9 @@ export default class MyListingsPage extends React.Component {
             totalListingsInProgress: 0
         };
 
-        this.filterListings = this.filterListings.bind(this);
+        this.filterListings = filterListings.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
         this.deleteInProgressListing = this.deleteInProgressListing.bind(this);
-    }
-
-    filterListings(id) {
-        let newListings = this.state.listings.filter(l => l.id !== id);
-        this.setState({ listings: newListings });
     }
 
     componentDidMount() {
@@ -55,6 +51,7 @@ export default class MyListingsPage extends React.Component {
             currentPage: page,
             loading: true
         });
+        window.scrollTo(0, 0);
 
         getMyListings(`?page=${page - 1}`).then(data => {
             this.setState({
@@ -67,16 +64,6 @@ export default class MyListingsPage extends React.Component {
 
 
     render() {
-        const textItemRender = (current, type, element) => {
-            if (type === 'prev') {
-                return <div className="rc-prev">&lsaquo;</div>;
-            }
-            if (type === 'next') {
-                return <div className="rc-next">&rsaquo;</div>;
-            }
-            return element;
-        };
-
         if (this.state.loading && this.state.listingsInProgress !== null) {
             return <div className="loader"></div>;
         }
@@ -99,9 +86,12 @@ export default class MyListingsPage extends React.Component {
                             return <MyListingsActiveItem state={item.state} filterListings={this.filterListings} listing={item} key={i} />;
                         })}
 
-                        <div className="pagination-box">
-                            {this.state.totalListings !== 0 && <Pagination itemRender={textItemRender} className="pagination" defaultPageSize={20} showTitle={false} onChange={this.onPageChange} current={this.state.currentPage} total={this.state.totalListings} />}
-                        </div>
+                        <LPagination
+                            loading={this.state.totalListings === 0}
+                            onPageChange={this.onPageChange}
+                            currentPage={this.state.currentPage}
+                            totalElements={this.state.totalListings}
+                        />
 
                         <div className="my-listings">
                             <Link className="btn btn-primary create-listing" to="/profile/listings/create/landing">Add new listing</Link>

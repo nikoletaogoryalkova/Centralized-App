@@ -47,8 +47,7 @@ export default class AllListingsFilter extends React.Component {
                                 name="country"
                                 placeholder="Country"
                                 className="form-control form-control-select"
-                                clearable={false}
-                                style={{ border: 'none' }}
+                                style={{ border: 'none', boxShadow: 'none' }}
                                 value={this.props.country}
                                 onChange={this.props.updateCountry}
                                 options={renderCountries}
@@ -61,8 +60,7 @@ export default class AllListingsFilter extends React.Component {
                                 name="city"
                                 placeholder="City"
                                 className="form-control form-control-select"
-                                clearable={false}
-                                style={{ border: 'none' }}
+                                style={{ border: 'none', boxShadow: 'none' }}
                                 value={this.props.city}
                                 onChange={option => this.props.onSelect('city', option)}
                                 options={renderCities}

@@ -29,12 +29,6 @@ export default class Calendar extends React.Component {
                     </div>
 
                     <span className="rbc-toolbar-label">{label()}</span>
-                    {/* 
-                    <select value={this.props.selectedListing} onChange={this.props.onListingChange}>
-                        {this.props.myListings.map((item, i) => {
-                            return <option key={i} value={item.id}>{item.name}</option>
-                        })}
-                    </select> */}
                 </div>
             );
         };
@@ -81,10 +75,20 @@ export default class Calendar extends React.Component {
             dateAfterDays.setDate(dateAfterDays.getDate() + afterDaysConst);
 
             let isPastDate = (new Date(value).getTime() < now.getTime()) || (new Date(value).getTime() > dateAfterDays);
+            let isSelected = value.toString() === this.props.selectedDate.toString();
+
+            let className = isPastDate ? 'date-in-past' : 'rbc-day-bg';
+            let borderBottom = isSelected ? '3px solid #d77961' : '1px solid #DDD';
 
             return (
-                <div className={isPastDate ? 'date-in-past' : 'rbc-day-bg'} style={{ flexBasis: 14.2857 + '%', maxWidth: 14.2857 + '%', cursor: 'auto' }}>
-                    {/* onClick={this.props.onSlotClick} */}
+                <div
+                    className={className}
+                    style={{
+                        flexBasis: 14.2857 + '%',
+                        maxWidth: 14.2857 + '%',
+                        cursor: 'auto',
+                        borderBottom
+                    }}>
                     {children}
                 </div>
             );
@@ -106,37 +110,41 @@ export default class Calendar extends React.Component {
         return (
             <div className={(this.props.selectedDay !== null && this.props.selectedDay !== '') ? 'col-md-12 calendar dynamic-aside' : 'col-md-12 calendar'}>
                 <div className="col-md-8">
-                    <BigCalendar selectable
-                        popup
-                        events={this.props.allEvents}
-                        defaultView='month'
-                        step={60}
-                        defaultDate={new Date()}
-                        onSelectSlot={e => {
-                            const now = new Date();
-                            now.setHours(0, 0, 0, 0);
-
-                            const afterDaysConst = 89;
-
-                            let dateAfterDays = new Date();
-                            dateAfterDays.setHours(0, 0, 0, 0);
-                            dateAfterDays.setDate(dateAfterDays.getDate() + afterDaysConst);
-
-                            if ((e.end.getTime() < now.getTime()) || (e.end.getTime() > dateAfterDays)) {
-                                return;
-                            }
-                            this.props.onCancel();
-                            this.props.onSelectSlot(e);
-                        }}
-                        views={['month']}
-                        components={{
-                            toolbar: CustomToolbar,
-                            dateCellWrapper: DateCell,
-                            event: CustomEvent
-                        }}
-                        formats={formats}
-                        eventPropGetter={eventStyleGetter}
-                    />
+                    {this.props.calendarLoading ?
+                        <div className="loader"></div> :
+                        <BigCalendar
+                            selectable
+                            popup
+                            events={this.props.allEvents}
+                            defaultView='month'
+                            step={60}
+                            defaultDate={new Date()}
+                            onSelectSlot={e => {
+                                const now = new Date();
+                                now.setHours(0, 0, 0, 0);
+    
+                                const afterDaysConst = 89;
+    
+                                let dateAfterDays = new Date();
+                                dateAfterDays.setHours(0, 0, 0, 0);
+                                dateAfterDays.setDate(dateAfterDays.getDate() + afterDaysConst);
+    
+                                if ((e.end.getTime() < now.getTime()) || (e.end.getTime() > dateAfterDays)) {
+                                    return;
+                                }
+                                this.props.onCancel();
+                                this.props.onSelectSlot(e);
+                            }}
+                            views={['month']}
+                            components={{
+                                toolbar: CustomToolbar,
+                                dateCellWrapper: DateCell,
+                                event: CustomEvent
+                            }}
+                            formats={formats}
+                            eventPropGetter={eventStyleGetter}
+                        />
+                    }
                 </div>
 
                 {this.props.selectedDay !== null && this.props.selectedDay !== '' ?
@@ -159,10 +167,10 @@ export default class Calendar extends React.Component {
 }
 
 Calendar.propTypes = {
-    selectedDay: PropTypes.object,
+    selectedDay: PropTypes.string,
     selectedDate: PropTypes.object,
     price: PropTypes.number,
-    available: PropTypes.bool,
+    available: PropTypes.string,
     onSubmit: PropTypes.func,
     onChange: PropTypes.func,
     currencySign: PropTypes.string,

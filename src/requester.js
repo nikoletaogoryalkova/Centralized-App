@@ -53,6 +53,8 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
     case RequestMethod.DELETE:
         requestHeaders = deleteParams;
         break;
+    default:
+        break;
     }
 
     return fetch(endpoint, requestHeaders)
@@ -79,7 +81,7 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
 }
 
 export function getListings() {
-    return sendRequest(`${host}listings?page=1&size=10`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}listings/top`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

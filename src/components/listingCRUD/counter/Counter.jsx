@@ -1,23 +1,21 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Config } from '../../../config';
+import React from 'react';
 
 export default class Counter extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.increment = this.increment.bind(this);
         this.decrement = this.decrement.bind(this);
     }
 
-    increment = (e) => {
+    increment(e) {
         e.target.name = this.props.name;
         e.target.value = Number(this.props.value) + 1;
         this.props.onChange(e);
     }
 
-    decrement = (e) => {
+    decrement(e) {
         e.target.name = this.props.name;
         e.target.value = Number(this.props.value) - 1;
         this.props.onChange(e);
@@ -25,30 +23,22 @@ export default class Counter extends React.Component {
 
     render() {
         return (
-            <div style={{display: "inline-block"}}>
-                <input 
-                    type="image" 
-                    src={Config.getValue("basePath") + "images/left.png"}
-                    alt="plus"
-                    onClick={(e) => this.decrement(e)} />
-                
+            <div style={{ display: 'inline-block' }}>
+                <span className="counter" onClick={(e) => this.decrement(e)}>&#8722;</span>
+
                 <span
-                    style={{margin: '10px', padding: '10px'}}>
+                    style={{ margin: '10px', padding: '10px' }}>
                     {this.props.value}
                 </span>
-                
-                <input 
-                    type="image" 
-                    src={Config.getValue("basePath") + "images/right.png"}
-                    alt="minus"
-                    onClick={(e) => this.increment(e)} />
+
+                <span className="counter" onClick={(e) => this.increment(e)}>&#43;</span>
             </div>
         );
     }
 }
 
-Counter.propTypes ={
+Counter.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
-}
+};

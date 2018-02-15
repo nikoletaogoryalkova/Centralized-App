@@ -4,8 +4,6 @@ import {
     createListing,
     createListingProgress,
     getAmenitiesByCategory,
-    getCities,
-    getCountries,
     getCurrencies,
     getCurrentLoggedInUserInfo,
     getPropertyTypes,
@@ -43,17 +41,19 @@ class CreateListingPage extends React.Component {
         this.state = {
             progressId: null,
             listingType: '1',
-            country: '1',
+            country: '',
+            countryCode: '',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
             propertySize: '',
             guestsIncluded: 1,
-            bedroomsCount: 1,
+            bedroomsCount: '1 bedroom',
             bedrooms: [this.createBedroom(),],
             bathrooms: 1,
             facilities: new Set(),
             street: '',
+            state: '',
             city: '',
             apartment: '',
             zipCode: '',
@@ -111,20 +111,12 @@ class CreateListingPage extends React.Component {
     }
 
     componentDidMount() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
-
         getAmenitiesByCategory().then(data => {
             this.setState({ categories: data.content });
         });
 
         getPropertyTypes().then(data => {
             this.setState({ propertyTypes: data.content });
-        });
-
-        getCities(this.state.country).then(data => {
-            this.setState({ cities: data.content });
         });
 
         getCurrencies().then(data => {
@@ -156,8 +148,8 @@ class CreateListingPage extends React.Component {
     }
 
     updateBedrooms(event) {
-        let bedroomsCount = this.state.bedroomsCount;
-        let value = Number(event.target.value);
+        let bedroomsCount = Number(this.state.bedroomsCount.split(' ')[0]);
+        let value = Number(event.target.value.split(' ')[0]);
         if (value < 0) { value = 0; }
 
         let newBedrooms = JSON.parse(JSON.stringify(this.state.bedrooms));
@@ -170,8 +162,11 @@ class CreateListingPage extends React.Component {
             newBedrooms = newBedrooms.slice(0, value);
         }
 
+        console.log(value + ' ' + event.target.value.split(' ')[1]);
+        console.log(newBedrooms);
+
         this.setState({
-            bedroomsCount: value,
+            bedroomsCount: value + ' ' + event.target.value.split(' ')[1],
             bedrooms: newBedrooms,
         });
     }
@@ -229,18 +224,9 @@ class CreateListingPage extends React.Component {
     }
 
     updateCities() {
-        getCities(this.state.country).then(data => {
-            this.setState({
-                city: '',
-                cities: data.content,
-            });
-        });
     }
 
     updateCountries() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
     }
 
     onSelect(name, option) {
@@ -299,7 +285,7 @@ class CreateListingPage extends React.Component {
     createListing(captchaToken) {
         this.setState({ loading: true });
         let listing = this.createListingObject();
-
+        console.log(listing);
         createListing(listing, captchaToken).then((res) => {
             if (res.success) {
                 this.setState({ loading: false });
@@ -328,7 +314,13 @@ class CreateListingPage extends React.Component {
             progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
-            country: this.state.country,
+            location: `${this.state.city}, ${this.state.state}, ${this.state.country}`,
+            description: {
+                street: this.state.street,
+                text: this.state.text,
+                interaction: this.state.interaction,
+                houseRules: Array.from(this.state.otherHouseRules).join('\r\n'),
+            },
             details: [
                 {
                     value: this.state.roomType,
@@ -371,16 +363,9 @@ class CreateListingPage extends React.Component {
                     detail: { name: 'dedicatedSpace' }
                 },
             ],
-            description: {
-                street: this.state.street,
-                text: this.state.text,
-                interaction: this.state.interaction,
-                houseRules: Array.from(this.state.otherHouseRules).join('\r\n'),
-            },
             guestsIncluded: this.state.guestsIncluded,
             rooms: this.state.bedrooms,
             amenities: this.state.facilities,
-            city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
             checkinStart: moment(this.state.checkinStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
@@ -463,6 +448,23 @@ class CreateListingPage extends React.Component {
         });
     }
 
+    convertGoogleApiAddressComponents(place) {
+        let addressComponents = place.address_components;
+
+        let addressComponentsArr = [];
+
+        for (let i = 0; i < addressComponents.length; i++) {
+
+            let addressComponent = {
+                name: addressComponents[i].long_name,
+                type: addressComponents[i].types[0]
+            };
+            addressComponentsArr.push(addressComponent);
+        }
+
+        return addressComponentsArr;
+    }
+
     render() {
         if (this.state.countries === [] || this.state.currencies === [] ||
             this.state.propertyTypes === [] || this.state.categories === [] ||
@@ -524,6 +526,7 @@ class CreateListingPage extends React.Component {
                         next={routes.location} />} />
                     <Route exact path={routes.location} render={() => <ListingLocation
                         values={this.state}
+                        onChangeLocation={this.onChangeLocation}
                         onChange={this.onChange}
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}
@@ -531,6 +534,7 @@ class CreateListingPage extends React.Component {
                         updateProgress={this.updateProgress}
                         routes={routes}
                         prev={routes.safetyamenities}
+                        convertGoogleApiAddressComponents={this.convertGoogleApiAddressComponents}
                         next={routes.description} />} />
                     <Route exact path={routes.description} render={() => <ListingDescription
                         values={this.state}
