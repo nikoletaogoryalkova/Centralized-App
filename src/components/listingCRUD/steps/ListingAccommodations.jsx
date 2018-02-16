@@ -73,7 +73,7 @@ export default function CreateListingAccommodation(props) {
 
                             <br />
 
-                            {/* <div>
+                            <div>
                                 <h3>How many bedrooms can your guests use?</h3>
                                 <Dropdown
                                     className="bedroom-counter l-select"
@@ -82,7 +82,7 @@ export default function CreateListingAccommodation(props) {
                                     value={bedroomsCount}
                                     onChange={props.updateBedrooms}
                                 />
-                            </div> */}
+                            </div>
 
                             <div>
                                 <h2>Sleeping arrangement</h2>
