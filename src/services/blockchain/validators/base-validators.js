@@ -2,7 +2,16 @@
 import { NotificationManager } from 'react-notifications';
 const ERROR = require('./../utils/errors.json');
 
-export function validateEtherAddress(address) {
+export function validateAddress(address, error) {
+    if (!validateEtherAddress(address)) {
+        NotificationManager.error(error);
+        throw new Error(error);
+    }
+
+    return true;
+}
+
+function validateEtherAddress(address) {
     if (address === '0x0000000000000000000000000000000000000000') return false;
     else if (address.substring(0, 2) !== '0x') return false;
     else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) return false;

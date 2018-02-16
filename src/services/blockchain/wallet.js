@@ -3,8 +3,7 @@
 import bip39 from 'bip39';
 import hdkey from 'ethereumjs-wallet/hdkey';
 
-import { NotificationManager } from 'react-notifications';
-import { validateEtherAddress, validatePassword } from './validators/base-validators';
+import { validateAddress, validatePassword } from './validators/base-validators';
 
 const { HD_WALLET_PATH } = require('./config/constants.json');
 const errors = require('./utils/errors.json');
@@ -30,7 +29,7 @@ class Wallet {
 
     static recoverFromMnemonic(mnemonic, password, address) {
         validatePassword(password);
-        this.validateAddress(address);
+        validateAddress(address, errors.INVALID_RECOVERED_ADDRESS);
         this.validateMnemonic(mnemonic);
 
         const hdWallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
@@ -48,15 +47,6 @@ class Wallet {
         result.jsonFile = wallet.toV3(password);
 
         return result;
-    }
-
-    static validateAddress(address) {
-        if (!validateEtherAddress(address)) {
-            NotificationManager.error(errors.INVALID_RECOVERED_ADDRESS);
-            throw new Error(errors.INVALID_RECOVERED_ADDRESS);
-        }
-
-        return true;
     }
 
     static validateMnemonic(mnemonic) {
