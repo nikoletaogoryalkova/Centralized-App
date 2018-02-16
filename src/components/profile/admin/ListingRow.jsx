@@ -62,7 +62,7 @@ export default class ListingRow extends React.Component {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <span><a href={`/listings/${this.props.listing.id}`}>{this.props.listing.name}</a></span>
+                        <span><a href={`/homes/listings/${this.props.listing.id}`}>{this.props.listing.name}</a></span>
                     </div>
                     <div className="col-md-2">
                         <span>{this.props.listing.defaultDailyPrice}</span>
