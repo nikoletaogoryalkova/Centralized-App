@@ -56,7 +56,7 @@ export default class MyListingsActiveItem extends React.Component {
                     <li className="thumb"><span
                         style={{backgroundImage: `url(${this.props.listing.thumbnail})`}}></span></li>
                     <li className="details">
-                        <Link to={'/listings/' + this.props.listing.id}>{this.props.listing.name}</Link>
+                        <Link to={'/homes/listings/' + this.props.listing.id}>{this.props.listing.name}</Link>
                         <ListingItemRatingBox 
                             rating={this.props.listing.averageRating}
                             reviewsCount={this.props.listing.reviewsCount}
