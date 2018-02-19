@@ -1,0 +1,11 @@
+{
+  "NO_DATA": "",
+  "globalTimestampHour": 14,
+  "globalTimestampMinutes": 0,
+  "globalTimestampSeconds": 0,
+  "LOG_FILE_PATH": "./log/withdraw.log",
+  "TIMES_GAS_AMOUNT": 5,
+  "MIN_TIMES_GAS_AMOUNT": 2,
+  "HD_WALLET_PATH": "m/44'/60'/0'/0",
+  "GAS_STATION_API": "https://ethgasstation.info/json/ethgasAPI.json"
+}
