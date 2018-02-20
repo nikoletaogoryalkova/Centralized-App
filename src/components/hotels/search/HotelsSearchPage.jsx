@@ -1,30 +1,28 @@
 import Breadcrumb from '../../Breadcrumb';
-import FilterPanel from './filter/FilterPanel';
+// import FilterPanel from './filter/FilterPanel';
 import LPagination from '../../common/LPagination';
-import HomeItem from './HomeItem';
+import HotelItem from './HotelItem';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getListingsByFilter } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
-import HomesSearchBar from './HomesSearchBar';
+import HotelsSearchBar from './HotelsSearchBar';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
-class ListingSearchPage extends React.Component {
+import { getHotels } from '../ApiMock';
+
+class HotelsSearchPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            countryId: '',
             startDate: undefined,
             endDate: undefined,
-            guests: undefined,
-            cities: [],
-            citiesToggled: new Set(),
-            priceValue: [1, 5000],
-            propertyTypes: [],
-            propertyTypesToggled: new Set(),
+            adults: '2',
+            childrenCount: '',
+            childrenAges: [],
             searchParams: undefined,
             listings: undefined,
             loading: true,
@@ -40,40 +38,28 @@ class ListingSearchPage extends React.Component {
         this.toggleFilter = this.toggleFilter.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
-        this.setPriceValue = this.setPriceValue.bind(this);
-        this.getPriceValue = this.getPriceValue.bind(this);
     }
 
     componentDidMount() {
-        // getCountries(true).then(data => {
-        //     this.setState({ countries: data.content });
-        // });
-        
-        const searchTerms = this.getSearchTerms(this.state.searchParams);
-        getListingsByFilter(searchTerms + `&page=${this.state.currentPage - 1}`).then(data => {
+        getHotels().then(data => {
             this.setState({
-                listings: data.filteredListings.content,
-                totalItems: data.filteredListings.totalElements,
+                listings: data.content,
+                totalItems: data.content.length,
                 loading: false,
-                cities: data.cities,
-                propertyTypes: data.types
             });
+            console.log(data.content);
         });
     }
 
     componentWillMount() {
         if (this.props.location.search) {
             const searchParams = this.getSearchParams(this.props.location.search);
-            const priceValue = this.getPriceValue(searchParams);
             this.setState({
                 searchParams: searchParams,
-                countryId: searchParams.get('countryId'),
                 startDate: moment(searchParams.get('startDate'), 'DD/MM/YYYY'),
                 endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
-                guests: searchParams.get('guests'),
-                selectedCities: new Set(),
-                selectedPropertyTypes: new Set(),
-                priceValue: priceValue,
+                adults: searchParams.get('adults'),
+                children: searchParams.get('children'),
             });
         }
     }
@@ -106,17 +92,14 @@ class ListingSearchPage extends React.Component {
 
         this.clearFilters(e);
         const searchTerms = this.getSearchTerms(this.state.searchParams);
-        getListingsByFilter(searchTerms).then(data => {
+        getHotels(searchTerms).then(data => {
             this.setState({
-                listings: data.filteredListings.content,
+                listings: data.content,
                 loading: false,
-                totalItems: data.filteredListings.totalElements,
-                countryId: this.getSearchParams().get('countryId'),
-                cities: data.cities,
-                propertyTypes: data.types
+                totalItems: data.content.length,
             });
         });
-        const url = `/homes/listings/?${searchTerms}`;
+        const url = `/hotels/listings/?${searchTerms}`;
         this.props.history.push(url);
     }
 
@@ -138,21 +121,11 @@ class ListingSearchPage extends React.Component {
                 countryId: this.getSearchParams().get('countryId'),
             });
         });
-        let url = `/homes/listings/?${searchTerms}`;
+        let url = `/hotels/listings/?${searchTerms}`;
         this.props.history.push(url);
     }
 
     clearFilters(e) {
-        this.setState({
-            priceValue: [1, 5000],
-            citiesToggled: new Set(),
-            propertyTypesToggled: new Set(),
-        });
-
-        this.updateParamsMap('priceMin', '1');
-        this.updateParamsMap('priceMax', '5000');
-        this.updateParamsMap('cities', '');
-        this.updateParamsMap('propertyTypes', '');
         this.handleFilter(e);
     }
 
@@ -186,14 +159,14 @@ class ListingSearchPage extends React.Component {
             loading: true
         });
 
-        const searchTerms = this.getSearchTerms(this.state.searchParams);
-        getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
-            this.setState({
-                listings: data.filteredListings.content,
-                loading: false,
-                totalItems: data.filteredListings.totalElements
-            });
-        });
+        // const searchTerms = this.getSearchTerms(this.state.searchParams);
+        // getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
+        //     this.setState({
+        //         listings: data.filteredListings.content,
+        //         loading: false,
+        //         totalItems: data.filteredListings.totalElements
+        //     });
+        // });
     }
 
     getSearchTerms(searchParams) {
@@ -214,14 +187,6 @@ class ListingSearchPage extends React.Component {
             map.set(pair[0], this.parseParam(pair[1]));
         }
 
-        if (!map.has('priceMin')) {
-            map.set('priceMin', '1');
-        }
-
-        if (!map.has('priceMax')) {
-            map.set('priceMax', '5000');
-        }
-
         return map;
     }
 
@@ -230,9 +195,6 @@ class ListingSearchPage extends React.Component {
             this.state.searchParams.delete(key);
         } else {
             this.state.searchParams.set(key, this.createParam(value));
-        }
-        if (key === 'countryId') {
-            this.state.searchParams.delete('cities');
         }
     }
 
@@ -244,46 +206,24 @@ class ListingSearchPage extends React.Component {
         return param.split(' ').join('%20');
     }
 
-    setPriceValue(e) {
-        let min = e.target.value[0].toString();
-        let max = e.target.value[1].toString();
-
-        this.updateParamsMap('priceMin', min);
-        this.updateParamsMap('priceMax', max);
-        this.setState({
-            priceValue: e.target.value
-        });
-    }
-
-    getPriceValue(searchParams) {
-        let min = Number(searchParams.get('priceMin')) > 1 ? Number(searchParams.get('priceMin')) : 1;
-        let max = Number(searchParams.get('priceMax')) < 5000 ? Number(searchParams.get('priceMax')) : 5000;
-        return [min, max];
-    }
-
     render() {
         const listings = this.state.listings;
         const hasLoadedListings = listings ? true : false;
-        const hasListings = hasLoadedListings && listings.length > 0 && listings[0].hasOwnProperty('defaultDailyPrice');
 
         let renderListings;
 
         if (!hasLoadedListings || this.state.loading === true) {
             renderListings = <div className="loader"></div>;
-        } else if (!hasListings) {
-            renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <HomeItem key={i} listing={item} />;
+                return <HotelItem key={i} listing={item} />;
             });
         }
 
         return (
             <div>
                 <ListingTypeNav />
-                <HomesSearchBar
-                    countryId={this.state.countryId} 
-                    countries={this.props.countries}
+                <HotelsSearchBar
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     guests={this.state.guests}
@@ -296,17 +236,15 @@ class ListingSearchPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <FilterPanel 
+                                {/* <FilterPanel 
                                     cities={this.state.cities}
                                     citiesToggled={this.state.citiesToggled}
-                                    propertyTypes={this.state.propertyTypes}
-                                    propertyTypesToggled={this.state.propertyTypesToggled}
                                     priceValue={this.state.priceValue}
                                     setPriceValue={this.setPriceValue}
                                     countryId={this.state.countryId}
                                     handleSearch={this.handleFilter} 
                                     toggleFilter={this.toggleFilter}
-                                    clearFilters={this.clearFilters} />
+                                    clearFilters={this.clearFilters} /> */}
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
@@ -328,10 +266,10 @@ class ListingSearchPage extends React.Component {
     }
 }
 
-ListingSearchPage.propTypes = {
+HotelsSearchPage.propTypes = {
     countries: PropTypes.array,
     location: PropTypes.object,
     history: PropTypes.object
 };
 
-export default withRouter(ListingSearchPage);
+export default withRouter(HotelsSearchPage);

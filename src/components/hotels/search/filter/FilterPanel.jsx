@@ -7,19 +7,6 @@ const FilterPanel = (props) => (
     <div className="filter-box">
         <div className="form-group">
             <label>City</label>
-            <div className="filter-check-box">
-                {props.cities.map((item, i) => {
-                    return (
-                        <div key={i} onClick={(e) => { props.toggleFilter('cities', item.text); props.handleSearch(e); }}>
-                            <FilterCheckbox
-                                key={i}
-                                text={item.text}
-                                count={item.count}
-                                checked={props.citiesToggled.has(item.text)} />
-                        </div>
-                    );
-                })}
-            </div>
         </div>
         <div className="clearfix" />
 
@@ -42,19 +29,6 @@ const FilterPanel = (props) => (
 
         <div className="form-group">
             <label>Property Type</label>
-            <div className="filter-check-box">
-                {props.propertyTypes.map((item, i) => {
-                    return (
-                        <div key={i} onClick={(e) => { props.toggleFilter('propertyTypes', item.text); props.handleSearch(e); }}>
-                            <FilterCheckbox
-                                key={i}
-                                text={item.text}
-                                count={item.count}
-                                checked={props.propertyTypesToggled.has(item.text)} />
-                        </div>
-                    );
-                })}
-            </div>
         </div>
         <div className="clearfix" />
 

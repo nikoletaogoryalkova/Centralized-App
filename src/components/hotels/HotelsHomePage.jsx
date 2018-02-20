@@ -7,8 +7,6 @@ import HotelsSearchBar from './search/HotelsSearchBar';
 import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
-import { getCountries, getCitiesByRegionId } from './dbAccessMock';
-
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
@@ -17,46 +15,31 @@ class HomePage extends React.Component {
         let endDate = moment().add(1, 'day');
 
         this.state = {
-            country: '',
-            countries: undefined,
-            city: '',
-            cities: undefined,
             startDate: startDate,
             endDate: endDate,
-            guests: '2',
-            listings: undefined
+            rooms: [{ adults: 1, children: [] }],
+            listings: undefined,
+            country: '',
+            city: '',
+            state: '',
+            countryCode: '',
         };
 
         this.onChange = this.onChange.bind(this);
-        this.handleSelectCountry = this.handleSelectCountry.bind(this);
-        this.handleSelectCity = this.handleSelectCity.bind(this);
+        this.handleRoomsChange = this.handleRoomsChange.bind(this);
+        this.handleAdultsChange = this.handleAdultsChange.bind(this);
+        this.handleChildrenChange = this.handleChildrenChange.bind(this);
+        this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
     }
 
     componentDidMount() {
-        getListings().then(data => {
-            this.setState({ listings: data.content });
-        });
-
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
+        // get popular hotels
     }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-    }  
-    
-    handleSelectCountry(country) {
-        this.setState({ country: country });
-        getCitiesByRegionId(country.value).then(data => {
-            this.setState({ cities: data.content });
-        });
-    }
-
-    handleSelectCity(city) {
-        this.setState({ city: city });
     }
     
     handleSearch(e) {
@@ -64,12 +47,16 @@ class HomePage extends React.Component {
         
         let queryString = '?';
 
-        queryString += 'countryId=' + this.state.countryId;
+        queryString += 'country=' + this.state.country;
+        queryString += '&city=' + this.state.city;
+        queryString += '&state=' + this.state.state;
+        queryString += '&countryCode=' + this.state.countryCode;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&guests=' + this.state.guests;
+        queryString += '&adults=' + this.state.adults;
+        queryString += this.state.childrenAges.length > 0 ? '&children=' + this.state.childrenAges.join() : '';
 
-        this.props.history.push('/listings' + queryString);
+        this.props.history.push('hotels/listings' + queryString);
     }    
     
     handleDatePick(event, picker) {
@@ -77,6 +64,56 @@ class HomePage extends React.Component {
             startDate: picker.startDate,
             endDate: picker.endDate,
         });
+    }
+
+    handleRoomsChange(event) {
+        let value = event.target.value;
+        if (value > 10) {
+            value = 10;
+        }
+        let rooms = this.state.rooms.slice();
+        if (rooms.length < value) {
+            while (rooms.length < value) {
+                rooms.push({ adults: 1, children: [] });
+            }
+        } else if (rooms.length > value) {
+            rooms = rooms.slice(0, value);
+        }
+        
+        this.setState({ rooms: rooms });
+    }
+
+    handleAdultsChange(event, roomIndex) {
+        let value = event.target.value;
+        let rooms = this.state.rooms.slice();
+        rooms[roomIndex].adults = value;
+        this.setState({ rooms: rooms });
+    }
+
+    handleChildrenChange(event, roomIndex) {
+        let value = event.target.value;
+        if (value > 10) {
+            value = 10;
+        }
+        let rooms = this.state.rooms.slice();
+        let children = rooms[roomIndex].children;
+        if (children.length < value) {
+            while (children.length < value) {
+                children.push('');
+            }
+        } else if (children.length > value) {
+            children = children.slice(0, value);
+        }
+        
+        rooms[roomIndex].children = children;
+        this.setState({ rooms: rooms });
+    }
+
+    handleChildAgeChange(event, roomIndex, childIndex) {
+        const value = event.target.value;
+        const rooms = this.state.rooms.slice();
+        rooms[roomIndex].children[childIndex] = value;
+        this.setState({ rooms: rooms });
     }
     
     render() {
@@ -89,16 +126,17 @@ class HomePage extends React.Component {
                         <div className="container absolute_box">
                             <ListingTypeNav />
                             <HotelsSearchBar
-                                country={this.state.country}
-                                countries={this.state.countries}
-                                city={this.state.city}
-                                cities={this.state.cities}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
+                                rooms={this.state.rooms}
                                 guests={this.state.guests}
+                                childrenCount={this.state.childrenCount}
+                                childrenAges={this.state.childrenAges}
                                 onChange={this.onChange}
-                                handleSelectCountry={this.handleSelectCountry}
-                                handleSelectCity={this.handleSelectCity}
+                                handleAdultsChange={this.handleAdultsChange}
+                                handleRoomsChange={this.handleRoomsChange}
+                                handleChildrenChange={this.handleChildrenChange}
+                                handleChildAgeChange={this.handleChildAgeChange}
                                 handleSearch={this.handleSearch}
                                 handleDatePick={this.handleDatePick} 
                             />
@@ -108,7 +146,7 @@ class HomePage extends React.Component {
 
                 <section id="popular-hotels-box">
                     <h2>Popular Properties</h2>
-                    {!this.state.listings ? <div className="loader"></div> : 
+                    {!this.state.listings ? <div>Not implemented</div> : 
                         this.state.listings && this.state.listings.length > 1 &&
                         <PopularListingsCarousel 
                             listings={this.state.listings} 
