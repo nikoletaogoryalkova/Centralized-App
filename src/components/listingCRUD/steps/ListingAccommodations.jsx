@@ -80,7 +80,8 @@ export default function CreateListingAccommodation(props) {
                                     name="bedroomCount"
                                     options={bedroomsArray}
                                     value={bedroomsCount}
-                                    onChange={props.updateBedrooms} />
+                                    onChange={props.updateBedrooms}
+                                />
                             </div>
 
                             <div>

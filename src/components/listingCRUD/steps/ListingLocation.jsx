@@ -8,17 +8,57 @@ import ListingCrudNav from '../navigation/ListingCrudNav';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Select from 'react-select';
 
 export default function CreateListingLocation(props) {
 
-    const { country, countries, city, cities, street } = props.values;
-    const renderCountries = countries.map((item) => {
-        return { value: item.id, label: item.name };
-    });
-    const renderCities = cities.map((item) => {
-        return { value: item.id, label: item.name };
-    });
+    const handleOnPlaceSelected = (place) => {
+        if (place.address_components !== undefined) {
+            let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
+            changeAddressComponents(addressComponentsMap);
+        }
+    };
+
+    const handleStreetSelected = (place) => {
+        if (place.address_components !== undefined) {
+            const addressComponentsMap = props.convertGoogleApiAddressComponents(place);
+            // console.log(place)
+            let address = '';
+            if (addressComponentsMap.filter(x => x.type === 'route')[0]) {
+                const addressNumber = addressComponentsMap.filter(x => x.type === 'street_number')[0] ? addressComponentsMap.filter(x => x.type === 'street_number')[0].name : '';
+                const addressRoute = addressComponentsMap.filter(x => x.type === 'route')[0].name;
+                address = `${addressNumber}, ${addressRoute}`;
+                props.onChange({ target: { name: 'street', value: address }});
+                props.onChange({ target: { name: 'isAddressSelected', value: true }});
+                props.onChange({ target: { name: 'lng', value: place.geometry.location.lng() }});
+                props.onChange({ target: { name: 'lat', value: place.geometry.location.lat() }});
+                changeAddressComponents(addressComponentsMap);
+            } else {
+                NotificationManager.warning('Invalid address');
+                props.onChange({ target: { name: 'street', value: '' }});
+                props.onChange({ target: { name: 'lng', value: '' }});
+                props.onChange({ target: { name: 'lat', value: '' }});
+                props.onChange({ target: { name: 'isAddressSelected', value: false }});
+            }
+        }
+    };
+
+    const changeAddressComponents = (addressComponentsMap) => {
+        let addressCountry = addressComponentsMap.filter(x => x.type === 'country')[0];
+        let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
+        let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
+
+        props.onChange({ target: { name: 'country', value: addressCountry ? addressCountry.name : '' }});
+        props.onChange({ target: { name: 'city', value: addressCityName ? addressCityName.name : '' }});
+        props.onChange({ target: { name: 'state', value: addressStateName ? addressStateName.name : '' }});
+        props.onChange({ target: { name: 'countryCode', value: addressCountry ? addressCountry.shortName : '' }});
+    };
+
+    const onAddressChange = (e) => {
+        props.onChange({ target: { name: 'isAddressSelected', value: false }});
+        props.onChange(e);
+    };
+
+    const { country, city, street, state } = props.values;
     return (
         <div>
             <ListingCrudNav progress='33%' />
@@ -42,43 +82,15 @@ export default function CreateListingLocation(props) {
                                                 value={city}
                                                 onChange={props.onChange}
                                                 name="city"
-                                                onPlaceSelected={(place) => {
-                                                    let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
-                                                    let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
-                                                    let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
-                                                    props.onChange({ target: { name: 'city', value: addressCityName } });
-                                                    props.onChange({ target: { name: 'country', value: addressCountryName } });
-                                                }}
+                                                onPlaceSelected={handleOnPlaceSelected}
                                                 types={['(cities)']}
                                             />
-
-                                            {/* <Select
-                                                name="country"
-                                                placeholder="Country"
-                                                className="form-control form-control-select"
-                                                clearable={false}
-                                                style={{ border: 'none' }}
-                                                value={country}
-                                                onChange={(option) => updateCountry(props, option)}
-                                                options={renderCountries}
-                                            /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <label htmlFor="country">Country</label>
                                             <input style={{ background: '#AAA', opacity: 0.5 }} disabled className="form-control" id="country" name="country" value={country} />
-
-                                            {/* <Select
-                                                name="city"
-                                                placeholder="City"
-                                                className="form-control form-control-select"
-                                                clearable={false}
-                                                style={{ border: 'none' }}
-                                                value={city}
-                                                onChange={option => props.onSelect('city', option)}
-                                                options={renderCities}
-                                            /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
@@ -90,30 +102,19 @@ export default function CreateListingLocation(props) {
                                             <label htmlFor="street">Address</label>
                                             <Autocomplete
                                                 className="form-control"
-                                                name="street"
                                                 value={street}
-                                                onChange={props.onChange}
-                                                onPlaceSelected={(place) => {
-                                                    let addressComponentsMap = props.convertGoogleApiAddressComponents(place);
-                                                    let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
-                                                    let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
-                                                    let addressStreetName = addressComponentsMap.filter(x => x.type === 'route')[0];
-                                                    let addressStreetNumber = addressComponentsMap.filter(x => x.type === 'street_number')[0];
-                                                    console.log(addressStreetName);
-                                                    let addressStreet = (addressStreetName !== undefined ? addressStreetName.name : '') + (addressStreetNumber !== undefined ? ' ' + addressStreetNumber.name : '');
-
-                                                    props.onChange({ target: { name: 'city', value: addressCityName !== undefined ? addressCityName.name : '' } });
-                                                    props.onChange({ target: { name: 'country', value: addressCountryName } });
-                                                    props.onChange({ target: { name: 'street', value: addressStreet } });
-                                                    console.log(place);
-                                                }}
+                                                onChange={onAddressChange}
+                                                name="street"
+                                                onPlaceSelected={handleStreetSelected}
                                                 types={['geocode']}
                                             />
+                                            {/* <input className="form-control" id="street" name="street" value={street} onChange={props.onChange} /> */}
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
-
+                                            <label htmlFor="country">State</label>
+                                            <input style={{ background: '#AAA', opacity: 0.5 }} disabled className="form-control" id="state" name="state" value={state} />
                                         </div>
                                     </div>
                                 </div>
@@ -130,7 +131,7 @@ export default function CreateListingLocation(props) {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
             <div className="navigation col-md-12">
                 <div className="col-md-3">
                 </div>
@@ -145,26 +146,25 @@ export default function CreateListingLocation(props) {
                     }
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 
-async function updateCountry(props, option) {
-    if (!option) {
-        return;
+function validateInput(values) {
+    const { street, city, country, isAddressSelected } = values;
+    if (!isAddressSelected) {
+        return false;
     }
 
-    await props.onSelect('country', option);
-    props.updateCities();
-}
-
-function validateInput(values) {
-    const { street, city } = values;
     if (street.length < 6) {
         return false;
     }
 
-    if (!city || city === '') {
+    if (!city || city.trim() === '') {
+        return false;
+    }
+
+    if (!country || country.trim() === '') {
         return false;
     }
 
@@ -172,16 +172,20 @@ function validateInput(values) {
 }
 
 function showErrors(values) {
-    const { street, city, country } = values;
+    const { street, city, country, isAddressSelected } = values;
+    if (!isAddressSelected) {
+        NotificationManager.warning('Select a valid address');
+    }
+
     if (street.length < 6) {
         NotificationManager.warning('Address should be at least 6 characters long');
     }
 
-    if (!city || city === '') {
+    if (!city || city.trim() === '') {
         NotificationManager.warning('City is required');
     }
 
-    if (!country || country === '') {
+    if (!country || country.trim() === '') {
         NotificationManager.warning('Country is required');
     }
 }

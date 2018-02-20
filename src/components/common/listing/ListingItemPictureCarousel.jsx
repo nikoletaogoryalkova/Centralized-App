@@ -13,6 +13,7 @@ function HomeItemPictureCarousel(props) {
     }
     
     if (typeof props.pictures === 'string') {
+        console.log(props.pictures)
         pictures = JSON.parse(props.pictures);
     }
 

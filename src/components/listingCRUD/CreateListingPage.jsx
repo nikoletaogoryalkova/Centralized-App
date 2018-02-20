@@ -4,8 +4,6 @@ import {
     createListing,
     createListingProgress,
     getAmenitiesByCategory,
-    getCities,
-    getCountries,
     getCurrencies,
     getCurrentLoggedInUserInfo,
     getPropertyTypes,
@@ -44,6 +42,7 @@ class CreateListingPage extends React.Component {
             progressId: null,
             listingType: '1',
             country: '',
+            countryCode: '',
             propertyType: '1',
             roomType: 'entire',
             dedicatedSpace: 'true',
@@ -54,6 +53,7 @@ class CreateListingPage extends React.Component {
             bathrooms: 1,
             facilities: new Set(),
             street: '',
+            state: '',
             city: '',
             apartment: '',
             zipCode: '',
@@ -85,6 +85,7 @@ class CreateListingPage extends React.Component {
             cities: [],
             currencies: [],
 
+            isAddressSelected: false,
             userHasLocAddress: null,
             locAddress: ''
         };
@@ -111,20 +112,12 @@ class CreateListingPage extends React.Component {
     }
 
     componentDidMount() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
-
         getAmenitiesByCategory().then(data => {
             this.setState({ categories: data.content });
         });
 
         getPropertyTypes().then(data => {
             this.setState({ propertyTypes: data.content });
-        });
-
-        getCities(this.state.country).then(data => {
-            this.setState({ cities: data.content });
         });
 
         getCurrencies().then(data => {
@@ -169,6 +162,9 @@ class CreateListingPage extends React.Component {
         } else {
             newBedrooms = newBedrooms.slice(0, value);
         }
+
+        console.log(value + ' ' + event.target.value.split(' ')[1]);
+        console.log(newBedrooms);
 
         this.setState({
             bedroomsCount: value + ' ' + event.target.value.split(' ')[1],
@@ -229,18 +225,9 @@ class CreateListingPage extends React.Component {
     }
 
     updateCities() {
-        getCities(this.state.country).then(data => {
-            this.setState({
-                city: '',
-                cities: data.content,
-            });
-        });
     }
 
     updateCountries() {
-        getCountries().then(data => {
-            this.setState({ countries: data.content });
-        });
     }
 
     onSelect(name, option) {
@@ -299,7 +286,7 @@ class CreateListingPage extends React.Component {
     createListing(captchaToken) {
         this.setState({ loading: true });
         let listing = this.createListingObject();
-
+        console.log(listing);
         createListing(listing, captchaToken).then((res) => {
             if (res.success) {
                 this.setState({ loading: false });
@@ -328,7 +315,13 @@ class CreateListingPage extends React.Component {
             progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
-            country: this.state.country,
+            location: `${this.state.city}, ${this.state.state}, ${this.state.country}, ${this.state.countryCode}`,
+            description: {
+                street: this.state.street,
+                text: this.state.text,
+                interaction: this.state.interaction,
+                houseRules: Array.from(this.state.otherHouseRules).join('\r\n'),
+            },
             details: [
                 {
                     value: this.state.roomType,
@@ -370,17 +363,18 @@ class CreateListingPage extends React.Component {
                     value: this.state.dedicatedSpace,
                     detail: { name: 'dedicatedSpace' }
                 },
+                {
+                    value: this.state.lng,
+                    detail: { name: 'lng' }
+                },
+                {
+                    value: this.state.lat,
+                    detail: { name: 'lat' }
+                },
             ],
-            description: {
-                street: this.state.street,
-                text: this.state.text,
-                interaction: this.state.interaction,
-                houseRules: Array.from(this.state.otherHouseRules).join('\r\n'),
-            },
             guestsIncluded: this.state.guestsIncluded,
             rooms: this.state.bedrooms,
             amenities: this.state.facilities,
-            city: this.state.city,
             name: this.state.name,
             pictures: this.getPhotos(),
             checkinStart: moment(this.state.checkinStart, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss.SSS'),
@@ -472,6 +466,7 @@ class CreateListingPage extends React.Component {
 
             let addressComponent = {
                 name: addressComponents[i].long_name,
+                shortName: addressComponents[i].short_name,
                 type: addressComponents[i].types[0]
             };
             addressComponentsArr.push(addressComponent);
@@ -541,6 +536,7 @@ class CreateListingPage extends React.Component {
                         next={routes.location} />} />
                     <Route exact path={routes.location} render={() => <ListingLocation
                         values={this.state}
+                        onChangeLocation={this.onChangeLocation}
                         onChange={this.onChange}
                         onSelect={this.onSelect}
                         updateCountries={this.updateCountries}
