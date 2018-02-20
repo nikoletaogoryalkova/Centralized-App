@@ -13,13 +13,13 @@ export function jsonFileToKeys(jsonFile, password) {
 
 	validateJsonObj(jsonFile);
 	validatePassword(password);
-
 	let parsedJsonFile = parseJsonFile(jsonFile);
 	let wallet = Wallet.fromV3(parsedJsonFile, password);
-
 	let result = {}
 	result.address = wallet.getAddressString();
-	result.priavetKey = wallet.getPrivateKeyString();
-	console.log(result);
+	result.privateKey = wallet.getPrivateKeyString();
+	if (result.privateKey.substring(0, 2) === "0x") {
+		result.privateKey = result.privateKey.substring(2);
+	}
 	return result;
 }
