@@ -18,6 +18,7 @@ import AttachedFooter from '../footer/AttachedFooter';
 
 import ProfilePage from '../profile/ProfilePage';
 import PropTypes from 'prop-types';
+import { TokenTransactions } from '../../services/blockchain/tokenTransactions.js'
 
 class App extends React.Component {
     constructor(props) {
@@ -25,6 +26,13 @@ class App extends React.Component {
         BigCalendar.setLocalizer(
             BigCalendar.momentLocalizer(moment)
         );
+
+        let jsonFile = '{ "version": 3, "id": "1ddf0087-79e0-48d9-a84b-5d364075a804", "address": "627306090abab3a6e1400e9345bc60c78a8bef57", "Crypto": { "ciphertext": "6d845d338f2cfc526adc5d49b5f95c13690b59ef56c9eb2c79e4ff7740adcc77", "cipherparams": { "iv": "f506358d43a8cd8bea70b34b3bd97190" }, "cipher": "aes-128-ctr", "kdf": "scrypt", "kdfparams": { "dklen": 32, "salt": "e15ccf22e4e35a5a321885c562e265d9fd7d0fbede7894e9195108bbf40563a2", "n": 1024, "r": 8, "p": 1 }, "mac": "2295347e6e31672df9e9e651f6d6593d769c848e9ceb2b15dd5e09fd2aaa4992" } }'
+        let password = '123456789';
+        let recipient = '0x138145816E2F066DdDC9404744C85FF368C0885E';
+        let amount = 1;
+
+        TokenTransactions.sendTokens(jsonFile, password, recipient, amount);
     }
 
     isAuthenticated() {

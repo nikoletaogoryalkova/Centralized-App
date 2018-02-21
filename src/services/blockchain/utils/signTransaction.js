@@ -6,7 +6,7 @@ import {
 } from '../config/contracts-config.js';
 import {
 	isTxDataValid,
-} from '../validators/base-validators.js';
+} from '../validators/ether-validators.js';
 import {
 	getGasPrice
 } from '../utils/ethFuncs.js';
