@@ -2,6 +2,7 @@
     "ONLY_OWNER": "Only owner of the contract is allowed to this function",
     "INVALID_PASSWORD": "Provided password is not valid",
     "INVALID_MNEMONIC": "Provided mnemonic could not be validated",
+    "INVALID_ADDRESS": "The provided address is not valid",
     "INVALID_RECOVERED_ADDRESS": "Recovered address is different from provided",
     "ONLY_RESERVER": "Only reserver of this bookingId is allowed to this function",
     "EXISTING_MARKETPLACE": "This marketplaceId already exists in the contract",

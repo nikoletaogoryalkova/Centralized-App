@@ -2,13 +2,11 @@ import {
 	jsonFileToKeys,
 } from './utils/jsonFileToKeys.js'
 import {
-	validateAddress,
-	validatePassword,
-	validateJsonObj
+	validateAddress
 } from './validators/base-validators';
 import {
 	validateLocBalance
-} from './validators/base-validators';
+} from './validators/token-validators';
 import {
 	LOCTokenContract
 } from './config/contracts-config.js'
@@ -25,9 +23,7 @@ export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
 
-		validateJsonObj(jsonObj);
-		validatePassword(password);
-		validateAddress(recipient, errors.INVALID_RECOVERED_ADDRESS);
+		validateAddress(recipient, errors.INVALID_ADDRESS);
 		let result = jsonFileToKeys(jsonObj, password);
 
 		let callOptions = {
@@ -56,8 +52,7 @@ export class TokenTransactions {
 			funcData,
 		);
 
-		result.TransferTokenTxn = await web3.eth.sendSignedTransaction(signedData);
-		console.log(await this.getBalances(result.address, recipient));
+		result.TransferTokenTxn = await web3.eth.sendSignedTransaction(signedData);    
 	};
 
 	static async getBalances(tokenContractAddress, recipientAddress) {
