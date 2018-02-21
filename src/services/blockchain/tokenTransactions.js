@@ -53,7 +53,6 @@ export class TokenTransactions {
 		);
 
 		result.TransferTokenTxn = await web3.eth.sendSignedTransaction(signedData);    
-		console.log(await this.getBalances(result.address, recipient));
 	};
 
 	static async getBalances(tokenContractAddress, recipientAddress) {
