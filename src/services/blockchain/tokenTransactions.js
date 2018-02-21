@@ -19,7 +19,7 @@ import {
 	web3
 } from './config/contracts-config.js';
 const gasConfig = require('./config/gas-config.json');
-const errors = require('./utils/errors.json');
+const errors = require('./config/errors.json');
 
 export class TokenTransactions {
 
@@ -57,6 +57,7 @@ export class TokenTransactions {
 		);
 
 		result.TransferTokenTxn = await web3.eth.sendSignedTransaction(signedData);
+		console.log(await this.getBalances(result.address, recipient));
 	};
 
 	static async getBalances(tokenContractAddress, recipientAddress) {

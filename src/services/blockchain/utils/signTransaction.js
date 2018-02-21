@@ -6,7 +6,10 @@ import {
 } from '../config/contracts-config.js';
 import {
 	isTxDataValid,
-} from '../validators/base-validators.js'
+} from '../validators/base-validators.js';
+import {
+	getGasPrice
+} from '../utils/ethFuncs.js';
 
 export async function signTransaction(
 	toAddress,
@@ -18,7 +21,7 @@ export async function signTransaction(
 	const privateKeyBuff = new Buffer(fromPrivateKey, 'hex');
 
 	const nonceNumber = await web3.eth.getTransactionCount(fromPublicKey);
-	let gasPrice = await web3.eth.getGasPrice();
+	let gasPrice = await getGasPrice();
 	const rawTx = {
 		'nonce': nonceNumber,
 		'gasPrice': web3.utils.toHex(gasPrice),

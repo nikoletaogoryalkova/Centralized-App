@@ -14,8 +14,11 @@ import {
 import {
     BigNumber
 } from 'bignumber.js';
+import {
+    getGasPrice
+} from '../utils/ethFuncs.js'
 
-const ERROR = require('./../utils/errors.json');
+const ERROR = require('./../config/errors.json');
 const gasConfig = require('./../config/gas-config.json');
 const {
     TIMES_GAS_AMOUNT
@@ -33,7 +36,7 @@ export function validateEtherAddress(address) {
 }
 
 export async function gasToLoc(gasAmount) {
-    const gasCost = await web3.eth.getGasPrice() * gasAmount;
+    const gasCost = await getGasPrice() * gasAmount;
     return await LOCExchangeContract.methods.weiToLocWei(gasCost).call();
 };
 
