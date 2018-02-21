@@ -4,7 +4,7 @@ import React from 'react';
 import { React_Bootstrap_Carousel } from 'react-bootstrap-carousel';
 
 function HomeItemPictureCarousel(props) {
-    const listingType = props.listingType;
+    const listingsType = props.listingsType;
     const leftIcon = <span className="left-carousel"> </span>;
     const rightIcon = <span className="right-carousel"> </span>;
     let { pictures } = props;
@@ -13,7 +13,6 @@ function HomeItemPictureCarousel(props) {
     }
     
     if (typeof props.pictures === 'string') {
-        console.log(props.pictures)
         pictures = JSON.parse(props.pictures);
     }
 
@@ -30,7 +29,7 @@ function HomeItemPictureCarousel(props) {
                     {pictures.map((item, i) => {
                         return (
                             <div className="item" key={i}>
-                                <Link to={`${listingType}/listings/${props.id}${props.location.search}`}><img src={item.thumbnail} alt="" /></Link>
+                                <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`}><img src={item.thumbnail} alt="" /></Link>
                             </div>
                         );
                     })}
@@ -45,5 +44,5 @@ export default withRouter(HomeItemPictureCarousel);
 HomeItemPictureCarousel.propTypes = {
     pictures: PropTypes.string,
     id: PropTypes.number,
-    listingType: PropTypes.string,
+    listingsType: PropTypes.string,
 };

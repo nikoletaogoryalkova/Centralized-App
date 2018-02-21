@@ -91,7 +91,7 @@ class HomePage extends React.Component {
                         this.state.listings && this.state.listings.length > 1 &&
                         <PopularListingsCarousel 
                             listings={this.state.listings} 
-                            listingType="homes" 
+                            listingsType="homes" 
                         />
                     }
                     <div className="clearfix"></div>

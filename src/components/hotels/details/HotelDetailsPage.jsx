@@ -323,11 +323,13 @@ class HotelDetailsPage extends React.Component {
         } else {
             allEvents = this.state.prices;
             images = null;
-            if (this.state.data.pictures !== undefined) {
-                images = this.state.data.pictures.map(x => {
-                    return { src: x.original };
+            if (this.state.data.hotelPhotos !== undefined) {
+                images = this.state.data.hotelPhotos.map(x => {
+                    return { src: 'http://roomsxml.com' + x.externalUrl };
                 });
             }
+
+            console.log(images);
     
             if (this.state.oldCurrency !== this.props.paymentInfo.currency) {
                 this.initializeCalendar();
@@ -359,7 +361,7 @@ class HotelDetailsPage extends React.Component {
                     <div className="loader"></div> :
                     <div>
                         <section className="hotel-gallery">
-                            <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url("' + this.state.data.pictures[0].original + '")' } : { backgroundColor: '#AAA' }}>
+                            <div className="hotel-gallery-bgr" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
                                 <div className="container">
                                     <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
                                     {images !== null && <Lightbox
@@ -411,11 +413,8 @@ class HotelDetailsPage extends React.Component {
                             prices={this.state.prices}
                             isLogged={this.props.userInfo.isLogged}
                             loading={this.state.loading}
-                            openModal={this.openModal}
-                            closeModal={this.closeModal}
-                            isShownContactHostModal={this.state.isShownContactHostModal}
-                            sendMessageToHost={this.sendMessageToHost} />
-
+                        />
+                        
                         <NotificationContainer />
                     </div>
                 }

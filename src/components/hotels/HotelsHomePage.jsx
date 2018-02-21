@@ -38,7 +38,8 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         getTestHotels().then((data) => {
-            console.log(data);
+            this.setState({ listings: data.content });
+            console.log(data.content)
         });
     }
 
@@ -153,11 +154,11 @@ class HomePage extends React.Component {
 
                 <section id="popular-hotels-box">
                     <h2>Popular Properties</h2>
-                    {!this.state.listings ? <div>Not implemented</div> : 
+                    {!this.state.listings ? <div className="loader"></div> : 
                         this.state.listings && this.state.listings.length > 1 &&
                         <PopularListingsCarousel 
                             listings={this.state.listings} 
-                            listingType="hotels" 
+                            listingsType="hotels" 
                         />
                     }
                     <div className="clearfix"></div>

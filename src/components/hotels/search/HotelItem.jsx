@@ -9,12 +9,11 @@ import { connect } from 'react-redux';
 function HotelItem(props) {
     const { currency, currencySign, locRate } = props.paymentInfo;
     const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, descriptions, hotelPhotos} = props.listing;
-
+    const pictures = hotelPhotos.map(x => { return {thumbnail: 'http://roomsxml.com' + x.externalThumbnailUrl}; });
     return (
         <div className="list-hotel">
             <div className="list-image">
-                Pictures
-                {/* <ListingItemPictureCarousel pictures={hotelPhotos} id={id} /> */}
+                <ListingItemPictureCarousel listingsType={'hotels'} pictures={pictures} id={id} />
             </div>
             <div className="list-content">
                 <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>

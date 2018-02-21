@@ -26,11 +26,15 @@ function HomeDetailsInfoSection(props) {
         return result;
     };
 
+    console.log(props.data)
+
     const allAmenities = props.data.amenities;
     const calendar = props.calendar;
     const mostPopularFacilities = allAmenities.slice(0, 5);
     const amenities = getAmenities(allAmenities.slice(5));
-    const { street, city, country } = props.data;
+    const street = props.data.additionalInfo.mainAddress;
+    const city = props.data.city.name;
+    const country = props.data.region.country.name;
     if (calendar === null) {
         return <div>Loading...</div>;
     }
@@ -38,13 +42,9 @@ function HomeDetailsInfoSection(props) {
         <section id="hotel-info">
             <div className="container">
                 <div className="hotel-content" id="overview">
-                    <ContactHostModal id={props.match.params.id} isActive={props.isShownContactHostModal} closeModal={props.closeModal} sendMessageToHost={props.sendMessageToHost} />
-
                     <h1> {props.data.name} </h1>
                     <div className="clearfix" />
-                    <p>{props.data.additionalInfo.mainAddress}</p>
-                    <button className="btn btn-primary" onClick={props.openModal}>Contact Host</button>
-
+                    <p>{street}, {city}, {country}</p>
                     <div className="list-hotel-description">
                         <h2>Description</h2>
                         <hr />
@@ -58,7 +58,7 @@ function HomeDetailsInfoSection(props) {
                         {mostPopularFacilities.map((item, i) => {
                             return (
                                 <div key={i} className="icon-facilities">
-                                    <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><b>{item.name}</b></span>
+                                    <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><b>{item.text}</b></span>
                                 </div>
                             );
                         })}
@@ -102,7 +102,7 @@ function HomeDetailsInfoSection(props) {
 
                         <div id="map">
                             <h2>Location</h2>
-                            <iframe title="location" src={`https://maps.google.com/maps?q=${props.data.longitude},${props.data.latitude}&z=15&output=embed`}
+                            <iframe title="location" src={`https://maps.google.com/maps?q=${props.data.latitude},${props.data.longitude}&z=15&output=embed`}
                                 width="100%" height="400" frameBorder="0" style={{ border: 0 }} />
                             <hr />
                         </div>

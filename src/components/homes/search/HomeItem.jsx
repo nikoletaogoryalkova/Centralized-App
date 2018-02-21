@@ -10,11 +10,10 @@ function HomeItem(props) {
     const { currency, currencySign, locRate } = props.paymentInfo;
     const { cityName, countryName, prices, currency_code, defaultDailyPrice, pictures, id, name, reviewsCount, averageRating, description } = props.listing;
     const listingPrice = (prices) && currency === currency_code ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[currency], 10).toFixed(2);
-
     return (
         <div className="list-hotel">
             <div className="list-image">
-                <ListingItemPictureCarousel pictures={pictures} id={id} />
+                <ListingItemPictureCarousel listingsType={'homes'} pictures={pictures} id={id} />
             </div>
             <div className="list-content">
                 <h2><Link to={`/homes/listings/${id}${props.location.search}`}>{name}</Link></h2>
