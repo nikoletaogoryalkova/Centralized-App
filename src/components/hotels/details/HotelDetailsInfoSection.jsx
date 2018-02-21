@@ -1,9 +1,8 @@
 import ContactHostModal from '../../common/modals/ContactHostModal';
 import PropTypes from 'prop-types';
-import HomeDetailsAmenityColumn from './HomeDetailsAmenityColumn';
-import HomeDetailsCalendar from './HomeDetailsCalendar';
-import HomeReservationPanel from './HomeReservationPanel';
-import HomeDetailsReviewBox from './HomeDetailsReviewBox';
+import HotelDetailsAmenityColumn from './HotelDetailsAmenityColumn';
+import HotelReservationPanel from './HotelReservationPanel';
+import HotelDetailsReviewBox from './HotelDetailsReviewBox';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
@@ -43,20 +42,13 @@ function HomeDetailsInfoSection(props) {
 
                     <h1> {props.data.name} </h1>
                     <div className="clearfix" />
-                    <p>{street}, {city.name}, {country.name}</p>
+                    <p>{props.data.additionalInfo.mainAddress}</p>
                     <button className="btn btn-primary" onClick={props.openModal}>Contact Host</button>
-
-                    <HomeDetailsCalendar
-                        onApply={props.onApply}
-                        startDate={props.startDate}
-                        endDate={props.endDate}
-                        allEvents={props.allEvents}
-                        prices={props.prices} />
 
                     <div className="list-hotel-description">
                         <h2>Description</h2>
                         <hr />
-                        {props.data.descriptionText}
+                        {props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0].text}
                     </div>
 
                     <div id="facilities">
@@ -76,9 +68,9 @@ function HomeDetailsInfoSection(props) {
 
                     <div className="hotel-extras">
                         <div className="row">
-                            <HomeDetailsAmenityColumn amenities={amenities[0]} />
-                            <HomeDetailsAmenityColumn amenities={amenities[1]} />
-                            <HomeDetailsAmenityColumn amenities={amenities[2]} />
+                            <HotelDetailsAmenityColumn amenities={amenities[0]} />
+                            <HotelDetailsAmenityColumn amenities={amenities[1]} />
+                            <HotelDetailsAmenityColumn amenities={amenities[2]} />
                         </div>
                         <div className="clearfix" />
 
@@ -96,7 +88,7 @@ function HomeDetailsInfoSection(props) {
                                 <h2>User Rating &amp; Reviews</h2>
                                 {props.data.reviews.map((item, i) => {
                                     return (
-                                        <HomeDetailsReviewBox 
+                                        <HotelDetailsReviewBox 
                                             key={i} 
                                             rating={item.average} 
                                             reviewText={item.comments} 
@@ -117,7 +109,7 @@ function HomeDetailsInfoSection(props) {
                         <div className="clearfix" />
                     </div>
                 </div>
-                <HomeReservationPanel
+                {/* <HotelReservationPanel
                     locRate={props.locRate}
                     showLoginModal={props.showLoginModal}
                     isLogged={props.isLogged}
@@ -128,7 +120,7 @@ function HomeDetailsInfoSection(props) {
                     endDate={props.endDate}
                     listing={props.data}
                     loading={props.loading} 
-                />
+                /> */}
                 <div className="clearfix"></div>
             </div>
         </section>

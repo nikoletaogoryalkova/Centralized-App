@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import HotelsHomePage from './HotelsHomePage';
 import HotelsSearchPage from './search/HotelsSearchPage';
-// import HotelsDetailsPage from './details/HotelsDetailsPage';
-import { getCountries } from '../../requester';
+import HotelDetailsPage from './details/HotelDetailsPage';
 
 class HotelsRouterPage extends React.Component {
     constructor(props) {
@@ -22,7 +21,7 @@ class HotelsRouterPage extends React.Component {
                 <Switch>
                     <Route exact path="/hotels" render={() => <HotelsHomePage />} />
                     <Route exact path="/hotels/listings" render={() => <HotelsSearchPage />} />
-                    {/* <Route exact path="/hotels/listings/:id" render={() => <HotelsDetailsPage />} /> */}
+                    <Route exact path="/hotels/listings/:id" render={() => <HotelDetailsPage />} />
                 </Switch>
             </div>
         );

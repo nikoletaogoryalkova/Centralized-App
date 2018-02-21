@@ -11,7 +11,7 @@ import moment from 'moment';
 import HotelsSearchBar from './HotelsSearchBar';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
-import { getHotels } from '../ApiMock';
+import { getTestHotels } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
     constructor(props) {
@@ -20,18 +20,24 @@ class HotelsSearchPage extends React.Component {
         this.state = {
             startDate: undefined,
             endDate: undefined,
-            adults: '2',
-            childrenCount: '',
-            childrenAges: [],
+            rooms: [{ adults: 1, children: [] }],
+            country: '',
+            city: '',
+            state: '',
+            countryCode: '',
             searchParams: undefined,
             listings: undefined,
             loading: true,
-            totalItems: 0,
+            totalElements: 0,
             currentPage: 1,
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.handleRoomsChange = this.handleRoomsChange.bind(this);
+        this.handleAdultsChange = this.handleAdultsChange.bind(this);
+        this.handleChildrenChange = this.handleChildrenChange.bind(this);
+        this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleFilter = this.handleFilter.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
@@ -41,13 +47,14 @@ class HotelsSearchPage extends React.Component {
     }
 
     componentDidMount() {
-        getHotels().then(data => {
-            this.setState({
-                listings: data.content,
-                totalItems: data.content.length,
+        getTestHotels().then((data) => {
+            this.setState({ 
+                listings: data.content, 
                 loading: false,
+                totalElements: data.totalElements
             });
-            console.log(data.content);
+            
+            console.log(data);
         });
     }
 
@@ -58,8 +65,6 @@ class HotelsSearchPage extends React.Component {
                 searchParams: searchParams,
                 startDate: moment(searchParams.get('startDate'), 'DD/MM/YYYY'),
                 endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
-                adults: searchParams.get('adults'),
-                children: searchParams.get('children'),
             });
         }
     }
@@ -69,7 +74,7 @@ class HotelsSearchPage extends React.Component {
             listings: null,
             loading: true,
             currentPage: 1,
-            totalItems: 0
+            totalElements: 0
         });
     }
 
@@ -92,15 +97,28 @@ class HotelsSearchPage extends React.Component {
 
         this.clearFilters(e);
         const searchTerms = this.getSearchTerms(this.state.searchParams);
-        getHotels(searchTerms).then(data => {
-            this.setState({
-                listings: data.content,
-                loading: false,
-                totalItems: data.content.length,
-            });
-        });
-        const url = `/hotels/listings/?${searchTerms}`;
-        this.props.history.push(url);
+        // getHotels(searchTerms).then(data => {
+        //     this.setState({
+        //         listings: data.content,
+        //         loading: false,
+        //         totalElements: data.content.length,
+        //     });
+        // });
+        e.preventDefault();
+        
+        let queryString = '?';
+
+        queryString += 'country=' + this.state.country;
+        queryString += '&city=' + this.state.city;
+        queryString += '&state=' + this.state.state;
+        queryString += '&countryCode=' + this.state.countryCode;
+        queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
+        queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
+        queryString += '&rooms=' + this.state.rooms.length;
+
+        // TODO: concatenate individual rooms' adults and children
+
+        this.props.history.push('hotels/listings' + queryString);
     }
 
     handleFilter(e) {
@@ -117,7 +135,7 @@ class HotelsSearchPage extends React.Component {
         getListingsByFilter(searchTerms).then(data => {
             this.setState({listings: data.filteredListings.content,
                 loading: false,
-                totalItems: data.filteredListings.totalElements,
+                totalElements: data.filteredListings.totalElements,
                 countryId: this.getSearchParams().get('countryId'),
             });
         });
@@ -159,14 +177,14 @@ class HotelsSearchPage extends React.Component {
             loading: true
         });
 
-        // const searchTerms = this.getSearchTerms(this.state.searchParams);
-        // getListingsByFilter(searchTerms + `&page=${page - 1}`).then(data => {
-        //     this.setState({
-        //         listings: data.filteredListings.content,
-        //         loading: false,
-        //         totalItems: data.filteredListings.totalElements
-        //     });
-        // });
+        const searchTerms = this.getSearchTerms(this.state.searchParams);
+        getTestHotels(searchTerms + `&page=${page - 1}`).then(data => {
+            this.setState({
+                listings: data.content,
+                loading: false,
+                totalElements: data.totalElements
+            });
+        });
     }
 
     getSearchTerms(searchParams) {
@@ -206,13 +224,64 @@ class HotelsSearchPage extends React.Component {
         return param.split(' ').join('%20');
     }
 
+    handleRoomsChange(event) {
+        let value = event.target.value;
+        if (value < 1) {
+            value = 1;
+        } else if (value > 5) {
+            value = 5;
+        }
+        let rooms = this.state.rooms.slice();
+        if (rooms.length < value) {
+            while (rooms.length < value) {
+                rooms.push({ adults: 1, children: [] });
+            }
+        } else if (rooms.length > value) {
+            rooms = rooms.slice(0, value);
+        }
+        
+        this.setState({ rooms: rooms });
+    }
+
+    handleAdultsChange(event, roomIndex) {
+        let value = event.target.value;
+        let rooms = this.state.rooms.slice();
+        rooms[roomIndex].adults = value;
+        this.setState({ rooms: rooms });
+    }
+
+    handleChildrenChange(event, roomIndex) {
+        let value = event.target.value;
+        if (value > 10) {
+            value = 10;
+        }
+        let rooms = this.state.rooms.slice();
+        let children = rooms[roomIndex].children;
+        if (children.length < value) {
+            while (children.length < value) {
+                children.push('');
+            }
+        } else if (children.length > value) {
+            children = children.slice(0, value);
+        }
+        
+        rooms[roomIndex].children = children;
+        this.setState({ rooms: rooms });
+    }
+
+    handleChildAgeChange(event, roomIndex, childIndex) {
+        const value = event.target.value;
+        const rooms = this.state.rooms.slice();
+        rooms[roomIndex].children[childIndex] = value;
+        this.setState({ rooms: rooms });
+    }
+
     render() {
         const listings = this.state.listings;
-        const hasLoadedListings = listings ? true : false;
 
         let renderListings;
 
-        if (!hasLoadedListings || this.state.loading === true) {
+        if (!listings || this.state.loading === true) {
             renderListings = <div className="loader"></div>;
         } else {
             renderListings = listings.map((item, i) => {
@@ -226,10 +295,18 @@ class HotelsSearchPage extends React.Component {
                 <HotelsSearchBar
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
+                    rooms={this.state.rooms}
                     guests={this.state.guests}
+                    childrenCount={this.state.childrenCount}
+                    childrenAges={this.state.childrenAges}
                     onChange={this.onChange}
+                    handleAdultsChange={this.handleAdultsChange}
+                    handleRoomsChange={this.handleRoomsChange}
+                    handleChildrenChange={this.handleChildrenChange}
+                    handleChildAgeChange={this.handleChildAgeChange}
                     handleSearch={this.handleSearch}
-                    handleDatePick={this.handleDatePick} />
+                    handleDatePick={this.handleDatePick} 
+                />
 
                 <Breadcrumb />
                 <section id="hotel-box">
@@ -251,10 +328,10 @@ class HotelsSearchPage extends React.Component {
                                     {renderListings}
 
                                     <LPagination
-                                        loading={this.state.totalItems === 0}
+                                        loading={this.state.totalElements === 0}
                                         onPageChange={this.onPageChange}
                                         currentPage={this.state.currentPage}
-                                        totalElements={this.state.totalItems}
+                                        totalElements={this.state.totalElements}
                                     />
                                 </div>
                             </div>

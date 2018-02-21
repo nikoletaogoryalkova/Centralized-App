@@ -8,13 +8,13 @@ import { connect } from 'react-redux';
 
 function HotelItem(props) {
     const { currency, currencySign, locRate } = props.paymentInfo;
-    const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, descriptions, pictures} = props.listing;
+    const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, descriptions, hotelPhotos} = props.listing;
 
     return (
         <div className="list-hotel">
             <div className="list-image">
                 Pictures
-                <ListingItemPictureCarousel pictures={pictures} id={id} />
+                {/* <ListingItemPictureCarousel pictures={hotelPhotos} id={id} /> */}
             </div>
             <div className="list-content">
                 <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>
@@ -22,7 +22,7 @@ function HotelItem(props) {
                 <div className="clearfix"></div>
                 {/* <p>{cityName}, {countryName}</p> */}
                 <div className="list-hotel-text">
-                    {descriptions.general.substr(0, 190)}...
+                    {descriptions.filter(x => x.type === 'General')[0].text.substr(0, 190)}...
                 </div>
                 <div className="list-hotel-comfort">
                     <div className="icon-hotel-4"></div>
@@ -33,8 +33,8 @@ function HotelItem(props) {
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
-                <div className="list-hotel-price-curency">{currencySign}{userCurrencyPrice}</div>
-                <div className="list-hotel-price-loc">(LOC {locCurrencyPrice})</div>
+                <div className="list-hotel-price-curency">Price</div>
+                <div className="list-hotel-price-loc">(LOC Price)</div>
                 <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
             <div className="clearfix"></div>

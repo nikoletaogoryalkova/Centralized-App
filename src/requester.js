@@ -412,3 +412,16 @@ export async function getCalendarByListingIdAndDateRange(listingId, startDate, e
         return res.response.json();
     });
 }
+
+// Test routes
+export async function getTestHotels(searchTerms) {
+    return sendRequest(`${host}api/test/hotels?${searchTerms}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getTestHotelById(id) {
+    return sendRequest(`${host}api/test/hotels/${id}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}

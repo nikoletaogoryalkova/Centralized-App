@@ -10,47 +10,44 @@ import {
 import { Config } from '../../../config';
 import Lightbox from 'react-images';
 import PropTypes from 'prop-types';
-import HomeDetailsInfoSection from './HomeDetailsInfoSection';
+import HotelDetailsInfoSection from './HotelDetailsInfoSection';
 import React from 'react';
-import HomesSearchBar from '../search/HomesSearchBar';
+import HotelsSearchBar from '../search/HotelsSearchBar';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 
-class HomeDetailsPage extends React.Component {
+import { getTestHotelById } from '../../../requester';
+
+class HotelDetailsPage extends React.Component {
     constructor(props) {
         super(props);
         
-        let countryId = '';
-        let guests = '';
         let startDate = moment();
         let endDate = moment().add(1, 'day');
 
         if (this.props) {
             let queryParams = parse(this.props.location.search);
-            if (queryParams.guests) {
-                guests = queryParams.guests;
-            }
             if (queryParams.startDate && queryParams.endDate) {
                 startDate = moment(queryParams.startDate, 'DD/MM/YYYY');
                 endDate = moment(queryParams.endDate, 'DD/MM/YYYY');
-            }
-            if (queryParams.countryId) {
-                countryId = queryParams.countryId;
             }
         }
 
         let nights = this.calculateNights(startDate, endDate);
 
         this.state = {
-            countryId: countryId,
             searchStartDate: startDate,
             searchEndDate: endDate,
             calendarStartDate: startDate,
             calendarEndDate: endDate,
-            nigths: nights,
-            guests: guests,
+            rooms: [{ adults: 1, children: [] }],
+            country: '',
+            city: '',
+            state: '',
+            countryCode: '',
+            nights: nights,
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
@@ -66,6 +63,10 @@ class HomeDetailsPage extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.handleRoomsChange = this.handleRoomsChange.bind(this);
+        this.handleAdultsChange = this.handleAdultsChange.bind(this);
+        this.handleChildrenChange = this.handleChildrenChange.bind(this);
+        this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.gotoNext = this.gotoNext.bind(this);
         this.gotoPrevious = this.gotoPrevious.bind(this);
@@ -80,17 +81,16 @@ class HomeDetailsPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ loading: true });
+        // this.setState({ loading: true });
         this.getUserInfo();
     }
 
     componentDidMount() {
-        this.initializeCalendar();
-
-        const { searchStartDate, searchEndDate } = this.state;
-        if (searchStartDate && searchEndDate) {
-            this.calculateNights(searchStartDate, searchEndDate);
-        }
+        const id = this.props.match.params.id;
+        getTestHotelById(id).then((data) => {
+            this.setState({ data: data, loading: false });
+            console.log(data);
+        });
 
         this.getUserInfo();
     }
@@ -261,11 +261,63 @@ class HomeDetailsPage extends React.Component {
         this.setState({ isShownContactHostModal: false });
     }
 
+    handleRoomsChange(event) {
+        let value = event.target.value;
+        if (value < 1) {
+            value = 1;
+        } else if (value > 5) {
+            value = 5;
+        }
+        let rooms = this.state.rooms.slice();
+        if (rooms.length < value) {
+            while (rooms.length < value) {
+                rooms.push({ adults: 1, children: [] });
+            }
+        } else if (rooms.length > value) {
+            rooms = rooms.slice(0, value);
+        }
+        
+        this.setState({ rooms: rooms });
+    }
+
+    handleAdultsChange(event, roomIndex) {
+        let value = event.target.value;
+        let rooms = this.state.rooms.slice();
+        rooms[roomIndex].adults = value;
+        this.setState({ rooms: rooms });
+    }
+
+    handleChildrenChange(event, roomIndex) {
+        let value = event.target.value;
+        if (value > 10) {
+            value = 10;
+        }
+        let rooms = this.state.rooms.slice();
+        let children = rooms[roomIndex].children;
+        if (children.length < value) {
+            while (children.length < value) {
+                children.push('');
+            }
+        } else if (children.length > value) {
+            children = children.slice(0, value);
+        }
+        
+        rooms[roomIndex].children = children;
+        this.setState({ rooms: rooms });
+    }
+
+    handleChildAgeChange(event, roomIndex, childIndex) {
+        const value = event.target.value;
+        const rooms = this.state.rooms.slice();
+        rooms[roomIndex].children[childIndex] = value;
+        this.setState({ rooms: rooms });
+    }
+
     render() {
         let loading, allEvents, images;
         if (this.state.data === null ||
-            this.state.prices === null ||
-            this.state.reservations === null ||
+            // this.state.prices === null ||
+            // this.state.reservations === null ||
             this.state.loaded === false) {
             loading = true;
         } else {
@@ -286,15 +338,21 @@ class HomeDetailsPage extends React.Component {
             <div>
                 <div>
                     <ListingTypeNav />
-                    <HomesSearchBar
-                        countryId={this.state.countryId} 
-                        countries={this.props.countries}
-                        startDate={this.state.searchStartDate}
-                        endDate={this.state.searchEndDate}
+                    <HotelsSearchBar
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        rooms={this.state.rooms}
                         guests={this.state.guests}
+                        childrenCount={this.state.childrenCount}
+                        childrenAges={this.state.childrenAges}
                         onChange={this.onChange}
+                        handleAdultsChange={this.handleAdultsChange}
+                        handleRoomsChange={this.handleRoomsChange}
+                        handleChildrenChange={this.handleChildrenChange}
+                        handleChildAgeChange={this.handleChildAgeChange}
                         handleSearch={this.handleSearch}
-                        handleDatePick={this.handleDatePick} />
+                        handleDatePick={this.handleDatePick} 
+                    />
                 </div>
                 
                 {loading ? 
@@ -343,9 +401,8 @@ class HomeDetailsPage extends React.Component {
                             </div>
                         </nav>
 
-                        <HomeDetailsInfoSection
+                        <HotelDetailsInfoSection
                             allEvents={allEvents}
-                            calendar={this.state.calendar}
                             nights={this.state.nights}
                             onApply={this.handleApply}
                             startDate={this.state.calendarStartDate}
@@ -367,7 +424,7 @@ class HomeDetailsPage extends React.Component {
     }
 }
 
-HomeDetailsPage.propTypes = {
+HotelDetailsPage.propTypes = {
     countries: PropTypes.array,
     match: PropTypes.object,
 
@@ -381,7 +438,7 @@ HomeDetailsPage.propTypes = {
     paymentInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(HomeDetailsPage));
+export default withRouter(connect(mapStateToProps)(HotelDetailsPage));
 
 function mapStateToProps(state) {
     const { userInfo, paymentInfo } = state;

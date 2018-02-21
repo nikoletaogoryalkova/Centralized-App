@@ -7,6 +7,8 @@ import HotelsSearchBar from './search/HotelsSearchBar';
 import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
+import { getTestHotels } from '../../requester';
+
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
@@ -35,7 +37,9 @@ class HomePage extends React.Component {
     }
 
     componentDidMount() {
-        // get popular hotels
+        getTestHotels().then((data) => {
+            console.log(data);
+        });
     }
 
     onChange(e) {
@@ -53,8 +57,9 @@ class HomePage extends React.Component {
         queryString += '&countryCode=' + this.state.countryCode;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&adults=' + this.state.adults;
-        queryString += this.state.childrenAges.length > 0 ? '&children=' + this.state.childrenAges.join() : '';
+        queryString += '&rooms=' + this.state.rooms.length;
+
+        // TODO: concatenate individual rooms' adults and children
 
         this.props.history.push('hotels/listings' + queryString);
     }    
@@ -68,8 +73,10 @@ class HomePage extends React.Component {
 
     handleRoomsChange(event) {
         let value = event.target.value;
-        if (value > 10) {
-            value = 10;
+        if (value < 1) {
+            value = 1;
+        } else if (value > 5) {
+            value = 5;
         }
         let rooms = this.state.rooms.slice();
         if (rooms.length < value) {
