@@ -17,6 +17,7 @@ import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
+import HotelReservationPanel from './HotelReservationPanel';
 
 import { getTestHotelById } from '../../../requester';
 
@@ -73,7 +74,6 @@ class HotelDetailsPage extends React.Component {
         this.gotoImage = this.gotoImage.bind(this);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
-        this.initializeCalendar = this.initializeCalendar.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -222,37 +222,6 @@ class HotelDetailsPage extends React.Component {
             });
     }
 
-    initializeCalendar() {
-        let now = new Date();
-        let end = new Date();
-        const DAY_INTERVAL = 90;
-        end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
-
-        getPropertyById(this.props.match.params.id).then((data) => {
-
-            this.setState({ data: data });
-
-            getCalendarByListingIdAndDateRange(this.props.match.params.id, now, end, this.props.paymentInfo.currency, 0, DAY_INTERVAL).then(res => {
-                let prices = [];
-                for (let dateInfo of res.content) {
-                    let price = dateInfo.available ? `${this.props.paymentInfo.currencySign}${Math.round(dateInfo.price)}` : '';
-                    prices.push(
-                        {
-                            'title': <span className="calendar-price bold">{price}</span>,
-                            'start': moment(dateInfo.date, 'DD/MM/YYYY'),
-                            'end': moment(dateInfo.date, 'DD/MM/YYYY'),
-                            'allDay': true,
-                            'price': dateInfo.price,
-                            'available': dateInfo.available
-                        }
-                    );
-                }
-
-                this.setState({ prices: prices, calendar: res.content, oldCurrency: this.props.paymentInfo.currency });
-            });
-        });
-    }
-
     openModal() {
         this.setState({ isShownContactHostModal: true });
     }
@@ -328,17 +297,12 @@ class HotelDetailsPage extends React.Component {
                     return { src: 'http://roomsxml.com' + x.externalUrl };
                 });
             }
-
-            console.log(images);
-    
-            if (this.state.oldCurrency !== this.props.paymentInfo.currency) {
-                this.initializeCalendar();
-            }
         }
 
         return (
             <div>
                 <div>
+                    <NotificationContainer />
                     <ListingTypeNav />
                     <HotelsSearchBar
                         startDate={this.state.startDate}
@@ -403,19 +367,31 @@ class HotelDetailsPage extends React.Component {
                             </div>
                         </nav>
 
-                        <HotelDetailsInfoSection
-                            allEvents={allEvents}
-                            nights={this.state.nights}
-                            onApply={this.handleApply}
-                            startDate={this.state.calendarStartDate}
-                            endDate={this.state.calendarEndDate}
-                            data={this.state.data}
-                            prices={this.state.prices}
-                            isLogged={this.props.userInfo.isLogged}
-                            loading={this.state.loading}
-                        />
-                        
-                        <NotificationContainer />
+                        <section id="hotel-info">
+                            <div className="container">
+                                <HotelDetailsInfoSection
+                                    allEvents={allEvents}
+                                    nights={this.state.nights}
+                                    onApply={this.handleApply}
+                                    startDate={this.state.calendarStartDate}
+                                    endDate={this.state.calendarEndDate}
+                                    data={this.state.data}
+                                    prices={this.state.prices}
+                                    loading={this.state.loading}
+                                />
+                                
+                                <HotelReservationPanel
+                                    isLogged={this.props.userInfo.isLogged}
+                                    calendar={this.state.calendar}
+                                    nights={this.state.nights}
+                                    onApply={this.handleApply}
+                                    startDate={this.state.calendarStartDate}
+                                    endDate={this.state.calendarEndDate}
+                                    listing={this.state.data}
+                                    loading={loading} 
+                                />
+                            </div>
+                        </section>
                     </div>
                 }
             </div>

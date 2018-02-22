@@ -90,51 +90,6 @@ class HomeReservationPanel extends React.Component {
     }
 
     render() {
-        const calendar = this.props.calendar;
-        const invalidDates = calendar.filter(c => !c.available)
-            .map(c => moment(c.date, 'DD/MM/YYYY'));
-        const isInvalidDate = date => {
-            let dateCandidate = moment(date, 'DD/MM/YYYY');
-            for (let invalidDate of invalidDates) {
-                if (invalidDate.diff(dateCandidate) === 0) {
-                    return true;
-                }
-            }
-
-            const now = moment().add('89', 'days');
-            now.hours(0, 0, 0, 0);
-            if (dateCandidate.diff(now) > 0) {
-                return true;
-            }
-
-            return false;
-        };
-
-        const cleaningFee = this.props.nights > 0 ? (this.props.paymentInfo.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.cleaningFee, 10) : parseInt(this.props.listing.cleaningFees[this.props.paymentInfo.currency], 10)) : 0;
-        const cleaningFeeLoc = Number((cleaningFee / this.props.paymentInfo.locRate).toFixed(4));
-
-        let listingPriceForPeriod = 0;
-        let startDate = this.props.startDate;
-        let endDate = this.props.endDate;
-        if (this.props.calendar === null || this.props.calendar === undefined) {
-            return <div className="loader"></div>;
-        }
-        if (startDate !== undefined && endDate !== undefined) {
-            for (let i = 0; i < this.props.calendar.length; i++) {
-                let dayObj = this.props.calendar[i];
-                if (startDate.startOf('day') <= moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && endDate.startOf('day') > moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && dayObj.available) {
-                    listingPriceForPeriod += dayObj.price;
-                }
-            }
-        }
-
-        let isInvalidRange = this.props.calendar.filter(x => moment(x.date, 'DD/MM/YYYY') >= startDate && moment(x.date, 'DD/MM/YYYY') <= endDate && !x.available).length > 0;
-
-        const listingPrice = listingPriceForPeriod;
-
-        const listingPriceLoc = Number((listingPrice / this.props.paymentInfo.locRate).toFixed(4));
-
-        const totalLoc = (listingPriceLoc + cleaningFeeLoc).toFixed(4);
         return (
             <div className="hotel-chekin">
                 <div className="hotel-chekin-box">
@@ -143,15 +98,15 @@ class HomeReservationPanel extends React.Component {
                     }
                     {(!this.state.sending && !this.props.loading) &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.paymentInfo.currencySign}{(this.props.nights === 0 ? listingPrice : (listingPrice / this.props.nights)).toFixed(2)} ({(this.props.nights === 0 ? listingPriceLoc : (listingPriceLoc / this.props.nights)).toFixed(4)} LOC)</span> /per night</p>
+                            <p id="hotel-top-price" className="hotel-top-price"><span>Price</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
-                            <DatePicker isInvalidDate={isInvalidDate}
+                            {/* <DatePicker isInvalidDate={isInvalidDate}
                                 nights={this.props.nights}
                                 onApply={this.props.onApply}
                                 startDate={this.props.startDate}
-                                endDate={this.props.endDate} />
+                                endDate={this.props.endDate} /> */}
 
                             <div className="clearfix"></div>
 
@@ -162,10 +117,6 @@ class HomeReservationPanel extends React.Component {
                             <div className="dropdown select-person">
                                 <input onChange={this.onChange} value={this.state.name} id="reservation-name" type="text" className="form-control" name="name" required placeholder="Name" />
                             </div>
-
-                            {/*<div className="dropdown select-person">*/}
-                            {/*<input onChange={this.onChange} value={this.state.email} id="reservation-email" type="email" className="form-control" name="email" required placeholder="E-mail" />*/}
-                            {/*</div>*/}
 
                             <div className="dropdown select-person">
                                 <input onChange={this.onChange} value={this.state.phone} id="reservation-phone" type="tel" className="form-control" name="phone" required placeholder="Phone" />
@@ -179,23 +130,19 @@ class HomeReservationPanel extends React.Component {
                             />
                             <br />
 
-                            <div>
-                                <p style={{ color: 'white' }}>Cleaning Fee: {this.props.paymentInfo.currencySign}{cleaningFee.toFixed(2)} ({cleaningFeeLoc} LOC)</p>
-                            </div>
-
-                            <div className="hotel-second-price">total <span className="total-price">{this.props.paymentInfo.currencySign}{(listingPrice + cleaningFee).toFixed(2)}</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span className="total-price">Price</span> / for&nbsp;
                             <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div>
                                 <p style={{ color: 'white' }}><b>or</b></p>
                             </div>
-                            <div className="hotel-second-price">total <span className="total-price">{totalLoc} LOC</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span className="total-price">LOC</span> / for&nbsp;
                             <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div className="nonev"></div>
 
                             {this.props.isLogged &&
-                                <button disabled={this.props.nights <= 0 || isInvalidRange || listingPrice === 0} type="submit" className="btn btn-primary"
+                                <button disabled={this.props.nights <= 0} type="submit" className="btn btn-primary"
                                     id="reservation-btn">Request Booking in LOC or FIAT</button>
                             }
                             {this.props.isLogged &&

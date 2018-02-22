@@ -8,6 +8,8 @@ import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
 import { getTestHotels } from '../../requester';
+import { postTestSearch } from '../../requester';
+import { connect } from 'react-redux';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -50,6 +52,8 @@ class HomePage extends React.Component {
     handleSearch(e) {
         e.preventDefault();
         
+        this.testCallBackend();  return;
+
         let queryString = '?';
 
         queryString += 'country=' + this.state.country;
@@ -63,7 +67,31 @@ class HomePage extends React.Component {
         // TODO: concatenate individual rooms' adults and children
 
         this.props.history.push('hotels/listings' + queryString);
-    }    
+    }
+
+    testCallBackend() {
+        const currency = this.props.paymentInfo.currency;
+        const rooms = this.state.rooms.map((room) => { 
+            return {
+                adults: room.adults,
+                children: room.children.map((child) => {
+                    return { age: child };
+                })
+            };
+        });
+        const location = `${this.state.country}, ${this.state.city}, ${this.state.state}, ${this.state.countryCode}`;
+        const startDate = this.state.startDate;
+        const nights = this.state.endDate.diff(this.state.startDate, 'days');
+        const search = {
+            currency: currency,
+            rooms: rooms,
+            location: location,
+            startDate: startDate,
+            nights: nights
+        };
+
+        postTestSearch(search);
+    }
     
     handleDatePick(event, picker) {
         this.setState({
@@ -168,4 +196,11 @@ class HomePage extends React.Component {
     }
 }
 
-export default withRouter(HomePage);
+export default withRouter(connect(mapStateToProps)(HomePage));
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
+    };
+}

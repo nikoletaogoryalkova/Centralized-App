@@ -425,3 +425,9 @@ export async function getTestHotelById(id) {
         return res.response.json();
     });
 }
+
+export async function postTestSearch(search) {
+    return sendRequest(`${host}api/test/hotels/search`, RequestMethod.POST, search).then(res => {
+        return res;
+    });
+}
