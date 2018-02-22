@@ -23,7 +23,7 @@ class HomePage extends React.Component {
             endDate: endDate,
             rooms: [{ adults: 1, children: [] }],
             listings: undefined,
-            region: { id: undefined, query: '' },
+            // region: { id: undefined, query: undefined },
             // country: '',
             // city: '',
             // state: '',
@@ -97,7 +97,10 @@ class HomePage extends React.Component {
         };
 
         console.log(search);
-        postTestSearch(search);
+        postTestSearch(search)
+            .then((json) => {
+                console.log(json);
+            });
     }
     
     handleDatePick(event, picker) {

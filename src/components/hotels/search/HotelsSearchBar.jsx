@@ -75,7 +75,9 @@ function SearchBar(props) {
 
                             <Select.Async
                                 className="form-control"
-                                style={{ boxShadow: 'none', border: 'none'}}
+                                placeholder="Region..."
+                                required
+                                style={{ boxShadow: 'none', border: 'none', fontSize: '15px', top: '5px' }}
                                 value={props.region} 
                                 onChange={props.handleSelectRegion} 
                                 valueKey={"id"} 
