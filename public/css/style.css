@@ -2749,3 +2749,7 @@ select {
     outline: none;
     border-radius: 3px;
 }
+
+.Select-placeholder {
+    line-height: 60px;
+}

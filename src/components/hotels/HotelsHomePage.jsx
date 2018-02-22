@@ -23,10 +23,11 @@ class HomePage extends React.Component {
             endDate: endDate,
             rooms: [{ adults: 1, children: [] }],
             listings: undefined,
-            country: '',
-            city: '',
-            state: '',
-            countryCode: '',
+            region: { id: undefined, query: '' },
+            // country: '',
+            // city: '',
+            // state: '',
+            // countryCode: '',
         };
 
         this.onChange = this.onChange.bind(this);
@@ -36,17 +37,22 @@ class HomePage extends React.Component {
         this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
+
+        this.handleSelectRegion = this.handleSelectRegion.bind(this);
     }
 
     componentDidMount() {
         getTestHotels().then((data) => {
             this.setState({ listings: data.content });
-            console.log(data.content)
         });
     }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    handleSelectRegion(value) {
+        this.setState({ region: value });
     }
     
     handleSearch(e) {
@@ -80,16 +86,17 @@ class HomePage extends React.Component {
             };
         });
         const location = `${this.state.country}, ${this.state.city}, ${this.state.state}, ${this.state.countryCode}`;
-        const startDate = this.state.startDate;
+        const startDate = this.state.startDate.format('YYYY-MM-DD');
         const nights = this.state.endDate.diff(this.state.startDate, 'days');
         const search = {
             currency: currency,
             rooms: rooms,
-            location: location,
+            regionId: this.state.region.id,
             startDate: startDate,
             nights: nights
         };
 
+        console.log(search);
         postTestSearch(search);
     }
     
@@ -164,6 +171,7 @@ class HomePage extends React.Component {
                             <HotelsSearchBar
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
+                                region={this.state.region}
                                 rooms={this.state.rooms}
                                 guests={this.state.guests}
                                 childrenCount={this.state.childrenCount}
@@ -174,7 +182,8 @@ class HomePage extends React.Component {
                                 handleChildrenChange={this.handleChildrenChange}
                                 handleChildAgeChange={this.handleChildAgeChange}
                                 handleSearch={this.handleSearch}
-                                handleDatePick={this.handleDatePick} 
+                                handleDatePick={this.handleDatePick}
+                                handleSelectRegion={this.handleSelectRegion}
                             />
                         </div>
                     </div>

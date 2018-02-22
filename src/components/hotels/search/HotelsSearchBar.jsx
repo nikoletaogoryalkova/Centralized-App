@@ -3,40 +3,60 @@ import PropTypes from 'prop-types';
 import DatePicker from '../../DatePicker';
 import moment from 'moment';
 
-import Autocomplete from 'react-google-autocomplete';
+// import Autocomplete from 'react-google-autocomplete';
+
+import Select from 'react-select';
+import { getRegionsBySearchQuery } from '../../../requester';
 
 function SearchBar(props) {
 
-    const getAddressComponents = (place) => {
-        let components = place.address_components;
-        let result = [];
-        for (let i = 0; i < components.length; i++) {
-            let addressComponent = {
-                name: components[i].long_name,
-                shortName: components[i].short_name,
-                type: components[i].types[0]
-            };
-            result.push(addressComponent);
+    // const getAddressComponents = (place) => {
+    //     let components = place.address_components;
+    //     let result = [];
+    //     for (let i = 0; i < components.length; i++) {
+    //         let addressComponent = {
+    //             name: components[i].long_name,
+    //             shortName: components[i].short_name,
+    //             type: components[i].types[0]
+    //         };
+    //         result.push(addressComponent);
+    //     }
+    //     return result;
+    // };
+
+    // const setAddressComponents = (addressComponentsMap) => {
+    //     let addressCountry = addressComponentsMap.filter(x => x.type === 'country')[0];
+    //     let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
+    //     let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
+
+    //     props.onChange({ target: { name: 'country', value: addressCountry ? addressCountry.name : '' }});
+    //     props.onChange({ target: { name: 'city', value: addressCityName ? addressCityName.name : '' }});
+    //     props.onChange({ target: { name: 'state', value: addressStateName ? addressStateName.name : '' }});
+    //     props.onChange({ target: { name: 'countryCode', value: addressCountry ? addressCountry.shortName : '' }});
+    // };
+
+    // const handlePlaceSelect = (place) => {
+    //     console.log(place);
+    //     if (place.address_components !== undefined) {
+    //         let addressComponentsMap = getAddressComponents(place);
+    //         setAddressComponents(addressComponentsMap);
+    //     }
+    // };
+
+    const getRegions = (query) => {
+        if (!query) {
+            return Promise.resolve({ options: [] });
         }
-        return result;
-    };
 
-    const setAddressComponents = (addressComponentsMap) => {
-        let addressCountry = addressComponentsMap.filter(x => x.type === 'country')[0];
-        let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
-        let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
-
-        props.onChange({ target: { name: 'country', value: addressCountry ? addressCountry.name : '' }});
-        props.onChange({ target: { name: 'city', value: addressCityName ? addressCityName.name : '' }});
-        props.onChange({ target: { name: 'state', value: addressStateName ? addressStateName.name : '' }});
-        props.onChange({ target: { name: 'countryCode', value: addressCountry ? addressCountry.shortName : '' }});
-    };
-
-    const handlePlaceSelect = (place) => {
-        if (place.address_components !== undefined) {
-            let addressComponentsMap = getAddressComponents(place);
-            setAddressComponents(addressComponentsMap);
+        if (query.length < 3) {
+            return Promise.resolve({ options: [] });
         }
+
+        return getRegionsBySearchQuery(query)
+            .then((json) => {
+                console.log(json)
+                return { options: json };
+            });
     };
 
     const { startDate, endDate, rooms, adults, childrenCount, childrenAges } = props;
@@ -48,10 +68,23 @@ function SearchBar(props) {
                 <form id="search" onSubmit={props.handleSearch}>
                     <div className="row">
                         <div className="form-group has-feedback has-feedback-left" id="location">
-                            <Autocomplete
+                            {/* <Autocomplete
                                 className="form-control"
                                 onPlaceSelected={handlePlaceSelect}
+                            /> */}
+
+                            <Select.Async
+                                className="form-control"
+                                style={{ boxShadow: 'none', border: 'none'}}
+                                value={props.region} 
+                                onChange={props.handleSelectRegion} 
+                                valueKey={"id"} 
+                                labelKey={"query"} 
+                                loadOptions={getRegions}
+                                backspaceRemoves={true}
+                                arrowRenderer={null}
                             />
+				
                         </div>
                 
                         <DatePicker
