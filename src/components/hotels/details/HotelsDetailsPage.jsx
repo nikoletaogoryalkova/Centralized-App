@@ -18,6 +18,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 
+import { getHotels } from './HotelsApiMock';
+
 class HomeDetailsPage extends React.Component {
     constructor(props) {
         super(props);
@@ -73,7 +75,7 @@ class HomeDetailsPage extends React.Component {
         this.gotoImage = this.gotoImage.bind(this);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
-        this.initializeCalendar = this.initializeCalendar.bind(this);
+        this.initializeHotel = this.initializeHotel.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -86,7 +88,7 @@ class HomeDetailsPage extends React.Component {
     }
 
     componentDidMount() {
-        this.initializeCalendar();
+        this.initializeHotel();
 
         const { searchStartDate, searchEndDate } = this.state;
         if (searchStartDate && searchEndDate) {
@@ -223,15 +225,15 @@ class HomeDetailsPage extends React.Component {
             });
     }
 
-    initializeCalendar() {
+    initializeHotel() {
         let now = new Date();
         let end = new Date();
         const DAY_INTERVAL = 90;
         end.setUTCHours(now.getUTCHours() + 24 * DAY_INTERVAL);
 
-        getPropertyById(this.props.match.params.id).then((data) => {
+        getHotels().then((data) => {
 
-            this.setState({ data: data });
+            this.setState({ data: data[0] });
 
             getCalendarByListingIdAndDateRange(this.props.match.params.id, now, end, this.props.paymentInfo.currency, 0, DAY_INTERVAL).then(res => {
                 let prices = [];
@@ -279,7 +281,7 @@ class HomeDetailsPage extends React.Component {
             }
     
             if (this.state.oldCurrency !== this.props.paymentInfo.currency) {
-                this.initializeCalendar();
+                this.initializeHotel();
             }
         }
 
