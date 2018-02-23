@@ -6,7 +6,7 @@ import moment from 'moment';
 // import Autocomplete from 'react-google-autocomplete';
 
 import Select from 'react-select';
-import { getRegionsBySearchQuery } from '../../../requester';
+import { getRegionsBySearchParameter } from '../../../requester';
 
 function SearchBar(props) {
 
@@ -43,18 +43,17 @@ function SearchBar(props) {
     //     }
     // };
 
-    const getRegions = (query) => {
-        if (!query) {
+    const getRegions = (param) => {
+        if (!param) {
             return Promise.resolve({ options: [] });
         }
 
-        if (query.length < 3) {
-            return Promise.resolve({ options: [] });
-        }
+        // if (query.length < 3) {
+        //     return Promise.resolve({ options: [] });
+        // }
 
-        return getRegionsBySearchQuery(query)
+        return getRegionsBySearchParameter(param)
             .then((json) => {
-                console.log(json)
                 return { options: json };
             });
     };

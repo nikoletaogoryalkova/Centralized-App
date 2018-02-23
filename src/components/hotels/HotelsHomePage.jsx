@@ -8,7 +8,7 @@ import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
 import { getTestHotels } from '../../requester';
-import { postTestSearch } from '../../requester';
+import { testSearch } from '../../requester';
 import { connect } from 'react-redux';
 
 class HomePage extends React.Component {
@@ -57,20 +57,13 @@ class HomePage extends React.Component {
     
     handleSearch(e) {
         e.preventDefault();
-        
-        this.testCallBackend();  return;
 
         let queryString = '?';
 
-        queryString += 'country=' + this.state.country;
-        queryString += '&city=' + this.state.city;
-        queryString += '&state=' + this.state.state;
-        queryString += '&countryCode=' + this.state.countryCode;
+        queryString += 'region=' + this.state.region.query;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&rooms=' + this.state.rooms.length;
-
-        // TODO: concatenate individual rooms' adults and children
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
 
         this.props.history.push('hotels/listings' + queryString);
     }
@@ -95,12 +88,6 @@ class HomePage extends React.Component {
             startDate: startDate,
             nights: nights
         };
-
-        console.log(search);
-        postTestSearch(search)
-            .then((json) => {
-                console.log(json);
-            });
     }
     
     handleDatePick(event, picker) {

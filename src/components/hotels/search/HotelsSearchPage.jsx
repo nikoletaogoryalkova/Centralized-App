@@ -11,7 +11,7 @@ import moment from 'moment';
 import HotelsSearchBar from './HotelsSearchBar';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
-import { getTestHotels } from '../../../requester';
+import { testSearch } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
     constructor(props) {
@@ -47,13 +47,8 @@ class HotelsSearchPage extends React.Component {
     }
 
     componentDidMount() {
-        getTestHotels().then((data) => {
-            this.setState({ 
-                listings: data.content, 
-                loading: false,
-                totalElements: data.totalElements
-            });
-            
+        const query = this.props.location.search;
+        testSearch(query).then((data) => {
             console.log(data);
         });
     }
@@ -178,12 +173,12 @@ class HotelsSearchPage extends React.Component {
         });
 
         const searchTerms = this.getSearchTerms(this.state.searchParams);
-        getTestHotels(searchTerms + `&page=${page - 1}`).then(data => {
-            this.setState({
-                listings: data.content,
-                loading: false,
-                totalElements: data.totalElements
-            });
+        testSearch(searchTerms + `&page=${page - 1}`).then(data => {
+            // this.setState({
+            //     listings: data.content,
+            //     loading: false,
+            //     totalElements: data.totalElements
+            // });
         });
     }
 

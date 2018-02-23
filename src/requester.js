@@ -427,14 +427,15 @@ export async function getTestHotelById(id) {
     });
 }
 
-export async function getRegionsBySearchQuery(query) {
-    return sendRequest(`${host}regions/search?query=${query}`, RequestMethod.GET).then(res => {
+export async function getRegionsBySearchParameter(param) {
+    return sendRequest(`${host}regions/search?query=${param}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
 
-export async function postTestSearch(search) {
-    return sendRequest(`${host}api/test/hotels/search`, RequestMethod.POST, search).then(res => {
+export async function testSearch(query) {
+    console.log(`${host}api/test/hotels/search${query}`);
+    return sendRequest(`${host}api/test/hotels/search${query}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
