@@ -11,7 +11,7 @@ import moment from 'moment';
 import HotelsSearchBar from './HotelsSearchBar';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
-import { testSearch } from '../../../requester';
+import { testSearch, getTestHotels } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
     constructor(props) {
@@ -48,8 +48,12 @@ class HotelsSearchPage extends React.Component {
 
     componentDidMount() {
         const query = this.props.location.search;
-        testSearch(query).then((data) => {
-            console.log(data);
+        // testSearch(query).then((data) => {
+        //     console.log(data);
+        // });
+
+        getTestHotels().then((json) => {
+            this.setState({ listings: json.content, loading: false });
         });
     }
 

@@ -9,7 +9,7 @@ const { INVALID_PASSWORD } = require('./utils/errors.json');
 
 
 class Wallet {
-    static createFromPassword(password) {
+    static async createFromPassword(password) {
         if (password === '') {
             NotificationManager.error(INVALID_PASSWORD);
             throw new Error(INVALID_PASSWORD);

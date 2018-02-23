@@ -62,8 +62,8 @@ class HomePage extends React.Component {
 
         queryString += 'region=' + this.state.region.id;
         queryString += '&currency=' + this.props.paymentInfo.currency;
-        queryString += '&startDate=' + this.state.startDate.format('YYYY-MM-DD');
-        queryString += '&endDate=' + this.state.endDate.format('YYYY-MM-DD');
+        queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
+        queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
 
         this.props.history.push('hotels/listings' + queryString);

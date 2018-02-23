@@ -13,6 +13,10 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
 
+import CreateWalletModal from './modals/CreateWalletModal';
+import SaveWalletModal from './modals/SaveWalletModal';
+import ConfirmWalletModal from './modals/ConfirmWalletModal';
+
 class MainNav extends React.Component {
     constructor(props) {
         super(props);
@@ -329,6 +333,7 @@ class MainNav extends React.Component {
                                 <button type="submit" className="btn btn-primary">Sign up</button>
                                 <div className="clearfix"></div>
                             </form>
+                            <button className="btn btn-primary" onClick={() => { this.closeModal('showSignUpModal'); this.openModal('createWallet'); }}>Create LOC/ETH Wallet</button>
 
                             <div className="signup-rights">
                                 <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>
@@ -336,6 +341,9 @@ class MainNav extends React.Component {
                         </Modal.Body>
                     </Modal>
 
+                    <CreateWalletModal isActive={this.state.createWallet} openModal={this.openModal} closeModal={this.closeModal} />
+                    <SaveWalletModal isActive={this.state.saveWallet} openModal={this.openModal} closeModal={this.closeModal} />
+                    <ConfirmWalletModal isActive={this.state.confirmWallet} openModal={this.openModal} closeModal={this.closeModal} />
                     <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
                     <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
                     <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
