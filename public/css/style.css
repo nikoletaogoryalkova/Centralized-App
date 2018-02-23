@@ -754,6 +754,12 @@ footer .currency-switcher {
     outline: none;
 }
 
+@media (max-width: 991px) {
+    footer .copyright {
+        margin-bottom: 135px;
+    }
+}
+
 .admin_dashboard #search-bar {
     padding-top: 0;
     padding-bottom: 0;
@@ -2110,6 +2116,25 @@ li.dropdown {
     color: #fff;
     font-family: 'FuturaStd-Light', sans-serif;
     font-size: 2em;
+}
+
+@media (max-width: 768px) {
+    #search-bar div.container {
+        max-width: 690px;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 722px) {
+    .home_page h1.home_title {
+        margin-top: 35px;
+    }
+}
+
+@media (max-width: 400px) {
+    .home_page h1.home_title {
+        font-size: 52px;
+    }
 }
 
 #popular-hotels-box {
