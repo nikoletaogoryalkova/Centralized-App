@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import HotelsHomePage from './HotelsHomePage';
-// import HotelsSearchPage from './search/HotelsSearchPage';
+import HotelsSearchPage from './search/HotelsSearchPage';
 import HotelsDetailsPage from './details/HotelsDetailsPage';
 import { getCountries } from '../../requester';
 
@@ -27,7 +27,7 @@ class HotelsRouterPage extends React.Component {
             <div>
                 <Switch>
                     <Route exact path="/hotels" render={() => <HotelsHomePage countries={this.state.countries} />} />
-                    {/* <Route exact path="/hotels/listings" render={() => <HotelsSearchPage countries={this.state.countries} />} />*/
+                    <Route exact path="/hotels/listings" render={() => <HotelsSearchPage countries={this.state.countries} />} />*/
                     <Route exact path="/hotels/listings/:id" render={() => <HotelsDetailsPage countries={this.state.countries} />} />}
                 </Switch>
             </div>

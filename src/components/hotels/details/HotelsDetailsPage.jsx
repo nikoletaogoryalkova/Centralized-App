@@ -4,7 +4,7 @@ import {
     contactHost,
     getCalendarByListingIdAndDateRange,
     getCurrentLoggedInUserInfo,
-    getPropertyById
+    // getPropertyById
 } from '../../../requester';
 
 import { Config } from '../../../config';
@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 
-import { getHotels } from './HotelsApiMock';
+import { getHotels } from '../HotelsApiMock';
 
 class HomeDetailsPage extends React.Component {
     constructor(props) {
