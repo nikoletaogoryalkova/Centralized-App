@@ -54,11 +54,11 @@ class HotelsSearchPage extends React.Component {
 
     componentDidMount() {
         testSearch(this.props.location.search).then((json) => {
-            this.setState({ 
-                listings: json.content, 
+            console.log(json);
+            this.setState({
+                listings: json, 
                 loading: false 
             });
-            console.log(json);
         });
     }
 
@@ -104,11 +104,11 @@ class HotelsSearchPage extends React.Component {
 
         this.setState({ loading: true}, () => {
             testSearch(queryString).then((json) => {
+                console.log(json);
                 this.setState({ 
-                    listings: json.content, 
+                    listings: json, 
                     loading: false 
                 });
-                console.log(json);
             });
         });
     }
@@ -154,7 +154,6 @@ class HotelsSearchPage extends React.Component {
 
     handleSelectRegion(value) {
         this.setState({ region: value });
-        this.updateParamsMap('region', value.toString());
     }
 
     handleDatePick(event, picker) {

@@ -1,5 +1,6 @@
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import validator from 'validator';
 import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo } from '../../requester';
@@ -52,6 +53,7 @@ class MainNav extends React.Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.openWalletInfo = this.openWalletInfo.bind(this);
 
         this.messageListener = this.messageListener.bind(this);
         this.getCountOfMessages = this.getCountOfMessages.bind(this);
@@ -122,14 +124,19 @@ class MainNav extends React.Component {
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
             password: this.state.signUpPassword,
-            // locAddress: this.state.signUpLocAddress,
+            locAddress: localStorage.walletAddress,
+            json: localStorage.walletJson,
             image: Config.getValue('basePath') + 'images/default.png'
         };
 
+        localStorage.walletAddress = '';
+        localStorage.walletMnemonic = '';
+        localStorage.walletJson = '';
+
         register(user, captchaToken).then((res) => {
             if (res.success) {
-                this.closeSignUp();
                 this.openLogIn();
+                NotificationManager.success("Succesfully created your account.");
             }
             else {
                 res.response.then(res => {
@@ -140,8 +147,6 @@ class MainNav extends React.Component {
                         }
                     }
                 });
-
-                this.captcha.reset();
             }
         });
     }
@@ -186,7 +191,18 @@ class MainNav extends React.Component {
     }
 
     openWalletInfo() {
-        
+        if (!validator.isEmail(this.state.signUpEmail)) {
+            NotificationManager.warning('Invalid email address');
+        } else if (validator.isEmpty(this.state.signUpFirstName)) {
+            NotificationManager.warning('Invalid first name');
+        } else if (validator.isEmpty(this.state.signUpLastName)) {
+            NotificationManager.warning('Invalid last name');
+        } else if (validator.isEmpty(this.state.signUpPassword)) {
+            NotificationManager.warning('Invalid password');
+        } else {
+            this.closeModal('showSignUpModal'); 
+            this.openModal('createWallet');
+        }
     }
 
     setUserInfo() {
@@ -332,7 +348,7 @@ class MainNav extends React.Component {
                                 <button type="submit" className="btn btn-primary">Sign up</button>
                                 <div className="clearfix"></div>
                             </form>
-                            <button className="btn btn-primary" onClick={() => { this.closeModal('showSignUpModal'); this.openModal('createWallet'); }}>Create LOC/ETH Wallet</button>
+                            <button className="btn btn-primary" onClick={this.openWalletInfo}>Create LOC/ETH Wallet</button>
 
                             <div className="signup-rights">
                                 <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>
@@ -340,9 +356,9 @@ class MainNav extends React.Component {
                         </Modal.Body>
                     </Modal>
 
-                    <CreateWalletModal isActive={this.state.createWallet} openModal={this.openModal} closeModal={this.closeModal} />
-                    <SaveWalletModal isActive={this.state.saveWallet} openModal={this.openModal} closeModal={this.closeModal} />
-                    <ConfirmWalletModal isActive={this.state.confirmWallet} openModal={this.openModal} closeModal={this.closeModal} />
+                    <CreateWalletModal isActive={this.state.createWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <SaveWalletModal isActive={this.state.saveWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <ConfirmWalletModal isActive={this.state.confirmWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} register={this.register} />
                     <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
                     <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
                     <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />

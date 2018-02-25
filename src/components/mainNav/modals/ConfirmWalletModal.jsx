@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Wallet } from '../../../services/blockchain/wallet.js';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const modal = {
     current: 'confirmWallet',
@@ -29,7 +30,7 @@ export default class CreateWalletModal extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleSubmit() {
+    handleSubmit(token) {
         if (this.state.mnemonic.trim() !== localStorage.walletMnemonic) {
             NotificationManager.warning("Wrong mnemonic words. You need to create a new wallet.");
             this.props.closeModal(modal.current);
@@ -39,9 +40,8 @@ export default class CreateWalletModal extends React.Component {
             this.props.closeModal(modal.current);
             this.props.openModal(modal.prev);
         } else {
-            NotificationManager.success("Succesfully created your account.");
             this.props.closeModal(modal.current);
-            this.props.openModal(modal.next);
+            this.captcha.execute();
         }
     }
 
@@ -64,6 +64,13 @@ export default class CreateWalletModal extends React.Component {
                         <button className="btn btn-primary" onClick={this.handleSubmit}>Confirm Wallet</button>
                     </Modal.Body>
                 </Modal>
+                
+                <ReCAPTCHA
+                    ref={el => this.captcha = el}
+                    size="invisible"
+                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    onChange={token => { this.props.register(token); this.captcha.reset(); }}
+                />
             </div>
         );
     }
