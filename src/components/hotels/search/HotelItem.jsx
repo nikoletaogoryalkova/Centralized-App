@@ -32,7 +32,7 @@ function HotelItem(props) {
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
-                <div className="list-hotel-price-curency">Price</div>
+                {props.userInfo.isLogged && <div className="list-hotel-price-curency">Price</div>}
                 <div className="list-hotel-price-loc">(LOC Price)</div>
                 <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
@@ -53,8 +53,9 @@ HotelItem.propTypes = {
 export default withRouter(connect(mapStateToProps)(HotelItem));
 
 function mapStateToProps(state) {
-    const { paymentInfo } = state;
+    const { paymentInfo, userInfo } = state;
     return {
-        paymentInfo
+        paymentInfo,
+        userInfo
     };
 }

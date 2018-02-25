@@ -46,7 +46,7 @@ export default class CreateWalletModal extends React.Component {
             <div>
                 <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
                     <Modal.Header>
-                        <h1>Enter yor password</h1>
+                        <h1>Enter yor wallet password</h1>
                         <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>

@@ -11,6 +11,8 @@ import { getTestHotels } from '../../requester';
 import { testSearch } from '../../requester';
 import { connect } from 'react-redux';
 
+import RoomInfoModal from './search/modals/RoomInfoModal';
+
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
@@ -24,10 +26,6 @@ class HomePage extends React.Component {
             rooms: [{ adults: 1, children: [] }],
             listings: undefined,
             // region: { id: undefined, query: undefined },
-            // country: '',
-            // city: '',
-            // state: '',
-            // countryCode: '',
         };
 
         this.onChange = this.onChange.bind(this);
@@ -39,6 +37,8 @@ class HomePage extends React.Component {
         this.handleDatePick = this.handleDatePick.bind(this);
 
         this.handleSelectRegion = this.handleSelectRegion.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     componentDidMount() {
@@ -56,7 +56,9 @@ class HomePage extends React.Component {
     }
     
     handleSearch(e) {
-        e.preventDefault();
+        if (e) {
+            e.preventDefault();
+        }
 
         let queryString = '?';
 
@@ -67,28 +69,6 @@ class HomePage extends React.Component {
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
 
         this.props.history.push('hotels/listings' + queryString);
-    }
-
-    testCallBackend() {
-        const currency = this.props.paymentInfo.currency;
-        const rooms = this.state.rooms.map((room) => { 
-            return {
-                adults: room.adults,
-                children: room.children.map((child) => {
-                    return { age: child };
-                })
-            };
-        });
-        const location = `${this.state.country}, ${this.state.city}, ${this.state.state}, ${this.state.countryCode}`;
-        const startDate = this.state.startDate.format('YYYY-MM-DD');
-        const nights = this.state.endDate.diff(this.state.startDate, 'days');
-        const search = {
-            currency: currency,
-            rooms: rooms,
-            regionId: this.state.region.id,
-            startDate: startDate,
-            nights: nights
-        };
     }
     
     handleDatePick(event, picker) {
@@ -149,6 +129,26 @@ class HomePage extends React.Component {
         rooms[roomIndex].children[childIndex] = value;
         this.setState({ rooms: rooms });
     }
+
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
+    }
     
     render() {
         return (
@@ -165,14 +165,9 @@ class HomePage extends React.Component {
                                 region={this.state.region}
                                 rooms={this.state.rooms}
                                 guests={this.state.guests}
-                                childrenCount={this.state.childrenCount}
-                                childrenAges={this.state.childrenAges}
                                 onChange={this.onChange}
-                                handleAdultsChange={this.handleAdultsChange}
                                 handleRoomsChange={this.handleRoomsChange}
-                                handleChildrenChange={this.handleChildrenChange}
-                                handleChildAgeChange={this.handleChildAgeChange}
-                                handleSearch={this.handleSearch}
+                                handleSearch={(e) => this.openModal(`roomInfo${0}`, e)}
                                 handleDatePick={this.handleDatePick}
                                 handleSelectRegion={this.handleSelectRegion}
                             />
@@ -191,6 +186,25 @@ class HomePage extends React.Component {
                     }
                     <div className="clearfix"></div>
                 </section>
+
+                {this.state.rooms && this.state.rooms.map((room, i) => {
+                    return (
+                        <RoomInfoModal
+                            key={i}
+                            roomId={i}
+                            modalId={`roomInfo${i}`}
+                            room={room}
+                            rooms={this.state.rooms}
+                            handleAdultsChange={this.handleAdultsChange}
+                            handleChildrenChange={this.handleChildrenChange}
+                            handleChildAgeChange={this.handleChildAgeChange}
+                            isActive={this.state[`roomInfo${i}`]}
+                            openModal={this.openModal}
+                            closeModal={this.closeModal}
+                            handleSearch={this.handleSearch}
+                        />
+                    );
+                })}
             </div>
         );
     }

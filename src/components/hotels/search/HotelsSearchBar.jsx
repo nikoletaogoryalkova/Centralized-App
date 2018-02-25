@@ -96,60 +96,16 @@ function SearchBar(props) {
                             nights={calculateNights(props.startDate, props.endDate)} />
                 
                         <div className="form-group has-feedback has-feedback-left" id="guests">
-                            <i className="icon icon-guest form-control-feedback"></i>
-
-                            <input type="number"
-                                name="rooms"
-                                className="form-control"
-                                style={{ display: 'inline-block' }}
-                                onChange={props.handleRoomsChange}
-                                placeholder="Rooms"
-                                value={rooms.length} 
-                            />
-                            
+                            <select name={'rooms'} className="form-control"  value={rooms.length} onChange={props.handleRoomsChange}>
+                                <option value="1">Rooms: 1</option>
+                                <option value="2">Rooms: 2</option>
+                                <option value="3">Rooms: 3</option>
+                                <option value="4">Rooms: 4</option>
+                                <option value="5">Rooms: 5</option>
+                            </select>
                         </div>
                         <button className="btn btn-primary">Search</button>
                     </div>
-                    {props.rooms.map((room, roomIndex) => {
-                        return (
-                            <div key={roomIndex} className="row">
-                                <input type="number"
-                                    name={`adults${roomIndex}`}
-                                    className="form-control"
-                                    style={{ width: '10%', marginRight: '5px', display: 'inline-block' }}
-                                    onChange={(e) => handleAdultsChange(e, roomIndex)}
-                                    required
-                                    placeholder="Adults"
-                                    value={room.adults} 
-                                />
-                            
-                                <input type="number"
-                                    name={`children${roomIndex}`}
-                                    className="form-control"
-                                    style={{ width: '10%', display: 'inline-block' }}
-                                    onChange={(e) => handleChildrenChange(e, roomIndex)}
-                                    placeholder="Children"
-                                    value={childrenCount} 
-                                />
-
-                                {(room.children.length > 0) &&
-                                    room.children.map((age, childIndex) => {
-                                        return (
-                                            <input key={childIndex} type="number"
-                                                name={`child${childIndex}`}
-                                                className="form-control"
-                                                style={{ width: '8%', display: 'inline-block' }}
-                                                onChange={(e) => handleChildAgeChange(e, roomIndex, childIndex)}
-                                                required
-                                                placeholder="Age"
-                                                value={room.children[childIndex]} 
-                                            />
-                                        );
-                                    })
-                                }
-                            </div>
-                        );
-                    })}
                 </form>
             </div>
         </section>

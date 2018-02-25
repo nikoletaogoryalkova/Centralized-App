@@ -122,7 +122,7 @@ class MainNav extends React.Component {
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
             password: this.state.signUpPassword,
-            locAddress: this.state.signUpLocAddress,
+            // locAddress: this.state.signUpLocAddress,
             image: Config.getValue('basePath') + 'images/default.png'
         };
 
@@ -167,11 +167,6 @@ class MainNav extends React.Component {
                     if (this.state.recoveryToken !== '') {
                         this.props.history.push('/');
                     }
-                    // else {
-                        // this won't reload components in <main>
-                        // this.props.history.push(window.location.pathname + window.location.search); 
-                        // window.location.reload();
-                    // }
 
                     this.closeLogIn();
                 });
@@ -188,6 +183,10 @@ class MainNav extends React.Component {
                 this.captcha.reset();
             }
         });
+    }
+
+    openWalletInfo() {
+        
     }
 
     setUserInfo() {
@@ -314,10 +313,10 @@ class MainNav extends React.Component {
                                     <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
                                     <input type="text" required="required" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
                                 </div>
-                                <div className="form-group">
+                                {/* <div className="form-group">
                                     <img src={Config.getValue('basePath') + 'images/login-wallet.png'} alt="ETH wallet" />
                                     <input type="text" name="signUpLocAddress" value={this.state.signUpLocAddress} onChange={this.onChange} className="form-control" placeholder="Your LOC/ETH Wallet Address" />
-                                </div>
+                                </div> */}
                                 <div className="form-group">
                                     <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
                                     <input type="password" required="required" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />

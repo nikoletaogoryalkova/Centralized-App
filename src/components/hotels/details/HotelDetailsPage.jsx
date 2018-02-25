@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 import HotelReservationPanel from './HotelReservationPanel';
+import RoomInfoModal from '../search/modals/RoomInfoModal';
 
 import { getTestHotelById } from '../../../requester';
 
@@ -44,10 +45,6 @@ class HotelDetailsPage extends React.Component {
             calendarStartDate: startDate,
             calendarEndDate: endDate,
             rooms: [{ adults: 1, children: [] }],
-            country: '',
-            city: '',
-            state: '',
-            countryCode: '',
             nights: nights,
             data: null,
             lightboxIsOpen: false,
@@ -64,10 +61,6 @@ class HotelDetailsPage extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.handleRoomsChange = this.handleRoomsChange.bind(this);
-        this.handleAdultsChange = this.handleAdultsChange.bind(this);
-        this.handleChildrenChange = this.handleChildrenChange.bind(this);
-        this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
         this.closeLightbox = this.closeLightbox.bind(this);
         this.gotoNext = this.gotoNext.bind(this);
         this.gotoPrevious = this.gotoPrevious.bind(this);
@@ -75,13 +68,17 @@ class HotelDetailsPage extends React.Component {
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
         this.getUserInfo = this.getUserInfo.bind(this);
+        this.handleRoomsChange = this.handleRoomsChange.bind(this);
+        this.handleAdultsChange = this.handleAdultsChange.bind(this);
+        this.handleChildrenChange = this.handleChildrenChange.bind(this);
+        this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
+        this.handleSelectRegion = this.handleSelectRegion.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.sendMessageToHost = this.sendMessageToHost.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-        // this.setState({ loading: true });
         this.getUserInfo();
     }
 
@@ -89,10 +86,46 @@ class HotelDetailsPage extends React.Component {
         const id = this.props.match.params.id;
         getTestHotelById(id).then((data) => {
             this.setState({ data: data, loading: false });
-            console.log(data);
         });
 
         this.getUserInfo();
+    }
+
+    componentWillMount() {
+        if (this.props.location.search) {
+            const searchParams = this.getSearchParams(this.props.location.search);
+            this.setState({
+                startDate: moment(searchParams.get('startDate'), 'DD/MM/YYYY'),
+                endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
+            });
+        }
+    }
+
+    getSearchParams() {
+        const map = new Map();
+        const pairs = this.props.location.search.substr(1).split('&');
+        for (let i = 0; i < pairs.length; i++) {
+            let pair = pairs[i].split('=');
+            map.set(pair[0], this.parseParam(pair[1]));
+        }
+
+        return map;
+    }
+
+    updateParamsMap(key, value) {
+        if (!value || value === '') {
+            this.state.searchParams.delete(key);
+        } else {
+            this.state.searchParams.set(key, this.createParam(value));
+        }
+    }
+
+    parseParam(param) {
+        return param.split('%20').join(' ');
+    }
+
+    createParam(param) {
+        return param.split(' ').join('%20');
     }
     
     onChange(e) {
@@ -103,16 +136,19 @@ class HotelDetailsPage extends React.Component {
     }
 
     handleSearch(e) {
-        e.preventDefault();
-        
+        if (e) {
+            e.preventDefault();
+        }
+
         let queryString = '?';
 
-        queryString += 'countryId=' + this.state.countryId;
-        queryString += '&startDate=' + this.state.searchStartDate.format('DD/MM/YYYY');
-        queryString += '&endDate=' + this.state.searchEndDate.format('DD/MM/YYYY');
-        queryString += '&guests=' + this.state.guests;
+        queryString += 'region=' + this.state.region.id;
+        queryString += '&currency=' + this.props.paymentInfo.currency;
+        queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
+        queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
 
-        this.props.history.push('/homes/listings' + queryString);
+        this.props.history.push('/hotels/listings' + queryString);
     }
 
     getUserInfo() {
@@ -154,8 +190,8 @@ class HotelDetailsPage extends React.Component {
 
     handleDatePick(event, picker) {
         this.setState({
-            searchStartDate: picker.startDate,
-            searchEndDate: picker.endDate,
+            startDate: picker.startDate,
+            endDate: picker.endDate,
         });
     }
 
@@ -222,12 +258,8 @@ class HotelDetailsPage extends React.Component {
             });
     }
 
-    openModal() {
-        this.setState({ isShownContactHostModal: true });
-    }
-
-    closeModal() {
-        this.setState({ isShownContactHostModal: false });
+    handleSelectRegion(value) {
+        this.setState({ region: value });
     }
 
     handleRoomsChange(event) {
@@ -282,6 +314,26 @@ class HotelDetailsPage extends React.Component {
         this.setState({ rooms: rooms });
     }
 
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
+    }
+
     render() {
         let loading, allEvents, images;
         if (this.state.data === null ||
@@ -307,17 +359,14 @@ class HotelDetailsPage extends React.Component {
                     <HotelsSearchBar
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
+                        region={this.state.region}
                         rooms={this.state.rooms}
                         guests={this.state.guests}
-                        childrenCount={this.state.childrenCount}
-                        childrenAges={this.state.childrenAges}
                         onChange={this.onChange}
-                        handleAdultsChange={this.handleAdultsChange}
                         handleRoomsChange={this.handleRoomsChange}
-                        handleChildrenChange={this.handleChildrenChange}
-                        handleChildAgeChange={this.handleChildAgeChange}
-                        handleSearch={this.handleSearch}
-                        handleDatePick={this.handleDatePick} 
+                        handleSearch={(e) => this.openModal(`roomInfo${0}`, e)}
+                        handleDatePick={this.handleDatePick}
+                        handleSelectRegion={this.handleSelectRegion}
                     />
                 </div>
                 
@@ -392,6 +441,25 @@ class HotelDetailsPage extends React.Component {
                                 />
                             </div>
                         </section>
+
+                        {this.state.rooms && this.state.rooms.map((room, i) => {
+                            return (
+                                <RoomInfoModal
+                                    key={i}
+                                    roomId={i}
+                                    modalId={`roomInfo${i}`}
+                                    room={room}
+                                    rooms={this.state.rooms}
+                                    handleAdultsChange={this.handleAdultsChange}
+                                    handleChildrenChange={this.handleChildrenChange}
+                                    handleChildAgeChange={this.handleChildAgeChange}
+                                    isActive={this.state[`roomInfo${i}`]}
+                                    openModal={this.openModal}
+                                    closeModal={this.closeModal}
+                                    handleSearch={this.handleSearch}
+                                />
+                            );
+                        })}
                     </div>
                 }
             </div>

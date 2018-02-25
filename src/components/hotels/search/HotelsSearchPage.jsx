@@ -7,8 +7,10 @@ import React from 'react';
 import { getListingsByFilter } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import HotelsSearchBar from './HotelsSearchBar';
+import RoomInfoModal from './modals/RoomInfoModal';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
 import { testSearch, getTestHotels } from '../../../requester';
@@ -44,16 +46,19 @@ class HotelsSearchPage extends React.Component {
         this.toggleFilter = this.toggleFilter.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
         this.clearFilters = this.clearFilters.bind(this);
+
+        this.handleSelectRegion = this.handleSelectRegion.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     componentDidMount() {
-        const query = this.props.location.search;
-        // testSearch(query).then((data) => {
-        //     console.log(data);
-        // });
-
-        getTestHotels().then((json) => {
-            this.setState({ listings: json.content, loading: false });
+        testSearch(this.props.location.search).then((json) => {
+            this.setState({ 
+                listings: json.content, 
+                loading: false 
+            });
+            console.log(json);
         });
     }
 
@@ -89,35 +94,23 @@ class HotelsSearchPage extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({
-            listings: null,
-            loading: true
-        });
-
-        this.clearFilters(e);
-        const searchTerms = this.getSearchTerms(this.state.searchParams);
-        // getHotels(searchTerms).then(data => {
-        //     this.setState({
-        //         listings: data.content,
-        //         loading: false,
-        //         totalElements: data.content.length,
-        //     });
-        // });
-        e.preventDefault();
-        
         let queryString = '?';
 
-        queryString += 'country=' + this.state.country;
-        queryString += '&city=' + this.state.city;
-        queryString += '&state=' + this.state.state;
-        queryString += '&countryCode=' + this.state.countryCode;
+        queryString += 'region=' + this.state.region.id;
+        queryString += '&currency=' + this.props.paymentInfo.currency;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&rooms=' + this.state.rooms.length;
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
 
-        // TODO: concatenate individual rooms' adults and children
-
-        this.props.history.push('hotels/listings' + queryString);
+        this.setState({ loading: true}, () => {
+            testSearch(queryString).then((json) => {
+                this.setState({ 
+                    listings: json.content, 
+                    loading: false 
+                });
+                console.log(json);
+            });
+        });
     }
 
     handleFilter(e) {
@@ -157,6 +150,11 @@ class HotelsSearchPage extends React.Component {
 
         this.setState({ [stateKey]: set });
         this.updateParamsMap(key, Array.from(set).join(','));
+    }
+
+    handleSelectRegion(value) {
+        this.setState({ region: value });
+        this.updateParamsMap('region', value.toString());
     }
 
     handleDatePick(event, picker) {
@@ -274,6 +272,26 @@ class HotelsSearchPage extends React.Component {
         rooms[roomIndex].children[childIndex] = value;
         this.setState({ rooms: rooms });
     }
+    
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
+    }
 
     render() {
         const listings = this.state.listings;
@@ -294,17 +312,14 @@ class HotelsSearchPage extends React.Component {
                 <HotelsSearchBar
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
+                    region={this.state.region}
                     rooms={this.state.rooms}
                     guests={this.state.guests}
-                    childrenCount={this.state.childrenCount}
-                    childrenAges={this.state.childrenAges}
                     onChange={this.onChange}
-                    handleAdultsChange={this.handleAdultsChange}
                     handleRoomsChange={this.handleRoomsChange}
-                    handleChildrenChange={this.handleChildrenChange}
-                    handleChildAgeChange={this.handleChildAgeChange}
-                    handleSearch={this.handleSearch}
-                    handleDatePick={this.handleDatePick} 
+                    handleSearch={(e) => this.openModal(`roomInfo${0}`, e)}
+                    handleDatePick={this.handleDatePick}
+                    handleSelectRegion={this.handleSelectRegion}
                 />
 
                 <Breadcrumb />
@@ -337,6 +352,25 @@ class HotelsSearchPage extends React.Component {
                         </div>
                     </div>
                 </section>
+
+                {this.state.rooms && this.state.rooms.map((room, i) => {
+                    return (
+                        <RoomInfoModal
+                            key={i}
+                            roomId={i}
+                            modalId={`roomInfo${i}`}
+                            room={room}
+                            rooms={this.state.rooms}
+                            handleAdultsChange={this.handleAdultsChange}
+                            handleChildrenChange={this.handleChildrenChange}
+                            handleChildAgeChange={this.handleChildAgeChange}
+                            isActive={this.state[`roomInfo${i}`]}
+                            openModal={this.openModal}
+                            closeModal={this.closeModal}
+                            handleSearch={this.handleSearch}
+                        />
+                    );
+                })}
             </div>
         );
     }
@@ -348,4 +382,11 @@ HotelsSearchPage.propTypes = {
     history: PropTypes.object
 };
 
-export default withRouter(HotelsSearchPage);
+export default withRouter(connect(mapStateToProps)(HotelsSearchPage));
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
+    };
+}
