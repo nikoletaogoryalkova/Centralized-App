@@ -84,8 +84,10 @@ class HotelDetailsPage extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        getTestHotelById(id).then((data) => {
+        const search = this.props.location.search;
+        getTestHotelById(id, search).then((data) => {
             this.setState({ data: data, loading: false });
+            console.log(data)
         });
 
         this.getUserInfo();
@@ -146,9 +148,18 @@ class HotelDetailsPage extends React.Component {
         queryString += '&currency=' + this.props.paymentInfo.currency;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.getRooms()));
 
         this.props.history.push('/hotels/listings' + queryString);
+    }
+
+    getRooms() {
+        return this.state.rooms.map((room) => {
+            return {
+                adults: room.adults,
+                children: room.children.map((age) => { return { age: age}; })
+            };
+        });
     }
 
     getUserInfo() {
@@ -392,7 +403,7 @@ class HotelDetailsPage extends React.Component {
                         </section>
                         <nav id="hotel-nav">
                             <div className="container">
-                                <ul className="nav navbar-nav">
+                                <ul className="nav navbar-nav" style={{ float: 'none', width: '50%', margin: '0 auto' }}>
                                     <li>
                                         <a href="#overview">Overview</a>
                                     </li>
@@ -412,12 +423,17 @@ class HotelDetailsPage extends React.Component {
                                     <li>
                                         <a href="#map">Location</a>
                                     </li>
+                                    <li>                                
+                                        <button className="btn btn-primary" style={{ marginTop: '2px', marginLeft: '10%' }}>Book Now</button>
+                                    </li>
                                 </ul>
+                                
                             </div>
                         </nav>
 
                         <section id="hotel-info">
                             <div className="container">
+
                                 <HotelDetailsInfoSection
                                     allEvents={allEvents}
                                     nights={this.state.nights}
@@ -429,7 +445,7 @@ class HotelDetailsPage extends React.Component {
                                     loading={this.state.loading}
                                 />
                                 
-                                <HotelReservationPanel
+                                {/* <HotelReservationPanel
                                     isLogged={this.props.userInfo.isLogged}
                                     calendar={this.state.calendar}
                                     nights={this.state.nights}
@@ -438,7 +454,7 @@ class HotelDetailsPage extends React.Component {
                                     endDate={this.state.calendarEndDate}
                                     listing={this.state.data}
                                     loading={loading} 
-                                />
+                                /> */}
                             </div>
                         </section>
 

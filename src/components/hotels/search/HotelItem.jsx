@@ -8,15 +8,15 @@ import { connect } from 'react-redux';
 
 function HotelItem(props) {
     const { currency, currencySign, locRate } = props.paymentInfo;
-    const { currency_code, userCurrencyPrice, locCurrencyPrice, externalId, name, description, photos, price} = props.listing;
+    const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
     const pictures = photos.map(x => { return {thumbnail: 'http://roomsxml.com' + x}; });
     return (
         <div className="list-hotel">
             <div className="list-image">
-                <ListingItemPictureCarousel listingsType={'hotels'} pictures={pictures} id={externalId} />
+                <ListingItemPictureCarousel listingsType={'hotels'} pictures={pictures} id={id} />
             </div>
             <div className="list-content">
-                <h2><Link to={`/hotels/listings/${externalId}${props.location.search}`}>{name}</Link></h2>
+                <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>
                 {/* <ListingItemRatingBox rating={averageRating} reviewsCount={reviewsCount} /> */}
                 <div className="clearfix"></div>
                 {/* <p>{cityName}, {countryName}</p> */}
@@ -34,7 +34,7 @@ function HotelItem(props) {
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
                 {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {price}</div>}
                 <div className="list-hotel-price-loc">(LOC Price)</div>
-                <Link to={`/hotels/listings/${externalId}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
+                <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
             <div className="clearfix"></div>
         </div>

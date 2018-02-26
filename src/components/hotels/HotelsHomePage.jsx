@@ -66,9 +66,18 @@ class HomePage extends React.Component {
         queryString += '&currency=' + this.props.paymentInfo.currency;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.getRooms()));
 
         this.props.history.push('hotels/listings' + queryString);
+    }
+
+    getRooms() {
+        return this.state.rooms.map((room) => {
+            return {
+                adults: room.adults,
+                children: room.children.map((age) => { return { age: age}; })
+            };
+        });
     }
     
     handleDatePick(event, picker) {

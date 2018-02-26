@@ -136,7 +136,7 @@ class MainNav extends React.Component {
         register(user, captchaToken).then((res) => {
             if (res.success) {
                 this.openLogIn();
-                NotificationManager.success("Succesfully created your account.");
+                NotificationManager.success('Succesfully created your account.');
             }
             else {
                 res.response.then(res => {

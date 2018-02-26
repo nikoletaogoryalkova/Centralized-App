@@ -24,13 +24,34 @@ export default class RoomInfoModal extends React.Component {
     }
 
     next() {
-        this.props.closeModal(`roomInfo${this.props.roomId}`);
-        this.props.openModal(`roomInfo${this.props.roomId + 1}`);
+        if (this.isChildrenAgeValid()) {
+            this.props.closeModal(`roomInfo${this.props.roomId}`);
+            this.props.openModal(`roomInfo${this.props.roomId + 1}`);
+        } else {
+            NotificationManager.warning('Invalid child age');
+        }
+    }
+    
+    handleSubmit() {
+        if (this.isChildrenAgeValid()) {
+            this.props.closeModal(`roomInfo${this.props.roomId}`);
+            this.props.handleSearch();
+        } else {
+            NotificationManager.warning('Invalid child age');
+        }
     }
 
-    handleSubmit() {
-        this.props.closeModal(`roomInfo${this.props.roomId}`);
-        this.props.handleSearch();
+    isChildrenAgeValid() {
+        const rooms = this.props.rooms;
+        let isValid = true;
+        for (let i = 0; i < rooms.length; i++) {
+            if (rooms[i].children.includes('')) {
+                isValid = false;
+                break;
+            }
+        }
+
+        return isValid;
     }
 
     render() {
@@ -47,7 +68,6 @@ export default class RoomInfoModal extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <select name={`adults${this.props.roomId}`} className="form-control"  value={this.props.room.adults} onChange={(e) => this.props.handleAdultsChange(e, this.props.roomId)}>
-                            <option value="1" disabled selected>Adults</option>
                             <option value="1">Adults: 1</option>
                             <option value="2">Adults: 2</option>
                             <option value="3">Adults: 3</option>
@@ -71,7 +91,7 @@ export default class RoomInfoModal extends React.Component {
                             this.props.room.children.map((age, childIndex) => {
                                 return (
                                     <div key={childIndex} >
-                                        <select name={`child${childIndex}`} className="form-control"  value={this.props.room.children[childIndex]} onChange={(e) => this.props.handleChildAgeChange(e, this.props.roomId, childIndex)}>
+                                        <select required name={`child${childIndex}`} className="form-control"  value={this.props.room.children[childIndex]} onChange={(e) => this.props.handleChildAgeChange(e, this.props.roomId, childIndex)}>
                                             <option value="" disabled selected>Child {childIndex + 1} Age</option>
                                             <option value="1">Child {childIndex + 1} age: 1</option>
                                             <option value="2">Child {childIndex + 1} age: 2</option>

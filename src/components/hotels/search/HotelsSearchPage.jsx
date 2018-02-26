@@ -100,16 +100,27 @@ class HotelsSearchPage extends React.Component {
         queryString += '&currency=' + this.props.paymentInfo.currency;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.getRooms()));
 
-        this.setState({ loading: true}, () => {
-            testSearch(queryString).then((json) => {
-                console.log(json);
-                this.setState({ 
-                    listings: json, 
-                    loading: false 
-                });
-            });
+        window.location.href = '/hotels/listings' + queryString;
+
+        // this.setState({ loading: true}, () => {
+        //     testSearch(queryString).then((json) => {
+        //         console.log(json);
+        //         this.setState({ 
+        //             listings: json, 
+        //             loading: false 
+        //         });
+        //     });
+        // });
+    }
+
+    getRooms() {
+        return this.state.rooms.map((room) => {
+            return {
+                adults: room.adults,
+                children: room.children.map((age) => { return { age: age}; })
+            };
         });
     }
 
