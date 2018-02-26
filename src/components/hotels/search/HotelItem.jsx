@@ -17,7 +17,7 @@ function HotelItem(props) {
               { pictures.length > 0 ? <ListingItemPictureCarousel pictures={JSON.stringify(pictures)} id={id} /> : <div className='loader'></div>}
             </div>
             <div className="list-content">
-                <h2><Link to={`/homes/listings/${id}${props.location.search}`}>{name}</Link></h2>
+                <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>
                 <ListingItemRatingBox rating={averageRating} reviewsCount={reviewsCount} />
                 <div className="clearfix"></div>
                 {/*<p>{cityName}, {countryName}</p>*/}
@@ -35,7 +35,7 @@ function HotelItem(props) {
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
                 <div className="list-hotel-price-curency">{currencySign}{listingPrice}</div>
                 <div className="list-hotel-price-loc">(LOC {(listingPrice / locRate).toFixed(2)})</div>
-                <Link to={`/homes/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
+                <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
             <div className="clearfix"></div>
         </div>

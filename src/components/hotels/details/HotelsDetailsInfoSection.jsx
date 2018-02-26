@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-function HomeDetailsInfoSection(props) {
+function HotelsDetailsInfoSection(props) {
     const getAmenities = (amenities) => {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
@@ -43,8 +43,8 @@ function HomeDetailsInfoSection(props) {
 
                     <h1> {props.data.name} </h1>
                     <div className="clearfix" />
-                    <p>{street}, {city.name}, {country.name}</p>
-                    <button className="btn btn-primary" onClick={props.openModal}>Contact Host</button>
+                    {/*<p>{street}, {city.name}, {country.name}</p>*/}
+                    {/*<button className="btn btn-primary" onClick={props.openModal}>Contact Host</button>*/}
 
                     {/*<HomeDetailsCalendar*/}
                         {/*onApply={props.onApply}*/}
@@ -135,7 +135,7 @@ function HomeDetailsInfoSection(props) {
     );
 }
 
-HomeDetailsInfoSection.propTypes = {
+HotelsDetailsInfoSection.propTypes = {
     data: PropTypes.object,
     locRate: PropTypes.string,
     showLoginModal: PropTypes.bool,
@@ -158,4 +158,4 @@ HomeDetailsInfoSection.propTypes = {
     descriptionText: PropTypes.string
 };
 
-export default withRouter(HomeDetailsInfoSection);
+export default withRouter(HotelsDetailsInfoSection);

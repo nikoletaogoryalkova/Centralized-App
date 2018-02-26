@@ -1,7 +1,7 @@
 import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
-    contactHost,
+    // contactHost,
     getCalendarByListingIdAndDateRange,
     getCurrentLoggedInUserInfo,
     // getPropertyById
@@ -20,7 +20,7 @@ import { parse } from 'query-string';
 
 import { getHotels } from '../HotelsApiMock';
 
-class HomeDetailsPage extends React.Component {
+class HotelsDetailsPage extends React.Component {
     constructor(props) {
         super(props);
         
@@ -79,7 +79,7 @@ class HomeDetailsPage extends React.Component {
         this.getUserInfo = this.getUserInfo.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.sendMessageToHost = this.sendMessageToHost.bind(this);
+        // this.sendMessageToHost = this.sendMessageToHost.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -115,7 +115,7 @@ class HomeDetailsPage extends React.Component {
         queryString += '&endDate=' + this.state.searchEndDate.format('DD/MM/YYYY');
         queryString += '&guests=' + this.state.guests;
 
-        this.props.history.push('/homes/listings' + queryString);
+        this.props.history.push('/hotels/listings' + queryString);
     }
 
     getUserInfo() {
@@ -213,17 +213,17 @@ class HomeDetailsPage extends React.Component {
         }
     }
 
-    sendMessageToHost(id, message, captchaToken) {
-        this.setState({ loading: true });
-        let contactHostObj = {
-            message: message
-        };
-
-        contactHost(id, contactHostObj, captchaToken)
-            .then(res => {
-                this.props.history.push(`/profile/messages/chat/${res.conversation}`);
-            });
-    }
+    // sendMessageToHost(id, message, captchaToken) {
+    //     this.setState({ loading: true });
+    //     let contactHostObj = {
+    //         message: message
+    //     };
+    //
+    //     contactHost(id, contactHostObj, captchaToken)
+    //         .then(res => {
+    //             this.props.history.push(`/profile/messages/chat/${res.conversation}`);
+    //         });
+    // }
 
     initializeHotel() {
         let now = new Date();
@@ -233,7 +233,7 @@ class HomeDetailsPage extends React.Component {
 
         getHotels().then((data) => {
 
-            this.setState({ data: data[0] });
+            this.setState({ data: data.content.filter(hotel => hotel.id.toString() === this.props.match.params.id)[0] });
 
             getCalendarByListingIdAndDateRange(this.props.match.params.id, now, end, this.props.paymentInfo.currency, 0, DAY_INTERVAL).then(res => {
                 let prices = [];
@@ -370,7 +370,7 @@ class HomeDetailsPage extends React.Component {
     }
 }
 
-HomeDetailsPage.propTypes = {
+HotelsDetailsPage.propTypes = {
     countries: PropTypes.array,
     match: PropTypes.object,
 
@@ -384,7 +384,7 @@ HomeDetailsPage.propTypes = {
     paymentInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(HomeDetailsPage));
+export default withRouter(connect(mapStateToProps)(HotelsDetailsPage));
 
 function mapStateToProps(state) {
     const { userInfo, paymentInfo } = state;

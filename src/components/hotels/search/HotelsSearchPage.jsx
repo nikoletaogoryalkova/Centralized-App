@@ -118,7 +118,7 @@ class HotelsSearchPage extends React.Component {
                 propertyTypes: data.types
             });
         });
-        const url = `/homes/listings/?${searchTerms}`;
+        const url = `/hotels/listings/?${searchTerms}`;
         this.props.history.push(url);
     }
 
