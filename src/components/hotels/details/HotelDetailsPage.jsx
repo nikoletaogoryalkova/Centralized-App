@@ -51,7 +51,7 @@ class HotelDetailsPage extends React.Component {
             currentImage: 0,
             prices: null,
             oldCurrency: this.props.paymentInfo.currency,
-            loaded: false,
+            // loaded: false,
             userInfo: null,
             loading: true,
             isShownContactHostModal: false
@@ -67,7 +67,7 @@ class HotelDetailsPage extends React.Component {
         this.gotoImage = this.gotoImage.bind(this);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
-        this.getUserInfo = this.getUserInfo.bind(this);
+        // this.getUserInfo = this.getUserInfo.bind(this);
         this.handleRoomsChange = this.handleRoomsChange.bind(this);
         this.handleAdultsChange = this.handleAdultsChange.bind(this);
         this.handleChildrenChange = this.handleChildrenChange.bind(this);
@@ -79,7 +79,7 @@ class HotelDetailsPage extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getUserInfo();
+        // this.getUserInfo();
     }
 
     componentDidMount() {
@@ -90,7 +90,7 @@ class HotelDetailsPage extends React.Component {
             console.log(data)
         });
 
-        this.getUserInfo();
+        // this.getUserInfo();
     }
 
     componentWillMount() {
@@ -162,21 +162,21 @@ class HotelDetailsPage extends React.Component {
         });
     }
 
-    getUserInfo() {
-        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-            getCurrentLoggedInUserInfo()
-                .then(res => {
-                    this.setState({
-                        loaded: true,
-                        userInfo: res,
-                        loading: false
-                    });
-                });
-        }
-        else {
-            this.setState({ loaded: true, loading: false });
-        }
-    }
+    // getUserInfo() {
+    //     if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+    //         getCurrentLoggedInUserInfo()
+    //             .then(res => {
+    //                 this.setState({
+    //                     loaded: true,
+    //                     userInfo: res,
+    //                     loading: false
+    //                 });
+    //             });
+    //     }
+    //     else {
+    //         this.setState({ loaded: true, loading: false });
+    //     }
+    // }
 
     handleApply(event, picker) {
         const { startDate, endDate } = picker;
@@ -347,13 +347,14 @@ class HotelDetailsPage extends React.Component {
 
     render() {
         let loading, allEvents, images;
-        if (this.state.data === null ||
+        if (!this.state.data
             // this.state.prices === null ||
             // this.state.reservations === null ||
-            this.state.loaded === false) {
+            // this.state.loaded === false
+        ) {
             loading = true;
         } else {
-            allEvents = this.state.prices;
+            // allEvents = this.state.prices;
             images = null;
             if (this.state.data.hotelPhotos !== undefined) {
                 images = this.state.data.hotelPhotos.map(x => {
@@ -403,7 +404,7 @@ class HotelDetailsPage extends React.Component {
                         </section>
                         <nav id="hotel-nav">
                             <div className="container">
-                                <ul className="nav navbar-nav" style={{ float: 'none', width: '50%', margin: '0 auto' }}>
+                                <ul className="nav navbar-nav">
                                     <li>
                                         <a href="#overview">Overview</a>
                                     </li>
@@ -423,9 +424,6 @@ class HotelDetailsPage extends React.Component {
                                     <li>
                                         <a href="#map">Location</a>
                                     </li>
-                                    <li>                                
-                                        <button className="btn btn-primary" style={{ marginTop: '2px', marginLeft: '10%' }}>Book Now</button>
-                                    </li>
                                 </ul>
                                 
                             </div>
@@ -435,7 +433,7 @@ class HotelDetailsPage extends React.Component {
                             <div className="container">
 
                                 <HotelDetailsInfoSection
-                                    allEvents={allEvents}
+                                    // allEvents={allEvents}
                                     nights={this.state.nights}
                                     onApply={this.handleApply}
                                     startDate={this.state.calendarStartDate}

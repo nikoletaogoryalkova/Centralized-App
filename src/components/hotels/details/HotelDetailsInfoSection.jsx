@@ -24,6 +24,13 @@ function HomeDetailsInfoSection(props) {
         return result;
     };
 
+    const bookRoom = (quoteId) => {
+        localStorage.setItem("quoteId", quoteId);
+        const id = props.match.params.id;
+        const search = props.location.search;
+        window.location.href = `/hotels/listings/book/${id}${search}`;
+    };
+
     const allAmenities = props.data.amenities;
     const mostPopularFacilities = allAmenities.slice(0, 5);
     const amenities = getAmenities(allAmenities.slice(5));
@@ -89,6 +96,26 @@ function HomeDetailsInfoSection(props) {
                         <hr />
                     </div>
                 }
+                <div className="clearfix" />
+
+                <div id="rooms">
+                    <h2>Rooms</h2>
+                    {props.data.rooms && props.data.rooms.map((results, resultIndex) => {
+                        return (
+                            <div key={resultIndex}>
+                                {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
+                                    return (
+                                        <div key={roomIndex}>
+                                            {room.name} - Price: {room.price}
+                                        </div>
+                                    );
+                                })}
+                               
+                                <button className="btn btn-primary" onClick={() => bookRoom(results.quoteId)}>Book</button>
+                            </div>
+                        );
+                    })}
+                </div>
                 <div className="clearfix" />
 
                 <div id="map">

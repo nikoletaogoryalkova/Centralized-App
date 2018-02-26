@@ -13,7 +13,7 @@ import HotelsSearchBar from './HotelsSearchBar';
 import RoomInfoModal from './modals/RoomInfoModal';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
-import { testSearch, getTestHotels } from '../../../requester';
+import { testSearch, getTestHotels, getLocRateFromCoinMarketCap } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
     constructor(props) {
@@ -71,6 +71,8 @@ class HotelsSearchPage extends React.Component {
                 endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
             });
         }
+
+        this.getLocRate();
     }
 
     componentWillUnmount() {
@@ -79,6 +81,13 @@ class HotelsSearchPage extends React.Component {
             loading: true,
             currentPage: 1,
             totalElements: 0
+        });
+    }
+
+    getLocRate() {
+        const currency = this.props.paymentInfo.currency;
+        getLocRateFromCoinMarketCap(currency).then((json) => {
+            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
         });
     }
 
@@ -312,7 +321,7 @@ class HotelsSearchPage extends React.Component {
             renderListings = <div className="loader"></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <HotelItem key={i} listing={item} />;
+                return <HotelItem key={i} listing={item} locRate={this.state.locRate} />;
             });
         }
 

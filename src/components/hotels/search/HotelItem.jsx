@@ -6,9 +6,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { getLocRateFromCoinMarketCap } from '../../../requester.js';
+
 function HotelItem(props) {
-    const { currency, currencySign, locRate } = props.paymentInfo;
+
+    const locRate = props.locRate;
+    const { currency, currencySign } = props.paymentInfo;
     const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
+    const locPrice = price * locRate;
     const pictures = photos.map(x => { return {thumbnail: 'http://roomsxml.com' + x}; });
     return (
         <div className="list-hotel">
@@ -33,7 +38,7 @@ function HotelItem(props) {
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
                 {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {price}</div>}
-                <div className="list-hotel-price-loc">(LOC Price)</div>
+                <div className="list-hotel-price-loc">(LOC {locPrice})</div>
                 <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
             <div className="clearfix"></div>

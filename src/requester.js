@@ -439,3 +439,9 @@ export async function testSearch(query) {
         return res.response.json();
     });
 }
+
+export async function getLocRateFromCoinMarketCap(currency) {
+    return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
