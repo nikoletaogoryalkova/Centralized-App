@@ -10,7 +10,7 @@ import {
 import { Config } from '../../../config';
 import Lightbox from 'react-images';
 import PropTypes from 'prop-types';
-import HotelsDetailsInfoSection from './HotelsDetailsInfoSection';
+import HotelDetailsInfoSection from './HotelDetailsInfoSection';
 import React from 'react';
 import SearchBar from '../../common/searchbar/SearchBar';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
@@ -346,7 +346,7 @@ class HotelDetailsPage extends React.Component {
                             </div>
                         </nav>
 
-                        <HotelsDetailsInfoSection
+                        <HotelDetailsInfoSection
                             allEvents={allEvents}
                             calendar={this.state.calendar}
                             nights={this.state.nights}
