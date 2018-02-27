@@ -6,20 +6,25 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-function HomeItem(props) {
-    const { currency, currencySign, locRate } = props.paymentInfo;
-    const { cityName, countryName, prices, currency_code, defaultDailyPrice, pictures, id, name, reviewsCount, averageRating, description } = props.listing;
-    const listingPrice = (prices) && currency === currency_code ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[currency], 10).toFixed(2);
+import { getLocRateFromCoinMarketCap } from '../../../requester.js';
+
+function HotelItem(props) {
+
+    const locRate = props.locRate;
+    const { currency, currencySign } = props.paymentInfo;
+    const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
+    const locPrice = (price / locRate).toFixed(2);
+    const pictures = photos.map(x => { return {thumbnail: 'http://roomsxml.com' + x}; });
     return (
         <div className="list-hotel">
             <div className="list-image">
-                <ListingItemPictureCarousel listingsType={'homes'} pictures={pictures} id={id} />
+                <ListingItemPictureCarousel listingsType={'hotels'} pictures={pictures} id={id} />
             </div>
             <div className="list-content">
-                <h2><Link to={`/homes/listings/${id}${props.location.search}`}>{name}</Link></h2>
-                <ListingItemRatingBox rating={averageRating} reviewsCount={reviewsCount} />
+                <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>
+                {/* <ListingItemRatingBox rating={averageRating} reviewsCount={reviewsCount} /> */}
                 <div className="clearfix"></div>
-                <p>{cityName}, {countryName}</p>
+                {/* <p>{cityName}, {countryName}</p> */}
                 <div className="list-hotel-text">
                     {description.substr(0, 190)}...
                 </div>
@@ -32,16 +37,16 @@ function HomeItem(props) {
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
-                <div className="list-hotel-price-curency">{currencySign}{listingPrice}</div>
-                <div className="list-hotel-price-loc">(LOC {(listingPrice / locRate).toFixed(2)})</div>
-                <Link to={`/homes/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
+                {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {price}</div>}
+                <div className="list-hotel-price-loc">(LOC {locPrice})</div>
+                <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
             <div className="clearfix"></div>
         </div>
     );
 }
 
-HomeItem.propTypes = {
+HotelItem.propTypes = {
     listing: PropTypes.object,
     location: PropTypes.object,
 
@@ -50,11 +55,12 @@ HomeItem.propTypes = {
     paymentInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(HomeItem));
+export default withRouter(connect(mapStateToProps)(HotelItem));
 
 function mapStateToProps(state) {
-    const { paymentInfo } = state;
+    const { paymentInfo, userInfo } = state;
     return {
-        paymentInfo
+        paymentInfo,
+        userInfo
     };
 }

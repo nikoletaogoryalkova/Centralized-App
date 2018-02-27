@@ -1,5 +1,6 @@
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import validator from 'validator';
 import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo } from '../../requester';
@@ -12,6 +13,10 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
+
+import CreateWalletModal from './modals/CreateWalletModal';
+import SaveWalletModal from './modals/SaveWalletModal';
+import ConfirmWalletModal from './modals/ConfirmWalletModal';
 
 class MainNav extends React.Component {
     constructor(props) {
@@ -48,6 +53,7 @@ class MainNav extends React.Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.openWalletInfo = this.openWalletInfo.bind(this);
 
         this.messageListener = this.messageListener.bind(this);
         this.getCountOfMessages = this.getCountOfMessages.bind(this);
@@ -118,14 +124,19 @@ class MainNav extends React.Component {
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
             password: this.state.signUpPassword,
-            locAddress: this.state.signUpLocAddress,
+            locAddress: localStorage.walletAddress,
+            jsonFile: localStorage.walletJson,
             image: Config.getValue('basePath') + 'images/default.png'
         };
 
+        localStorage.walletAddress = '';
+        localStorage.walletMnemonic = '';
+        localStorage.walletJson = '';
+
         register(user, captchaToken).then((res) => {
             if (res.success) {
-                this.closeSignUp();
                 this.openLogIn();
+                NotificationManager.success('Succesfully created your account.');
             }
             else {
                 res.response.then(res => {
@@ -136,8 +147,6 @@ class MainNav extends React.Component {
                         }
                     }
                 });
-
-                this.captcha.reset();
             }
         });
     }
@@ -163,11 +172,6 @@ class MainNav extends React.Component {
                     if (this.state.recoveryToken !== '') {
                         this.props.history.push('/');
                     }
-                    // else {
-                        // this won't reload components in <main>
-                        // this.props.history.push(window.location.pathname + window.location.search); 
-                        // window.location.reload();
-                    // }
 
                     this.closeLogIn();
                 });
@@ -184,6 +188,21 @@ class MainNav extends React.Component {
                 this.captcha.reset();
             }
         });
+    }
+
+    openWalletInfo() {
+        if (!validator.isEmail(this.state.signUpEmail)) {
+            NotificationManager.warning('Invalid email address');
+        } else if (validator.isEmpty(this.state.signUpFirstName)) {
+            NotificationManager.warning('Invalid first name');
+        } else if (validator.isEmpty(this.state.signUpLastName)) {
+            NotificationManager.warning('Invalid last name');
+        } else if (validator.isEmpty(this.state.signUpPassword)) {
+            NotificationManager.warning('Invalid password');
+        } else {
+            this.closeModal('showSignUpModal'); 
+            this.openModal('createWallet');
+        }
     }
 
     setUserInfo() {
@@ -310,10 +329,10 @@ class MainNav extends React.Component {
                                     <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
                                     <input type="text" required="required" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
                                 </div>
-                                <div className="form-group">
+                                {/* <div className="form-group">
                                     <img src={Config.getValue('basePath') + 'images/login-wallet.png'} alt="ETH wallet" />
                                     <input type="text" name="signUpLocAddress" value={this.state.signUpLocAddress} onChange={this.onChange} className="form-control" placeholder="Your LOC/ETH Wallet Address" />
-                                </div>
+                                </div> */}
                                 <div className="form-group">
                                     <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
                                     <input type="password" required="required" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
@@ -329,6 +348,7 @@ class MainNav extends React.Component {
                                 <button type="submit" className="btn btn-primary">Sign up</button>
                                 <div className="clearfix"></div>
                             </form>
+                            <button className="btn btn-primary" onClick={this.openWalletInfo}>Create LOC/ETH Wallet</button>
 
                             <div className="signup-rights">
                                 <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>
@@ -336,6 +356,9 @@ class MainNav extends React.Component {
                         </Modal.Body>
                     </Modal>
 
+                    <CreateWalletModal isActive={this.state.createWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <SaveWalletModal isActive={this.state.saveWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <ConfirmWalletModal isActive={this.state.confirmWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} register={this.register} />
                     <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
                     <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
                     <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />

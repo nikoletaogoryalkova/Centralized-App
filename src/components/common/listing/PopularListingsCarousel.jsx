@@ -41,7 +41,7 @@ export default class PopularListingsCarousel extends React.Component {
                             <PopularListingItem 
                                 key={i} 
                                 listing={item} 
-                                listingType={this.props.listingType} 
+                                listingsType={this.props.listingsType} 
                             />
                         );
                     })}
