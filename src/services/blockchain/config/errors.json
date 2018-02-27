@@ -2,6 +2,7 @@
     "ONLY_OWNER": "Only owner of the contract is allowed to this function",
     "INVALID_PASSWORD": "Provided password is not valid",
     "INVALID_MNEMONIC": "Provided mnemonic could not be validated",
+    "INVALID_ADDRESS": "The provided address is not valid",
     "INVALID_RECOVERED_ADDRESS": "Recovered address is different from provided",
     "ONLY_RESERVER": "Only reserver of this bookingId is allowed to this function",
     "EXISTING_MARKETPLACE": "This marketplaceId already exists in the contract",
@@ -39,5 +40,6 @@
     "ONLY_HOST": "Only host of the rental is allowed to this function",
     "INVALID_PERIOD": "Selected period is not correct - start date should be before end date",
     "INVALID_PERIOD_LENGTH": "Selected period is too long, max allowed days of booking are: ",
-    "INVALID_PRICE": "Price should be more than 0"
+    "INVALID_PRICE": "Price should be more than 0",
+    "INVALID_JSON": "The provided JSON file is not valid or empty"
 }
