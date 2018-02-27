@@ -13,7 +13,7 @@ import HotelsSearchBar from './HotelsSearchBar';
 import RoomInfoModal from './modals/RoomInfoModal';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
-import { testSearch, getTestHotels, getLocRateFromCoinMarketCap } from '../../../requester';
+import { testSearch, getTestHotels, getLocRateInUserSelectedCurrency } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
     constructor(props) {
@@ -88,9 +88,9 @@ class HotelsSearchPage extends React.Component {
     getLocRate() {
         const currency = this.props.paymentInfo.currency;
         console.log(currency);
-        getLocRateFromCoinMarketCap(currency).then((json) => {
-            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
+        getLocRateInUserSelectedCurrency(currency).then((json) => {
             console.log(json);
+            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
         });
     }
 
