@@ -448,7 +448,9 @@ export async function testBook(bookingObj) {
 }
 
 export async function getLocRateFromCoinMarketCap(currency) {
+    console.log(currency);
     return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {
+        console.log(res);
         return res.response.json();
     });
 }

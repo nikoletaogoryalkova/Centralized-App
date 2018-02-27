@@ -50,6 +50,7 @@ class HotelsSearchPage extends React.Component {
         this.handleSelectRegion = this.handleSelectRegion.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.getLocRate = this.getLocRate.bind(this);
     }
 
     componentDidMount() {
@@ -60,6 +61,8 @@ class HotelsSearchPage extends React.Component {
                 loading: false 
             });
         });
+
+        this.getLocRate();
     }
 
     componentWillMount() {
@@ -71,8 +74,6 @@ class HotelsSearchPage extends React.Component {
                 endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
             });
         }
-
-        this.getLocRate();
     }
 
     componentWillUnmount() {
@@ -86,8 +87,10 @@ class HotelsSearchPage extends React.Component {
 
     getLocRate() {
         const currency = this.props.paymentInfo.currency;
+        console.log(currency);
         getLocRateFromCoinMarketCap(currency).then((json) => {
             this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
+            console.log(json);
         });
     }
 

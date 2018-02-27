@@ -125,7 +125,7 @@ class MainNav extends React.Component {
             lastName: this.state.signUpLastName,
             password: this.state.signUpPassword,
             locAddress: localStorage.walletAddress,
-            json: localStorage.walletJson,
+            jsonFile: localStorage.walletJson,
             image: Config.getValue('basePath') + 'images/default.png'
         };
 
