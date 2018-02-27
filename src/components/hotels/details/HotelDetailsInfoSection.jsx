@@ -121,7 +121,7 @@ function HomeDetailsInfoSection(props) {
                                         {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
                                             return (
                                                 <div key={roomIndex} className="room">
-                                                    {room.name} - Price: {room.price}
+                                                    {room.name} - Price per night: {props.currencySign}{Number(room.price / props.nights).toFixed(2)}
                                                 </div>
                                             );
                                         })}
@@ -129,7 +129,8 @@ function HomeDetailsInfoSection(props) {
                                 </div>
                                 <div className="col col-md-4">
                                     <div className="price-details">
-                                        Total Price: {getTotalPrice(results.roomsResults)}
+                                        <p>Price for {props.nights} nights</p>
+                                        <p>{props.currencySign}{getTotalPrice(results.roomsResults)}</p>
                                         <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
                                     </div>
                                 </div>

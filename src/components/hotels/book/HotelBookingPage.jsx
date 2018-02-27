@@ -29,13 +29,13 @@ class HotelBookingPage extends React.Component {
         const quoteId = localStorage.getItem('quoteId');
         const searchParams = this.getSearchParams(this.props.location.search);
         const rooms = this.getRooms(searchParams);
-        console.log(rooms);
+        const nights = this.getNights(searchParams);
         getTestHotelById(id, search).then((data) => {
-            console.log(data);
             const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
             const totalPrice = this.getTotalPrice(roomResults);
             this.setState({
                 hotel: data,
+                nights: nights,
                 roomResults: roomResults,
                 totalPrice: totalPrice,
                 rooms: rooms, 
@@ -53,7 +53,7 @@ class HotelBookingPage extends React.Component {
             const adults = [];
             for (let j = 0; j < searchRoom.adults; j++) {
                 const adult = {
-                    title: '',
+                    title: 'Mr',
                     firstName: '',
                     lastName: '',
                 };
@@ -80,6 +80,12 @@ class HotelBookingPage extends React.Component {
         }
 
         return total;
+    }
+
+    getNights(searchParams) {
+        const start = moment(searchParams.get('startDate'), 'DD/MM/YYYY');
+        const end = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
+        return end.diff(start, 'days');
     }
     
     onChange(e) {
@@ -124,13 +130,16 @@ class HotelBookingPage extends React.Component {
         const quoteId = this.state.quoteId;
         const rooms = this.state.rooms;
         const currency = this.props.paymentInfo.currency;
-        const submitObj = {
+        const booking = {
             quoteId: quoteId,
             rooms: rooms,
             currency: currency
         };
-        console.log(submitObj);
-        testBook(submitObj);
+
+        const encodedBooking = encodeURI(JSON.stringify(booking));
+        const id = this.props.match.params.id;
+        const query = `?booking=${encodedBooking}`;
+        window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
     }
 
     render() {
@@ -168,10 +177,11 @@ class HotelBookingPage extends React.Component {
                                         <h3>{hotelMainAddress}, {hotelCityName}</h3>
                                         <hr/>
                                         {this.state.roomResults && this.state.roomResults.map((room, index) => {
-                                            return (<h3 key={index}>{room.name} for x nights - {room.price}</h3>)
+                                            return (<h3 key={index}>{room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{room.price}</h3>)
                                         })}
                                         <hr/>
-                                        <h2>Total: {this.state.totalPrice}</h2>
+                                        <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{this.state.totalPrice}</h2>
+                                        <div className="clearfix"></div>
                                     </div>
                                 </div>
                                 <div className="col-md-7">

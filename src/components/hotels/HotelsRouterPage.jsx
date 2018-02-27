@@ -6,6 +6,7 @@ import HotelsHomePage from './HotelsHomePage';
 import HotelsSearchPage from './search/HotelsSearchPage';
 import HotelDetailsPage from './details/HotelDetailsPage';
 import HotelBookingPage from './book/HotelBookingPage';
+import HotelBookingConfirmPage from './book/HotelBookingConfirmPage';
 
 class HotelsRouterPage extends React.Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class HotelsRouterPage extends React.Component {
                     <Route exact path="/hotels/listings" render={() => <HotelsSearchPage />} />
                     <Route exact path="/hotels/listings/:id" render={() => <HotelDetailsPage />} />
                     <Route exact path="/hotels/listings/book/:id" render={() => <HotelBookingPage />} />
+                    <Route exact path="/hotels/listings/book/confirm/:id" render={() => <HotelBookingConfirmPage />} />
                 </Switch>
             </div>
         );

@@ -96,9 +96,12 @@ class HotelDetailsPage extends React.Component {
     componentWillMount() {
         if (this.props.location.search) {
             const searchParams = this.getSearchParams(this.props.location.search);
+            const startDate = moment(searchParams.get('startDate'), 'DD/MM/YYYY');
+            const endDate = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
             this.setState({
-                startDate: moment(searchParams.get('startDate'), 'DD/MM/YYYY'),
-                endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
+                startDate: startDate,
+                endDate: endDate,
+                nights: this.calculateNights(startDate, endDate)
             });
         }
     }
@@ -250,10 +253,10 @@ class HotelDetailsPage extends React.Component {
         let diffDays = checkOut.diff(checkIn, 'days');
 
         if (checkOut > checkIn) {
-            this.setState({ nights: diffDays });
+            return diffDays;
         }
         else {
-            this.setState({ nights: 0 });
+            return 0;
         }
     }
 
@@ -441,6 +444,7 @@ class HotelDetailsPage extends React.Component {
                                     data={this.state.data}
                                     prices={this.state.prices}
                                     loading={this.state.loading}
+                                    currencySign={this.props.paymentInfo.currencySign}
                                 />
                                 
                                 {/* <HotelReservationPanel
