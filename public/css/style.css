@@ -180,6 +180,11 @@ header form button {
     padding-bottom: 15px;
 }
 
+#second-nav .dropdowns {
+    display: flex;
+    padding-top: 8px;
+}
+
 #search-bar {
     background: #223843;
     padding-top: 32px;

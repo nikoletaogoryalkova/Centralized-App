@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 // import HotelDetailsAmenityColumn from './HotelDetailsAmenityColumn';
 // import HotelDetailsCalendar from './HotelDetailsCalendar';
-// import HotelReservationPanel from './HotelReservationPanel';
+import HotelReservationPanel from './HotelReservationPanel';
 // import HotelDetailsReviewBox from './HotelDetailsReviewBox';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -30,8 +30,9 @@ function HotelsDetailsInfoSection(props) {
     const allAmenities = props.data.amenities;
     const calendar = props.calendar;
     const mostPopularFacilities = allAmenities.slice(0, 5);
+    console.log('mostPopularFacilities:',mostPopularFacilities);
     const amenities = getAmenities(allAmenities.slice(5));
-    // const { street, city, country } = props.data;
+    const { street, city, country } = props.data;
     if (calendar === null) {
         return <div>Loading...</div>;
     }
@@ -43,7 +44,7 @@ function HotelsDetailsInfoSection(props) {
 
                     <h1> {props.data.name} </h1>
                     <div className="clearfix" />
-                    {/*<p>{street}, {city.name}, {country.name}</p>*/}
+                    <p>{street}, {city.name}, {country.name}</p>
                     {/*<button className="btn btn-primary" onClick={props.openModal}>Contact Host</button>*/}
 
                     {/*<HotelDetailsCalendar*/}
@@ -117,18 +118,17 @@ function HotelsDetailsInfoSection(props) {
                         <div className="clearfix" />
                     </div>
                 </div>
-                {/*<HotelReservationPanel*/}
-                    {/*locRate={props.locRate}*/}
-                    {/*showLoginModal={props.showLoginModal}*/}
-                    {/*isLogged={props.isLogged}*/}
-                    {/*calendar={calendar}*/}
-                    {/*nights={props.nights}*/}
-                    {/*onApply={props.onApply}*/}
-                    {/*startDate={props.startDate}*/}
-                    {/*endDate={props.endDate}*/}
-                    {/*listing={props.data}*/}
-                    {/*loading={props.loading} */}
-                {/*/>*/}
+                <HotelReservationPanel
+                    locRate={props.locRate}
+                    showLoginModal={props.showLoginModal}
+                    isLogged={props.isLogged}
+                    calendar={calendar}
+                    nights={props.nights}
+                    onApply={props.onApply}
+                    startDate={props.startDate}
+                    endDate={props.endDate}
+                    listing={props.data}
+                    loading={props.loading} />
                 <div className="clearfix"></div>
             </div>
         </section>

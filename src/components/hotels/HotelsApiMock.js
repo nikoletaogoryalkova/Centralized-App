@@ -27,7 +27,17 @@ const hotels = [
         descriptions: {
             general: 'Nice one',
         },
-        amenities: [ 2, 4, 66 ],
+        descriptionText: 'In the historic quarter of Santo Spirito, on the left bank of th eriver Arno, studio apartment is perfect for those travelling alone or as a couple. To walk between Santo Spirito, Ponte Vecchio and Bobali Gardens is a magical experience. On the third floor of a typical Florentine building, the apartment consists of an entrance with wardrobes and loft with a double bed, equipped kitchen and bathroom with shower.',
+        amenities: [
+            { id: 0, name: 'beach' },
+            { id: 1, name: 'pool' },
+            { id: 2, name: 'spa' },
+            { id: 3, name: 'parking' },
+            { id: 4, name: 'breakfast' }
+        ],
+        street: 'Paradise Aparthotel & SPA, 9 Han Tervel Street',
+        city: { name: '9101 Sozopol' },
+        country: { name: 'Bulgaria' }
     },
     { 
         id: 1,
@@ -40,7 +50,13 @@ const hotels = [
         descriptions: {
             general: 'Really good one',
         },
-        amenities: [ 2, 4, 66 ],
+        amenities: [
+            { id: 0, name: 'beach' },
+            { id: 1, name: 'pool' },
+            { id: 2, name: 'spa' },
+            { id: 3, name: 'parking' },
+            { id: 4, name: 'breakfast' }
+        ],
     },
 ];
 

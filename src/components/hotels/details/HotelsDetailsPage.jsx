@@ -329,7 +329,7 @@ class HotelsDetailsPage extends React.Component {
                                     <li>
                                         <a href="#facilities">Facilities</a>
                                     </li>
-                                    {this.state.data.descriptionsAccessInfo &&
+                                    {this.state.data.descriptions.roomTypes &&
                                         <li>
                                             <a href="#reviews">Access Info</a>
                                         </li>

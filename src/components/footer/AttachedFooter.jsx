@@ -43,7 +43,7 @@ class AttachedFooter extends React.Component {
 
                         <div className="col-md-2">
                             <div className="dropdown select-language">
-                                <a className="dropdown-toggle" data-toggle="dropdown">English newest</a>
+                                <a className="dropdown-toggle" data-toggle="dropdown">English</a>
                                 <ul className="navbar-dropdown dropdown-menu">
                                     <li><a >English</a></li>
                                     <li><a >English</a></li>
