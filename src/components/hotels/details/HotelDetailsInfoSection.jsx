@@ -7,7 +7,7 @@ import HotelReservationPanel from './HotelReservationPanel';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-function HotelsDetailsInfoSection(props) {
+function HotelDetailsInfoSection(props) {
     const getAmenities = (amenities) => {
         const result = new Array(3);
         for (let i = 0; i < 3; i++) {
@@ -135,7 +135,7 @@ function HotelsDetailsInfoSection(props) {
     );
 }
 
-HotelsDetailsInfoSection.propTypes = {
+HotelDetailsInfoSection.propTypes = {
     data: PropTypes.object,
     locRate: PropTypes.string,
     showLoginModal: PropTypes.bool,
@@ -158,4 +158,4 @@ HotelsDetailsInfoSection.propTypes = {
     descriptionText: PropTypes.string
 };
 
-export default withRouter(HotelsDetailsInfoSection);
+export default withRouter(HotelDetailsInfoSection);

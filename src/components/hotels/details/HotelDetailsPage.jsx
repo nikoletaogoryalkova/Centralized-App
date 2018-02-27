@@ -20,7 +20,7 @@ import { parse } from 'query-string';
 
 import { getHotels } from '../HotelsApiMock';
 
-class HotelsDetailsPage extends React.Component {
+class HotelDetailsPage extends React.Component {
     constructor(props) {
         super(props);
         
@@ -370,7 +370,7 @@ class HotelsDetailsPage extends React.Component {
     }
 }
 
-HotelsDetailsPage.propTypes = {
+HotelDetailsPage.propTypes = {
     countries: PropTypes.array,
     match: PropTypes.object,
 
@@ -384,7 +384,7 @@ HotelsDetailsPage.propTypes = {
     paymentInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(HotelsDetailsPage));
+export default withRouter(connect(mapStateToProps)(HotelDetailsPage));
 
 function mapStateToProps(state) {
     const { userInfo, paymentInfo } = state;
