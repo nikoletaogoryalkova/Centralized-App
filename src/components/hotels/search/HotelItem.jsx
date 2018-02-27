@@ -14,7 +14,7 @@ function HotelItem(props) {
     return (
         <div className="list-hotel">
             <div className="list-image">
-              { pictures.length > 0 ? <ListingItemPictureCarousel pictures={JSON.stringify(pictures)} id={id} /> : <div className='loader'></div>}
+              { pictures.length > 0 ? <ListingItemPictureCarousel pictures={JSON.stringify(pictures)} id={id} listingType={'hotels'} /> : <div className='loader'></div>}
             </div>
             <div className="list-content">
                 <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>

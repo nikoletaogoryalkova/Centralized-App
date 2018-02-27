@@ -14,7 +14,7 @@ function HomeItem(props) {
     return (
         <div className="list-hotel">
             <div className="list-image">
-                <ListingItemPictureCarousel pictures={pictures} id={id} />
+                <ListingItemPictureCarousel pictures={pictures} id={id} listingType={'homes'} />
             </div>
             <div className="list-content">
                 <h2><Link to={`/homes/listings/${id}${props.location.search}`}>{name}</Link></h2>
