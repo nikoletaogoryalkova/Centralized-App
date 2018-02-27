@@ -13,7 +13,7 @@ function HotelItem(props) {
     const locRate = props.locRate;
     const { currency, currencySign } = props.paymentInfo;
     const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
-    const locPrice = price * locRate;
+    const locPrice = (price / locRate).toFixed(2);
     const pictures = photos.map(x => { return {thumbnail: 'http://roomsxml.com' + x}; });
     return (
         <div className="list-hotel">
