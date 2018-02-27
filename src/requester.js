@@ -440,6 +440,13 @@ export async function testSearch(query) {
     });
 }
 
+export async function testBook(bookingObj) {
+    return sendRequest(`${host}api/test/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
+        console.log(res);
+        // return res.response.json();
+    });
+}
+
 export async function getLocRateFromCoinMarketCap(currency) {
     return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {
         return res.response.json();
