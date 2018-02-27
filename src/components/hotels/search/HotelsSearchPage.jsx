@@ -319,6 +319,8 @@ class HotelsSearchPage extends React.Component {
 
         if (!listings || this.state.loading === true) {
             renderListings = <div className="loader"></div>;
+        } else if (listings.length === 0) {
+            renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
                 return <HotelItem key={i} listing={item} locRate={this.state.locRate} />;

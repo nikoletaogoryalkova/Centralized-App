@@ -32,8 +32,16 @@ class HotelBookingPage extends React.Component {
         console.log(rooms);
         getTestHotelById(id, search).then((data) => {
             console.log(data);
-            const roomResults = data.rooms.filter(x => x.quoteId === quoteId);
-            this.setState({ roomResults: roomResults, rooms: rooms, loading: false, quoteId: quoteId });
+            const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
+            const totalPrice = this.getTotalPrice(roomResults);
+            this.setState({
+                hotel: data,
+                roomResults: roomResults,
+                totalPrice: totalPrice,
+                rooms: rooms, 
+                pictures: data.hotelPhotos, 
+                loading: false, 
+                quoteId: quoteId });
         });
     }
 
@@ -53,7 +61,7 @@ class HotelBookingPage extends React.Component {
                 adults.push(adult);
             }
 
-            const children = searchRoom.children.map((c) => { return {age: c}; });
+            const children = searchRoom.children;
             const room = {
                 adults: adults,
                 children: children
@@ -63,6 +71,15 @@ class HotelBookingPage extends React.Component {
         }
 
         return result;
+    }
+
+    getTotalPrice(roomResults) {
+        let total = 0;
+        for (let i = 0; i < roomResults.length; i++) {
+            total += roomResults[i].price;
+        }
+
+        return total;
     }
     
     onChange(e) {
@@ -112,50 +129,87 @@ class HotelBookingPage extends React.Component {
             rooms: rooms,
             currency: currency
         };
+        console.log(submitObj);
         testBook(submitObj);
     }
 
     render() {
-        const rooms = this.state && this.state.rooms;
+        const hotelName = this.state.hotel && this.state.hotel.name;
+        const hotelMainAddress = this.state.hotel && this.state.hotel.additionalInfo.mainAddress;
+        const hotelCityName = this.state.hotel && this.state.hotel.city.name;
+        const rooms = this.state.rooms;
+        const hotelPicUrl = this.state.pictures && this.state.pictures[0].externalUrl;
+        const totalPrice = this.state.roomResults && this.state.roomResults.reduce((x, y) => x.price + y.price);
         return (
             <div>
                 <div>
                     <NotificationContainer />
                 </div>
+
+                <div className="booking-steps">
+                    <div className="container">
+                        <p>1. Provide Guest Information</p>
+                        <p>2. Review Room Details</p>
+                        <p>3. Confirm and Pay</p>
+                    </div>
+                </div>
                 
-                {!this.state.roomResults ? 
+                {!this.state.hotel ? 
                     <div className="loader"></div> :
                     <div>
                         <section id="room-book">
                             <div className="container">
-                                {rooms && rooms.map((room, roomIndex) => {
-                                    return (
-                                        <div key={roomIndex}>
-                                            <h2>Room {roomIndex + 1}</h2>
-                                            {room && room.adults.map((adult, adultIndex) => {
-                                                return (
-                                                    <div key={adultIndex}>
-                                                        <h3>Adult {adultIndex + 1}</h3>
-                                                        <input type="text" placeholder="Title" name="title" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} />
-                                                        <input type="text" placeholder="First Name" name="firstName" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} />
-                                                        <input type="text" placeholder="Last Name" name="lastName" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} />
-                                                    </div>
-                                                );
-                                            })}
-
-                                            {room && room.children.map((child, childIndex) => {
-                                                return (
-                                                    <div key={childIndex}>
-                                                        <h3>Child {childIndex + 1}</h3>
-                                                        <input type="text" placeholder="Age" name="age" onChange={(e) => {this.handleChildAgeChange(e, roomIndex, childIndex); }} />
-                                                    </div>
-                                                );
-                                            })}
-                                            <hr/>
+                                <div className="col-md-5">
+                                    <div className="hotel-info">
+                                        <div className="hotel-picture">
+                                            <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel Picture"/>
                                         </div>
-                                    );
-                                })}
-                                <button className="btn btn-primary" onClick={this.handleSubmit}>Book</button>
+                                        <h2>{hotelName}</h2>
+                                        <h3>{hotelMainAddress}, {hotelCityName}</h3>
+                                        <hr/>
+                                        {this.state.roomResults && this.state.roomResults.map((room, index) => {
+                                            return (<h3 key={index}>{room.name} for x nights - {room.price}</h3>)
+                                        })}
+                                        <hr/>
+                                        <h2>Total: {this.state.totalPrice}</h2>
+                                    </div>
+                                </div>
+                                <div className="col-md-7">
+                                    {rooms && rooms.map((room, roomIndex) => {
+                                        return (
+                                            <div className="form-group" key={roomIndex}>
+                                                <h2>Room</h2>
+                                                <hr/>
+                                                {room && room.adults.map((adult, adultIndex) => {
+                                                    return (
+                                                        <div className="form-row" key={adultIndex}>
+                                                            <label htmlFor="title">Guest</label>
+                                                            <select className="title-select" name="title" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} >
+                                                                <option value="Mr">Mr</option>
+                                                                <option value="Mrs">Mrs</option>
+                                                            </select>
+
+                                                            <input className="guest-name" type="text" placeholder="First Name" name="firstName" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} />
+                                                            <input className="guest-name" type="text" placeholder="Last Name" name="lastName" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} />
+                                                        </div>
+                                                    );
+                                                })}
+
+                                                {room && room.children.map((child, childIndex) => {
+                                                    return (
+                                                        <div className="form-row" key={childIndex}>
+                                                            <label htmlFor="age">Child (age)</label>
+                                                            <input className="child-age" type="number" value={this.state.rooms[roomIndex].children[childIndex].age} placeholder="Age" name="age" onChange={(e) => {this.handleChildAgeChange(e, roomIndex, childIndex); }} />
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <div className="col col-md-12">
+                                    <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Proceed</button>
+                                </div>
                             </div>
                         </section>
                     </div>

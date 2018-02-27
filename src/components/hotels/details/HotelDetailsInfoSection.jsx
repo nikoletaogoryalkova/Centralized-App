@@ -24,11 +24,23 @@ function HomeDetailsInfoSection(props) {
         return result;
     };
 
-    const bookRoom = (quoteId) => {
+    const bookRoom = (event, quoteId) => {
+        if (event) {
+            event.preventDefault();
+        }
         localStorage.setItem("quoteId", quoteId);
         const id = props.match.params.id;
         const search = props.location.search;
         window.location.href = `/hotels/listings/book/${id}${search}`;
+    };
+
+    const getTotalPrice = (room) => {
+        let total = 0;
+        for (let i = 0; i < room.length; i++) {
+            total += room[i].price;
+        }
+
+        return total;
     };
 
     const allAmenities = props.data.amenities;
@@ -37,6 +49,7 @@ function HomeDetailsInfoSection(props) {
     const street = props.data.additionalInfo.mainAddress;
     const city = props.data.city.name;
     const country = props.data.region.country.name;
+    const rooms = props.data.rooms && props.data.rooms.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1).slice(0, 5);
     
     return (
         <div className="hotel-content" id="overview">
@@ -99,19 +112,27 @@ function HomeDetailsInfoSection(props) {
                 <div className="clearfix" />
 
                 <div id="rooms">
-                    <h2>Rooms</h2>
-                    {props.data.rooms && props.data.rooms.map((results, resultIndex) => {
+                    <h2>Available Rooms</h2>
+                    {rooms && rooms.map((results, resultIndex) => {
                         return (
-                            <div key={resultIndex}>
-                                {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
-                                    return (
-                                        <div key={roomIndex}>
-                                            {room.name} - Price: {room.price}
-                                        </div>
-                                    );
-                                })}
-                               
-                                <button className="btn btn-primary" onClick={() => bookRoom(results.quoteId)}>Book</button>
+                            <div key={resultIndex} className="row room-group">
+                                <div className="col col-md-8">
+                                    <div className="room-titles">
+                                        {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
+                                            return (
+                                                <div key={roomIndex} className="room">
+                                                    {room.name} - Price: {room.price}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                                <div className="col col-md-4">
+                                    <div className="price-details">
+                                        Total Price: {getTotalPrice(results.roomsResults)}
+                                        <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
+                                    </div>
+                                </div>
                             </div>
                         );
                     })}
