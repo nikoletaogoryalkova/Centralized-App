@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 function HotelItem(props) {
     const { /*currency, */currencySign, locRate } = props.paymentInfo;
-    const { cityName, countryName, /*prices, currency_code, defaultDailyPrice, */pictures, id, name, reviewsCount, averageRating, descriptions } = props.listing;
+    const { /*cityName, countryName, prices, currency_code, defaultDailyPrice, */pictures, id, name, reviewsCount, averageRating, descriptions } = props.listing;
     const listingPrice = props.listing.userCurrencyPrice/*(prices) && currency === currency_code ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[currency], 10).toFixed(2)*/;
 
     return (

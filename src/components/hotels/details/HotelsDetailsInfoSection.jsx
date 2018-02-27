@@ -1,9 +1,9 @@
 // import ContactHostModal from '../../common/modals/ContactHostModal';
 import PropTypes from 'prop-types';
-// import HomeDetailsAmenityColumn from './HomeDetailsAmenityColumn';
-// import HomeDetailsCalendar from './HomeDetailsCalendar';
-// import HomeReservationPanel from './HomeReservationPanel';
-// import HomeDetailsReviewBox from './HomeDetailsReviewBox';
+// import HotelDetailsAmenityColumn from './HotelDetailsAmenityColumn';
+// import HotelDetailsCalendar from './HotelDetailsCalendar';
+// import HotelReservationPanel from './HotelReservationPanel';
+// import HotelDetailsReviewBox from './HotelDetailsReviewBox';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ function HotelsDetailsInfoSection(props) {
     const calendar = props.calendar;
     const mostPopularFacilities = allAmenities.slice(0, 5);
     const amenities = getAmenities(allAmenities.slice(5));
-    const { street, city, country } = props.data;
+    // const { street, city, country } = props.data;
     if (calendar === null) {
         return <div>Loading...</div>;
     }
@@ -46,7 +46,7 @@ function HotelsDetailsInfoSection(props) {
                     {/*<p>{street}, {city.name}, {country.name}</p>*/}
                     {/*<button className="btn btn-primary" onClick={props.openModal}>Contact Host</button>*/}
 
-                    {/*<HomeDetailsCalendar*/}
+                    {/*<HotelDetailsCalendar*/}
                         {/*onApply={props.onApply}*/}
                         {/*startDate={props.startDate}*/}
                         {/*endDate={props.endDate}*/}
@@ -76,9 +76,9 @@ function HotelsDetailsInfoSection(props) {
 
                     <div className="hotel-extras">
                         <div className="row">
-                            {/*<HomeDetailsAmenityColumn amenities={amenities[0]} />*/}
-                            {/*<HomeDetailsAmenityColumn amenities={amenities[1]} />*/}
-                            {/*<HomeDetailsAmenityColumn amenities={amenities[2]} />*/}
+                            {/*<HotelDetailsAmenityColumn amenities={amenities[0]} />*/}
+                            {/*<HotelDetailsAmenityColumn amenities={amenities[1]} />*/}
+                            {/*<HotelDetailsAmenityColumn amenities={amenities[2]} />*/}
                         </div>
                         <div className="clearfix" />
 
@@ -96,7 +96,7 @@ function HotelsDetailsInfoSection(props) {
                                 <h2>User Rating &amp; Reviews</h2>
                                 {/*{props.data.reviews.map((item, i) => {*/}
                                     {/*return (*/}
-                                        {/*<HomeDetailsReviewBox */}
+                                        {/*<HotelDetailsReviewBox */}
                                             {/*key={i} */}
                                             {/*rating={item.average} */}
                                             {/*reviewText={item.comments} */}
@@ -117,7 +117,7 @@ function HotelsDetailsInfoSection(props) {
                         <div className="clearfix" />
                     </div>
                 </div>
-                {/*<HomeReservationPanel*/}
+                {/*<HotelReservationPanel*/}
                     {/*locRate={props.locRate}*/}
                     {/*showLoginModal={props.showLoginModal}*/}
                     {/*isLogged={props.isLogged}*/}

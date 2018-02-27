@@ -1,11 +1,11 @@
 const hotels = [
     { 
         id: 1,
-        name: 'Hotel 1',
+        name: 'Paradise Aparthotel & SPA',
         type: 'hotel',
         averageRating: 4.1,
-        userCurrencyPrice: 350, 
-        locCurrencyPrice: 1.2,
+        userCurrencyPrice: 340,
+        locCurrencyPrice: 2.24,
         pictures: [],
         descriptions: {
             general: 'Nice one',
