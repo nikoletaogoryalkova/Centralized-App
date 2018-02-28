@@ -16,11 +16,14 @@ const {
 } = require('../config/constants.json');
 
 export async function validateLocBalance(account, locAmount, actionGas = 0) {
-	const totalGas = new BigNumber(gasConfig.approve + actionGas);
-	const totalGasLoc = new BigNumber(await gasToLoc(totalGas));
-	const locAmountToValidate = (totalGasLoc
-			.times(TIMES_GAS_AMOUNT))
-		.plus(locAmount);
+	// For future implementation of the LOCExchange
+	// const totalGas = new BigNumber(gasConfig.approve + actionGas);
+	// const totalGasLoc = new BigNumber(await gasToLoc(totalGas));
+	// const locAmountToValidate = (totalGasLoc
+	// 		.times(TIMES_GAS_AMOUNT))
+	// 	.plus(locAmount);
+
+	const locAmountToValidate = new BigNumber(locAmount);
 	let balance = await LOCTokenContract.methods.balanceOf(account).call();
 	if (locAmountToValidate.gt(balance)) {
 		throw ERROR.INSUFFICIENT_AMOUNT_LOC;

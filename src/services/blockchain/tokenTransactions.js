@@ -52,7 +52,15 @@ export class TokenTransactions {
 			funcData,
 		);
 
-		result.TransferTokenTxn = await web3.eth.sendSignedTransaction(signedData);    
+
+		return new Promise(function (resolve, reject) {
+			web3.eth.sendSignedTransaction(signedData)
+				.once('transactionHash', function (transactionHash) {
+					resolve({
+						transactionHash
+					});
+				});
+		});    
 	};
 
 	static async getBalances(tokenContractAddress, recipientAddress) {
