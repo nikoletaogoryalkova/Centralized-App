@@ -2,17 +2,24 @@
 
 import bip39 from 'bip39';
 import hdkey from 'ethereumjs-wallet/hdkey';
+import {
+    NotificationManager
+} from 'react-notifications';
 
-import { validateAddress, validatePassword } from './validators/base-validators';
-import { NotificationManager } from 'react-notifications';
+import {
+    validateAddress,
+    validatePassword
+} from './validators/base-validators';
 
-const { HD_WALLET_PATH } = require('./config/constants.json');
+const {
+    HD_WALLET_PATH
+} = require('./config/constants.json');
 const errors = require('./config/errors.json');
 
 
 class Wallet {
 
-    static createFromPassword(password) {
+    static async createFromPassword(password) {
         validatePassword(password);
 
         if (password === '') {
@@ -66,4 +73,6 @@ class Wallet {
     }
 }
 
-export { Wallet };
+export {
+    Wallet
+};

@@ -197,6 +197,12 @@ export async function getLocRateInUserSelectedCurrency(userSelectedCurrency) {
     });
 }
 
+export async function getMyJsonFile() {
+    return sendRequest(`${host}me/jsonFile`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
 export async function getCurrentLoggedInUserInfo() {
     return sendRequest(`${host}users/me/edit`, RequestMethod.GET).then(res => {
         return res.response.json();

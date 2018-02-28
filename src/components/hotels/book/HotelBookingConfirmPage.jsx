@@ -20,11 +20,13 @@ class HotelBookingConfirmPage extends React.Component {
             loading: true,
             locRate: null,
             showCredentialsModal: false,
+            walletPassword: ''
         };
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -36,7 +38,7 @@ class HotelBookingConfirmPage extends React.Component {
             console.log(json);
 
             getLocRateInUserSelectedCurrency(json.currency).then((data) => {
-                this.setState({locRate: data[0]['price_' + json.currency.toLowerCase()]});
+                this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
             });
         });
     }
@@ -85,7 +87,6 @@ class HotelBookingConfirmPage extends React.Component {
         this.setState({
             [modal]: true,
         }, () => {console.log(this.state)});
-
     }
 
     closeModal(modal, e) {
@@ -96,6 +97,10 @@ class HotelBookingConfirmPage extends React.Component {
         this.setState({
             [modal]: false
         });
+    }
+
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     render() {
@@ -149,6 +154,10 @@ class HotelBookingConfirmPage extends React.Component {
                                         <div className="col-md-6 bold">
                                             {currency} {fiatPrice} ({(locPrice).toFixed(4)} LOC)
                                         </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <p htmlFor="walletpass">Wallet password</p>
+                                        <input id="walletpass" name="walletPassword" value={this.state.walletPassword} onChange={this.onChange} type="password" required />
                                     </div>
                                 </div>
                             </div>
