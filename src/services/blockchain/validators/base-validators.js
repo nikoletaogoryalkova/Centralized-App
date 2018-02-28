@@ -7,7 +7,7 @@ import {
 
 import {
     validateEtherAddress
-} from './ether-validators.js'
+} from './ether-validators.js';
 
 const ERROR = require('./../config/errors.json');
 
