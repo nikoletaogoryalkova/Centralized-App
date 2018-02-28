@@ -15,10 +15,12 @@ class HotelBookingConfirmPage extends React.Component {
         this.state = {
             data: null,
             loading: true,
-            locRate: null
+            locRate: null,
+            walletPassword: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -29,7 +31,7 @@ class HotelBookingConfirmPage extends React.Component {
             this.setState({ data: json });
 
             getLocRateInUserSelectedCurrency(json.currency).then((data) => {
-                this.setState({locRate: data[0]['price_' + json.currency.toLowerCase()]});
+                this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
             });
         });
     }
@@ -70,16 +72,22 @@ class HotelBookingConfirmPage extends React.Component {
             currency: currency
         };
 
+
+
         const encodedBooking = encodeURI(JSON.stringify(booking));
         const id = this.props.match.params.id;
         const query = `?booking${encodedBooking}`;
         window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
     }
 
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
     render() {
         const booking = this.state.data && this.state.data.booking.hotelBooking;
         const currency = this.state.data && this.state.data.currency;
-        
+
         let bookingTotalPrice = null;
 
         if (booking !== null && currency !== null) {
@@ -133,6 +141,10 @@ class HotelBookingConfirmPage extends React.Component {
                                         <div className="col-md-6 bold">
                                             {currency} {bookingTotalPrice} ({(this.state.locRate * bookingTotalPrice).toFixed(4)} LOC)
                                         </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <p htmlFor="walletpass">Wallet password</p>
+                                        <input id="walletpass" name="walletPassword" value={this.state.walletPassword} onChange={this.onChange} type="password" required />
                                     </div>
                                 </div>
                             </div>
