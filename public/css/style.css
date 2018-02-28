@@ -2872,3 +2872,37 @@ select {
     height: 35px;
     padding: 5px;
 }
+
+.success-reservation-alert h2 {
+    color: white;
+    font-size: 28px;
+}
+
+.success-reservation-alert h3 {
+    color: white;
+    font-size: 24px;
+}
+
+#room-book-confirm {
+    width: 50%;
+    margin: 0 auto;
+    background-color: white;
+
+}
+
+#room-book-confirm::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+#room-book-confirm .order {
+    font-size: 1.2em;
+}
+
+.btn-book {
+    float: right;
+    margin-bottom: 25px;
+    font-weight: bold;
+    font-size: 1em;
+}

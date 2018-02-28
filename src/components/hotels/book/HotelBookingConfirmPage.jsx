@@ -6,18 +6,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { getTestHotelById, testBook } from '../../../requester';
+import { testBook, getLocRateInUserSelectedCurrency } from '../../../requester';
 
 class HotelBookingConfirmPage extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             data: null,
             loading: true,
+            locRate: null,
+            walletPassword: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
@@ -26,6 +29,10 @@ class HotelBookingConfirmPage extends React.Component {
         const booking = JSON.parse(decodeURI(searchParams.get('booking')));
         testBook(booking).then((json) => {
             this.setState({ data: json });
+
+            getLocRateInUserSelectedCurrency(json.currency).then((data) => {
+                this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
+            });
         });
     }
 
@@ -65,53 +72,86 @@ class HotelBookingConfirmPage extends React.Component {
             currency: currency
         };
 
+
+
         const encodedBooking = encodeURI(JSON.stringify(booking));
         const id = this.props.match.params.id;
         const query = `?booking${encodedBooking}`;
         window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
     }
 
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
     render() {
         const booking = this.state.data && this.state.data.booking.hotelBooking;
-        console.log(booking)
+        const currency = this.state.data && this.state.data.currency;
+
+        let bookingTotalPrice = null;
+
+        if (booking !== null && currency !== null) {
+            for (let i = 0; i < booking.length; i++) {
+                bookingTotalPrice += parseFloat(booking[i].totalSellingPrice.amt);
+            }
+        }
+
         return (
             <div>
-                {this.state.data && 
+                <div>
                     <div>
-                        <div>
-                            <NotificationContainer />
-                        </div>
-        
-                        <div className="booking-steps">
-                            <div className="container">
-                                <p>1. Provide Guest Information</p>
-                                <p>2. Review Room Details</p>
-                                <p>3. Confirm and Pay</p>
-                            </div>
-                        </div>
-                        
-                        {!this.state.data ? 
-                            <div className="loader"></div> :
-                            <div>
-                                <section id="room-book-confirm">
-                                    <div className="container">
-                                        <div>Name: {this.props.userInfo.firstName} {this.props.userInfo.lastName}</div>
-                                        <div>Booking Date: {booking.creationDate}</div>
-                                        <div>Arrival Date: {booking.creationDate}</div>
-                                        <div>Nights: {booking.nights}</div>
-                                        {/* {booking.room.messages.map((message, index) => {
-                                            return (
-                                                <div key={index}>{message.type}: {message.text}</div>
-                                            );
-                                        })} */}
-                                        {/* <div>Total price: {booking.totalSellingPrice.amt}</div> */}
-                                    </div>
-                                </section>
-                                <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Confirm</button>
-                            </div>
-                        }
+                        <NotificationContainer />
                     </div>
-                }
+
+                    <div className="booking-steps">
+                        <div className="container">
+                            <p>1. Provide Guest Information</p>
+                            <p>2. Review Room Details</p>
+                            <p>3. Confirm and Pay</p>
+                        </div>
+                    </div>
+
+                    {!this.state.data && !bookingTotalPrice ?
+                        <div className="loader"></div> :
+                        <div className="container">
+                            <div>
+                                <h2>Confirm and Pay</h2>
+                                <hr />
+
+
+                                <div id="room-book-confirm">
+                                    <div className="col-md-12 text-center">
+                                        <h4>Lockchain</h4>
+                                    </div>
+                                    <div className="col-md-12 text-center">
+                                        {moment(booking[0].creationDate, 'YYYY-MM-DD').format('DD MMM, DDD')} <i className="fa fa-long-arrow-right"></i> {moment(booking[0].arrivalDate, 'YYYY-MM-DD').format('DD MMM, DDD')}
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="col-md-6">
+                                            <p>Name</p>
+                                        </div>
+                                        <div className="col-md-6 bold">
+                                            {this.props.userInfo.firstName} {this.props.userInfo.lastName}
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12 order">
+                                        <div className="col-md-6">
+                                            <p>Order Total</p>
+                                        </div>
+                                        <div className="col-md-6 bold">
+                                            {currency} {bookingTotalPrice} ({(this.state.locRate * bookingTotalPrice).toFixed(4)} LOC)
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                        <p htmlFor="walletpass">Wallet password</p>
+                                        <input id="walletpass" name="walletPassword" value={this.state.walletPassword} onChange={this.onChange} type="password" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Confirm and pay</button>
+                        </div>
+                    }
+                </div>
             </div>
         );
     }
