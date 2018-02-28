@@ -10,8 +10,15 @@ const errors = require('./utils/errors.json');
 
 
 class Wallet {
+
     static createFromPassword(password) {
         validatePassword(password);
+
+        if (password === '') {
+            NotificationManager.error(INVALID_PASSWORD);
+            throw new Error(INVALID_PASSWORD);
+        }
+
 
         const mnemonic = bip39.generateMnemonic();
         const hdWallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));

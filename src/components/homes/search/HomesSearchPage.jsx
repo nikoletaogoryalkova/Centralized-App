@@ -8,7 +8,7 @@ import { getListingsByFilter } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
-import SearchBar from '../../common/searchbar/SearchBar';
+import HomesSearchBar from './HomesSearchBar';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
 class ListingSearchPage extends React.Component {
@@ -281,7 +281,7 @@ class ListingSearchPage extends React.Component {
         return (
             <div>
                 <ListingTypeNav />
-                <SearchBar
+                <HomesSearchBar
                     countryId={this.state.countryId} 
                     countries={this.props.countries}
                     startDate={this.state.startDate}

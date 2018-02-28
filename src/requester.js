@@ -412,3 +412,45 @@ export async function getCalendarByListingIdAndDateRange(listingId, startDate, e
         return res.response.json();
     });
 }
+
+// Test routes
+export async function getTestHotels(searchTerms) {
+    return sendRequest(`${host}api/test/hotels?${searchTerms}`, RequestMethod.GET).then(res => {
+        
+        return res.response.json();
+    });
+}
+
+export async function getTestHotelById(id, search) {
+    return sendRequest(`${host}api/test/hotels/${id}${search}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getRegionsBySearchParameter(param) {
+    return sendRequest(`${host}regions/search?query=${param}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function testSearch(query) {
+    console.log(`${host}api/test/hotels/search${query}`);
+    return sendRequest(`${host}api/test/hotels/search${query}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function testBook(bookingObj) {
+    return sendRequest(`${host}api/test/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
+        return res.response.json();
+        // console.log(res.response)
+    });
+}
+
+export async function getLocRateFromCoinMarketCap(currency) {
+    console.log(currency);
+    return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {
+        console.log(res);
+        return res.response.json();
+    });
+}

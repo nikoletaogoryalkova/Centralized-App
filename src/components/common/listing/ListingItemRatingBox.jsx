@@ -52,7 +52,6 @@ function ListingItemRatingBox(props) {
             <div className="list-hotel-rating-stars">
                 {calculateStars(props.rating)}
             </div>
-            <div className="list-hotel-rating-review">{props.reviewsCount} Reviews</div>
         </div>
     );
 }
