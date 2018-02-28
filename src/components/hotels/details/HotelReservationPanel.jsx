@@ -111,25 +111,27 @@ class HotelReservationPanel extends React.Component {
         };
 
         let listingPriceForPeriod = 0;
+        let numberOfNights = 1;
         let startDate = this.props.startDate;
         let endDate = this.props.endDate;
         if (this.props.calendar === null || this.props.calendar === undefined) {
             return <div className="loader"></div>;
         }
         if (startDate !== undefined && endDate !== undefined) {
-            for (let i = 0; i < this.props.calendar.length; i++) {
-                let dayObj = this.props.calendar[i];
-                if (startDate.startOf('day') <= moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && endDate.startOf('day') > moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && dayObj.available) {
-                    listingPriceForPeriod += dayObj.price;
-                }
-            }
+            // for (let i = 0; i < this.props.calendar.length; i++) {
+            //     let dayObj = this.props.calendar[i];
+            //     if (startDate.startOf('day') <= moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && endDate.startOf('day') > moment(dayObj.date, 'DD/MM/YYYY').startOf('day') && dayObj.available) {
+            //         listingPriceForPeriod += dayObj.price;
+            //     }
+            // }
+            numberOfNights = (endDate - startDate) / 86400000;
+            listingPriceForPeriod = this.props.listing.userCurrencyPrice;
         }
 
         let isInvalidRange = this.props.calendar.filter(x => moment(x.date, 'DD/MM/YYYY') >= startDate && moment(x.date, 'DD/MM/YYYY') <= endDate && !x.available).length > 0;
 
-        const listingPrice = listingPriceForPeriod;
-
-        const listingPriceLoc = Number((listingPrice / this.props.paymentInfo.locRate).toFixed(4));
+        const listingPrice = /*listingPriceForPeriod*/this.props.listing.userCurrencyPrice;
+        const listingPriceLoc = Number((listingPrice / this.props.paymentInfo.locRate).toFixed(2));
 
         const totalLoc = listingPriceLoc.toFixed(4);
         return (
@@ -140,7 +142,7 @@ class HotelReservationPanel extends React.Component {
                     }
                     {(!this.state.sending && !this.props.loading) &&
                         <form id="user-form" onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.paymentInfo.currencySign}{(this.props.nights === 0 ? listingPrice : (listingPrice / this.props.nights)).toFixed(2)} ({(this.props.nights === 0 ? listingPriceLoc : (listingPriceLoc / this.props.nights)).toFixed(4)} LOC)</span> /per night</p>
+                            <p id="hotel-top-price" className="hotel-top-price"><span>{this.props.paymentInfo.currencySign}{listingPrice.toFixed(2)} ({listingPriceLoc.toFixed(2)} LOC)</span> /per night</p>
                             {this.state.error !== '' &&
                                 <div id="reservation_errorMessage" style={{ color: 'red', fontSize: 16 + 'px', paddingBottom: 10 + 'px' }}>{this.state.error}</div>
                             }
@@ -176,13 +178,13 @@ class HotelReservationPanel extends React.Component {
                             />
                             <br />
 
-                            <div className="hotel-second-price">total <span className="total-price">{this.props.paymentInfo.currencySign}{listingPrice.toFixed(2)}</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span className="total-price">{this.props.paymentInfo.currencySign}{(listingPrice * numberOfNights).toFixed(2)}</span> / for&nbsp;
                             <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div>
                                 <p style={{ color: 'white' }}><b>or</b></p>
                             </div>
-                            <div className="hotel-second-price">total <span className="total-price">{totalLoc} LOC</span> / for&nbsp;
+                            <div className="hotel-second-price">total <span className="total-price">{(Number(totalLoc) * numberOfNights).toFixed(2)} LOC</span> / for&nbsp;
                             <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div className="nonev"></div>

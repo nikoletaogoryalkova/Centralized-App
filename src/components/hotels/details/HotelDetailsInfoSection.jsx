@@ -30,7 +30,6 @@ function HotelDetailsInfoSection(props) {
     const allAmenities = props.data.amenities;
     const calendar = props.calendar;
     const mostPopularFacilities = allAmenities.slice(0, 5);
-    console.log('mostPopularFacilities:',mostPopularFacilities);
     // const amenities = getAmenities(allAmenities.slice(5));
     const { street, city, country } = props.data;
     if (calendar === null) {

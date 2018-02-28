@@ -4,8 +4,8 @@ const hotels = [
         name: 'Paradise Aparthotel & SPA',
         type: 'hotel',
         averageRating: 4.1,
-        userCurrencyPrice: 340,
-        locCurrencyPrice: 2.24,
+        userCurrencyPrice: 85,
+        locCurrencyPrice: 0.56,
         pictures: [
             {
                 original: "https://alpha.lockchain.co:8443/static_app/lockchain/listings/images/listing_full_1516585181474_Memoire Palace-6.jpg",
