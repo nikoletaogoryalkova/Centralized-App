@@ -528,6 +528,11 @@ button.disabled:hover {
     padding-right: 30px;
 }
 
+#hotel-info #hotel-section {
+    float: none;
+    width: 100%;
+}
+
 #hotel-info .hotel-chekin {
     float: left;
     width: 45%;
@@ -2848,7 +2853,7 @@ select {
     display: flex;
 }
 
-.hotel-content .room-group .price-details {
+.hotel-content .room-group .book-details {
     background-color: #fff;
     border-radius: 3px;
     width: 100%;
@@ -2866,11 +2871,17 @@ select {
     margin: 5px;
 }
 
-.hotel-content .room-group .price-details .btn {
-    width: 80%;
-    margin: 0 auto;
+.hotel-content .room-group .book-details .btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 80px;
     height: 35px;
     padding: 5px;
+}
+
+.hotel-content .room-group .book-details .price-details {
+    padding: 5px;
+    margin: 5px;
 }
 
 .success-reservation-alert h2 {
@@ -2906,3 +2917,41 @@ select {
     font-weight: bold;
     font-size: 1em;
 }
+
+.hotels-input-daterange {
+    width: 32%;
+    max-width: 225px;
+    float: left;
+    margin-right: 5px;
+}
+
+.hotels-input-daterange input {
+    padding-left: 46px;
+    padding-top: 22px;
+    padding-right: 5px;
+}
+
+.hotels-input-daterange .icon-check-in {
+    margin-top: 8px;
+    left: 45px;
+    position: absolute;
+}
+
+#search .search-dropdown {
+    width: 20%;
+    max-width: 130px;
+    float: left;
+    margin-right: 5px;
+}
+
+#search .search-dropdown select {
+    padding-left: 15px;
+}
+
+#search .search-region {
+    max-width: 300px;
+}
+
+/* .search-hotel-rooms {
+    max-width: 50px;
+} */

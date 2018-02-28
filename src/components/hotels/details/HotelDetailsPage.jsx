@@ -20,14 +20,14 @@ import { parse } from 'query-string';
 import HotelReservationPanel from './HotelReservationPanel';
 import RoomInfoModal from '../search/modals/RoomInfoModal';
 
-import { getTestHotelById } from '../../../requester';
+import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency } from '../../../requester';
 
 class HotelDetailsPage extends React.Component {
     constructor(props) {
         super(props);
         
-        let startDate = moment();
-        let endDate = moment().add(1, 'day');
+        let startDate = moment().add(1, 'day');
+        let endDate = moment().add(2, 'day');
 
         if (this.props) {
             let queryParams = parse(this.props.location.search);
@@ -45,6 +45,8 @@ class HotelDetailsPage extends React.Component {
             calendarStartDate: startDate,
             calendarEndDate: endDate,
             rooms: [{ adults: 1, children: [] }],
+            adults: '2',
+            children: '0',
             nights: nights,
             data: null,
             lightboxIsOpen: false,
@@ -90,7 +92,7 @@ class HotelDetailsPage extends React.Component {
             console.log(data)
         });
 
-        // this.getUserInfo();
+        this.getLocRate();
     }
 
     componentWillMount() {
@@ -98,10 +100,19 @@ class HotelDetailsPage extends React.Component {
             const searchParams = this.getSearchParams(this.props.location.search);
             const startDate = moment(searchParams.get('startDate'), 'DD/MM/YYYY');
             const endDate = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
+            const rooms = JSON.parse(decodeURI(searchParams.get('rooms')));
+            const adults = this.getAdults(rooms);
             this.setState({
                 startDate: startDate,
                 endDate: endDate,
-                nights: this.calculateNights(startDate, endDate)
+                nights: this.calculateNights(startDate, endDate),
+                rooms: rooms,
+                adults: adults,
+            });
+            
+            const regionId = searchParams.get('region');
+            getRegionNameById(regionId).then((json) => {
+                this.setState({ region: json });
             });
         }
     }
@@ -115,6 +126,21 @@ class HotelDetailsPage extends React.Component {
         }
 
         return map;
+    }
+    
+    getAdults(rooms) {
+        let adults = 0;
+        for (let i = 0; i < rooms.length; i++) {
+            adults += Number(rooms[i].adults);
+        }
+        return adults;
+    }
+
+    getLocRate() {
+        const currency = this.props.paymentInfo.currency;
+        getLocRateInUserSelectedCurrency(currency).then((json) => {
+            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
+        });
     }
 
     updateParamsMap(key, value) {
@@ -140,10 +166,14 @@ class HotelDetailsPage extends React.Component {
         }
     }
 
-    handleSearch(e) {
+    async handleSearch(e) {
         if (e) {
             e.preventDefault();
         }
+
+        // this.distributeChildren();
+        await this.adjustAdultsCount();
+        this.distributeAdults();
 
         let queryString = '?';
 
@@ -154,6 +184,35 @@ class HotelDetailsPage extends React.Component {
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.getRooms()));
 
         this.props.history.push('/hotels/listings' + queryString);
+    }
+
+    distributeAdults() {
+        let adults = Number(this.state.adults);
+        let index = 0;
+        const rooms = this.state.rooms.slice(0);
+        while(adults> 0) {
+            // console.log(`${adults} / ${rooms.length - index} = ${Math.ceil(adults / (rooms.length - index))}`)
+            const quotient = Math.ceil(adults /(rooms.length - index));
+            rooms[index].adults = quotient;
+            adults -= quotient;
+            index++;
+        }
+        this.setState({ rooms: rooms });
+    }
+
+    async adjustAdultsCount() {
+        if(Number(this.state.adults)<this.state.rooms.length) {
+            let rooms = this.state.rooms.slice(0);
+            const adults = this.state.adults;
+            rooms = rooms.slice(0, adults);
+            await this.setState({ rooms: rooms });
+        }
+    }
+
+    distributeChildren() {
+        if(this.state.children && this.state.children !== '0') {
+            this.openModal('showChildrenModal');
+        }
     }
 
     getRooms() {
@@ -376,10 +435,12 @@ class HotelDetailsPage extends React.Component {
                         endDate={this.state.endDate}
                         region={this.state.region}
                         rooms={this.state.rooms}
+                        adults={this.state.adults}
+                        childrenCount={this.state.children}
                         guests={this.state.guests}
                         onChange={this.onChange}
                         handleRoomsChange={this.handleRoomsChange}
-                        handleSearch={(e) => this.openModal(`roomInfo${0}`, e)}
+                        handleSearch={this.handleSearch}
                         handleDatePick={this.handleDatePick}
                         handleSelectRegion={this.handleSelectRegion}
                     />
@@ -442,7 +503,7 @@ class HotelDetailsPage extends React.Component {
                                     startDate={this.state.calendarStartDate}
                                     endDate={this.state.calendarEndDate}
                                     data={this.state.data}
-                                    prices={this.state.prices}
+                                    locRate={this.state.locRate}
                                     loading={this.state.loading}
                                     currencySign={this.props.paymentInfo.currencySign}
                                 />

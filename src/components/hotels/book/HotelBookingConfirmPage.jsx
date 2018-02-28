@@ -1,12 +1,15 @@
 import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import CredentialsModal from './modals/CredentialsModal';
 
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { testBook, getLocRateInUserSelectedCurrency } from '../../../requester';
+import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
+
+import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile } from '../../../requester';
 
 class HotelBookingConfirmPage extends React.Component {
     constructor(props) {
@@ -15,9 +18,12 @@ class HotelBookingConfirmPage extends React.Component {
         this.state = {
             data: null,
             loading: true,
-            locRate: null
+            locRate: null,
+            showCredentialsModal: false,
         };
 
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -27,6 +33,7 @@ class HotelBookingConfirmPage extends React.Component {
         const booking = JSON.parse(decodeURI(searchParams.get('booking')));
         testBook(booking).then((json) => {
             this.setState({ data: json });
+            console.log(json);
 
             getLocRateInUserSelectedCurrency(json.currency).then((data) => {
                 this.setState({locRate: data[0]['price_' + json.currency.toLowerCase()]});
@@ -60,33 +67,42 @@ class HotelBookingConfirmPage extends React.Component {
         return end.diff(start, 'days');
     }
 
-    handleSubmit() {
-        const quoteId = this.state.quoteId;
-        const rooms = this.state.rooms;
-        const currency = this.props.paymentInfo.currency;
-        const booking = {
-            quoteId: quoteId,
-            rooms: rooms,
-            currency: currency
-        };
+    handleSubmit(password) {
+        console.log(password);
+        getCurrentlyLoggedUserJsonFile().then((json) => {
+            const recipient = '0x4bFE580A0Add3C4548136C7c5D464bbAe98BbC6F';
+            const amount = this.state.data.locPrice * Math.pow(10, 18);
+            TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount);
+            NotificationManager.success('You will receive a confirmation message');
+        });
+    }
 
-        const encodedBooking = encodeURI(JSON.stringify(booking));
-        const id = this.props.match.params.id;
-        const query = `?booking${encodedBooking}`;
-        window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true,
+        }, () => {console.log(this.state)});
+
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     render() {
         const booking = this.state.data && this.state.data.booking.hotelBooking;
         const currency = this.state.data && this.state.data.currency;
-        
-        let bookingTotalPrice = null;
-
-        if (booking !== null && currency !== null) {
-            for (let i = 0; i < booking.length; i++) {
-                bookingTotalPrice += parseFloat(booking[i].totalSellingPrice.amt);
-            }
-        }
+        const fiatPrice = this.state.data && this.state.data.fiatPrice;
+        const locPrice = this.state.data && this.state.data.locPrice;
 
         return (
             <div>
@@ -103,7 +119,7 @@ class HotelBookingConfirmPage extends React.Component {
                         </div>
                     </div>
 
-                    {!this.state.data && !bookingTotalPrice ?
+                    {!this.state.data ?
                         <div className="loader"></div> :
                         <div className="container">
                             <div>
@@ -131,12 +147,13 @@ class HotelBookingConfirmPage extends React.Component {
                                             <p>Order Total</p>
                                         </div>
                                         <div className="col-md-6 bold">
-                                            {currency} {bookingTotalPrice} ({(this.state.locRate * bookingTotalPrice).toFixed(4)} LOC)
+                                            {currency} {fiatPrice} ({(locPrice).toFixed(4)} LOC)
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Confirm and pay</button>
+                            <CredentialsModal modalId={'showCredentialsModal'} handleSubmit={this.handleSubmit} closeModal={this.closeModal} isActive={this.state.showCredentialsModal} />
+                            <button className="btn btn-primary btn-book" onClick={() => this.openModal('showCredentialsModal')}>Confirm and pay</button>
                         </div>
                     }
                 </div>

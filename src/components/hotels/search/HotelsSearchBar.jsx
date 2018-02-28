@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DatePicker from '../../DatePicker';
+import HotelsSearchBarDatePicker from './HotelsSearchBarDatePicker';
 import moment from 'moment';
 
 // import Autocomplete from 'react-google-autocomplete';
@@ -66,7 +66,7 @@ function SearchBar(props) {
             <div className="container">
                 <form id="search" onSubmit={props.handleSearch}>
                     <div className="row">
-                        <div className="form-group has-feedback has-feedback-left" id="location">
+                        <div className="form-group has-feedback has-feedback-left search-region" id="location">
                             {/* <Autocomplete
                                 className="form-control"
                                 onPlaceSelected={handlePlaceSelect}
@@ -88,20 +88,46 @@ function SearchBar(props) {
 				
                         </div>
                 
-                        <DatePicker
+                        <HotelsSearchBarDatePicker
                             startDate={props.startDate}
                             endDate={props.endDate}
                             onApply={props.handleDatePick}
                             search={true}
                             nights={calculateNights(props.startDate, props.endDate)} />
                 
-                        <div className="form-group has-feedback has-feedback-left" id="guests">
-                            <select name={'rooms'} className="form-control"  value={rooms.length} onChange={props.handleRoomsChange}>
-                                <option value="1">Rooms: 1</option>
-                                <option value="2">Rooms: 2</option>
-                                <option value="3">Rooms: 3</option>
-                                <option value="4">Rooms: 4</option>
-                                <option value="5">Rooms: 5</option>
+                        <div className="form-group has-feedback has-feedback-left search-dropdown" id="rooms">
+                            <select name={'rooms'} className="form-control" value={rooms.length} onChange={props.handleRoomsChange}>
+                                <option value="1">1 room</option>
+                                <option value="2">2 rooms</option>
+                                <option value="3">3 rooms</option>
+                                <option value="4">4 rooms</option>
+                                <option value="5">5 rooms</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group has-feedback has-feedback-left search-dropdown" id="adults">
+                            <select name={'adults'} className="form-control" value={props.adults} onChange={props.onChange}>
+                                <option value="1">1 adult</option>
+                                <option value="2">2 adults</option>
+                                <option value="3">3 adults</option>
+                                <option value="4">4 adults</option>
+                                <option value="5">5 adults</option>
+                                <option value="6">6 adult</option>
+                                <option value="7">7 adults</option>
+                                <option value="8">8 adults</option>
+                                <option value="9">9 adults</option>
+                                <option value="10">10 adults</option>
+                            </select>
+                        </div>
+
+                        <div className="form-group has-feedback has-feedback-left search-dropdown" id="childrenCount">
+                            <select name={'childrenCount'} className="form-control" value={props.childrenCount} onChange={props.onChange}>
+                                <option value="0">No children</option>
+                                <option value="1">1 child</option>
+                                <option value="2">2 children</option>
+                                <option value="3">3 children</option>
+                                <option value="4">4 children</option>
+                                <option value="5">5 children</option>
                             </select>
                         </div>
                         <button className="btn btn-primary">Search</button>

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import HotelDetailsAmenityColumn from './HotelDetailsAmenityColumn';
 import HotelDetailsReviewBox from './HotelDetailsReviewBox';
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 function HomeDetailsInfoSection(props) {
@@ -52,7 +53,7 @@ function HomeDetailsInfoSection(props) {
     const rooms = props.data.rooms && props.data.rooms.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1).slice(0, 5);
     
     return (
-        <div className="hotel-content" id="overview">
+        <div className="hotel-content" id="hotel-section">
             <h1> {props.data.name} </h1>
             <div className="clearfix" />
             <p>{street}, {city}, {country}</p>
@@ -116,21 +117,30 @@ function HomeDetailsInfoSection(props) {
                     {rooms && rooms.map((results, resultIndex) => {
                         return (
                             <div key={resultIndex} className="row room-group">
-                                <div className="col col-md-8">
+                                <div className="col col-md-7">
                                     <div className="room-titles">
                                         {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
                                             return (
                                                 <div key={roomIndex} className="room">
-                                                    {room.name} - Price per night: {props.currencySign}{Number(room.price / props.nights).toFixed(2)}
+                                                    <span>{room.name} ({room.mealType}) - Price per night: </span>
+                                                    {props.userInfo.isLogged && 
+                                                        <span>{props.currencySign}{Number(room.price / props.nights).toFixed(2)} / </span>
+                                                    }
+                                                    <span>LOC {Number((room.price / props.nights) / props.locRate).toFixed(2)}</span>
                                                 </div>
                                             );
                                         })}
                                     </div>
                                 </div>
-                                <div className="col col-md-4">
-                                    <div className="price-details">
-                                        <p>Price for {props.nights} nights</p>
-                                        <p>{props.currencySign}{getTotalPrice(results.roomsResults)}</p>
+                                <div className="col col-md-5">
+                                    <div className="book-details">
+                                        <span className="price-details">
+                                            <span>Price for {props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</span>
+                                            {props.userInfo.isLogged && 
+                                                <span>{props.currencySign}{getTotalPrice(results.roomsResults)} / </span>
+                                            }
+                                            <span>LOC { Number(getTotalPrice(results.roomsResults) / props.locRate).toFixed(2) }</span>
+                                        </span>
                                         <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
                                     </div>
                                 </div>
@@ -175,4 +185,12 @@ HomeDetailsInfoSection.propTypes = {
     descriptionText: PropTypes.string
 };
 
-export default withRouter(HomeDetailsInfoSection);
+export default withRouter(connect(mapStateToProps)(HomeDetailsInfoSection));
+
+function mapStateToProps(state) {
+    const { userInfo, paymentInfo } = state;
+    return {
+        userInfo,
+        paymentInfo
+    };
+}

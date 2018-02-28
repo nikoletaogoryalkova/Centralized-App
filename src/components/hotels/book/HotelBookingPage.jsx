@@ -6,7 +6,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { getTestHotelById, testBook } from '../../../requester';
+import { getTestHotelById, testBook, getLocRateInUserSelectedCurrency } from '../../../requester';
 
 class HotelBookingPage extends React.Component {
     constructor(props) {
@@ -33,6 +33,7 @@ class HotelBookingPage extends React.Component {
         getTestHotelById(id, search).then((data) => {
             const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
             const totalPrice = this.getTotalPrice(roomResults);
+            console.log(data);
             this.setState({
                 hotel: data,
                 nights: nights,
@@ -41,7 +42,17 @@ class HotelBookingPage extends React.Component {
                 rooms: rooms, 
                 pictures: data.hotelPhotos, 
                 loading: false, 
-                quoteId: quoteId });
+                quoteId: quoteId 
+            });
+        });
+
+        this.getLocRate();
+    }
+
+    getLocRate() {
+        const currency = this.props.paymentInfo.currency;
+        getLocRateInUserSelectedCurrency(currency).then((json) => {
+            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
         });
     }
 
@@ -139,7 +150,7 @@ class HotelBookingPage extends React.Component {
         const encodedBooking = encodeURI(JSON.stringify(booking));
         const id = this.props.match.params.id;
         const query = `?booking=${encodedBooking}`;
-        window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+        // window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
     }
 
     render() {
@@ -177,10 +188,17 @@ class HotelBookingPage extends React.Component {
                                         <h3>{hotelMainAddress}, {hotelCityName}</h3>
                                         <hr/>
                                         {this.state.roomResults && this.state.roomResults.map((room, index) => {
-                                            return (<h3 key={index}>{room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{room.price}</h3>)
+                                            if (!this.props.userInfo.isLogged) {
+                                                return (<h3 key={index}>{room.name}, {this.state.nights} nights: LOC {Number(room.price / this.state.locRate).toFixed(2)}</h3>);
+                                            } else {
+                                                return (<h3 key={index}>{room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{room.price} (LOC {Number(room.price / this.state.locRate).toFixed(2)})</h3>);
+                                            }
                                         })}
                                         <hr/>
-                                        <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{this.state.totalPrice}</h2>
+                                        {this.props.userInfo.isLogged ? 
+                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{this.state.totalPrice} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
+                                            <h2 className="total-price">Total: LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)}</h2>
+                                        }
                                         <div className="clearfix"></div>
                                     </div>
                                 </div>
@@ -218,7 +236,7 @@ class HotelBookingPage extends React.Component {
                                     })}
                                 </div>
                                 <div className="col col-md-12">
-                                    <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Proceed</button>
+                                    <button disabled className="btn btn-primary btn-book" onClick={this.handleSubmit}>Comming Soon</button>
                                 </div>
                             </div>
                         </section>
