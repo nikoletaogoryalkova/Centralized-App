@@ -266,7 +266,7 @@ header form button {
 }
 
 .form-control {
-    min-height: 60px;
+    height: 60px;
     border: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -2956,19 +2956,37 @@ select {
     max-width: 50px;
 } */
 
-.children-select {
-    min-height: 40px;
+.children-modal .room-break {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.children-modal .row {
+    margin-bottom: 5px;
+}
+
+.children-modal .col {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.children-modal .children-select-label {
+    font-size: 15px;
+    line-height: 40px;
+    margin: 0 5px;
+}
+
+.children-modal .children-select {
+    height: 40px;
     border: 0;
     display: inline-block;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
 
-.children-select-label {
-    padding: 5px;
-    font-size: 15px;
-    vertical-align: middle;
-    line-height: 40px
+.children-modal .children-age-select {
+    height: 40px;
+    background: #fff !important;
 }
 
 .searchbar-children-select {

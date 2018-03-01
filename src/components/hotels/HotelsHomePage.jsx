@@ -80,7 +80,11 @@ class HomePage extends React.Component {
         });
     }
 
-    redirectToSearchPage() {
+    redirectToSearchPage(event) {
+        if (event) {
+            event.preventDefault();
+        }
+
         let queryString = '?';
         queryString += 'region=' + this.state.region.id;
         queryString += '&currency=' + this.props.paymentInfo.currency;
@@ -131,11 +135,6 @@ class HomePage extends React.Component {
 
     handleRoomsChange(event) {
         let value = event.target.value;
-        if (value < 1) {
-            value = 1;
-        } else if (value > 5) {
-            value = 5;
-        }
         let rooms = this.state.rooms.slice();
         if (rooms.length < value) {
             while (rooms.length < value) {
@@ -157,14 +156,11 @@ class HomePage extends React.Component {
 
     handleChildrenChange(event, roomIndex) {
         let value = event.target.value;
-        if (value > 10) {
-            value = 10;
-        }
         let rooms = this.state.rooms.slice();
         let children = rooms[roomIndex].children;
         if (children.length < value) {
             while (children.length < value) {
-                children.push({ age: '1' });
+                children.push({ age: '' });
             }
         } else if (children.length > value) {
             children = children.slice(0, value);
@@ -177,7 +173,7 @@ class HomePage extends React.Component {
     handleChildAgeChange(event, roomIndex, childIndex) {
         const value = event.target.value;
         const rooms = this.state.rooms.slice();
-        rooms[roomIndex].children[childIndex] = value;
+        rooms[roomIndex].children[childIndex].age = value;
         this.setState({ rooms: rooms });
     }
 

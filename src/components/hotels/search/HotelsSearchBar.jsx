@@ -102,6 +102,11 @@ function SearchBar(props) {
                                 <option value="3">3 rooms</option>
                                 <option value="4">4 rooms</option>
                                 <option value="5">5 rooms</option>
+                                <option value="6">6 room</option>
+                                <option value="7">7 rooms</option>
+                                <option value="8">8 rooms</option>
+                                <option value="9">9 rooms</option>
+                                <option value="10">10 rooms</option>
                             </select>
                         </div>
 

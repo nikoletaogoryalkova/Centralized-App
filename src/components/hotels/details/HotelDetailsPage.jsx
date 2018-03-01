@@ -363,11 +363,6 @@ class HotelDetailsPage extends React.Component {
 
     handleRoomsChange(event) {
         let value = event.target.value;
-        if (value < 1) {
-            value = 1;
-        } else if (value > 5) {
-            value = 5;
-        }
         let rooms = this.state.rooms.slice();
         if (rooms.length < value) {
             while (rooms.length < value) {
@@ -409,7 +404,7 @@ class HotelDetailsPage extends React.Component {
     handleChildAgeChange(event, roomIndex, childIndex) {
         const value = event.target.value;
         const rooms = this.state.rooms.slice();
-        rooms[roomIndex].children[childIndex] = value;
+        rooms[roomIndex].children[childIndex].age = value;
         this.setState({ rooms: rooms });
     }
 
