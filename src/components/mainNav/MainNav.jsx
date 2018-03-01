@@ -197,8 +197,8 @@ class MainNav extends React.Component {
             NotificationManager.warning('Invalid first name');
         } else if (validator.isEmpty(this.state.signUpLastName)) {
             NotificationManager.warning('Invalid last name');
-        } else if (validator.isEmpty(this.state.signUpPassword)) {
-            NotificationManager.warning('Invalid password');
+        } else if (this.state.signUpPassword.length < 6) {
+            NotificationManager.warning('Password should be at least 6 symbols');
         } else {
             this.closeModal('showSignUpModal'); 
             this.openModal('createWallet');
@@ -345,10 +345,10 @@ class MainNav extends React.Component {
                                     onChange={token => { this.register(token); this.captcha.reset(); }}
                                 />
 
-                                <button type="submit" className="btn btn-primary">Sign up</button>
+                                {/* <button type="submit" className="btn btn-primary">Sign up</button> */}
                                 <div className="clearfix"></div>
                             </form>
-                            <button className="btn btn-primary" onClick={this.openWalletInfo}>Create LOC/ETH Wallet</button>
+                            <button className="btn btn-primary" onClick={this.openWalletInfo}>Proceed</button>
 
                             <div className="signup-rights">
                                 <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>

@@ -35,11 +35,13 @@ export default class CreateWalletModal extends React.Component {
             NotificationManager.warning("Wrong mnemonic words. You need to create a new wallet.");
             this.props.closeModal(modal.current);
             this.props.openModal(modal.prev);
-        } else if (this.state.jsonFile.trim() !== localStorage.walletJson) {
-            NotificationManager.warning("Wrong json file. You need to create a new wallet.");
-            this.props.closeModal(modal.current);
-            this.props.openModal(modal.prev);
-        } else {
+        } 
+        // else if (this.state.jsonFile.trim() !== localStorage.walletJson) {
+        //     NotificationManager.warning("Wrong json file. You need to create a new wallet.");
+        //     this.props.closeModal(modal.current);
+        //     this.props.openModal(modal.prev);
+        // }
+         else {
             this.props.closeModal(modal.current);
             this.captcha.execute();
         }
@@ -58,9 +60,9 @@ export default class CreateWalletModal extends React.Component {
                         <p>Enter your wallet mnemonic word:</p>
                         <input type="text" name="mnemonic" className="form-control" onChange={this.onChange} onFocus={this.handleFocus} value={this.state.mnemonic}/>
                         <br/>
-                        <p>Enter your wallet JSON:</p>
+                        {/* <p>Enter your wallet JSON:</p>
                         <input type="text" name="jsonFile" className="form-control" onChange={this.onChange} onFocus={this.handleFocus} value={this.state.jsonFile}/>
-                        <br/>
+                        <br/> */}
                         <button className="btn btn-primary" onClick={this.handleSubmit}>Confirm Wallet</button>
                     </Modal.Body>
                 </Modal>

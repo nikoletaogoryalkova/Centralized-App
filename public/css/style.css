@@ -2846,6 +2846,7 @@ select {
 
 /* Hotel Details Rooms */
 .hotel-content .room-group {
+    font-weight: bold;
     margin: 10px 0;
     padding: 5px;
     border: 1px solid rgb(169, 169, 169);
