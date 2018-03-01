@@ -137,7 +137,7 @@ function HomeDetailsInfoSection(props) {
                                         <span className="price-details">
                                             <span>Price for {props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</span>
                                             {props.userInfo.isLogged && 
-                                                <span>{props.currencySign}{getTotalPrice(results.roomsResults)} / </span>
+                                                <span>{props.currencySign}{ Number(getTotalPrice(results.roomsResults)).toFixed(2) } / </span>
                                             }
                                             <span>LOC { Number(getTotalPrice(results.roomsResults) / props.locRate).toFixed(2) }</span>
                                         </span>

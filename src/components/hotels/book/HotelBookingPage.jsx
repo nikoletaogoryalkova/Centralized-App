@@ -196,7 +196,7 @@ class HotelBookingPage extends React.Component {
                                         })}
                                         <hr/>
                                         {this.props.userInfo.isLogged ? 
-                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{this.state.totalPrice} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
+                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{Number(this.state.totalPrice).toFixed(2)} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
                                             <h2 className="total-price">Total: LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)}</h2>
                                         }
                                         <div className="clearfix"></div>

@@ -11,7 +11,7 @@ import { getTestHotels } from '../../requester';
 import { testSearch, getCurrencyRates } from '../../requester';
 import { connect } from 'react-redux';
 
-import RoomInfoModal from './search/modals/RoomInfoModal';
+import ChildrenModal from './modals/ChildrenModal';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -25,8 +25,9 @@ class HomePage extends React.Component {
             endDate: endDate,
             rooms: [{ adults: 1, children: [] }],
             adults: '2',
-            children: '0',
+            hasChildren: false,
             listings: undefined,
+            childrenModal: false,
             // region: { id: undefined, query: undefined },
         };
 
@@ -41,6 +42,8 @@ class HomePage extends React.Component {
         this.handleSelectRegion = this.handleSelectRegion.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
+        this.handleToggleChildren = this.handleToggleChildren.bind(this);
     }
 
     componentDidMount() {
@@ -54,6 +57,8 @@ class HomePage extends React.Component {
     }
 
     onChange(e) {
+        console.log(e.target.name)
+        console.log(e.target.value)
         this.setState({ [e.target.name]: e.target.value });
     }
 
@@ -61,63 +66,61 @@ class HomePage extends React.Component {
         this.setState({ region: value });
     }
     
-    async handleSearch(e) {
-        if (e) {
-            e.preventDefault();
+    handleSearch(event) {
+        if (event) {
+            event.preventDefault();
         }
 
-        // this.distributeChildren();
-        await this.adjustAdultsCount();
-        this.distributeAdults();
+        this.distributeAdults().then(() => {
+            if (this.state.hasChildren) {
+                this.distributeChildren();
+            } else {
+                this.redirectToSearchPage(event);
+            }
+        });
+    }
 
+    redirectToSearchPage() {
         let queryString = '?';
-
         queryString += 'region=' + this.state.region.id;
         queryString += '&currency=' + this.props.paymentInfo.currency;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&rooms=' + encodeURI(JSON.stringify(this.getRooms()));
-
-        this.props.history.push('hotels/listings' + queryString);
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
+        this.props.history.push('/hotels/listings' + queryString);
     }
 
-    distributeAdults() {
+    async distributeAdults() {
         let adults = Number(this.state.adults);
+        let rooms = this.state.rooms.slice(0);
+        if (adults < rooms.length) {
+            rooms = rooms.slice(0, adults);
+        }
+
         let index = 0;
-        const rooms = this.state.rooms.slice(0);
-        while(adults> 0) {
+        while (adults > 0) {
             // console.log(`${adults} / ${rooms.length - index} = ${Math.ceil(adults / (rooms.length - index))}`)
-            const quotient = Math.ceil(adults /(rooms.length - index));
+            const quotient = Math.ceil(adults / (rooms.length - index));
             rooms[index].adults = quotient;
             adults -= quotient;
             index++;
         }
-        this.setState({ rooms: rooms });
-    }
 
-    async adjustAdultsCount() {
-        if(Number(this.state.adults)<this.state.rooms.length) {
-            let rooms = this.state.rooms.slice(0);
-            const adults = this.state.adults;
-            rooms = rooms.slice(0, adults);
-            await this.setState({ rooms: rooms });
-        }
+        await this.setState({ rooms: rooms });
     }
 
     distributeChildren() {
-        if(this.state.children && this.state.children !== '0') {
-            this.openModal('showChildrenModal');
-        }
+        this.openModal('childrenModal');
     }
 
-    getRooms() {
-        return this.state.rooms.map((room) => {
-            return {
-                adults: room.adults,
-                children: room.children.map((age) => { return { age: age}; })
-            };
-        });
-    }
+    // getRooms() {
+    //     return this.state.rooms.map((room) => {
+    //         return {
+    //             adults: room.adults,
+    //             children: room.children.map((age) => { return { age: age}; })
+    //         };
+    //     });
+    // }
     
     handleDatePick(event, picker) {
         this.setState({
@@ -161,7 +164,7 @@ class HomePage extends React.Component {
         let children = rooms[roomIndex].children;
         if (children.length < value) {
             while (children.length < value) {
-                children.push('');
+                children.push({ age: '1' });
             }
         } else if (children.length > value) {
             children = children.slice(0, value);
@@ -176,6 +179,21 @@ class HomePage extends React.Component {
         const rooms = this.state.rooms.slice();
         rooms[roomIndex].children[childIndex] = value;
         this.setState({ rooms: rooms });
+    }
+
+    handleToggleChildren() {
+        const hasChildren = this.state.hasChildren;
+        const rooms = this.state.rooms.slice(0);
+        if (hasChildren) {
+            for (let i = 0; i < rooms.length; i++) {
+                rooms[i].children = new Array();
+            }
+        }
+
+        this.setState({
+            hasChildren: !hasChildren,
+            rooms: rooms
+        });
     }
 
     openModal(modal, e) {
@@ -212,7 +230,7 @@ class HomePage extends React.Component {
                                 endDate={this.state.endDate}
                                 region={this.state.region}
                                 adults={this.state.adults}
-                                childrenCount={this.state.children}
+                                hasChildren={this.state.hasChildren}
                                 rooms={this.state.rooms}
                                 guests={this.state.guests}
                                 onChange={this.onChange}
@@ -220,6 +238,7 @@ class HomePage extends React.Component {
                                 handleSearch={this.handleSearch}
                                 handleDatePick={this.handleDatePick}
                                 handleSelectRegion={this.handleSelectRegion}
+                                handleToggleChildren={this.handleToggleChildren}
                             />
                         </div>
                     </div>
@@ -237,24 +256,15 @@ class HomePage extends React.Component {
                     <div className="clearfix"></div>
                 </section>
 
-                {this.state.rooms && this.state.rooms.map((room, i) => {
-                    return (
-                        <RoomInfoModal
-                            key={i}
-                            roomId={i}
-                            modalId={`roomInfo${i}`}
-                            room={room}
-                            rooms={this.state.rooms}
-                            handleAdultsChange={this.handleAdultsChange}
-                            handleChildrenChange={this.handleChildrenChange}
-                            handleChildAgeChange={this.handleChildAgeChange}
-                            isActive={this.state[`roomInfo${i}`]}
-                            openModal={this.openModal}
-                            closeModal={this.closeModal}
-                            handleSearch={this.handleSearch}
-                        />
-                    );
-                })}
+                <ChildrenModal
+                    modalId="childrenModal"
+                    rooms={this.state.rooms}
+                    handleChildrenChange={this.handleChildrenChange}
+                    handleChildAgeChange={this.handleChildAgeChange}
+                    isActive={this.state.childrenModal}
+                    closeModal={this.closeModal}
+                    handleSubmit={this.redirectToSearchPage}
+                />
             </div>
         );
     }

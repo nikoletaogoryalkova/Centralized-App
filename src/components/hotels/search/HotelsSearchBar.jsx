@@ -121,14 +121,20 @@ function SearchBar(props) {
                         </div>
 
                         <div className="form-group has-feedback has-feedback-left search-dropdown" id="childrenCount">
-                            <select name={'childrenCount'} className="form-control" value={props.childrenCount} onChange={props.onChange}>
+                            <div className='searchbar-children-select' onClick={props.handleToggleChildren}>
+                                {!props.hasChildren ? 
+                                    <span>No children</span> : 
+                                    <span>With children</span> 
+                                } 
+                            </div>
+                            {/* <select name={'childrenCount'} className="form-control" value={props.childrenCount} onChange={props.onChange}>
                                 <option value="0">No children</option>
                                 <option value="1">1 child</option>
                                 <option value="2">2 children</option>
                                 <option value="3">3 children</option>
                                 <option value="4">4 children</option>
                                 <option value="5">5 children</option>
-                            </select>
+                            </select> */}
                         </div>
                         <button className="btn btn-primary">Search</button>
                     </div>
