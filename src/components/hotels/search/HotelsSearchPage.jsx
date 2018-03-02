@@ -394,7 +394,7 @@ class HotelsSearchPage extends React.Component {
         let renderListings;
 
         if (!listings || this.state.loading === true) {
-            renderListings = <div className="loader"></div>;
+            renderListings = <div className="text-center"><h2>Looking for the best rates for your trip...</h2><br/><br/><br/><div className="loader"></div></div>;
         } else if (listings.length === 0) {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {

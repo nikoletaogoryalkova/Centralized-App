@@ -50,8 +50,29 @@ function HomeDetailsInfoSection(props) {
     const street = props.data.additionalInfo.mainAddress;
     const city = props.data.city.name;
     const country = props.data.region.country.name;
-    const rooms = props.data.rooms && props.data.rooms.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1).slice(0, 5);
-    
+    const rooms = props.data.rooms;
+    const usedRoomsByTypeAndMeal = {};
+    for (let room of rooms) {
+        let key = '';
+        let price = 0;
+        for (let result of room.roomsResults) {
+            key += result.name + '|' + result.mealType + '%';
+            price += result.price;
+        }
+        if (!usedRoomsByTypeAndMeal.hasOwnProperty(key)) {
+            usedRoomsByTypeAndMeal[key] = {totalPrice: price};
+        }
+        if (usedRoomsByTypeAndMeal[key].totalPrice >= price) {
+            usedRoomsByTypeAndMeal[key].quoteId = room.quoteId;
+            usedRoomsByTypeAndMeal[key].roomsResults = room.roomsResults;
+            usedRoomsByTypeAndMeal[key].totalPrice = price;
+        }
+    }
+    let roomsResults = [];
+    for (let key in usedRoomsByTypeAndMeal) {
+        roomsResults.push(usedRoomsByTypeAndMeal[key]); 
+    }
+    roomsResults = roomsResults.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1);
     return (
         <div className="hotel-content" id="hotel-section">
             <h1> {props.data.name} </h1>
@@ -114,35 +135,38 @@ function HomeDetailsInfoSection(props) {
 
                 <div id="rooms">
                     <h2>Available Rooms</h2>
-                    {rooms && rooms.map((results, resultIndex) => {
+                    {roomsResults && roomsResults.map((results, resultIndex) => {
                         return (
                             <div key={resultIndex} className="row room-group">
-                                <div className="col col-md-7">
+                                <div className="col col-md-7 parent vertical-block-center">
                                     <div className="room-titles">
                                         {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
                                             return (
                                                 <div key={roomIndex} className="room">
-                                                    <span>{room.name} ({room.mealType}) - Price per night: </span>
+                                                    <span><b>{room.name}</b> ({room.mealType}) - </span>
                                                     {props.userInfo.isLogged && 
-                                                        <span>{props.currencySign}{Number(room.price / props.nights).toFixed(2)} / </span>
+                                                        <span><b>{props.currencySign}{Number(room.price / props.nights).toFixed(2)}</b> (</span>
                                                     }
-                                                    <span>LOC {Number((room.price / props.nights) / props.locRate).toFixed(2)}</span>
+                                                    <span><b>{Number((room.price / props.nights) / props.locRate).toFixed(2)} {props.userInfo.isLogged ? ')' : ''} LOC</b> / night</span>
                                                 </div>
                                             );
                                         })}
                                     </div>
                                 </div>
-                                <div className="col col-md-5">
-                                    <div className="book-details">
+                                <div className="col col-md-3">
+                                    <div className="book-details vertical-block-center">
                                         <span className="price-details">
-                                            <span>Price for {props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</span>
+                                            <span><b>{props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</b></span>
                                             {props.userInfo.isLogged && 
-                                                <span>{props.currencySign}{ Number(getTotalPrice(results.roomsResults)).toFixed(2) } / </span>
+                                                <span>{props.currencySign}{ Number(getTotalPrice(results.roomsResults)).toFixed(2) } (</span>
                                             }
-                                            <span>LOC { Number(getTotalPrice(results.roomsResults) / props.locRate).toFixed(2) }</span>
+                                            <span><b>{ Number(getTotalPrice(results.roomsResults) / props.locRate).toFixed(2) } LOC{props.userInfo.isLogged ? ')' : ''}</b></span>
                                         </span>
-                                        <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
+                                        
                                     </div>
+                                </div>
+                                <div className="col col-md-2 content-center">
+                                    <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
                                 </div>
                             </div>
                         );

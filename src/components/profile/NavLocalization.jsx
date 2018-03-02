@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 function NavLocalization(props) {
+    console.log(props);
     const { currency, locRate } = props.paymentInfo;
+    const { locBalance, ethBalance, isLogged } = props.userInfo;
     if (!locRate) {
         return <div className="loader"></div>;
     }
@@ -16,15 +18,9 @@ function NavLocalization(props) {
                         <span className="name">LOC/{currency}</span>
                         <span className="value">{locRate} {currency}</span>
                     </li>
-                    {/* <li className="balance">
-                        <span className="border">
-                            <span className="name">Balance:</span>
-                            <span className="value">0,000,000.00 LOC</span>
-                        </span>
-                        <span className="plus">
-                            <span>+</span>
-                        </span>
-                    </li> */}
+                    {isLogged && 
+                        getBalances(ethBalance, locBalance)
+                    }
                     <li className="language">
                         <span className="name">Language:</span>
                         <span className="value">EN</span>
@@ -39,17 +35,36 @@ function NavLocalization(props) {
     );
 }
 
+function getBalances(ethBalance, locBalance) {
+    return [
+        <li key="0" className="balance">
+            <span className="border">
+                <span className="name"><b>LOC</b> Balance:</span>
+                <span className="value">{locBalance} LOC</span>
+            </span>
+        </li>,
+        <li key="1" className="balance">
+            <span className="border">
+                <span className="name"><b>ETH</b> Balance:</span>
+                <span className="value">{ethBalance} ETH</span>
+            </span>
+        </li>
+    ];
+}
+
 NavLocalization.propTypes = {
     // start Redux props
     dispatch: PropTypes.func,
-    paymentInfo: PropTypes.object
+    paymentInfo: PropTypes.object,
+    userInfo: PropTypes.object
 };
 
 export default connect(mapStateToProps)(NavLocalization);
 
 function mapStateToProps(state) {
-    const { paymentInfo } = state;
+    const { paymentInfo, userInfo } = state;
     return {
-        paymentInfo
+        paymentInfo,
+        userInfo
     };
 }

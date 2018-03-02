@@ -91,7 +91,12 @@ class HotelDetailsPage extends React.Component {
         const search = this.props.location.search;
         getTestHotelById(id, search).then((data) => {
             this.setState({ data: data, loading: false });
-            console.log(data)
+            const searchParams = this.getSearchParams(this.props.location.search);
+            const regionId = searchParams.get('region') || data.region.externalId;
+            getRegionNameById(regionId).then((json) => {
+                this.setState({ region: json });
+            });
+            console.log(data);
         });
 
         this.getLocRate();
@@ -114,10 +119,7 @@ class HotelDetailsPage extends React.Component {
                 hasChildren: hasChildren
             });
             
-            const regionId = searchParams.get('region');
-            getRegionNameById(regionId).then((json) => {
-                this.setState({ region: json });
-            });
+           
         }
     }
 

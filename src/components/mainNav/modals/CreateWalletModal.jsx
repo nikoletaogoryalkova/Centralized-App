@@ -53,7 +53,7 @@ export default class CreateWalletModal extends React.Component {
             <div>
                 <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
                     <Modal.Header>
-                        <h1>Enter yor wallet password</h1>
+                        <h1>Enter your wallet password</h1>
                         <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
@@ -65,7 +65,7 @@ export default class CreateWalletModal extends React.Component {
                             </div>
 
                             <div className="login-sign">
-                                <p>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</p>
+                                <p><b>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</b></p>
                             </div>
 
                             <button type="submit" className="btn btn-primary">Submit password</button>

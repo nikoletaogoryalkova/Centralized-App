@@ -19,7 +19,6 @@ export default class ProfilePage extends React.Component {
     render() {
         return (
             <div>
-                <NavLocalization />
                 <NavProfile />
                 <Switch>
                     <Route exact path="/profile/dashboard" render={() => <DashboardPage />} />

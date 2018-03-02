@@ -26,14 +26,14 @@ function HotelItem(props) {
                 <div className="clearfix"></div>
                 {/* <p>{cityName}, {countryName}</p> */}
                 <div className="list-hotel-text">
-                    {description.substr(0, 190)}...
+                    {description.substr(0, 300)}...
                 </div>
-                <div className="list-hotel-comfort">
+                {/* <div className="list-hotel-comfort">
                     <div className="icon-hotel-4"></div>
                     <div className="icon-hotel-3"></div>
                     <div className="icon-hotel-2"></div>
                     <div className="icon-hotel-1"></div>
-                </div>
+                </div> */}
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>

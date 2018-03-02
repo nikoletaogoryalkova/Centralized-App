@@ -2846,7 +2846,6 @@ select {
 
 /* Hotel Details Rooms */
 .hotel-content .room-group {
-    font-weight: bold;
     margin: 10px 0;
     padding: 5px;
     border: 1px solid rgb(169, 169, 169);
@@ -3020,3 +3019,23 @@ select {
 .searchbar-children-select-checkbox {
     margin: 0 auto;
 }
+
+.form-control-disabled {
+    background-color: lightgrey !important;
+}
+
+.content-center {
+    text-align: center;
+    position: relative;
+}
+
+.vertical-inline-center {
+    display: flex;
+    text-align: center;
+}
+
+.vertical-block-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
