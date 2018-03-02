@@ -765,9 +765,16 @@ footer .currency-switcher {
 }
 
 #main-nav.home_page {
-    background: transparent url(../images/bgr-home.jpg) no-repeat top center;
+    background: transparent url(../images/bgr-home-new.jpg) no-repeat top center;
     background-size: cover;
     min-height: 500px;
+}
+
+#get-started .get-started-graphic {
+    background: transparent url(../images/get-started.svg) no-repeat top center;
+    background-size: contain;
+    width: 100%;
+    height: 200px;
 }
 
 #main-nav #second-nav {
@@ -2550,6 +2557,10 @@ input[type="checkbox"].tick:checked+label:after {
     font-size: 16px;
     font-weight: bold;
     display: block;
+}
+.list-hotel .carousel-fade {
+    max-height: 185px;
+    overflow: hidden;
 }
 
 .host-step a.active {

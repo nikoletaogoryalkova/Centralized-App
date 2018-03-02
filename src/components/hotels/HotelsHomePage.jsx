@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import HotelsSearchBar from './search/HotelsSearchBar';
-import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
+import PopularDestinationsCarousel from './carousel/PopularDestinationsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
 import { getTestHotels } from '../../requester';
@@ -241,15 +241,17 @@ class HomePage extends React.Component {
                 </header>
 
                 <section id="popular-hotels-box">
-                    <h2>Popular Properties</h2>
-                    {!this.state.listings ? <div className="loader"></div> : 
-                        this.state.listings && this.state.listings.length > 1 &&
-                        <PopularListingsCarousel 
-                            listings={this.state.listings} 
-                            listingsType="hotels" 
-                        />
-                    }
+                    <h2>Popular Destinations</h2>
+                    <PopularDestinationsCarousel />
                     <div className="clearfix"></div>
+                </section>
+
+                <section id="get-started">
+                    <div className="container">
+                        <div className="get-started-graphic">
+                            <div className="clearfix"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <ChildrenModal
