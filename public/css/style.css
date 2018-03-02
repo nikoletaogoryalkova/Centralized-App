@@ -2940,7 +2940,7 @@ select {
 
 #search .search-dropdown {
     width: 20%;
-    max-width: 130px;
+    max-width: 125px;
     float: left;
     margin-right: 5px;
 }
