@@ -22,7 +22,6 @@ export function validateHexString(str) {
 
 export function validateJsonObj(jsonObj) {
     if (_.isEmpty(jsonObj)) {
-        NotificationManager.error(ERROR.INVALID_JSON);
         throw new Error(ERROR.INVALID_JSON);
     }
 
@@ -31,7 +30,6 @@ export function validateJsonObj(jsonObj) {
 
 export function validateAddress(address, error) {
     if (!validateEtherAddress(address)) {
-        NotificationManager.error(error);
         throw new Error(error);
     }
 
@@ -40,7 +38,6 @@ export function validateAddress(address, error) {
 
 export function validatePassword(password) {
     if (password === '') {
-        NotificationManager.error(ERROR.INVALID_PASSWORD);
         throw new Error(ERROR.INVALID_PASSWORD);
     }
 

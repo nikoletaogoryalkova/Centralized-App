@@ -160,7 +160,7 @@ class MainNav extends React.Component {
                     const errors = res.errors;
                     for (let key in errors) {
                         if (typeof errors[key] !== 'function') {
-                            NotificationManager.warning(errors[key].message);
+                            NotificationManager.warning(errors[key].message, 'Field: ' + key.toUpperCase());
                         }
                     }
                 });
@@ -221,11 +221,13 @@ class MainNav extends React.Component {
         if (!validator.isEmail(this.state.signUpEmail)) {
             NotificationManager.warning('Invalid email address');
         } else if (validator.isEmpty(this.state.signUpFirstName)) {
-            NotificationManager.warning('Invalid first name');
+            NotificationManager.warning('Invalid first name. Must not be empty.');
         } else if (validator.isEmpty(this.state.signUpLastName)) {
-            NotificationManager.warning('Invalid last name');
+            NotificationManager.warning('Invalid last name. Must not be empty.');
         } else if (this.state.signUpPassword.length < 6) {
             NotificationManager.warning('Password should be at least 6 symbols');
+        } else if (!this.state.signUpPassword.match('^([^\\s]*[a-zA-Z]+.*?[0-9]+[^\\s]*|[^\\s]*[0-9]+.*?[a-zA-Z]+[^\\s]*)$')) {
+            NotificationManager.warning('Password must contain both latin letters and digits.');            
         } else {
             this.closeModal('showSignUpModal'); 
             this.openModal('createWallet');
