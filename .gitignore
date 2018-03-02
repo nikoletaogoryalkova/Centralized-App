@@ -312,3 +312,5 @@ OpenCover/
 # Azure Stream Analytics local run output 
 ASALocalRun/
 
+# Mac OS X files
+.DS_Store
