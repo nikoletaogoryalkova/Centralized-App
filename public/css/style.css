@@ -83,6 +83,8 @@ header form button {
 #search-bar form {
     display: flex;
     flex-wrap: wrap;
+    max-width: 1170px;
+    margin: auto;
 }
 
 #search #location {
@@ -349,7 +351,7 @@ header form button {
     float: left;
     border: 1px dashed #fff;
     margin-right: 5px;
-    min-height: 60px;
+    height: 60px;
     min-width: 17.5%;
     border-radius: 4px;
     background: url(../images/icon-moon.png) center 5px no-repeat;
@@ -378,7 +380,7 @@ header form button {
     flex-grow: 1;
     min-width: 107px;
     float: left;
-    min-height: 60px;
+    height: 60px;
 }
 
 button.disabled {
@@ -2882,7 +2884,7 @@ select {
 }
 
 #search .search-dropdown {
-    width: 20%;
+    flex: 1;
     max-width: 125px;
     float: left;
     margin-right: 5px;
