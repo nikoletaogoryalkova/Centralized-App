@@ -41,7 +41,7 @@ export async function validateReservationParams(contract,
 
 	await checkExistingBooking(contract, hotelReservationId, callOptions);
 
-	validateReservationDates();
+	validateReservationDates(reservationStartDate, reservationEndDate);
 
 	return true;
 
@@ -61,12 +61,13 @@ export async function checkExistingBooking(contract, hotelReservationId, callOpt
 }
 
 export function validateReservationDates(reservationStartDate, reservationEndDate) {
-	if (reservationStartDate <= formatTimestamp(+new Date())) {
+	const nowUnixFormatted = formatTimestamp(+new Date().getTime() / 1000);
+	if (reservationStartDate < nowUnixFormatted) {
 		NotificationManager.error(ERROR.INVALID_PERIOD_START);
 		throw new Error(ERROR.INVALID_PERIOD_START);
 	}
 
-	if (reservationStartDate > reservationEndDate) {
+	if (reservationStartDate >= reservationEndDate) {
 		NotificationManager.error(ERROR.INVALID_PERIOD);
 		throw new Error(ERROR.INVALID_PERIOD);
 	}

@@ -76,7 +76,6 @@ export class HotelReservation {
 		return new Promise(function (resolve, reject) {
 			web3.eth.sendSignedTransaction(signedData)
 				.once('transactionHash', function (transactionHash) {
-					console.log(transactionHash);
 					resolve({
 						transactionHash
 					});
