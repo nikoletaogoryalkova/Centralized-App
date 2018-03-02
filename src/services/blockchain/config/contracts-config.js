@@ -34,7 +34,7 @@ export let LOCExchangeContract = new web3.eth.Contract(
 );
 
 /**
- * Creation of LOCExchangeContract object
+ * Creation of HotelReservationContract object
  * @type {web3.eth.Contract}
  */
 

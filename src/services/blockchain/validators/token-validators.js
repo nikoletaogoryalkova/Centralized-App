@@ -25,7 +25,6 @@ export async function validateLocBalance(account, locAmount, actionGas = 0) {
 
 	const locAmountToValidate = new BigNumber(locAmount);
 	let balance = await LOCTokenContract.methods.balanceOf(account).call();
-	console.log(balance);
 	if (locAmountToValidate.gt(balance)) {
 		throw ERROR.INSUFFICIENT_AMOUNT_LOC;
 	}

@@ -6,7 +6,7 @@ import {
 import {
 	web3
 } from './config/contracts-config.js';
-import { formatTimestamp } from "./utils/timeHelper";
+import { formatEndDateTimestamp, formatStartDateTimestamp, formatTimestamp } from "./utils/timeHelper";
 import { validateLocBalance } from "./validators/token-validators";
 import { approveContract } from "./utils/approveContract";
 import { signTransaction } from "./utils/signTransaction";
@@ -25,34 +25,34 @@ export class HotelReservation {
 	                               refundPercentage,
 	                               hotelId,
 	                               roomId) {
-		const result = jsonFileToKeys(jsonObj, password);
+		const userKeys = jsonFileToKeys(jsonObj, password);
 		const callOptions = {
-			from: result.address,
+			from: userKeys.address,
 			gas: gasConfig.hotelReservation.create
 		};
 
-		const reservationStartDateFormatted = formatTimestamp(reservationStartDate);
-		const reservationEndDateFormatted = formatTimestamp(reservationEndDate);
+		// TODO Change formatTimestamp to set to 00:01 on startDate and 23:59 on EndDate - after Marto confirm it in truffle tests
+		const reservationStartDateFormatted = formatStartDateTimestamp(reservationStartDate);
+		const reservationEndDateFormatted = formatEndDateTimestamp(reservationEndDate);
 		const hotelReservationIdHex = web3.utils.utf8ToHex(hotelReservationId);
 		const hotelIdHex = web3.utils.utf8ToHex(hotelId);
 		const roomIdHex = web3.utils.utf8ToHex(roomId);
 
-		await validateReservationParams(HotelReservationContract,
-			jsonObj,
+		await validateReservationParams(jsonObj,
 			password,
 			hotelReservationIdHex,
 			reservationCostLOC,
-			reservationStartDate,
-			reservationEndDate,
+			reservationStartDateFormatted,
+			reservationEndDateFormatted,
 			daysBeforeStartForRefund,
 			refundPercentage,
 			hotelIdHex,
 			roomIdHex,
 			callOptions);
 
-		await validateLocBalance(result.address, reservationCostLOC);
+		await validateLocBalance(userKeys.address, reservationCostLOC);
 
-		await approveContract(result.address, result.privateKey, reservationCostLOC, HotelReservationContract._address);
+		await approveContract(userKeys.address, userKeys.privateKey, reservationCostLOC, HotelReservationContract._address);
 
 		const createReservationMethod = HotelReservationContract.methods.createHotelReservation(hotelReservationIdHex,
 			reservationCostLOC,
@@ -67,8 +67,8 @@ export class HotelReservation {
 		const funcData = await createReservationMethod.encodeABI(callOptions);
 		const signedData = await signTransaction(
 			HotelReservationContract._address,
-			result.address,
-			result.privateKey,
+			userKeys.address,
+			userKeys.privateKey,
 			gasConfig.hotelReservation.create,
 			funcData
 		);

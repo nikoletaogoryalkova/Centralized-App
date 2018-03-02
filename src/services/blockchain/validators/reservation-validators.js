@@ -1,12 +1,9 @@
-import { NotificationManager } from 'react-notifications';
-import { BigNumber } from 'bignumber.js';
-import { validateEtherAddress } from "./ether-validators";
-import { formatTimestamp } from "../utils/timeHelper";
+import { formatStartDateTimestamp, formatTimestamp } from "../utils/timeHelper";
+import { HotelReservationContract } from "../config/contracts-config";
 
 const ERROR = require('./../config/errors.json');
 
-export async function validateReservationParams(contract,
-                                                jsonObj,
+export async function validateReservationParams(jsonObj,
                                                 password,
                                                 hotelReservationId,
                                                 reservationCostLOC,
@@ -30,16 +27,14 @@ export async function validateReservationParams(contract,
 		!hotelId ||
 		!roomId
 	) {
-		NotificationManager.error(ERROR.INVALID_PARAMS);
 		throw new Error(ERROR.INVALID_PARAMS);
 	}
 
 	if (refundPercentage * 1 > 100 || refundPercentage * 1 < 0) {
-		NotificationManager.error(ERROR.INVALID_REFUND_AMOUNT);
 		throw new Error(ERROR.INVALID_REFUND_AMOUNT);
 	}
 
-	await checkExistingBooking(contract, hotelReservationId, callOptions);
+	await validateBookingDoNotExists(HotelReservationContract, hotelReservationId, callOptions);
 
 	validateReservationDates(reservationStartDate, reservationEndDate);
 
@@ -47,8 +42,8 @@ export async function validateReservationParams(contract,
 
 }
 
-export async function checkExistingBooking(contract, hotelReservationId, callOptions) {
-	let bookingAddress = await contract.methods.getHotelReservationContractAddress(
+export async function validateBookingDoNotExists(HotelReservationContract, hotelReservationId, callOptions) {
+	let bookingAddress = await HotelReservationContract.methods.getHotelReservationContractAddress(
 		hotelReservationId,
 	).call(callOptions);
 
@@ -56,19 +51,16 @@ export async function checkExistingBooking(contract, hotelReservationId, callOpt
 		return true;
 	}
 
-	NotificationManager.error(ERROR.EXISTING_BOOKING);
 	throw new Error(ERROR.EXISTING_BOOKING);
 }
 
 export function validateReservationDates(reservationStartDate, reservationEndDate) {
-	const nowUnixFormatted = formatTimestamp(+new Date().getTime() / 1000);
+	const nowUnixFormatted = formatStartDateTimestamp(new Date().getTime() / 1000 | 0);
 	if (reservationStartDate < nowUnixFormatted) {
-		NotificationManager.error(ERROR.INVALID_PERIOD_START);
 		throw new Error(ERROR.INVALID_PERIOD_START);
 	}
 
 	if (reservationStartDate >= reservationEndDate) {
-		NotificationManager.error(ERROR.INVALID_PERIOD);
 		throw new Error(ERROR.INVALID_PERIOD);
 	}
 
