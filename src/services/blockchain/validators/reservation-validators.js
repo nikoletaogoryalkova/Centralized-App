@@ -1,5 +1,7 @@
-import { formatStartDateTimestamp, formatTimestamp } from "../utils/timeHelper";
-import { HotelReservationContract } from "../config/contracts-config";
+import { addDaysToNow, formatStartDateTimestamp, formatTimestamp } from "../utils/timeHelper";
+import { HotelReservationFactoryContract } from "../config/contracts-config";
+import { validateAddress } from "./base-validators";
+import { web3 } from './../config/contracts-config.js';
 
 const ERROR = require('./../config/errors.json');
 
@@ -13,6 +15,7 @@ export async function validateReservationParams(jsonObj,
                                                 refundPercentage,
                                                 hotelId,
                                                 roomId,
+                                                numberOfTravelers,
                                                 callOptions) {
 	if (!jsonObj ||
 		!password ||
@@ -25,7 +28,8 @@ export async function validateReservationParams(jsonObj,
 		daysBeforeStartForRefund * 1 < 0 ||
 		!refundPercentage ||
 		!hotelId ||
-		!roomId
+		!roomId ||
+		!numberOfTravelers
 	) {
 		throw new Error(ERROR.INVALID_PARAMS);
 	}
@@ -34,7 +38,7 @@ export async function validateReservationParams(jsonObj,
 		throw new Error(ERROR.INVALID_REFUND_AMOUNT);
 	}
 
-	await validateBookingDoNotExists(HotelReservationContract, hotelReservationId, callOptions);
+	await validateBookingDoNotExists(hotelReservationId, callOptions);
 
 	validateReservationDates(reservationStartDate, reservationEndDate);
 
@@ -42,9 +46,28 @@ export async function validateReservationParams(jsonObj,
 
 }
 
-export async function validateBookingDoNotExists(HotelReservationContract, hotelReservationId, callOptions) {
-	let bookingAddress = await HotelReservationContract.methods.getHotelReservationContractAddress(
-		hotelReservationId,
+export async function validateBookingExists(hotelReservationId) {
+	await isHotelReservationIdEmpty(hotelReservationId);
+	const bookingContractAddress = await HotelReservationFactoryContract.methods.getHotelReservationContractAddress(
+		web3.utils.utf8ToHex(hotelReservationId)
+	).call();
+
+	if (bookingContractAddress === '0x0000000000000000000000000000000000000000') {
+		throw ERROR.MISSING_BOOKING;
+	}
+
+	return bookingContractAddress;
+}
+
+function isHotelReservationIdEmpty(hotelReservationId) {
+	if (hotelReservationId === '') {
+		throw ERROR.MISSING_RESERVATION_ID;
+	}
+}
+
+export async function validateBookingDoNotExists(hotelReservationId, callOptions) {
+	let bookingAddress = await HotelReservationFactoryContract.methods.getHotelReservationContractAddress(
+		hotelReservationId
 	).call(callOptions);
 
 	if (bookingAddress === '0x0000000000000000000000000000000000000000') {
@@ -67,3 +90,22 @@ export function validateReservationDates(reservationStartDate, reservationEndDat
 	return true;
 }
 
+export function validateCancellation(refundPercentage,
+                                     daysBeforeStartForRefund,
+                                     reservationStartDate,
+                                     customerAddress,
+                                     senderAddress) {
+	// ToDo: Handel new validation about daysBeforeStartForRefund and customerAddress to _customerAddress fix
+	const daysBeforeStartForRefundAddedToNow = addDaysToNow(+daysBeforeStartForRefund).getTime() / 1000 | 0;
+	refundPercentage = +refundPercentage;
+	reservationStartDate = +reservationStartDate;
+	customerAddress = customerAddress.toLowerCase();
+	senderAddress = senderAddress.toLowerCase();
+	if (refundPercentage <= 0 ||
+		daysBeforeStartForRefundAddedToNow > reservationStartDate ||
+		customerAddress !== senderAddress) {
+		throw new Error(ERROR.INVALID_CANCELLATION);
+	}
+
+	return true;
+}
