@@ -13,7 +13,7 @@ export function formatTimestamp(timestamp) {
 }
 
 export function formatStartDateTimestamp(timestamp) {
-	let result = moment.unix(timestamp);
+	let result = moment.unix(timestamp).utc();
 	result.set({
 		h: constants.globalStartDateTimestampHour,
 		m: constants.globalStartDateTimestampMinutes,
@@ -24,7 +24,7 @@ export function formatStartDateTimestamp(timestamp) {
 }
 
 export function formatEndDateTimestamp(timestamp) {
-	let result = moment.unix(timestamp);
+	let result = moment.unix(timestamp).utc();
 	result.set({
 		h: constants.globalEndDateTimestampHour,
 		m: constants.globalEndDateTimestampMinutes,
