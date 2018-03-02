@@ -85,7 +85,7 @@ export default class CreateWalletModal extends React.Component {
                         console.log("items");
                         console.log(localStorage);
                         if (this.props.userName != '' && this.props.userToken != '') {
-                            if(localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
+                            if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
                                 localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.props.userToken;
                                 localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.props.userName;
                                 getCurrentLoggedInUserInfo().then(info => {
@@ -102,6 +102,7 @@ export default class CreateWalletModal extends React.Component {
                                         locAddress: localStorage.getItem('walletAddress'),
                                         jsonFile:  localStorage.getItem('walletJson')
                                     };
+
                                     updateUserInfo(userInfo, token).then((res) => {
                                         if (res.success) {
                                             NotificationManager.success('Successfully updated your profile', 'Update user profile');
@@ -112,9 +113,9 @@ export default class CreateWalletModal extends React.Component {
                                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
                                             NotificationManager.error('Error!', 'Update user profile');
                                         }
-                                    });
 
-                                    this.props.setUserInfo();
+                                        this.props.setUserInfo();
+                                    });
                                 });
                             }
                         } else { 

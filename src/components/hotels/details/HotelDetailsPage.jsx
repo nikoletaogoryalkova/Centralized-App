@@ -452,7 +452,7 @@ class HotelDetailsPage extends React.Component {
             <div>
                 <div>
                     <NotificationContainer />
-                    <ListingTypeNav />
+                    {/* <ListingTypeNav /> */}
                     <HotelsSearchBar
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}

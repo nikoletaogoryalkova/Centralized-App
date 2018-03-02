@@ -22,15 +22,9 @@ const errors = require('./config/errors.json');
 export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
-		console.log("validate address prepareee")
-
 		validateAddress(recipient, errors.INVALID_ADDRESS);
-		console.log("address validated")
-		
-		console.log("json to keys prepareee")
 		
 		let result = jsonFileToKeys(jsonObj, password);
-		console.log("json ready")
 
 		let callOptions = {
 			from: result.address,
@@ -45,14 +39,11 @@ export class TokenTransactions {
 		// 	);
 
 		// validateReceiptStatus(result.FundTransactionAmountTxn);
-		console.log("balanceeee prepareee")
 
 		await validateLocBalance(result.address, amount);
-		console.log("balanceeee validated")
 
 		const transferLOCMethod = LOCTokenContract.methods.transfer(recipient, amount);
 		const funcData = transferLOCMethod.encodeABI(callOptions);
-		console.log("data prepareee")
 		const signedData = await signTransaction(
 			LOCTokenContract._address,
 			result.address,
@@ -60,15 +51,10 @@ export class TokenTransactions {
 			gasConfig.transferTokens,
 			funcData,
 		);
-		console.log("ready data")
-
 
 		return new Promise(function (resolve, reject) {
 			web3.eth.sendSignedTransaction(signedData)
 				.once('transactionHash', function (transactionHash) {
-		console.log("almost");
-		console.log(transactionHash);
-				
 					resolve({
 						transactionHash
 					});

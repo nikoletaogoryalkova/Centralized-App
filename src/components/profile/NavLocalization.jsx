@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NavLink, withRouter } from 'react-router-dom';
 
 function NavLocalization(props) {
     console.log(props);
@@ -13,10 +14,22 @@ function NavLocalization(props) {
     return (
         <nav id="localization-nav">
             <div className="container">
+                {(props.location.pathname !== '/hotels' 
+                    && props.location.pathname !== '/homes'
+                    && props.location.pathname.indexOf('/hotels/listings/book') === -1
+                    && props.location.pathname.indexOf('/profile') === -1) && 
+                    <nav id="second-nav">
+                        <ul className="nav navbar-nav">
+                            <li><NavLink to='/hotels' activeClassName="active">HOTELS</NavLink></li>
+                            <li><NavLink to='/homes' activeClassName="active">HOMES</NavLink></li>
+                        </ul>
+                    </nav>
+                }
+
                 <ul className="navbar-localization">
                     <li className="conversion">
                         <span className="name">LOC/{currency}</span>
-                        <span className="value">{locRate} {currency}</span>
+                        <span className="value">{Number(locRate).toFixed(2)} {currency}</span>
                     </li>
                     {isLogged && 
                         getBalances(ethBalance, locBalance)
@@ -59,7 +72,7 @@ NavLocalization.propTypes = {
     userInfo: PropTypes.object
 };
 
-export default connect(mapStateToProps)(NavLocalization);
+export default withRouter(connect(mapStateToProps)(NavLocalization));
 
 function mapStateToProps(state) {
     const { paymentInfo, userInfo } = state;

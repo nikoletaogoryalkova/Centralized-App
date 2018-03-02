@@ -818,13 +818,14 @@ footer .currency-switcher {
 }
 
 #localization-nav div.container {
-    padding: 15px 0;
+    /* padding: 15px 0; */
 }
 
 ul.navbar-localization {
     list-style: none;
     float: right;
     margin-right: 14px;
+    line-height: 59px;
 }
 
 ul.navbar-localization>li {

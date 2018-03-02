@@ -405,7 +405,7 @@ class HotelsSearchPage extends React.Component {
 
         return (
             <div>
-                <ListingTypeNav />
+                {/* <ListingTypeNav /> */}
                 <HotelsSearchBar
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
