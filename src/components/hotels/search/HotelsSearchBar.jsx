@@ -63,88 +63,86 @@ function SearchBar(props) {
 
     return (
         <section id="search-bar">
-            <div className="container">
-                <form id="search" onSubmit={props.handleSearch}>
-                    <div className="row">
-                        <div className="form-group has-feedback has-feedback-left search-region" id="location">
-                            {/* <Autocomplete
-                                className="form-control"
-                                onPlaceSelected={handlePlaceSelect}
-                            /> */}
+            <form id="search" onSubmit={props.handleSearch}>
+                <div className="form-group has-feedback has-feedback-left search-region" id="location">
+                    {/* <Autocomplete
+                        className="form-control"
+                        onPlaceSelected={handlePlaceSelect}
+                    /> */}
 
-                            <Select.Async
-                                className="form-control"
-                                placeholder="Region..."
-                                required
-                                style={{ boxShadow: 'none', border: 'none', fontSize: '15px', top: '5px' }}
-                                value={props.region} 
-                                onChange={props.handleSelectRegion} 
-                                valueKey={"id"} 
-                                labelKey={"query"} 
-                                loadOptions={getRegions}
-                                backspaceRemoves={true}
-                                arrowRenderer={null}
-                            />
-				
-                        </div>
-                
-                        <HotelsSearchBarDatePicker
-                            startDate={props.startDate}
-                            endDate={props.endDate}
-                            onApply={props.handleDatePick}
-                            search={true}
-                            nights={calculateNights(props.startDate, props.endDate)} />
-                
-                        <div className="form-group has-feedback has-feedback-left search-dropdown" id="rooms">
-                            <select name={'rooms'} className="form-control" value={rooms.length} onChange={props.handleRoomsChange}>
-                                <option value="1">1 room</option>
-                                <option value="2">2 rooms</option>
-                                <option value="3">3 rooms</option>
-                                <option value="4">4 rooms</option>
-                                <option value="5">5 rooms</option>
-                                <option value="6">6 room</option>
-                                <option value="7">7 rooms</option>
-                                <option value="8">8 rooms</option>
-                                <option value="9">9 rooms</option>
-                                <option value="10">10 rooms</option>
-                            </select>
-                        </div>
+                    <Select.Async
+                        className="form-control"
+                        placeholder="Region..."
+                        required
+                        style={{ boxShadow: 'none', border: 'none', fontSize: '15px', top: '5px' }}
+                        value={props.region}
+                        onChange={props.handleSelectRegion}
+                        valueKey={"id"}
+                        labelKey={"query"}
+                        loadOptions={getRegions}
+                        backspaceRemoves={true}
+                        arrowRenderer={null}
+                    />
 
-                        <div className="form-group has-feedback has-feedback-left search-dropdown" id="adults">
-                            <select name={'adults'} className="form-control" value={props.adults} onChange={props.onChange}>
-                                <option value="1">1 adult</option>
-                                <option value="2">2 adults</option>
-                                <option value="3">3 adults</option>
-                                <option value="4">4 adults</option>
-                                <option value="5">5 adults</option>
-                                <option value="6">6 adult</option>
-                                <option value="7">7 adults</option>
-                                <option value="8">8 adults</option>
-                                <option value="9">9 adults</option>
-                                <option value="10">10 adults</option>
-                            </select>
-                        </div>
+                </div>
 
-                        <div className="form-group has-feedback has-feedback-left search-dropdown" id="childrenCount">
-                            <div className='searchbar-children-select' onClick={props.handleToggleChildren}>
-                                {!props.hasChildren ? 
-                                    <span>No children</span> : 
-                                    <span>With children</span> 
-                                } 
-                            </div>
-                            {/* <select name={'childrenCount'} className="form-control" value={props.childrenCount} onChange={props.onChange}>
-                                <option value="0">No children</option>
-                                <option value="1">1 child</option>
-                                <option value="2">2 children</option>
-                                <option value="3">3 children</option>
-                                <option value="4">4 children</option>
-                                <option value="5">5 children</option>
-                            </select> */}
-                        </div>
-                        <button className="btn btn-primary">Search</button>
+                <HotelsSearchBarDatePicker
+                    startDate={props.startDate}
+                    endDate={props.endDate}
+                    onApply={props.handleDatePick}
+                    search={true}
+                    nights={calculateNights(props.startDate, props.endDate)} />
+
+                <div className="hotel-search-select-group">
+                    <div className="form-group has-feedback has-feedback-left search-dropdown" id="rooms">
+                        <select name={'rooms'} className="form-control" value={rooms.length} onChange={props.handleRoomsChange}>
+                            <option value="1">1 room</option>
+                            <option value="2">2 rooms</option>
+                            <option value="3">3 rooms</option>
+                            <option value="4">4 rooms</option>
+                            <option value="5">5 rooms</option>
+                            <option value="6">6 room</option>
+                            <option value="7">7 rooms</option>
+                            <option value="8">8 rooms</option>
+                            <option value="9">9 rooms</option>
+                            <option value="10">10 rooms</option>
+                        </select>
                     </div>
-                </form>
-            </div>
+
+                    <div className="form-group has-feedback has-feedback-left search-dropdown" id="adults">
+                        <select name={'adults'} className="form-control" value={props.adults} onChange={props.onChange}>
+                            <option value="1">1 adult</option>
+                            <option value="2">2 adults</option>
+                            <option value="3">3 adults</option>
+                            <option value="4">4 adults</option>
+                            <option value="5">5 adults</option>
+                            <option value="6">6 adult</option>
+                            <option value="7">7 adults</option>
+                            <option value="8">8 adults</option>
+                            <option value="9">9 adults</option>
+                            <option value="10">10 adults</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group has-feedback has-feedback-left search-dropdown" id="childrenCount">
+                        <div className='searchbar-children-select' onClick={props.handleToggleChildren}>
+                            {!props.hasChildren ?
+                                <span>No children</span> :
+                                <span>With children</span>
+                            }
+                        </div>
+                        {/* <select name={'childrenCount'} className="form-control" value={props.childrenCount} onChange={props.onChange}>
+                            <option value="0">No children</option>
+                            <option value="1">1 child</option>
+                            <option value="2">2 children</option>
+                            <option value="3">3 children</option>
+                            <option value="4">4 children</option>
+                            <option value="5">5 children</option>
+                        </select> */}
+                    </div>
+                </div>
+                <button className="btn btn-primary">Search</button>
+            </form>
         </section>
     );
 }

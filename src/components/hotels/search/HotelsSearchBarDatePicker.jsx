@@ -4,11 +4,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 function HotelsSearchBarDatePicker(props) {
-    let searchNightsWidth = 17.5;
-    if (props.search) {
-        searchNightsWidth = 5;
-    }
-
     const { startDate, endDate } = props;
     const start = (startDate && startDate.format('DD/MM/YYYY')) || '';
     const end = (endDate && endDate.format('DD/MM/YYYY')) || '';
@@ -25,8 +20,8 @@ function HotelsSearchBarDatePicker(props) {
     };
 
     return (
-        <div>
-            <div className="hotels-input-daterange">
+        <div className="date-picker">
+            <div className="input-daterange">
                 <div className="form-group has-feedback has-feedback-left">
                     <i className="icon icon-calendar form-control-feedback"></i>
                     <span className="icon-check-in">Check in &amp; Check out</span>
@@ -51,7 +46,7 @@ function HotelsSearchBarDatePicker(props) {
                 </div>
             </div>
 
-            <div id="search-nights" style={{ minWidth: searchNightsWidth + '%' }}>
+            <div id="search-nights">
                 <span>{props.nights} nights</span>
             </div>
         </div>
