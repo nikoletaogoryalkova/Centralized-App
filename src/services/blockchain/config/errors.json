@@ -45,5 +45,6 @@
   "INVALID_PERIOD_LENGTH": "Selected period is too long, max allowed days of booking are: ",
   "INVALID_PRICE": "Price should be more than 0",
   "INVALID_JSON": "The provided JSON file is not valid or empty",
-  "INVALID_CANCELLATION": "Cancellation is not allowed"
+  "INVALID_CANCELLATION": "Cancellation is not allowed",
+  "INVALID_REFUND_DAYS": "Days for refund are greater than current date."
 }

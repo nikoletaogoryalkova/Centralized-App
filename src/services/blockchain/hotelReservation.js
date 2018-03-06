@@ -1,32 +1,48 @@
-import { jsonFileToKeys } from "./utils/jsonFileToKeys";
-import { HotelReservationFactoryContract, initHotelReservationContract, } from "./config/contracts-config";
 import {
-	validateBookingExists, validateCancellation,
+	jsonFileToKeys
+} from "./utils/jsonFileToKeys";
+import {
+	HotelReservationFactoryContract,
+	initHotelReservationContract,
+} from "./config/contracts-config";
+import {
+	validateBookingExists,
+	validateCancellation,
 	validateReservationParams
 } from "./validators/reservation-validators";
 import {
 	web3
 } from './config/contracts-config.js';
-import { formatEndDateTimestamp, formatStartDateTimestamp, formatTimestamp } from "./utils/timeHelper";
-import { validateLocBalance } from "./validators/token-validators";
-import { approveContract } from "./utils/approveContract";
-import { signTransaction } from "./utils/signTransaction";
+import {
+	formatEndDateTimestamp,
+	formatStartDateTimestamp,
+	formatTimestamp
+} from "./utils/timeHelper";
+import {
+	validateLocBalance
+} from "./validators/token-validators";
+import {
+	approveContract
+} from "./utils/approveContract";
+import {
+	signTransaction
+} from "./utils/signTransaction";
 
 const gasConfig = require('./config/gas-config.json');
 const errors = require('./config/errors.json');
 
 export class HotelReservation {
 	static async createReservation(jsonObj,
-	                               password,
-	                               hotelReservationId,
-	                               reservationCostLOC,
-	                               reservationStartDate,
-	                               reservationEndDate,
-	                               daysBeforeStartForRefund,
-	                               refundPercentage,
-	                               hotelId,
-	                               roomId,
-	                               numberOfTravelers) {
+		password,
+		hotelReservationId,
+		reservationCostLOC,
+		reservationStartDate,
+		reservationEndDate,
+		daysBeforeStartForRefund,
+		refundPercentage,
+		hotelId,
+		roomId,
+		numberOfTravelers) {
 		const userKeys = jsonFileToKeys(jsonObj, password);
 		const callOptions = {
 			from: userKeys.address,
@@ -39,20 +55,20 @@ export class HotelReservation {
 		const hotelIdHex = web3.utils.utf8ToHex(hotelId);
 		const roomIdHex = web3.utils.utf8ToHex(roomId);
 
-		await validateReservationParams(jsonObj,
-			password,
-			hotelReservationIdHex,
-			reservationCostLOC,
-			reservationStartDateFormatted,
-			reservationEndDateFormatted,
-			daysBeforeStartForRefund,
-			refundPercentage,
-			hotelIdHex,
-			roomIdHex,
-			numberOfTravelers,
-			callOptions);
+		// await validateReservationParams(jsonObj,
+		// 	password,
+		// 	hotelReservationIdHex,
+		// 	reservationCostLOC,
+		// 	reservationStartDateFormatted,
+		// 	reservationEndDateFormatted,
+		// 	daysBeforeStartForRefund,
+		// 	refundPercentage,
+		// 	hotelIdHex,
+		// 	roomIdHex,
+		// 	numberOfTravelers,
+		// 	callOptions);
 
-		await validateLocBalance(userKeys.address, reservationCostLOC);
+		// await validateLocBalance(userKeys.address, reservationCostLOC);
 
 		await approveContract(userKeys.address, userKeys.privateKey, reservationCostLOC, HotelReservationFactoryContract._address);
 
@@ -87,8 +103,8 @@ export class HotelReservation {
 	}
 
 	static async cancelReservation(jsonObj,
-	                               password,
-	                               hotelReservationId) {
+		password,
+		hotelReservationId) {
 		const userKeys = jsonFileToKeys(jsonObj, password);
 		const callOptions = {
 			from: userKeys.address,
@@ -106,12 +122,11 @@ export class HotelReservation {
 		validateCancellation(reservation._refundPercentage,
 			reservation._daysBeforeStartForRefund,
 			reservation._reservationStartDate,
-			reservation.customerAddress,
+			reservation._customerAddress,
 			userKeys.address);
 
 		const cancelReservationMethod = HotelReservationFactoryContract.methods.cancelHotelReservation(hotelReservationIdHex);
 		const funcData = await cancelReservationMethod.encodeABI(callOptions);
-
 		const signedData = await signTransaction(
 			HotelReservationFactoryContract._address,
 			userKeys.address,

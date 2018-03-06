@@ -1,22 +1,32 @@
-import { addDaysToNow, formatStartDateTimestamp, formatTimestamp } from "../utils/timeHelper";
-import { HotelReservationFactoryContract } from "../config/contracts-config";
-import { validateAddress } from "./base-validators";
-import { web3 } from './../config/contracts-config.js';
+import {
+	addDaysToNow,
+	formatStartDateTimestamp,
+	formatTimestamp
+} from "../utils/timeHelper";
+import {
+	HotelReservationFactoryContract
+} from "../config/contracts-config";
+import {
+	validateAddress
+} from "./base-validators";
+import {
+	web3
+} from './../config/contracts-config.js';
 
 const ERROR = require('./../config/errors.json');
 
 export async function validateReservationParams(jsonObj,
-                                                password,
-                                                hotelReservationId,
-                                                reservationCostLOC,
-                                                reservationStartDate,
-                                                reservationEndDate,
-                                                daysBeforeStartForRefund,
-                                                refundPercentage,
-                                                hotelId,
-                                                roomId,
-                                                numberOfTravelers,
-                                                callOptions) {
+	password,
+	hotelReservationId,
+	reservationCostLOC,
+	reservationStartDate,
+	reservationEndDate,
+	daysBeforeStartForRefund,
+	refundPercentage,
+	hotelId,
+	roomId,
+	numberOfTravelers,
+	callOptions) {
 	if (!jsonObj ||
 		!password ||
 		!hotelReservationId ||
@@ -40,18 +50,19 @@ export async function validateReservationParams(jsonObj,
 
 	await validateBookingDoNotExists(hotelReservationId, callOptions);
 
-	validateReservationDates(reservationStartDate, reservationEndDate);
+	validateReservationDates(reservationStartDate, reservationEndDate, daysBeforeStartForRefund);
 
 	return true;
 
 }
 
 export async function validateBookingExists(hotelReservationId) {
+	console.log(hotelReservationId);
 	await isHotelReservationIdEmpty(hotelReservationId);
 	const bookingContractAddress = await HotelReservationFactoryContract.methods.getHotelReservationContractAddress(
 		web3.utils.utf8ToHex(hotelReservationId)
 	).call();
-
+	console.log(web3.utils.utf8ToHex(hotelReservationId));
 	if (bookingContractAddress === '0x0000000000000000000000000000000000000000') {
 		throw ERROR.MISSING_BOOKING;
 	}
@@ -77,8 +88,8 @@ export async function validateBookingDoNotExists(hotelReservationId, callOptions
 	throw new Error(ERROR.EXISTING_BOOKING);
 }
 
-export function validateReservationDates(reservationStartDate, reservationEndDate) {
-	const nowUnixFormatted = formatStartDateTimestamp(new Date().getTime() / 1000 | 0);
+export function validateReservationDates(reservationStartDate, reservationEndDate, daysBeforeStartForRefund) {
+	const nowUnixFormatted = formatTimestamp(new Date().getTime() / 1000 | 0);
 	if (reservationStartDate < nowUnixFormatted) {
 		throw new Error(ERROR.INVALID_PERIOD_START);
 	}
@@ -86,16 +97,20 @@ export function validateReservationDates(reservationStartDate, reservationEndDat
 	if (reservationStartDate >= reservationEndDate) {
 		throw new Error(ERROR.INVALID_PERIOD);
 	}
+	let day = 60 * 60 * 24;
+
+	if ((nowUnixFormatted + (daysBeforeStartForRefund * day)) > reservationStartDate) {
+		throw new Error(ERROR.INVALID_REFUND_DAYS);
+	}
 
 	return true;
 }
 
 export function validateCancellation(refundPercentage,
-                                     daysBeforeStartForRefund,
-                                     reservationStartDate,
-                                     customerAddress,
-                                     senderAddress) {
-	// ToDo: Handel new validation about daysBeforeStartForRefund and customerAddress to _customerAddress fix
+	daysBeforeStartForRefund,
+	reservationStartDate,
+	customerAddress,
+	senderAddress) {
 	const daysBeforeStartForRefundAddedToNow = addDaysToNow(+daysBeforeStartForRefund).getTime() / 1000 | 0;
 	refundPercentage = +refundPercentage;
 	reservationStartDate = +reservationStartDate;
