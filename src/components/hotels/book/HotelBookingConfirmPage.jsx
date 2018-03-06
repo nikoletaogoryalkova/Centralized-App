@@ -9,7 +9,7 @@ import moment from 'moment';
 
 import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
 
-import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile } from '../../../requester';
+import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile, confirmBooking } from '../../../requester';
 
 class HotelBookingConfirmPage extends React.Component {
     constructor(props) {
@@ -70,12 +70,21 @@ class HotelBookingConfirmPage extends React.Component {
     }
 
     handleSubmit(password) {
-        console.log(password);
         getCurrentlyLoggedUserJsonFile().then((json) => {
             const recipient = '0x4bFE580A0Add3C4548136C7c5D464bbAe98BbC6F';
             const amount = this.state.data.locPrice * Math.pow(10, 18);
-            TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount);
-            NotificationManager.success('You will receive a confirmation message');
+            TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount).then((transactionHash) => {
+                const bookingConfirmObj = {
+                    bookingId: this.state.data.booking.preparedBookingId,
+                    transactionHash: transactionHash
+                };
+    
+                confirmBooking(bookingConfirmObj).then(() => {
+                    NotificationManager.success('You will receive a confirmation message');
+                });
+            }).catch(error => {
+                NotificationManager.warning(error);
+            });
         });
     }
 
@@ -137,7 +146,7 @@ class HotelBookingConfirmPage extends React.Component {
                                         <h4>Lockchain</h4>
                                     </div>
                                     <div className="col-md-12 text-center">
-                                        {moment(booking[0].creationDate, 'YYYY-MM-DD').format('DD MMM, DDD')} <i className="fa fa-long-arrow-right"></i> {moment(booking[0].arrivalDate, 'YYYY-MM-DD').format('DD MMM, DDD')}
+                                        {moment(booking[0].arrivalDate, 'YYYY-MM-DD').format('DD MMM, YYYY')} <i className="fa fa-long-arrow-right"></i> {moment(booking[0].arrivalDate, 'YYYY-MM-DD').add(booking[0].nights, 'days').format('DD MMM, YYYY')}
                                     </div>
                                     <div className="col-md-12">
                                         <div className="col-md-6">
@@ -147,6 +156,29 @@ class HotelBookingConfirmPage extends React.Component {
                                             {this.props.userInfo.firstName} {this.props.userInfo.lastName}
                                         </div>
                                     </div>
+                                    <div className="col-md-12">
+                                        <table>
+                                            <thead>
+                                                <th>Room Type</th>
+                                                <th>Price</th>
+                                                <th>Cancellation Fees</th>
+                                            </thead>
+                                            <tbody>
+                                                {booking && booking.map((booking, index) => {
+                                                    return (
+                                                        <tr key={index}>
+                                                            <td>{booking.room.roomType.text}</td>
+                                                            <td>{currency} {booking.room.totalSellingPrice.amt} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</td>
+                                                            <td><button>Show</button></td>
+                                                            <tr>Hello</tr>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <hr/>
                                     <div className="col-md-12 order">
                                         <div className="col-md-6">
                                             <p>Order Total</p>
@@ -155,10 +187,10 @@ class HotelBookingConfirmPage extends React.Component {
                                             {currency} {fiatPrice} ({(locPrice).toFixed(4)} LOC)
                                         </div>
                                     </div>
-                                    <div className="col-md-12">
+                                    {/* <div className="col-md-12">
                                         <p htmlFor="walletpass">Wallet password</p>
                                         <input id="walletpass" name="walletPassword" value={this.state.walletPassword} onChange={this.onChange} type="password" required />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <CredentialsModal modalId={'showCredentialsModal'} handleSubmit={this.handleSubmit} closeModal={this.closeModal} isActive={this.state.showCredentialsModal} />

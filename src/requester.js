@@ -452,6 +452,12 @@ export async function testBook(bookingObj) {
     });
 }
 
+export async function confirmBooking(bookingObj) {
+    return sendRequest(`${host}api/test/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
+        return res.response.json();
+    });
+}
+
 export async function getLocRateFromCoinMarketCap(currency) {
     console.log(currency);
     return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {

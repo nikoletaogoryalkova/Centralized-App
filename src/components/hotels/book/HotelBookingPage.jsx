@@ -150,7 +150,7 @@ class HotelBookingPage extends React.Component {
         const encodedBooking = encodeURI(JSON.stringify(booking));
         const id = this.props.match.params.id;
         const query = `?booking=${encodedBooking}`;
-        // window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+        window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
     }
 
     render() {
@@ -236,7 +236,7 @@ class HotelBookingPage extends React.Component {
                                     })}
                                 </div>
                                 <div className="col col-md-12">
-                                    <button disabled className="btn btn-primary btn-book" onClick={this.handleSubmit}>Comming Soon</button>
+                                    <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Comming Soon</button>
                                 </div>
                             </div>
                         </section>

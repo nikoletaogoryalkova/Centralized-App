@@ -2841,7 +2841,7 @@ select {
 }
 
 #room-book-confirm {
-    width: 50%;
+    /* width: 50%; */
     margin: 0 auto;
     background-color: white;
 
