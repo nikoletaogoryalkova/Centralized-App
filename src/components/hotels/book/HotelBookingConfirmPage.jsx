@@ -17,6 +17,7 @@ class HotelBookingConfirmPage extends React.Component {
 
         this.state = {
             data: null,
+            showRoomCanxDetails: [],
             loading: true,
             locRate: null,
             showCredentialsModal: false,
@@ -27,6 +28,7 @@ class HotelBookingConfirmPage extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.toggleCanxDetails = this.toggleCanxDetails.bind(this);
     }
 
     componentDidMount() {
@@ -112,6 +114,47 @@ class HotelBookingConfirmPage extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    toggleCanxDetails(index) {
+        const showRoomCanxDetails = this.state.showRoomCanxDetails.slice(0);
+        showRoomCanxDetails[index] = !showRoomCanxDetails[index];
+        this.setState({ showRoomCanxDetails: showRoomCanxDetails });
+    }
+
+    getRoomRows(booking) {
+        const currency = this.state.data.currency;
+        const rows = [];
+        if (booking) {
+            booking.forEach((booking, index) => {
+                rows.push(
+                    <tr key={index}>
+                        <td>{booking.room.roomType.text}</td>
+                        <td>{this.state.data.currency} {booking.room.totalSellingPrice.amt} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</td>
+                        <td><button onClick={() => this.toggleCanxDetails(index)}>{this.state.showRoomCanxDetails[index] ? 'Hide' : 'Show'}</button></td>
+                    </tr>
+                );
+
+                const fees = booking.room.canxFees;
+                if (fees.length === 0) {
+                    rows.push(<tr className={this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}><td colSpan="3">No cancellation fees</td></tr>);
+                } else if (fees.length === 1) {
+                    rows.push(<tr className={this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}><td colSpan="3">Cancellation fee - {currency} {fees[0].amount.amt} ({fees[0].locPrice} LOC)</td></tr>);
+                } else {
+                    fees.slice(1).forEach((fee, feeIndex) => {
+                        rows.push(<tr className={this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}><td key={feeIndex} colSpan="3">{`Cancel up to ${moment(fee.from).format('DD MM YYYY')} - Fee: `} - {fee.amount.amt}</td></tr>);
+                    });
+
+                    rows.push(<tr className={this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}><td key={fees.length} colSpan="3">{`Cancel on or after ${moment(this.getLastDate(fees).from).format('DD MM YYYY')} - Fee: `} - {fees[0].amount.amt}</td></tr>);
+                }
+            });
+        }
+
+        return rows;
+    }
+
+    getLastDate(fees) {
+        return fees.slice(1).sort((x, y) => x.from < y.from ? 1 : -1)[0];
+    }
+
     render() {
         const booking = this.state.data && this.state.data.booking.hotelBooking;
         const currency = this.state.data && this.state.data.currency;
@@ -140,7 +183,6 @@ class HotelBookingConfirmPage extends React.Component {
                                 <h2>Confirm and Pay</h2>
                                 <hr />
 
-
                                 <div id="room-book-confirm">
                                     <div className="col-md-12 text-center">
                                         <h4>Lockchain</h4>
@@ -164,16 +206,7 @@ class HotelBookingConfirmPage extends React.Component {
                                                 <th>Cancellation Fees</th>
                                             </thead>
                                             <tbody>
-                                                {booking && booking.map((booking, index) => {
-                                                    return (
-                                                        <tr key={index}>
-                                                            <td>{booking.room.roomType.text}</td>
-                                                            <td>{currency} {booking.room.totalSellingPrice.amt} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</td>
-                                                            <td><button>Show</button></td>
-                                                            <tr>Hello</tr>
-                                                        </tr>
-                                                    );
-                                                })}
+                                                {this.getRoomRows(booking)}
                                             </tbody>
                                         </table>
                                     </div>

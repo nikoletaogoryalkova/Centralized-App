@@ -2977,3 +2977,7 @@ select {
     flex-direction: column;
     justify-content: center;
   }
+
+  .room-cancellation-hidden {
+      display: none;
+  }
