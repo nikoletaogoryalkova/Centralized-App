@@ -55,20 +55,20 @@ export class HotelReservation {
 		const hotelIdHex = web3.utils.utf8ToHex(hotelId);
 		const roomIdHex = web3.utils.utf8ToHex(roomId);
 
-		// await validateReservationParams(jsonObj,
-		// 	password,
-		// 	hotelReservationIdHex,
-		// 	reservationCostLOC,
-		// 	reservationStartDateFormatted,
-		// 	reservationEndDateFormatted,
-		// 	daysBeforeStartForRefund,
-		// 	refundPercentage,
-		// 	hotelIdHex,
-		// 	roomIdHex,
-		// 	numberOfTravelers,
-		// 	callOptions);
+		await validateReservationParams(jsonObj,
+			password,
+			hotelReservationIdHex,
+			reservationCostLOC,
+			reservationStartDateFormatted,
+			reservationEndDateFormatted,
+			daysBeforeStartForRefund,
+			refundPercentage,
+			hotelIdHex,
+			roomIdHex,
+			numberOfTravelers,
+			callOptions);
 
-		// await validateLocBalance(userKeys.address, reservationCostLOC);
+		await validateLocBalance(userKeys.address, reservationCostLOC);
 
 		await approveContract(userKeys.address, userKeys.privateKey, reservationCostLOC, HotelReservationFactoryContract._address);
 
