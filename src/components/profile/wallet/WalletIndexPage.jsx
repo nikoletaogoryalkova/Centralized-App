@@ -44,7 +44,15 @@ export default class WalletIndexPage extends React.Component {
                 NotificationManager.success('Transaction made successfully', 'Send Tokens');
                 console.log(x); 
             }).catch(x => {
-                NotificationManager.warning(x.message, 'Send Tokens');
+                if (x.hasOwnProperty('message')) {
+                    NotificationManager.warning(x.message, 'Send Tokens');
+                } else if (x.hasOwnProperty('err') && x.err.hasOwnProperty('message')) {
+                    NotificationManager.warning(x.err.message, 'Send Tokens');
+                } else if (typeof x === 'string') {
+                    NotificationManager.warning(x, 'Send Tokens');
+                } else {
+                    console.log(x);
+                }
             });
         }, 1000);   
     }

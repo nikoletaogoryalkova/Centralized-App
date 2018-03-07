@@ -76,20 +76,33 @@ class HotelBookingConfirmPage extends React.Component {
         const recipient = '0xa032235b81ceb313f57877acee273ea5ae8e776b';
         // const amount = this.state.data.locPrice * Math.pow(10, 18);
         const amount = 1 * Math.pow(10, 18);
+        NotificationManager.info('We are processing your transaction through the ethereum network. It might freeze your screen for several seconds...', 'Transactions');
         getCurrentlyLoggedUserJsonFile().then((json) => {
-            TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount).then((transactionHash) => {
-                const bookingConfirmObj = {
-                    bookingId: preparedBookingId,
-                    transactionHash: transactionHash.transactionHash
-                };
-    
-                confirmBooking(bookingConfirmObj).then(() => {
-                    NotificationManager.success('You will receive a confirmation message');
+            setTimeout(() => {
+                TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount).then((transactionHash) => {
+                    const bookingConfirmObj = {
+                        bookingId: preparedBookingId,
+                        transactionHash: transactionHash.transactionHash
+                    };
+        
+                    confirmBooking(bookingConfirmObj).then(() => {
+                        NotificationManager.success('You will receive a confirmation message');
+                        setTimeout(() => {
+                            window.location.href = '/profile/messages';
+                        }, 3000);
+                    });
+                }).catch(error => {
+                    if (error.hasOwnProperty('message')) {
+                        NotificationManager.warning(error.message, 'Send Tokens');
+                    } else if (error.hasOwnProperty('err') && error.err.hasOwnProperty('message')) {
+                        NotificationManager.warning(error.err.message, 'Send Tokens');
+                    } else if (typeof x === 'string') {
+                        NotificationManager.warning(error, 'Send Tokens');
+                    } else {
+                        console.log(error);
+                    }
                 });
-            }).catch(error => {
-                console.log(error);
-                // NotificationManager.warning(error);
-            });
+            }, 1000);
         });
     }
 
@@ -228,13 +241,13 @@ class HotelBookingConfirmPage extends React.Component {
                                     
                                     <hr/>
                                     <div className="row order-name">
-                                        <p>Name - {this.props.userInfo.firstName} {this.props.userInfo.lastName}</p>    
+                                        <p>Name: <span className="booking-for">{this.props.userInfo.firstName} {this.props.userInfo.lastName}</span></p>    
                                     </div>
                                     <div className="row order-total">
-                                        <p>Order Total - <span className="booking-price">{currency} {(fiatPrice).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
+                                        <p>Order Total: <span className="booking-price">{currency} {(fiatPrice).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
                                     </div>
                                 </div>
-                                <button className="btn btn-primary btn-book" onClick={() => this.openModal('showCredentialsModal')}>Confirm and pay</button>
+                                <button className="btn btn-primary btn-book" onClick={() => this.openModal('showCredentialsModal')}>Confirm and Pay</button>
                             </div>
                             <CredentialsModal modalId={'showCredentialsModal'} handleSubmit={this.handleSubmit} closeModal={this.closeModal} isActive={this.state.showCredentialsModal} />
                         </div>
