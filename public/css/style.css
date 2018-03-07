@@ -2841,10 +2841,53 @@ select {
 }
 
 #room-book-confirm {
+    margin: 10px;
+}
+
+#room-book-confirm .booking-details {
     /* width: 50%; */
     margin: 0 auto;
     background-color: white;
+    padding: 20px;
+    margin-bottom: 30px;
+}
 
+#room-book-confirm table {
+    margin: 0 auto;
+}
+
+#room-book-confirm table button {
+    background: none;
+    color: #d87a61;
+    border: 0;
+    outline: none;
+}
+
+#room-book-confirm table th, td {
+    padding: 10px;
+}
+
+#room-book-confirm table th {
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+#room-book-confirm .booking-price {
+    font-weight: bold;
+}
+
+#room-book-confirm table tr td:last-child {
+    text-align: center;
+}
+
+#room-book-confirm table tr.booking-room-canx-fee td {
+    background-color: #F5F5F5;
+    color: #d87a61;
+}
+
+#room-book-confirm .order-total, .order-name p {
+    text-align: right;
+    padding-right: 20px;
 }
 
 #room-book-confirm::after {
