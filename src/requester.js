@@ -440,7 +440,6 @@ export async function getRegionsBySearchParameter(param) {
 }
 
 export async function testSearch(query) {
-    console.log(`${host}api/test/hotels/search${query}`);
     return sendRequest(`${host}api/test/hotels/search${query}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
@@ -453,10 +452,41 @@ export async function testBook(bookingObj) {
     });
 }
 
+export async function confirmBooking(bookingObj) {
+    return sendRequest(`${host}api/test/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
+        return res.response.json();
+    });
+}
+
 export async function getLocRateFromCoinMarketCap(currency) {
     console.log(currency);
     return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {
         console.log(res);
+        return res.response.json();
+    });
+}
+
+export async function getCurrencyRates() {
+    return sendRequest(`${host}rates`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getCurrentlyLoggedUserJsonFile() {
+    return sendRequest(`${host}users/me/jsonFile`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getRegionNameById(id) {
+    return sendRequest(`${host}regions/${id}/name`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getEmailFreeResponse(email) {
+    email = email || 'info@lockchain.co';
+    return sendRequest(`${host}users/email/${encodeURIComponent(email.replace(/\./g, '&#46;')).replace(/%26%2346%3B/g, '.')}/`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

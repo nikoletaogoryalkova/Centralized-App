@@ -11,6 +11,7 @@ import MyReservationsPage from './reservations/MyReservationsPage';
 import MessagesPage from './messages/MessagesPage';
 import MessagesChatPage from './messages/MessagesChatPage';
 import ProfileEditPage from './me/ProfileEditPage';
+import WalletPage from './wallet/WalletIndexPage';
 import ListingsAdminPage from './admin/ListingsAdminPage';
 
 import PropTypes from 'prop-types';
@@ -19,7 +20,6 @@ export default class ProfilePage extends React.Component {
     render() {
         return (
             <div>
-                <NavLocalization />
                 <NavProfile />
                 <Switch>
                     <Route exact path="/profile/dashboard" render={() => <DashboardPage />} />
@@ -30,6 +30,7 @@ export default class ProfilePage extends React.Component {
                     <Route exact path="/profile/messages" render={() => <MessagesPage />} />
                     <Route exact path="/profile/messages/chat/:id" render={() => <MessagesChatPage />} />
                     <Route path="/profile/me/edit" render={() => <ProfileEditPage />} />
+                    <Route path="/profile/wallet" render={() => <WalletPage />} />
                     <Route path="/profile/admin" render={() => <ListingsAdminPage />} />
                 </Switch>
             </div>

@@ -1,5 +1,4 @@
-import { NotificationContainer } from 'react-notifications';
-
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
@@ -28,16 +27,24 @@ export default class CreateWalletModal extends React.Component {
     }
 
     submitPassword() {
-        try {
-            Wallet.createFromPassword(this.state.walletPassword).then((wallet) => {
-                localStorage.setItem('walletAddress', wallet.address);
-                localStorage.setItem('walletMnemonic', wallet.mnemonic);
-                localStorage.setItem('walletJson', JSON.stringify(wallet.jsonFile));
-                this.props.closeModal(modal.current);
-                this.props.openModal(modal.next);
-            });
-        } catch (error) {
-            console.log(error);
+        if (this.state.walletPassword.length < 9) {
+            NotificationManager.warning('Password should be at least 9 symbols');
+        } else {
+            try {
+                NotificationManager.info('We are creating your wallet through the ethereum network. The screen might be unavailable for about 10 seconds...');
+                setTimeout(() => {
+                    Wallet.createFromPassword(this.state.walletPassword).then((wallet) => {
+                        localStorage.setItem('walletAddress', wallet.address);
+                        localStorage.setItem('walletMnemonic', wallet.mnemonic);
+                        localStorage.setItem('walletJson', JSON.stringify(wallet.jsonFile));
+                        this.props.closeModal(modal.current);
+                        this.props.openModal(modal.next);
+                    });
+                }, 1000);
+                
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
@@ -46,7 +53,7 @@ export default class CreateWalletModal extends React.Component {
             <div>
                 <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
                     <Modal.Header>
-                        <h1>Enter yor wallet password</h1>
+                        <h1>Enter your wallet password</h1>
                         <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
@@ -58,7 +65,7 @@ export default class CreateWalletModal extends React.Component {
                             </div>
 
                             <div className="login-sign">
-                                <p>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</p>
+                                <p><b>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</b></p>
                             </div>
 
                             <button type="submit" className="btn btn-primary">Submit password</button>

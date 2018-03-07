@@ -1,0 +1,86 @@
+import React from 'react';
+import OwlCarousel from 'react-owl-carousel';
+import PropTypes from 'prop-types';
+import { Config } from '../../../config.js';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import { connect } from 'react-redux';
+
+function PopularDestinationsCarousel(props) {
+    const pictures = [
+        {
+            name: 'London',
+            image: `${Config.getValue('basePath')}images/destinations/London.png`,
+            searchUrl: `hotels/listings?region=52612&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
+        },
+        {
+            name: 'Madrid',
+            image: `${Config.getValue('basePath')}images/destinations/Madrid.png`,
+            searchUrl: `hotels/listings?region=18417&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
+        },
+        {
+            name: 'Paris',
+            image: `${Config.getValue('basePath')}images/destinations/Paris.png`,
+            searchUrl: `hotels/listings?region=16471&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
+        },
+        {
+            name: 'Canberra',
+            image: `${Config.getValue('basePath')}images/destinations/Canberra.png`,
+            searchUrl: `hotels/listings?region=15286&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
+        },
+    ];
+
+    return (
+        <div>
+            <OwlCarousel
+                className="owl-theme"
+                loop
+                mouseDrag={false}
+                autoplay={false}
+                margin={30}
+                nav
+                navText={['<span class=\'left_carusel\'></span>', '<span class=\'right_carusel\'></span>']}
+                items={4}
+                responsiveClass
+                dots={false}
+                responsive={{
+                    0: {
+                        items: 1
+                    },
+                    768: {
+                        items: 3
+                    },
+                    960: {
+                        items: 4
+                    },
+                    1200: {
+                        items: 4
+                    }
+                }}>
+                {pictures.map((dest, i) => {
+                    return (
+                        <div key={i} className="popular-destination-image-container">
+                            <Link to={dest.searchUrl}>
+                                <img src={dest.image} alt={dest.name}/>
+                            </Link>
+                        </div>
+                    );
+                })}
+            </OwlCarousel>
+        </div>
+    );
+}
+
+PopularDestinationsCarousel.propTypes = {
+    listings: PropTypes.array,
+    listingType: PropTypes.string,
+};
+
+export default connect(mapStateToProps)(PopularDestinationsCarousel);
+
+function mapStateToProps(state) {
+    const { paymentInfo } = state;
+    return {
+        paymentInfo
+    };
+}

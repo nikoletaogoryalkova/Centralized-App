@@ -22,8 +22,8 @@ const errors = require('./config/errors.json');
 export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
-
 		validateAddress(recipient, errors.INVALID_ADDRESS);
+		
 		let result = jsonFileToKeys(jsonObj, password);
 
 		let callOptions = {
@@ -51,7 +51,6 @@ export class TokenTransactions {
 			gasConfig.transferTokens,
 			funcData,
 		);
-
 
 		return new Promise(function (resolve, reject) {
 			web3.eth.sendSignedTransaction(signedData)
