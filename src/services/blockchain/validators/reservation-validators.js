@@ -57,12 +57,10 @@ export async function validateReservationParams(jsonObj,
 }
 
 export async function validateBookingExists(hotelReservationId) {
-	console.log(hotelReservationId);
 	await isHotelReservationIdEmpty(hotelReservationId);
 	const bookingContractAddress = await HotelReservationFactoryContract.methods.getHotelReservationContractAddress(
 		web3.utils.utf8ToHex(hotelReservationId)
 	).call();
-	console.log(web3.utils.utf8ToHex(hotelReservationId));
 	if (bookingContractAddress === '0x0000000000000000000000000000000000000000') {
 		throw ERROR.MISSING_BOOKING;
 	}
