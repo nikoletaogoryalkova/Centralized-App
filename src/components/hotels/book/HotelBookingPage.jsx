@@ -236,7 +236,7 @@ class HotelBookingPage extends React.Component {
                                     })}
                                 </div>
                                 <div className="col col-md-12">
-                                    <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Comming Soon</button>
+                                    <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Proceed</button>
                                 </div>
                             </div>
                         </section>
