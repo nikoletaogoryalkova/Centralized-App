@@ -33,3 +33,9 @@ export function formatEndDateTimestamp(timestamp) {
 
 	return result.unix();
 }
+
+export function addDaysToNow(days) {
+	const date = new Date();
+	date.setDate(date.getUTCDate() + days);
+	return date;
+}

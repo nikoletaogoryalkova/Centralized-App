@@ -1,0 +1,1597 @@
+{
+  "contractName": "IHotelReservation",
+  "abi": [{
+      "constant": false,
+      "inputs": [{
+        "name": "_newImpl",
+        "type": "address"
+      }],
+      "name": "upgradeImplementation",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getOwner",
+      "outputs": [{
+        "name": "",
+        "type": "address"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getImplementation",
+      "outputs": [{
+        "name": "",
+        "type": "address"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "init",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "newOwner",
+        "type": "address"
+      }],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [{
+          "indexed": false,
+          "name": "_hotelReservationId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "_customerAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_reservationStartDate",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_reservationEndDate",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogCreateHotelReservation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [{
+          "indexed": false,
+          "name": "_hotelReservationId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "_customerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "LogCancelHotelReservation",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+          "name": "_hotelReservationId",
+          "type": "bytes32"
+        },
+        {
+          "name": "customerAddress",
+          "type": "address"
+        },
+        {
+          "name": "_reservationCostLOC",
+          "type": "uint256"
+        },
+        {
+          "name": "_reservationStartDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_reservationEndDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_daysBeforeStartForRefund",
+          "type": "uint256"
+        },
+        {
+          "name": "_refundPercentage",
+          "type": "uint256"
+        },
+        {
+          "name": "_hotelId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_roomId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_numberOfTravelers",
+          "type": "uint256"
+        }
+      ],
+      "name": "createHotelReservation",
+      "outputs": [{
+        "name": "success",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getHotelReservation",
+      "outputs": [{
+          "name": "_hotelReservationId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_customerAddress",
+          "type": "address"
+        },
+        {
+          "name": "_reservationCostLOC",
+          "type": "uint256"
+        },
+        {
+          "name": "_reservationStartDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_reservationEndDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_daysBeforeStartForRefund",
+          "type": "uint256"
+        },
+        {
+          "name": "_refundPercentage",
+          "type": "uint256"
+        },
+        {
+          "name": "_hotelId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_roomId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_numberOfTravelers",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "_hotelReservationId",
+        "type": "bytes32"
+      }],
+      "name": "cancelHotelReservation",
+      "outputs": [{
+        "name": "success",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "_customerAddress",
+        "type": "address"
+      }],
+      "name": "validateCancelation",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getLocToBeRefunded",
+      "outputs": [{
+          "name": "_locToBeRefunded",
+          "type": "uint256"
+        },
+        {
+          "name": "_locRemainder",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getCustomerAddress",
+      "outputs": [{
+        "name": "_customerAddress",
+        "type": "address"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "validatePeriodForWithdraw",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getLocForWithdraw",
+      "outputs": [{
+        "name": "_locAmountForWithdraw",
+        "type": "uint256"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getHotelReservationId",
+      "outputs": [{
+        "name": "_hotelReservationId",
+        "type": "bytes32"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.17;\n\nimport \"./../Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol\";\n\ncontract IHotelReservation is IOwnableUpgradeableImplementation {\n\nevent LogCreateHotelReservation(bytes32 _hotelReservationId, address _customerAddress, uint _reservationStartDate, uint _reservationEndDate);\nevent LogCancelHotelReservation(bytes32 _hotelReservationId, address _customerAddress);\n\n\tfunction createHotelReservation(\n\t\tbytes32 _hotelReservationId,\n\t\taddress customerAddress,\n\t\tuint _reservationCostLOC,\n\t\tuint _reservationStartDate,\n\t\tuint _reservationEndDate,\n\t\tuint _daysBeforeStartForRefund,\n\t\tuint _refundPercentage,\n\t\tbytes32 _hotelId,\n\t\tbytes32 _roomId,\n\t\tuint _numberOfTravelers\n\t) public returns (bool success);\n\n\tfunction getHotelReservation() public constant \n\treturns(\n\t\tbytes32 _hotelReservationId,\n\t\taddress _customerAddress,\n\t\tuint _reservationCostLOC,\n\t\tuint _reservationStartDate,\n\t\tuint _reservationEndDate,\n\t\tuint _daysBeforeStartForRefund,\n\t\tuint _refundPercentage,\n\t\tbytes32 _hotelId,\n\t\tbytes32 _roomId ,\n\t\tuint _numberOfTravelers);\n\n\tfunction cancelHotelReservation(bytes32 _hotelReservationId)  returns(bool success);\n\tfunction validateCancelation(address _customerAddress);\n\tfunction getLocToBeRefunded() public constant returns (uint _locToBeRefunded, uint _locRemainder);\n\tfunction getCustomerAddress() public constant returns (address _customerAddress);\n\tfunction validatePeriodForWithdraw();\n\tfunction getLocForWithdraw() returns (uint _locAmountForWithdraw);\n\tfunction getHotelReservationId() returns (bytes32 _hotelReservationId);\n}",
+  "sourcePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/HotelReservation/IHotelReservation.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/HotelReservation/IHotelReservation.sol",
+      "exportedSymbols": {
+        "IHotelReservation": [
+          1741
+        ]
+      }
+    },
+    "children": [{
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".17"
+          ]
+        },
+        "id": 1636,
+        "name": "PragmaDirective",
+        "src": "0:24:8"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 6313,
+          "absolutePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol",
+          "file": "./../Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol",
+          "scope": 1742,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 1637,
+        "name": "ImportDirective",
+        "src": "26:100:8"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            3076,
+            6312
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            1741,
+            6312,
+            3076
+          ],
+          "name": "IHotelReservation",
+          "scope": 1742
+        },
+        "children": [{
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [{
+              "attributes": {
+                "contractScope": null,
+                "name": "IOwnableUpgradeableImplementation",
+                "referencedDeclaration": 6312,
+                "type": "contract IOwnableUpgradeableImplementation"
+              },
+              "id": 1638,
+              "name": "UserDefinedTypeName",
+              "src": "158:33:8"
+            }],
+            "id": 1639,
+            "name": "InheritanceSpecifier",
+            "src": "158:33:8"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "LogCreateHotelReservation"
+            },
+            "children": [{
+              "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1649,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 1640,
+                    "name": "ElementaryTypeName",
+                    "src": "227:7:8"
+                  }],
+                  "id": 1641,
+                  "name": "VariableDeclaration",
+                  "src": "227:27:8"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_customerAddress",
+                    "scope": 1649,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1642,
+                    "name": "ElementaryTypeName",
+                    "src": "256:7:8"
+                  }],
+                  "id": 1643,
+                  "name": "VariableDeclaration",
+                  "src": "256:24:8"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_reservationStartDate",
+                    "scope": 1649,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1644,
+                    "name": "ElementaryTypeName",
+                    "src": "282:4:8"
+                  }],
+                  "id": 1645,
+                  "name": "VariableDeclaration",
+                  "src": "282:26:8"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_reservationEndDate",
+                    "scope": 1649,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1646,
+                    "name": "ElementaryTypeName",
+                    "src": "310:4:8"
+                  }],
+                  "id": 1647,
+                  "name": "VariableDeclaration",
+                  "src": "310:24:8"
+                }
+              ],
+              "id": 1648,
+              "name": "ParameterList",
+              "src": "226:109:8"
+            }],
+            "id": 1649,
+            "name": "EventDefinition",
+            "src": "195:141:8"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "LogCancelHotelReservation"
+            },
+            "children": [{
+              "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1655,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 1650,
+                    "name": "ElementaryTypeName",
+                    "src": "369:7:8"
+                  }],
+                  "id": 1651,
+                  "name": "VariableDeclaration",
+                  "src": "369:27:8"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_customerAddress",
+                    "scope": 1655,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1652,
+                    "name": "ElementaryTypeName",
+                    "src": "398:7:8"
+                  }],
+                  "id": 1653,
+                  "name": "VariableDeclaration",
+                  "src": "398:24:8"
+                }
+              ],
+              "id": 1654,
+              "name": "ParameterList",
+              "src": "368:55:8"
+            }],
+            "id": 1655,
+            "name": "EventDefinition",
+            "src": "337:87:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "createHotelReservation",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                    "attributes": {
+                      "constant": false,
+                      "name": "_hotelReservationId",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1656,
+                      "name": "ElementaryTypeName",
+                      "src": "462:7:8"
+                    }],
+                    "id": 1657,
+                    "name": "VariableDeclaration",
+                    "src": "462:27:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "customerAddress",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "address",
+                        "type": "address"
+                      },
+                      "id": 1658,
+                      "name": "ElementaryTypeName",
+                      "src": "493:7:8"
+                    }],
+                    "id": 1659,
+                    "name": "VariableDeclaration",
+                    "src": "493:23:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_reservationCostLOC",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1660,
+                      "name": "ElementaryTypeName",
+                      "src": "520:4:8"
+                    }],
+                    "id": 1661,
+                    "name": "VariableDeclaration",
+                    "src": "520:24:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_reservationStartDate",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1662,
+                      "name": "ElementaryTypeName",
+                      "src": "548:4:8"
+                    }],
+                    "id": 1663,
+                    "name": "VariableDeclaration",
+                    "src": "548:26:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_reservationEndDate",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1664,
+                      "name": "ElementaryTypeName",
+                      "src": "578:4:8"
+                    }],
+                    "id": 1665,
+                    "name": "VariableDeclaration",
+                    "src": "578:24:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_daysBeforeStartForRefund",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1666,
+                      "name": "ElementaryTypeName",
+                      "src": "606:4:8"
+                    }],
+                    "id": 1667,
+                    "name": "VariableDeclaration",
+                    "src": "606:30:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_refundPercentage",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1668,
+                      "name": "ElementaryTypeName",
+                      "src": "640:4:8"
+                    }],
+                    "id": 1669,
+                    "name": "VariableDeclaration",
+                    "src": "640:22:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_hotelId",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1670,
+                      "name": "ElementaryTypeName",
+                      "src": "666:7:8"
+                    }],
+                    "id": 1671,
+                    "name": "VariableDeclaration",
+                    "src": "666:16:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_roomId",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1672,
+                      "name": "ElementaryTypeName",
+                      "src": "686:7:8"
+                    }],
+                    "id": 1673,
+                    "name": "VariableDeclaration",
+                    "src": "686:15:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_numberOfTravelers",
+                      "scope": 1680,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1674,
+                      "name": "ElementaryTypeName",
+                      "src": "705:4:8"
+                    }],
+                    "id": 1675,
+                    "name": "VariableDeclaration",
+                    "src": "705:23:8"
+                  }
+                ],
+                "id": 1676,
+                "name": "ParameterList",
+                "src": "458:273:8"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "success",
+                    "scope": 1680,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bool",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 1677,
+                    "name": "ElementaryTypeName",
+                    "src": "748:4:8"
+                  }],
+                  "id": 1678,
+                  "name": "VariableDeclaration",
+                  "src": "748:12:8"
+                }],
+                "id": 1679,
+                "name": "ParameterList",
+                "src": "747:14:8"
+              }
+            ],
+            "id": 1680,
+            "name": "FunctionDefinition",
+            "src": "427:335:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getHotelReservation",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1681,
+                "name": "ParameterList",
+                "src": "793:2:8"
+              },
+              {
+                "children": [{
+                    "attributes": {
+                      "constant": false,
+                      "name": "_hotelReservationId",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1682,
+                      "name": "ElementaryTypeName",
+                      "src": "825:7:8"
+                    }],
+                    "id": 1683,
+                    "name": "VariableDeclaration",
+                    "src": "825:27:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_customerAddress",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "address",
+                        "type": "address"
+                      },
+                      "id": 1684,
+                      "name": "ElementaryTypeName",
+                      "src": "856:7:8"
+                    }],
+                    "id": 1685,
+                    "name": "VariableDeclaration",
+                    "src": "856:24:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_reservationCostLOC",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1686,
+                      "name": "ElementaryTypeName",
+                      "src": "884:4:8"
+                    }],
+                    "id": 1687,
+                    "name": "VariableDeclaration",
+                    "src": "884:24:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_reservationStartDate",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1688,
+                      "name": "ElementaryTypeName",
+                      "src": "912:4:8"
+                    }],
+                    "id": 1689,
+                    "name": "VariableDeclaration",
+                    "src": "912:26:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_reservationEndDate",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1690,
+                      "name": "ElementaryTypeName",
+                      "src": "942:4:8"
+                    }],
+                    "id": 1691,
+                    "name": "VariableDeclaration",
+                    "src": "942:24:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_daysBeforeStartForRefund",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1692,
+                      "name": "ElementaryTypeName",
+                      "src": "970:4:8"
+                    }],
+                    "id": 1693,
+                    "name": "VariableDeclaration",
+                    "src": "970:30:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_refundPercentage",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1694,
+                      "name": "ElementaryTypeName",
+                      "src": "1004:4:8"
+                    }],
+                    "id": 1695,
+                    "name": "VariableDeclaration",
+                    "src": "1004:22:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_hotelId",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1696,
+                      "name": "ElementaryTypeName",
+                      "src": "1030:7:8"
+                    }],
+                    "id": 1697,
+                    "name": "VariableDeclaration",
+                    "src": "1030:16:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_roomId",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1698,
+                      "name": "ElementaryTypeName",
+                      "src": "1050:7:8"
+                    }],
+                    "id": 1699,
+                    "name": "VariableDeclaration",
+                    "src": "1050:15:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_numberOfTravelers",
+                      "scope": 1703,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1700,
+                      "name": "ElementaryTypeName",
+                      "src": "1070:4:8"
+                    }],
+                    "id": 1701,
+                    "name": "VariableDeclaration",
+                    "src": "1070:23:8"
+                  }
+                ],
+                "id": 1702,
+                "name": "ParameterList",
+                "src": "821:273:8"
+              }
+            ],
+            "id": 1703,
+            "name": "FunctionDefinition",
+            "src": "765:330:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "cancelHotelReservation",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1710,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 1704,
+                    "name": "ElementaryTypeName",
+                    "src": "1130:7:8"
+                  }],
+                  "id": 1705,
+                  "name": "VariableDeclaration",
+                  "src": "1130:27:8"
+                }],
+                "id": 1706,
+                "name": "ParameterList",
+                "src": "1129:29:8"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "success",
+                    "scope": 1710,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bool",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 1707,
+                    "name": "ElementaryTypeName",
+                    "src": "1168:4:8"
+                  }],
+                  "id": 1708,
+                  "name": "VariableDeclaration",
+                  "src": "1168:12:8"
+                }],
+                "id": 1709,
+                "name": "ParameterList",
+                "src": "1167:14:8"
+              }
+            ],
+            "id": 1710,
+            "name": "FunctionDefinition",
+            "src": "1098:84:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "validateCancelation",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_customerAddress",
+                    "scope": 1715,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1711,
+                    "name": "ElementaryTypeName",
+                    "src": "1213:7:8"
+                  }],
+                  "id": 1712,
+                  "name": "VariableDeclaration",
+                  "src": "1213:24:8"
+                }],
+                "id": 1713,
+                "name": "ParameterList",
+                "src": "1212:26:8"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1714,
+                "name": "ParameterList",
+                "src": "1238:0:8"
+              }
+            ],
+            "id": 1715,
+            "name": "FunctionDefinition",
+            "src": "1184:55:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getLocToBeRefunded",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1716,
+                "name": "ParameterList",
+                "src": "1268:2:8"
+              },
+              {
+                "children": [{
+                    "attributes": {
+                      "constant": false,
+                      "name": "_locToBeRefunded",
+                      "scope": 1722,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1717,
+                      "name": "ElementaryTypeName",
+                      "src": "1296:4:8"
+                    }],
+                    "id": 1718,
+                    "name": "VariableDeclaration",
+                    "src": "1296:21:8"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_locRemainder",
+                      "scope": 1722,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1719,
+                      "name": "ElementaryTypeName",
+                      "src": "1319:4:8"
+                    }],
+                    "id": 1720,
+                    "name": "VariableDeclaration",
+                    "src": "1319:18:8"
+                  }
+                ],
+                "id": 1721,
+                "name": "ParameterList",
+                "src": "1295:43:8"
+              }
+            ],
+            "id": 1722,
+            "name": "FunctionDefinition",
+            "src": "1241:98:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getCustomerAddress",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1723,
+                "name": "ParameterList",
+                "src": "1368:2:8"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_customerAddress",
+                    "scope": 1727,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1724,
+                    "name": "ElementaryTypeName",
+                    "src": "1396:7:8"
+                  }],
+                  "id": 1725,
+                  "name": "VariableDeclaration",
+                  "src": "1396:24:8"
+                }],
+                "id": 1726,
+                "name": "ParameterList",
+                "src": "1395:26:8"
+              }
+            ],
+            "id": 1727,
+            "name": "FunctionDefinition",
+            "src": "1341:81:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "validatePeriodForWithdraw",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1728,
+                "name": "ParameterList",
+                "src": "1458:2:8"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1729,
+                "name": "ParameterList",
+                "src": "1460:0:8"
+              }
+            ],
+            "id": 1730,
+            "name": "FunctionDefinition",
+            "src": "1424:37:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getLocForWithdraw",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1731,
+                "name": "ParameterList",
+                "src": "1489:2:8"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_locAmountForWithdraw",
+                    "scope": 1735,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1732,
+                    "name": "ElementaryTypeName",
+                    "src": "1501:4:8"
+                  }],
+                  "id": 1733,
+                  "name": "VariableDeclaration",
+                  "src": "1501:26:8"
+                }],
+                "id": 1734,
+                "name": "ParameterList",
+                "src": "1500:28:8"
+              }
+            ],
+            "id": 1735,
+            "name": "FunctionDefinition",
+            "src": "1463:66:8"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getHotelReservationId",
+              "payable": false,
+              "scope": 1741,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1736,
+                "name": "ParameterList",
+                "src": "1561:2:8"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1740,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 1737,
+                    "name": "ElementaryTypeName",
+                    "src": "1573:7:8"
+                  }],
+                  "id": 1738,
+                  "name": "VariableDeclaration",
+                  "src": "1573:27:8"
+                }],
+                "id": 1739,
+                "name": "ParameterList",
+                "src": "1572:29:8"
+              }
+            ],
+            "id": 1740,
+            "name": "FunctionDefinition",
+            "src": "1531:71:8"
+          }
+        ],
+        "id": 1741,
+        "name": "ContractDefinition",
+        "src": "128:1476:8"
+      }
+    ],
+    "id": 1742,
+    "name": "SourceUnit",
+    "src": "0:1604:8"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.19+commit.c4cbbb05.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-03-06T14:08:00.900Z"
+}

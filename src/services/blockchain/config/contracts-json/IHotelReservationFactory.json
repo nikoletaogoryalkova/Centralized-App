@@ -1,14 +1,11 @@
 {
   "contractName": "IHotelReservationFactory",
-  "abi": [
-    {
+  "abi": [{
       "constant": false,
-      "inputs": [
-        {
-          "name": "_newImpl",
-          "type": "address"
-        }
-      ],
+      "inputs": [{
+        "name": "_newImpl",
+        "type": "address"
+      }],
       "name": "upgradeImplementation",
       "outputs": [],
       "payable": false,
@@ -19,12 +16,10 @@
       "constant": true,
       "inputs": [],
       "name": "getOwner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
+      "outputs": [{
+        "name": "",
+        "type": "address"
+      }],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
@@ -33,12 +28,10 @@
       "constant": true,
       "inputs": [],
       "name": "getImplementation",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
+      "outputs": [{
+        "name": "",
+        "type": "address"
+      }],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
@@ -54,12 +47,10 @@
     },
     {
       "constant": false,
-      "inputs": [
-        {
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
+      "inputs": [{
+        "name": "newOwner",
+        "type": "address"
+      }],
       "name": "transferOwnership",
       "outputs": [],
       "payable": false,
@@ -68,8 +59,7 @@
     },
     {
       "anonymous": false,
-      "inputs": [
-        {
+      "inputs": [{
           "indexed": false,
           "name": "_hotelReservationId",
           "type": "bytes32"
@@ -94,13 +84,48 @@
       "type": "event"
     },
     {
-      "constant": false,
-      "inputs": [
+      "anonymous": false,
+      "inputs": [{
+          "indexed": false,
+          "name": "_hotelReservationId",
+          "type": "bytes32"
+        },
         {
-          "name": "implAddress",
+          "indexed": false,
+          "name": "_customerAddress",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_locRefundsRemainder",
+          "type": "uint256"
         }
       ],
+      "name": "LogCancelHotelReservation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [{
+          "indexed": false,
+          "name": "_hotelReservationId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "_withdrawnAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogWithdrawal",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "implAddress",
+        "type": "address"
+      }],
       "name": "setImplAddress",
       "outputs": [],
       "payable": false,
@@ -111,20 +136,17 @@
       "constant": true,
       "inputs": [],
       "name": "getImplAddress",
-      "outputs": [
-        {
-          "name": "implAddress",
-          "type": "address"
-        }
-      ],
+      "outputs": [{
+        "name": "implAddress",
+        "type": "address"
+      }],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
       "constant": false,
-      "inputs": [
-        {
+      "inputs": [{
           "name": "_hotelReservationId",
           "type": "bytes32"
         },
@@ -145,7 +167,7 @@
           "type": "uint256"
         },
         {
-          "name": "_refundPercantage",
+          "name": "_refundPercentage",
           "type": "uint256"
         },
         {
@@ -155,53 +177,47 @@
         {
           "name": "_roomId",
           "type": "bytes32"
+        },
+        {
+          "name": "_numberOfTravelers",
+          "type": "uint256"
         }
       ],
       "name": "createHotelReservation",
-      "outputs": [
-        {
-          "name": "success",
-          "type": "bool"
-        }
-      ],
+      "outputs": [{
+        "name": "success",
+        "type": "bool"
+      }],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "constant": true,
-      "inputs": [
-        {
-          "name": "index",
-          "type": "uint256"
-        }
-      ],
+      "inputs": [{
+        "name": "index",
+        "type": "uint256"
+      }],
       "name": "getHotelReservationId",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
+      "outputs": [{
+        "name": "",
+        "type": "bytes32"
+      }],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
       "constant": true,
-      "inputs": [
-        {
-          "name": "_hotelReservationId",
-          "type": "bytes32"
-        }
-      ],
+      "inputs": [{
+        "name": "_hotelReservationId",
+        "type": "bytes32"
+      }],
       "name": "getHotelReservationContractAddress",
-      "outputs": [
-        {
-          "name": "hotelReservationContract",
-          "type": "address"
-        }
-      ],
+      "outputs": [{
+        "name": "hotelReservationContract",
+        "type": "address"
+      }],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
@@ -210,25 +226,123 @@
       "constant": true,
       "inputs": [],
       "name": "getHotelReservationsCount",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
+      "outputs": [{
+        "name": "",
+        "type": "uint256"
+      }],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
     },
     {
       "constant": false,
-      "inputs": [
-        {
-          "name": "locTokenContractAddress",
-          "type": "address"
-        }
-      ],
+      "inputs": [{
+        "name": "locTokenContractAddress",
+        "type": "address"
+      }],
       "name": "setLOCTokenContractAddress",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "_hotelReservationId",
+        "type": "bytes32"
+      }],
+      "name": "cancelHotelReservation",
+      "outputs": [{
+        "name": "success",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "_hotelReservations",
+        "type": "address[]"
+      }],
+      "name": "withdraw",
+      "outputs": [{
+        "name": "success",
+        "type": "bool"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getLocRemainderAmount",
+      "outputs": [{
+        "name": "_locRefundsRemainder",
+        "type": "uint256"
+      }],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "_withdrawDestinationAddress",
+        "type": "address"
+      }],
+      "name": "setWithdrawDestinationAddress",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "_withdrawerAddress",
+        "type": "address"
+      }],
+      "name": "setWithdrawerAddress",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getWithdrawerAddress",
+      "outputs": [{
+        "name": "_withdrawerAddress",
+        "type": "address"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getWithdrawDestinationAddress",
+      "outputs": [{
+        "name": "_withdrawDestinationAddress",
+        "type": "address"
+      }],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [{
+        "name": "_cyclesCount",
+        "type": "uint256"
+      }],
+      "name": "setCyclesCount",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -239,19 +353,18 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.17;\n\nimport \"./../../Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol\";\n\ncontract IHotelReservationFactory is IOwnableUpgradeableImplementation {\n\nevent LogCreateHotelReservation(bytes32 _hotelReservationId, address _customerAddress, uint _reservationStartDate, uint _reservationEndDate);\n\n    function setImplAddress(address implAddress) public;\n    function getImplAddress() public constant returns(address implAddress);\n\n\tfunction createHotelReservation(\n\t\tbytes32 _hotelReservationId,\n\t\tuint _reservationCostLOC,\n\t\tuint _reservationStartDate,\n\t\tuint _reservationEndDate,\n\t\tuint _daysBeforeStartForRefund,\n\t\tuint _refundPercantage,\n\t\tbytes32 _hotelId,\n\t\tbytes32 _roomId\n\t) public returns (bool success);\n\n\tfunction getHotelReservationId(uint index) public constant returns(bytes32);\n    function getHotelReservationContractAddress(bytes32 _hotelReservationId) public constant returns(address hotelReservationContract);\n\tfunction getHotelReservationsCount() public constant returns(uint);\n\n\tfunction setLOCTokenContractAddress(address locTokenContractAddress) public;\n}\n",
-  "sourcePath": "/Users/vladislavivanov/Projects/LockChain/DApp/contracts/HotelReservation/HotelReservationFactory/IHotelReservationFactory.sol",
+  "source": "pragma solidity ^0.4.17;\n\nimport \"./../../Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol\";\n\ncontract IHotelReservationFactory is IOwnableUpgradeableImplementation {\n\nevent LogCreateHotelReservation(bytes32 _hotelReservationId, address _customerAddress, uint _reservationStartDate, uint _reservationEndDate);\nevent LogCancelHotelReservation(bytes32 _hotelReservationId, address _customerAddress, uint _locRefundsRemainder);\nevent LogWithdrawal(bytes32 _hotelReservationId, uint _withdrawnAmount);\n\n    function setImplAddress(address implAddress) public;\n    function getImplAddress() public constant returns(address implAddress);\n\n\tfunction createHotelReservation(\n\t\tbytes32 _hotelReservationId,\n\t\tuint _reservationCostLOC,\n\t\tuint _reservationStartDate,\n\t\tuint _reservationEndDate,\n\t\tuint _daysBeforeStartForRefund,\n\t\tuint _refundPercentage,\n\t\tbytes32 _hotelId,\n\t\tbytes32 _roomId,\n\t\tuint _numberOfTravelers\n\t) public returns (bool success);\n\n\tfunction getHotelReservationId(uint index) public constant returns(bytes32);\n    function getHotelReservationContractAddress(bytes32 _hotelReservationId) public constant returns(address hotelReservationContract);\n\tfunction getHotelReservationsCount() public constant returns(uint);\n\n\tfunction setLOCTokenContractAddress(address locTokenContractAddress) public;\n\tfunction cancelHotelReservation(bytes32 _hotelReservationId) returns(bool success);\n\tfunction withdraw(address[] _hotelReservations) returns(bool success);\n\tfunction getLocRemainderAmount() public constant returns(uint _locRefundsRemainder);\n\tfunction setWithdrawDestinationAddress(address _withdrawDestinationAddress);\n\tfunction setWithdrawerAddress(address _withdrawerAddress);\n\tfunction getWithdrawerAddress() returns(address _withdrawerAddress);\n\tfunction getWithdrawDestinationAddress() returns(address _withdrawDestinationAddress);\n\tfunction setCyclesCount(uint _cyclesCount);\n}\n",
+  "sourcePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/HotelReservation/HotelReservationFactory/IHotelReservationFactory.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/Users/vladislavivanov/Projects/LockChain/DApp/contracts/HotelReservation/HotelReservationFactory/IHotelReservationFactory.sol",
+      "absolutePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/HotelReservation/HotelReservationFactory/IHotelReservationFactory.sol",
       "exportedSymbols": {
         "IHotelReservationFactory": [
-          983
+          1591
         ]
       }
     },
-    "children": [
-      {
+    "children": [{
         "attributes": {
           "literals": [
             "solidity",
@@ -260,63 +373,60 @@
             ".17"
           ]
         },
-        "id": 914,
+        "id": 1461,
         "name": "PragmaDirective",
         "src": "0:24:6"
       },
       {
         "attributes": {
-          "SourceUnit": 5494,
-          "absolutePath": "/Users/vladislavivanov/Projects/LockChain/DApp/contracts/Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol",
+          "SourceUnit": 6313,
+          "absolutePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol",
           "file": "./../../Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol",
-          "scope": 984,
+          "scope": 1592,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 915,
+        "id": 1462,
         "name": "ImportDirective",
         "src": "26:103:6"
       },
       {
         "attributes": {
           "contractDependencies": [
-            2419,
-            5493
+            3076,
+            6312
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": false,
           "linearizedBaseContracts": [
-            983,
-            5493,
-            2419
+            1591,
+            6312,
+            3076
           ],
           "name": "IHotelReservationFactory",
-          "scope": 984
+          "scope": 1592
         },
-        "children": [
-          {
+        "children": [{
             "attributes": {
               "arguments": [
                 null
               ]
             },
-            "children": [
-              {
-                "attributes": {
-                  "contractScope": null,
-                  "name": "IOwnableUpgradeableImplementation",
-                  "referencedDeclaration": 5493,
-                  "type": "contract IOwnableUpgradeableImplementation"
-                },
-                "id": 916,
-                "name": "UserDefinedTypeName",
-                "src": "168:33:6"
-              }
-            ],
-            "id": 917,
+            "children": [{
+              "attributes": {
+                "contractScope": null,
+                "name": "IOwnableUpgradeableImplementation",
+                "referencedDeclaration": 6312,
+                "type": "contract IOwnableUpgradeableImplementation"
+              },
+              "id": 1463,
+              "name": "UserDefinedTypeName",
+              "src": "168:33:6"
+            }],
+            "id": 1464,
             "name": "InheritanceSpecifier",
             "src": "168:33:6"
           },
@@ -325,126 +435,270 @@
               "anonymous": false,
               "name": "LogCreateHotelReservation"
             },
-            "children": [
-              {
-                "children": [
-                  {
-                    "attributes": {
-                      "constant": false,
-                      "indexed": false,
-                      "name": "_hotelReservationId",
-                      "scope": 927,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "bytes32",
-                      "value": null,
-                      "visibility": "internal"
-                    },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "bytes32",
-                          "type": "bytes32"
-                        },
-                        "id": 918,
-                        "name": "ElementaryTypeName",
-                        "src": "237:7:6"
-                      }
-                    ],
-                    "id": 919,
-                    "name": "VariableDeclaration",
-                    "src": "237:27:6"
+            "children": [{
+              "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1474,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
                   },
-                  {
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "indexed": false,
-                      "name": "_customerAddress",
-                      "scope": 927,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "address",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "bytes32",
+                      "type": "bytes32"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "address",
-                          "type": "address"
-                        },
-                        "id": 920,
-                        "name": "ElementaryTypeName",
-                        "src": "266:7:6"
-                      }
-                    ],
-                    "id": 921,
-                    "name": "VariableDeclaration",
-                    "src": "266:24:6"
+                    "id": 1465,
+                    "name": "ElementaryTypeName",
+                    "src": "237:7:6"
+                  }],
+                  "id": 1466,
+                  "name": "VariableDeclaration",
+                  "src": "237:27:6"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_customerAddress",
+                    "scope": 1474,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
                   },
-                  {
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "indexed": false,
-                      "name": "_reservationStartDate",
-                      "scope": 927,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "uint256",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "address",
+                      "type": "address"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 922,
-                        "name": "ElementaryTypeName",
-                        "src": "292:4:6"
-                      }
-                    ],
-                    "id": 923,
-                    "name": "VariableDeclaration",
-                    "src": "292:26:6"
+                    "id": 1467,
+                    "name": "ElementaryTypeName",
+                    "src": "266:7:6"
+                  }],
+                  "id": 1468,
+                  "name": "VariableDeclaration",
+                  "src": "266:24:6"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_reservationStartDate",
+                    "scope": 1474,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
                   },
-                  {
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "indexed": false,
-                      "name": "_reservationEndDate",
-                      "scope": 927,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "uint256",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "uint",
+                      "type": "uint256"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 924,
-                        "name": "ElementaryTypeName",
-                        "src": "320:4:6"
-                      }
-                    ],
-                    "id": 925,
-                    "name": "VariableDeclaration",
-                    "src": "320:24:6"
-                  }
-                ],
-                "id": 926,
-                "name": "ParameterList",
-                "src": "236:109:6"
-              }
-            ],
-            "id": 927,
+                    "id": 1469,
+                    "name": "ElementaryTypeName",
+                    "src": "292:4:6"
+                  }],
+                  "id": 1470,
+                  "name": "VariableDeclaration",
+                  "src": "292:26:6"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_reservationEndDate",
+                    "scope": 1474,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1471,
+                    "name": "ElementaryTypeName",
+                    "src": "320:4:6"
+                  }],
+                  "id": 1472,
+                  "name": "VariableDeclaration",
+                  "src": "320:24:6"
+                }
+              ],
+              "id": 1473,
+              "name": "ParameterList",
+              "src": "236:109:6"
+            }],
+            "id": 1474,
             "name": "EventDefinition",
             "src": "205:141:6"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "LogCancelHotelReservation"
+            },
+            "children": [{
+              "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1482,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 1475,
+                    "name": "ElementaryTypeName",
+                    "src": "379:7:6"
+                  }],
+                  "id": 1476,
+                  "name": "VariableDeclaration",
+                  "src": "379:27:6"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_customerAddress",
+                    "scope": 1482,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1477,
+                    "name": "ElementaryTypeName",
+                    "src": "408:7:6"
+                  }],
+                  "id": 1478,
+                  "name": "VariableDeclaration",
+                  "src": "408:24:6"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_locRefundsRemainder",
+                    "scope": 1482,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1479,
+                    "name": "ElementaryTypeName",
+                    "src": "434:4:6"
+                  }],
+                  "id": 1480,
+                  "name": "VariableDeclaration",
+                  "src": "434:25:6"
+                }
+              ],
+              "id": 1481,
+              "name": "ParameterList",
+              "src": "378:82:6"
+            }],
+            "id": 1482,
+            "name": "EventDefinition",
+            "src": "347:114:6"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "LogWithdrawal"
+            },
+            "children": [{
+              "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1488,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 1483,
+                    "name": "ElementaryTypeName",
+                    "src": "482:7:6"
+                  }],
+                  "id": 1484,
+                  "name": "VariableDeclaration",
+                  "src": "482:27:6"
+                },
+                {
+                  "attributes": {
+                    "constant": false,
+                    "indexed": false,
+                    "name": "_withdrawnAmount",
+                    "scope": 1488,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1485,
+                    "name": "ElementaryTypeName",
+                    "src": "511:4:6"
+                  }],
+                  "id": 1486,
+                  "name": "VariableDeclaration",
+                  "src": "511:21:6"
+                }
+              ],
+              "id": 1487,
+              "name": "ParameterList",
+              "src": "481:52:6"
+            }],
+            "id": 1488,
+            "name": "EventDefinition",
+            "src": "462:72:6"
           },
           {
             "attributes": {
@@ -457,44 +711,39 @@
               ],
               "name": "setImplAddress",
               "payable": false,
-              "scope": 983,
+              "scope": 1591,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
             },
-            "children": [
-              {
-                "children": [
-                  {
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "implAddress",
+                    "scope": 1493,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "implAddress",
-                      "scope": 932,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "address",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "address",
+                      "type": "address"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "address",
-                          "type": "address"
-                        },
-                        "id": 928,
-                        "name": "ElementaryTypeName",
-                        "src": "376:7:6"
-                      }
-                    ],
-                    "id": 929,
-                    "name": "VariableDeclaration",
-                    "src": "376:19:6"
-                  }
-                ],
-                "id": 930,
+                    "id": 1489,
+                    "name": "ElementaryTypeName",
+                    "src": "564:7:6"
+                  }],
+                  "id": 1490,
+                  "name": "VariableDeclaration",
+                  "src": "564:19:6"
+                }],
+                "id": 1491,
                 "name": "ParameterList",
-                "src": "375:21:6"
+                "src": "563:21:6"
               },
               {
                 "attributes": {
@@ -503,14 +752,14 @@
                   ]
                 },
                 "children": [],
-                "id": 931,
+                "id": 1492,
                 "name": "ParameterList",
-                "src": "403:0:6"
+                "src": "591:0:6"
               }
             ],
-            "id": 932,
+            "id": 1493,
             "name": "FunctionDefinition",
-            "src": "352:52:6"
+            "src": "540:52:6"
           },
           {
             "attributes": {
@@ -523,60 +772,55 @@
               ],
               "name": "getImplAddress",
               "payable": false,
-              "scope": 983,
+              "scope": 1591,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
             },
-            "children": [
-              {
+            "children": [{
                 "attributes": {
                   "parameters": [
                     null
                   ]
                 },
                 "children": [],
-                "id": 933,
+                "id": 1494,
                 "name": "ParameterList",
-                "src": "432:2:6"
+                "src": "620:2:6"
               },
               {
-                "children": [
-                  {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "implAddress",
+                    "scope": 1498,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "implAddress",
-                      "scope": 937,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "address",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "address",
+                      "type": "address"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "address",
-                          "type": "address"
-                        },
-                        "id": 934,
-                        "name": "ElementaryTypeName",
-                        "src": "459:7:6"
-                      }
-                    ],
-                    "id": 935,
-                    "name": "VariableDeclaration",
-                    "src": "459:19:6"
-                  }
-                ],
-                "id": 936,
+                    "id": 1495,
+                    "name": "ElementaryTypeName",
+                    "src": "647:7:6"
+                  }],
+                  "id": 1496,
+                  "name": "VariableDeclaration",
+                  "src": "647:19:6"
+                }],
+                "id": 1497,
                 "name": "ParameterList",
-                "src": "458:21:6"
+                "src": "646:21:6"
               }
             ],
-            "id": 937,
+            "id": 1498,
             "name": "FunctionDefinition",
-            "src": "409:71:6"
+            "src": "597:71:6"
           },
           {
             "attributes": {
@@ -589,264 +833,266 @@
               ],
               "name": "createHotelReservation",
               "payable": false,
-              "scope": 983,
+              "scope": 1591,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
             },
-            "children": [
-              {
-                "children": [
-                  {
+            "children": [{
+                "children": [{
                     "attributes": {
                       "constant": false,
                       "name": "_hotelReservationId",
-                      "scope": 958,
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "bytes32",
-                          "type": "bytes32"
-                        },
-                        "id": 938,
-                        "name": "ElementaryTypeName",
-                        "src": "518:7:6"
-                      }
-                    ],
-                    "id": 939,
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1499,
+                      "name": "ElementaryTypeName",
+                      "src": "706:7:6"
+                    }],
+                    "id": 1500,
                     "name": "VariableDeclaration",
-                    "src": "518:27:6"
+                    "src": "706:27:6"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationCostLOC",
-                      "scope": 958,
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 940,
-                        "name": "ElementaryTypeName",
-                        "src": "549:4:6"
-                      }
-                    ],
-                    "id": 941,
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1501,
+                      "name": "ElementaryTypeName",
+                      "src": "737:4:6"
+                    }],
+                    "id": 1502,
                     "name": "VariableDeclaration",
-                    "src": "549:24:6"
+                    "src": "737:24:6"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationStartDate",
-                      "scope": 958,
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 942,
-                        "name": "ElementaryTypeName",
-                        "src": "577:4:6"
-                      }
-                    ],
-                    "id": 943,
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1503,
+                      "name": "ElementaryTypeName",
+                      "src": "765:4:6"
+                    }],
+                    "id": 1504,
                     "name": "VariableDeclaration",
-                    "src": "577:26:6"
+                    "src": "765:26:6"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationEndDate",
-                      "scope": 958,
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 944,
-                        "name": "ElementaryTypeName",
-                        "src": "607:4:6"
-                      }
-                    ],
-                    "id": 945,
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1505,
+                      "name": "ElementaryTypeName",
+                      "src": "795:4:6"
+                    }],
+                    "id": 1506,
                     "name": "VariableDeclaration",
-                    "src": "607:24:6"
+                    "src": "795:24:6"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_daysBeforeStartForRefund",
-                      "scope": 958,
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 946,
-                        "name": "ElementaryTypeName",
-                        "src": "635:4:6"
-                      }
-                    ],
-                    "id": 947,
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1507,
+                      "name": "ElementaryTypeName",
+                      "src": "823:4:6"
+                    }],
+                    "id": 1508,
                     "name": "VariableDeclaration",
-                    "src": "635:30:6"
+                    "src": "823:30:6"
                   },
                   {
                     "attributes": {
                       "constant": false,
-                      "name": "_refundPercantage",
-                      "scope": 958,
+                      "name": "_refundPercentage",
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 948,
-                        "name": "ElementaryTypeName",
-                        "src": "669:4:6"
-                      }
-                    ],
-                    "id": 949,
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1509,
+                      "name": "ElementaryTypeName",
+                      "src": "857:4:6"
+                    }],
+                    "id": 1510,
                     "name": "VariableDeclaration",
-                    "src": "669:22:6"
+                    "src": "857:22:6"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_hotelId",
-                      "scope": 958,
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "bytes32",
-                          "type": "bytes32"
-                        },
-                        "id": 950,
-                        "name": "ElementaryTypeName",
-                        "src": "695:7:6"
-                      }
-                    ],
-                    "id": 951,
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1511,
+                      "name": "ElementaryTypeName",
+                      "src": "883:7:6"
+                    }],
+                    "id": 1512,
                     "name": "VariableDeclaration",
-                    "src": "695:16:6"
+                    "src": "883:16:6"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_roomId",
-                      "scope": 958,
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "bytes32",
-                          "type": "bytes32"
-                        },
-                        "id": 952,
-                        "name": "ElementaryTypeName",
-                        "src": "715:7:6"
-                      }
-                    ],
-                    "id": 953,
+                    "children": [{
+                      "attributes": {
+                        "name": "bytes32",
+                        "type": "bytes32"
+                      },
+                      "id": 1513,
+                      "name": "ElementaryTypeName",
+                      "src": "903:7:6"
+                    }],
+                    "id": 1514,
                     "name": "VariableDeclaration",
-                    "src": "715:15:6"
-                  }
-                ],
-                "id": 954,
-                "name": "ParameterList",
-                "src": "514:219:6"
-              },
-              {
-                "children": [
+                    "src": "903:15:6"
+                  },
                   {
                     "attributes": {
                       "constant": false,
-                      "name": "success",
-                      "scope": 958,
+                      "name": "_numberOfTravelers",
+                      "scope": 1521,
                       "stateVariable": false,
                       "storageLocation": "default",
-                      "type": "bool",
+                      "type": "uint256",
                       "value": null,
                       "visibility": "internal"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "bool",
-                          "type": "bool"
-                        },
-                        "id": 955,
-                        "name": "ElementaryTypeName",
-                        "src": "750:4:6"
-                      }
-                    ],
-                    "id": 956,
+                    "children": [{
+                      "attributes": {
+                        "name": "uint",
+                        "type": "uint256"
+                      },
+                      "id": 1515,
+                      "name": "ElementaryTypeName",
+                      "src": "922:4:6"
+                    }],
+                    "id": 1516,
                     "name": "VariableDeclaration",
-                    "src": "750:12:6"
+                    "src": "922:23:6"
                   }
                 ],
-                "id": 957,
+                "id": 1517,
                 "name": "ParameterList",
-                "src": "749:14:6"
+                "src": "702:246:6"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "success",
+                    "scope": 1521,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bool",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 1518,
+                    "name": "ElementaryTypeName",
+                    "src": "965:4:6"
+                  }],
+                  "id": 1519,
+                  "name": "VariableDeclaration",
+                  "src": "965:12:6"
+                }],
+                "id": 1520,
+                "name": "ParameterList",
+                "src": "964:14:6"
               }
             ],
-            "id": 958,
+            "id": 1521,
             "name": "FunctionDefinition",
-            "src": "483:281:6"
+            "src": "671:308:6"
           },
           {
             "attributes": {
@@ -859,82 +1105,73 @@
               ],
               "name": "getHotelReservationId",
               "payable": false,
-              "scope": 983,
+              "scope": 1591,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
             },
-            "children": [
-              {
-                "children": [
-                  {
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "index",
+                    "scope": 1528,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "index",
-                      "scope": 965,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "uint256",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "uint",
+                      "type": "uint256"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 959,
-                        "name": "ElementaryTypeName",
-                        "src": "798:4:6"
-                      }
-                    ],
-                    "id": 960,
-                    "name": "VariableDeclaration",
-                    "src": "798:10:6"
-                  }
-                ],
-                "id": 961,
+                    "id": 1522,
+                    "name": "ElementaryTypeName",
+                    "src": "1013:4:6"
+                  }],
+                  "id": 1523,
+                  "name": "VariableDeclaration",
+                  "src": "1013:10:6"
+                }],
+                "id": 1524,
                 "name": "ParameterList",
-                "src": "797:12:6"
+                "src": "1012:12:6"
               },
               {
-                "children": [
-                  {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "",
+                    "scope": 1528,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "",
-                      "scope": 965,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "bytes32",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "bytes32",
+                      "type": "bytes32"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "bytes32",
-                          "type": "bytes32"
-                        },
-                        "id": 962,
-                        "name": "ElementaryTypeName",
-                        "src": "834:7:6"
-                      }
-                    ],
-                    "id": 963,
-                    "name": "VariableDeclaration",
-                    "src": "834:7:6"
-                  }
-                ],
-                "id": 964,
+                    "id": 1525,
+                    "name": "ElementaryTypeName",
+                    "src": "1049:7:6"
+                  }],
+                  "id": 1526,
+                  "name": "VariableDeclaration",
+                  "src": "1049:7:6"
+                }],
+                "id": 1527,
                 "name": "ParameterList",
-                "src": "833:9:6"
+                "src": "1048:9:6"
               }
             ],
-            "id": 965,
+            "id": 1528,
             "name": "FunctionDefinition",
-            "src": "767:76:6"
+            "src": "982:76:6"
           },
           {
             "attributes": {
@@ -947,82 +1184,73 @@
               ],
               "name": "getHotelReservationContractAddress",
               "payable": false,
-              "scope": 983,
+              "scope": 1591,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
             },
-            "children": [
-              {
-                "children": [
-                  {
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1535,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "_hotelReservationId",
-                      "scope": 972,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "bytes32",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "bytes32",
+                      "type": "bytes32"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "bytes32",
-                          "type": "bytes32"
-                        },
-                        "id": 966,
-                        "name": "ElementaryTypeName",
-                        "src": "892:7:6"
-                      }
-                    ],
-                    "id": 967,
-                    "name": "VariableDeclaration",
-                    "src": "892:27:6"
-                  }
-                ],
-                "id": 968,
+                    "id": 1529,
+                    "name": "ElementaryTypeName",
+                    "src": "1107:7:6"
+                  }],
+                  "id": 1530,
+                  "name": "VariableDeclaration",
+                  "src": "1107:27:6"
+                }],
+                "id": 1531,
                 "name": "ParameterList",
-                "src": "891:29:6"
+                "src": "1106:29:6"
               },
               {
-                "children": [
-                  {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "hotelReservationContract",
+                    "scope": 1535,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "hotelReservationContract",
-                      "scope": 972,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "address",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "address",
+                      "type": "address"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "address",
-                          "type": "address"
-                        },
-                        "id": 969,
-                        "name": "ElementaryTypeName",
-                        "src": "945:7:6"
-                      }
-                    ],
-                    "id": 970,
-                    "name": "VariableDeclaration",
-                    "src": "945:32:6"
-                  }
-                ],
-                "id": 971,
+                    "id": 1532,
+                    "name": "ElementaryTypeName",
+                    "src": "1160:7:6"
+                  }],
+                  "id": 1533,
+                  "name": "VariableDeclaration",
+                  "src": "1160:32:6"
+                }],
+                "id": 1534,
                 "name": "ParameterList",
-                "src": "944:34:6"
+                "src": "1159:34:6"
               }
             ],
-            "id": 972,
+            "id": 1535,
             "name": "FunctionDefinition",
-            "src": "848:131:6"
+            "src": "1063:131:6"
           },
           {
             "attributes": {
@@ -1035,60 +1263,55 @@
               ],
               "name": "getHotelReservationsCount",
               "payable": false,
-              "scope": 983,
+              "scope": 1591,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
             },
-            "children": [
-              {
+            "children": [{
                 "attributes": {
                   "parameters": [
                     null
                   ]
                 },
                 "children": [],
-                "id": 973,
+                "id": 1536,
                 "name": "ParameterList",
-                "src": "1015:2:6"
+                "src": "1230:2:6"
               },
               {
-                "children": [
-                  {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "",
+                    "scope": 1540,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "",
-                      "scope": 977,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "uint256",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "uint",
+                      "type": "uint256"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "uint",
-                          "type": "uint256"
-                        },
-                        "id": 974,
-                        "name": "ElementaryTypeName",
-                        "src": "1042:4:6"
-                      }
-                    ],
-                    "id": 975,
-                    "name": "VariableDeclaration",
-                    "src": "1042:4:6"
-                  }
-                ],
-                "id": 976,
+                    "id": 1537,
+                    "name": "ElementaryTypeName",
+                    "src": "1257:4:6"
+                  }],
+                  "id": 1538,
+                  "name": "VariableDeclaration",
+                  "src": "1257:4:6"
+                }],
+                "id": 1539,
                 "name": "ParameterList",
-                "src": "1041:6:6"
+                "src": "1256:6:6"
               }
             ],
-            "id": 977,
+            "id": 1540,
             "name": "FunctionDefinition",
-            "src": "981:67:6"
+            "src": "1196:67:6"
           },
           {
             "attributes": {
@@ -1101,44 +1324,39 @@
               ],
               "name": "setLOCTokenContractAddress",
               "payable": false,
-              "scope": 983,
+              "scope": 1591,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
             },
-            "children": [
-              {
-                "children": [
-                  {
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "locTokenContractAddress",
+                    "scope": 1545,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
                     "attributes": {
-                      "constant": false,
-                      "name": "locTokenContractAddress",
-                      "scope": 982,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "address",
-                      "value": null,
-                      "visibility": "internal"
+                      "name": "address",
+                      "type": "address"
                     },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "address",
-                          "type": "address"
-                        },
-                        "id": 978,
-                        "name": "ElementaryTypeName",
-                        "src": "1087:7:6"
-                      }
-                    ],
-                    "id": 979,
-                    "name": "VariableDeclaration",
-                    "src": "1087:31:6"
-                  }
-                ],
-                "id": 980,
+                    "id": 1541,
+                    "name": "ElementaryTypeName",
+                    "src": "1302:7:6"
+                  }],
+                  "id": 1542,
+                  "name": "VariableDeclaration",
+                  "src": "1302:31:6"
+                }],
+                "id": 1543,
                 "name": "ParameterList",
-                "src": "1086:33:6"
+                "src": "1301:33:6"
               },
               {
                 "attributes": {
@@ -1147,24 +1365,557 @@
                   ]
                 },
                 "children": [],
-                "id": 981,
+                "id": 1544,
                 "name": "ParameterList",
-                "src": "1126:0:6"
+                "src": "1341:0:6"
               }
             ],
-            "id": 982,
+            "id": 1545,
             "name": "FunctionDefinition",
-            "src": "1051:76:6"
+            "src": "1266:76:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "cancelHotelReservation",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_hotelReservationId",
+                    "scope": 1552,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bytes32",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 1546,
+                    "name": "ElementaryTypeName",
+                    "src": "1376:7:6"
+                  }],
+                  "id": 1547,
+                  "name": "VariableDeclaration",
+                  "src": "1376:27:6"
+                }],
+                "id": 1548,
+                "name": "ParameterList",
+                "src": "1375:29:6"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "success",
+                    "scope": 1552,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bool",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 1549,
+                    "name": "ElementaryTypeName",
+                    "src": "1413:4:6"
+                  }],
+                  "id": 1550,
+                  "name": "VariableDeclaration",
+                  "src": "1413:12:6"
+                }],
+                "id": 1551,
+                "name": "ParameterList",
+                "src": "1412:14:6"
+              }
+            ],
+            "id": 1552,
+            "name": "FunctionDefinition",
+            "src": "1344:83:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "withdraw",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_hotelReservations",
+                    "scope": 1560,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address[] memory",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "length": null,
+                      "type": "address[] storage pointer"
+                    },
+                    "children": [{
+                      "attributes": {
+                        "name": "address",
+                        "type": "address"
+                      },
+                      "id": 1553,
+                      "name": "ElementaryTypeName",
+                      "src": "1447:7:6"
+                    }],
+                    "id": 1554,
+                    "name": "ArrayTypeName",
+                    "src": "1447:9:6"
+                  }],
+                  "id": 1555,
+                  "name": "VariableDeclaration",
+                  "src": "1447:28:6"
+                }],
+                "id": 1556,
+                "name": "ParameterList",
+                "src": "1446:30:6"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "success",
+                    "scope": 1560,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "bool",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "bool",
+                      "type": "bool"
+                    },
+                    "id": 1557,
+                    "name": "ElementaryTypeName",
+                    "src": "1485:4:6"
+                  }],
+                  "id": 1558,
+                  "name": "VariableDeclaration",
+                  "src": "1485:12:6"
+                }],
+                "id": 1559,
+                "name": "ParameterList",
+                "src": "1484:14:6"
+              }
+            ],
+            "id": 1560,
+            "name": "FunctionDefinition",
+            "src": "1429:70:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": true,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getLocRemainderAmount",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1561,
+                "name": "ParameterList",
+                "src": "1531:2:6"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_locRefundsRemainder",
+                    "scope": 1565,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1562,
+                    "name": "ElementaryTypeName",
+                    "src": "1558:4:6"
+                  }],
+                  "id": 1563,
+                  "name": "VariableDeclaration",
+                  "src": "1558:25:6"
+                }],
+                "id": 1564,
+                "name": "ParameterList",
+                "src": "1557:27:6"
+              }
+            ],
+            "id": 1565,
+            "name": "FunctionDefinition",
+            "src": "1501:84:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "setWithdrawDestinationAddress",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_withdrawDestinationAddress",
+                    "scope": 1570,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1566,
+                    "name": "ElementaryTypeName",
+                    "src": "1626:7:6"
+                  }],
+                  "id": 1567,
+                  "name": "VariableDeclaration",
+                  "src": "1626:35:6"
+                }],
+                "id": 1568,
+                "name": "ParameterList",
+                "src": "1625:37:6"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1569,
+                "name": "ParameterList",
+                "src": "1662:0:6"
+              }
+            ],
+            "id": 1570,
+            "name": "FunctionDefinition",
+            "src": "1587:76:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "setWithdrawerAddress",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_withdrawerAddress",
+                    "scope": 1575,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1571,
+                    "name": "ElementaryTypeName",
+                    "src": "1695:7:6"
+                  }],
+                  "id": 1572,
+                  "name": "VariableDeclaration",
+                  "src": "1695:26:6"
+                }],
+                "id": 1573,
+                "name": "ParameterList",
+                "src": "1694:28:6"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1574,
+                "name": "ParameterList",
+                "src": "1722:0:6"
+              }
+            ],
+            "id": 1575,
+            "name": "FunctionDefinition",
+            "src": "1665:58:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getWithdrawerAddress",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1576,
+                "name": "ParameterList",
+                "src": "1754:2:6"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_withdrawerAddress",
+                    "scope": 1580,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1577,
+                    "name": "ElementaryTypeName",
+                    "src": "1765:7:6"
+                  }],
+                  "id": 1578,
+                  "name": "VariableDeclaration",
+                  "src": "1765:26:6"
+                }],
+                "id": 1579,
+                "name": "ParameterList",
+                "src": "1764:28:6"
+              }
+            ],
+            "id": 1580,
+            "name": "FunctionDefinition",
+            "src": "1725:68:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getWithdrawDestinationAddress",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1581,
+                "name": "ParameterList",
+                "src": "1833:2:6"
+              },
+              {
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_withdrawDestinationAddress",
+                    "scope": 1585,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "address",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 1582,
+                    "name": "ElementaryTypeName",
+                    "src": "1844:7:6"
+                  }],
+                  "id": 1583,
+                  "name": "VariableDeclaration",
+                  "src": "1844:35:6"
+                }],
+                "id": 1584,
+                "name": "ParameterList",
+                "src": "1843:37:6"
+              }
+            ],
+            "id": 1585,
+            "name": "FunctionDefinition",
+            "src": "1795:86:6"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "constant": false,
+              "implemented": false,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "setCyclesCount",
+              "payable": false,
+              "scope": 1591,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [{
+                "children": [{
+                  "attributes": {
+                    "constant": false,
+                    "name": "_cyclesCount",
+                    "scope": 1590,
+                    "stateVariable": false,
+                    "storageLocation": "default",
+                    "type": "uint256",
+                    "value": null,
+                    "visibility": "internal"
+                  },
+                  "children": [{
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 1586,
+                    "name": "ElementaryTypeName",
+                    "src": "1907:4:6"
+                  }],
+                  "id": 1587,
+                  "name": "VariableDeclaration",
+                  "src": "1907:17:6"
+                }],
+                "id": 1588,
+                "name": "ParameterList",
+                "src": "1906:19:6"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 1589,
+                "name": "ParameterList",
+                "src": "1925:0:6"
+              }
+            ],
+            "id": 1590,
+            "name": "FunctionDefinition",
+            "src": "1883:43:6"
           }
         ],
-        "id": 983,
+        "id": 1591,
         "name": "ContractDefinition",
-        "src": "131:998:6"
+        "src": "131:1797:6"
       }
     ],
-    "id": 984,
+    "id": 1592,
     "name": "SourceUnit",
-    "src": "0:1130:6"
+    "src": "0:1929:6"
   },
   "compiler": {
     "name": "solc",
@@ -1172,5 +1923,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-02-28T14:09:20.647Z"
+  "updatedAt": "2018-03-06T14:08:00.902Z"
 }

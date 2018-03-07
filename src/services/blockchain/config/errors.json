@@ -31,6 +31,7 @@
   "INSUFFICIENT_AMOUNT_ETH": "Insufficient ETH amount",
   "INSUFFICIENT_AMOUNT_ETH_EXCHANGE_CONTRACT": "Insufficient ETH amount in the exchange contract",
   "MISSING_RENTAL_ID": "Missing rental id",
+  "MISSING_RESERVATION_ID": "Missing reservation id",
   "EXISTING_RENTAL": "This rental already exists",
   "MISSING_HOTEL_ID": "Missing hotel id",
   "EXISTING_HOTEL_ROOMS": "This hotel with this rooms type already exists",
@@ -43,5 +44,7 @@
   "INVALID_PERIOD_START": "Selected period is not correct - start date should be after today",
   "INVALID_PERIOD_LENGTH": "Selected period is too long, max allowed days of booking are: ",
   "INVALID_PRICE": "Price should be more than 0",
-  "INVALID_JSON": "The provided JSON file is not valid or empty"
+  "INVALID_JSON": "The provided JSON file is not valid or empty",
+  "INVALID_CANCELLATION": "Cancellation is not allowed",
+  "INVALID_REFUND_DAYS": "Days for refund are greater than current date."
 }
