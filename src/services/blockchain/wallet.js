@@ -6,28 +6,14 @@ import hdkey from 'ethereumjs-wallet/hdkey';
 import { validateAddress, validatePassword } from './validators/base-validators';
 import { web3 } from './config/contracts-config.js';
 import { LOCTokenContract } from './config/contracts-config.js';
-import { Config } from '../../config';
 
 const { HD_WALLET_PATH } = require('./config/constants.json');
 const ERROR = require('./config/errors.json');
-const {
-    LOC_ABI
-} = require('./config/contracts-json/loc-production.json');
-
 
 class Wallet {
 
     static async getTokenBalance(address) {
-        const locContract = new web3.eth.Contract(
-            LOC_ABI,
-            Config.getValue('LOCTokenContract'),
-            {
-                from: address,
-                gasPrice: '20000000000'
-            }
-        );
-
-        return locContract.methods.balanceOf(address).call().then(balance => balance);
+        return LOCTokenContract.methods.balanceOf(address).call().then(balance => balance);
     }
 
     static async getBalance(address) {
