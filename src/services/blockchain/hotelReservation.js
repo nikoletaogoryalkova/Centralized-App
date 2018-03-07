@@ -118,7 +118,7 @@ export class HotelReservation {
 		const hotelReservationIdHex = web3.utils.utf8ToHex(hotelReservationId);
 
 		const reservation = await this.getReservation(hotelReservationId);
-		// ToDo: Rename customerAddress to _customerAddress after fix in contract
+
 		validateCancellation(reservation._refundPercentage,
 			reservation._daysBeforeStartForRefund,
 			reservation._reservationStartDate,
