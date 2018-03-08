@@ -2,9 +2,6 @@ import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
     contactHost,
-    getCalendarByListingIdAndDateRange,
-    getCurrentLoggedInUserInfo,
-    getPropertyById
 } from '../../../requester';
 
 import { Config } from '../../../config';
@@ -13,11 +10,9 @@ import PropTypes from 'prop-types';
 import HotelDetailsInfoSection from './HotelDetailsInfoSection';
 import React from 'react';
 import HotelsSearchBar from '../search/HotelsSearchBar';
-import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
-import HotelReservationPanel from './HotelReservationPanel';
 import ChildrenModal from '../modals/ChildrenModal';
 
 import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency } from '../../../requester';
@@ -443,7 +438,7 @@ class HotelDetailsPage extends React.Component {
             images = null;
             if (this.state.data.hotelPhotos !== undefined) {
                 images = this.state.data.hotelPhotos.map(x => {
-                    return { src: 'http://roomsxml.com' + x.externalUrl };
+                    return { src: Config.getValue('imgHost') + x.externalUrl };
                 });
             }
         }

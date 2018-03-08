@@ -44,6 +44,8 @@ class HomePage extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
+
+        this.handleDestinationPick = this.handleDestinationPick.bind(this);
     }
 
     componentDidMount() {
@@ -211,6 +213,11 @@ class HomePage extends React.Component {
             [modal]: false
         });
     }
+
+    handleDestinationPick(region) {
+        this.setState({ region: region });
+        document.getElementsByName('stay')[0].click();
+    }
     
     render() {
         return (
@@ -242,7 +249,7 @@ class HomePage extends React.Component {
 
                 <section id="popular-hotels-box">
                     <h2>Popular Destinations</h2>
-                    <PopularDestinationsCarousel />
+                    <PopularDestinationsCarousel handleDestinationPick={this.handleDestinationPick}/>
                     <div className="clearfix"></div>
                 </section>
 

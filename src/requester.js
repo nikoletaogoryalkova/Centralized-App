@@ -490,3 +490,9 @@ export async function getEmailFreeResponse(email) {
         return res.response.json();
     });
 }
+
+export async function getMyHotelBookings() {
+    return sendRequest(`${host}users/me/bookings`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}

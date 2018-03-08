@@ -1,4 +1,4 @@
-import { cancelTrip, getMyTrips } from '../../../requester';
+import { cancelTrip, getMyHotelBookings } from '../../../requester';
 
 import CancellationModal from '../../common/modals/CancellationModal';
 import LPagination from '../../common/LPagination';
@@ -47,7 +47,8 @@ class HotelTripsPage extends React.Component {
                 }
             }
         }
-        getMyTrips('?page=0').then((data) => {
+        getMyHotelBookings('?page=0').then((data) => {
+            console.log(data);
             this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTripId: id });
             if (id) {
                 NotificationManager.success('Booking Request Sent Successfully, your host will get back to you with additional questions.', 'Reservation Operations');
@@ -90,7 +91,7 @@ class HotelTripsPage extends React.Component {
             loadingListing: true
         });
 
-        getMyTrips(`?page=${page - 1}`).then(data => {
+        getMyHotelBookings(`?page=${page - 1}`).then(data => {
             this.setState({
                 trips: data.content,
                 totalTrips: data.totalElements,
