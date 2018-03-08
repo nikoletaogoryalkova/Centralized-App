@@ -3,13 +3,15 @@ import { cancelTrip, getMyTrips } from '../../../requester';
 import CancellationModal from '../../common/modals/CancellationModal';
 import LPagination from '../../common/LPagination';
 import { Link } from 'react-router-dom';
-import MyTripsTable from './MyTripsTable';
+import HomeTripsTable from './HomeTripsTable';
 import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 
-export default class MyTripsPage extends React.Component {
+import { withRouter } from 'react-router-dom';
+
+class HomeTripsPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -137,10 +139,10 @@ export default class MyTripsPage extends React.Component {
                     onSubmit={this.onTripCancel} />
 
                 <section id="profile-my-reservations">
-                    <div className="container">
+                    <div>
                         <h2>Upcoming Trips ({this.state.totalTrips})</h2>
                         <hr />
-                        <MyTripsTable
+                        <HomeTripsTable
                             trips={this.state.trips}
                             currentTripId={this.state.currentTripId}
                             onTripSelect={this.onTripSelect}
@@ -163,6 +165,8 @@ export default class MyTripsPage extends React.Component {
     }
 }
 
-MyTripsPage.propTypes = {
+HomeTripsPage.propTypes = {
     location: PropTypes.object
 };
+
+export default withRouter(HomeTripsPage);

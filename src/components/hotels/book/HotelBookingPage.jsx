@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import validator from 'validator';
 
 import { getTestHotelById, testBook, getLocRateInUserSelectedCurrency } from '../../../requester';
 
@@ -138,19 +139,60 @@ class HotelBookingPage extends React.Component {
     }
 
     handleSubmit() {
-        const quoteId = this.state.quoteId;
-        const rooms = this.state.rooms;
-        const currency = this.props.paymentInfo.currency;
-        const booking = {
-            quoteId: quoteId,
-            rooms: rooms,
-            currency: currency
-        };
+        if (!this.isValidNames()) {
+            NotificationManager.warning('Names should be at least 3 characters long and contain only characters');
+        } else if (!this.isValidAges()) {
+            NotificationManager.warning('Child age should be between 1 and 17 years');
+        } else {
+            const quoteId = this.state.quoteId;
+            const rooms = this.state.rooms;
+            const currency = this.props.paymentInfo.currency;
+            const booking = {
+                quoteId: quoteId,
+                rooms: rooms,
+                currency: currency
+            };
+    
+            const encodedBooking = encodeURI(JSON.stringify(booking));
+            const id = this.props.match.params.id;
+            const query = `?booking=${encodedBooking}`;
+            window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+        }
+    }
 
-        const encodedBooking = encodeURI(JSON.stringify(booking));
-        const id = this.props.match.params.id;
-        const query = `?booking=${encodedBooking}`;
-        window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+    isValidNames() {
+        const regexp = /^[a-zA-Z]{3,}$/;
+        const rooms = this.state.rooms;
+        for (let i = 0; i < rooms.length; i++) {
+            const adults = rooms[i].adults;
+            for (let j = 0; j < adults.length; j++) {
+                const first = adults[j].firstName;
+                const last = adults[j].lastName;
+                console.log(adults[j]);
+                console.log(validator.matches(first, regexp));
+                console.log(validator.matches(last, regexp));
+                if (!(validator.matches(first, regexp) && validator.matches(last, regexp))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    isValidAges() {
+        const rooms = this.state.rooms;
+        for (let i = 0; i < rooms.length; i++) {
+            const children = rooms[i].children;
+            for (let j = 0; j < children.length; j++) {
+                const age = children[j].age;
+                if (age < 1 || 17 < age) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     render() {

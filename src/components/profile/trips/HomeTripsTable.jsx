@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-export default function MyTripsTable(props) {
+export default function HomeTripsTable(props) {
     return (
-        <div className="container">
+        <div>
             <div className="table-header bold">
                 <div className="col-md-1">
                 </div>
@@ -28,7 +28,7 @@ export default function MyTripsTable(props) {
             </div>
             {props.trips.map(trip => {
                 return (
-                    <div key={trip.id} style={trip.id === props.currentTripId ? { backgroundColor: 'lightgreen' } : {}} className="row reservation-box">
+                    <div key={trip.id} style={trip.id === props.currentTripId ? { backgroundColor: '#e1e1e1' } : {}} className="row reservation-box">
                         <div className="col-md-12">
                             <div className="col-md-1">
                                 <div className="reservation-image-box">
@@ -73,7 +73,7 @@ export default function MyTripsTable(props) {
     );
 }
 
-MyTripsTable.propTypes = {
+HomeTripsTable.propTypes = {
     currentTripId: PropTypes.number,
     trips: PropTypes.array
 };
