@@ -4,6 +4,8 @@ import HotelDetailsReviewBox from './HotelDetailsReviewBox';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { modals } from '../../../constants/modals.js';
+import { openModal } from '../../../actions/modalsInfo.js';
 
 function HomeDetailsInfoSection(props) {
     const getAmenities = (amenities) => {
@@ -160,7 +162,10 @@ function HomeDetailsInfoSection(props) {
                                     </div>
                                 </div>
                                 <div className="col col-md-2 content-center">
-                                    <button className="btn btn-primary" onClick={(e) => props.handleBookRoom(e, results.quoteId)}>Book</button>
+                                    {props.userInfo.isLogged ? 
+                                        <button className="btn btn-primary" onClick={(e) => props.handleBookRoom(e, results.quoteId)}>Book</button> :
+                                        <button className="btn btn-primary" onClick={(e) => props.dispatch(openModal(modals.LOGIN, e))}>Login</button>
+                                    }
                                 </div>
                             </div>
                         );

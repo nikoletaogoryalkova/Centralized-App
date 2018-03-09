@@ -16,7 +16,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
-import LoginModal from '../../mainNav/modals/LoginModal';
 
 import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 import { setIsLogged, setUserInfo } from '../../../actions/userInfo.js';
@@ -676,9 +675,10 @@ HotelDetailsPage.propTypes = {
 export default withRouter(connect(mapStateToProps)(HotelDetailsPage));
 
 function mapStateToProps(state) {
-    const { userInfo, paymentInfo } = state;
+    const { userInfo, paymentInfo, modalsInfo } = state;
     return {
         userInfo,
-        paymentInfo
+        paymentInfo,
+        modalsInfo
     };
 }
