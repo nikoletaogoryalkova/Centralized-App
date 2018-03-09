@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import validator from 'validator';
 
-import { getTestHotelById, testBook, getLocRateInUserSelectedCurrency } from '../../../requester';
+import { getTestHotelById, testBook, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 
 class HotelBookingPage extends React.Component {
     constructor(props) {
@@ -48,6 +48,9 @@ class HotelBookingPage extends React.Component {
         });
 
         this.getLocRate();
+        getCurrencyRates().then((json) => {
+            this.setState({ rates: json });
+        });
     }
 
     getLocRate() {
@@ -201,7 +204,7 @@ class HotelBookingPage extends React.Component {
         const hotelCityName = this.state.hotel && this.state.hotel.city.name;
         const rooms = this.state.rooms;
         const hotelPicUrl = this.state.pictures && this.state.pictures[0].externalUrl;
-        const totalPrice = this.state.roomResults && this.state.roomResults.reduce((x, y) => x.price + y.price);
+        const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates['USD'][this.props.paymentInfo.currency]).toFixed(2);
         return (
             <div>
                 <div>
@@ -231,14 +234,22 @@ class HotelBookingPage extends React.Component {
                                         <hr/>
                                         {this.state.roomResults && this.state.roomResults.map((room, index) => {
                                             if (!this.props.userInfo.isLogged) {
-                                                return (<h3 key={index}>{room.name}, {this.state.nights} nights: LOC {Number(room.price / this.state.locRate).toFixed(2)}</h3>);
+                                                return (
+                                                    <h3 key={index}>
+                                                        {room.name}, {this.state.nights} nights: LOC {Number(room.price / this.state.locRate).toFixed(2)}
+                                                    </h3>
+                                                );
                                             } else {
-                                                return (<h3 key={index}>{room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{room.price} (LOC {Number(room.price / this.state.locRate).toFixed(2)})</h3>);
+                                                return (
+                                                    <h3 key={index}>
+                                                        {room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{this.state.rates && (room.price * this.state.rates['USD'][this.props.paymentInfo.currency]).toFixed(2)} (LOC {Number(room.price / this.state.locRate).toFixed(2)})
+                                                    </h3>
+                                                );
                                             }
                                         })}
                                         <hr/>
                                         {this.props.userInfo.isLogged ? 
-                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{Number(this.state.totalPrice).toFixed(2)} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
+                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{priceInSelectedCurrency} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
                                             <h2 className="total-price">Total: LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)}</h2>
                                         }
                                         <div className="clearfix"></div>

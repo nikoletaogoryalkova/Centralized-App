@@ -17,6 +17,7 @@ import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
 import CreateWalletModal from './modals/CreateWalletModal';
 import SaveWalletModal from './modals/SaveWalletModal';
 import ConfirmWalletModal from './modals/ConfirmWalletModal';
+import LoginModal from './modals/LoginModal';
 import { Wallet } from '../../services/blockchain/wallet.js';
 
 class MainNav extends React.Component {
@@ -334,7 +335,7 @@ class MainNav extends React.Component {
             <nav id="main-nav" className="navbar">
                 <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                     <NotificationContainer />
-                    <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
+                    {/* <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
                         <Modal.Header>
                             <h1>Login</h1>
                             <button type="button" className="close" onClick={this.closeLogIn}>&times;</button>
@@ -368,7 +369,7 @@ class MainNav extends React.Component {
                             <hr />
                             <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.closeLogIn(e); this.openSignUp(e); }}>Sign up</a>. Forgot your password? <a onClick={(e) => { this.closeLogIn(e); this.openModal('sendRecoveryEmail', e); }}>Recover</a></div>
                         </Modal.Body>
-                    </Modal>
+                    </Modal> */}
 
                     <Modal show={this.state.showSignUpModal} onHide={this.closeSignUp} className="modal fade myModal">
                         <Modal.Header>
@@ -422,6 +423,7 @@ class MainNav extends React.Component {
                     <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
                     <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
                     <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
+                    <LoginModal isActive={this.state.showLoginModal} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} />
 
                     <Navbar>
                         <Navbar.Header>

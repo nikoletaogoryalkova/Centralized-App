@@ -8,10 +8,11 @@ import { connect } from 'react-redux';
 import { Config } from '../../../config.js';
 
 function HotelItem(props) {
-    const locRate = props.locRate;
+    const { locRate, rates } = props;
     const { currency, currencySign } = props.paymentInfo;
     const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
     const locPrice = (price / locRate).toFixed(2);
+    const priceInSelectedCurrency = rates && (price * (rates['USD'][props.paymentInfo.currency])).toFixed(2);
     const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
     return (
         <div className="list-hotel">
@@ -27,7 +28,7 @@ function HotelItem(props) {
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
-                {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {price}</div>}
+                {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {priceInSelectedCurrency}</div>}
                 <div className="list-hotel-price-loc">(LOC {locPrice})</div>
                 <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>

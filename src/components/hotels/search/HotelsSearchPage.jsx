@@ -13,7 +13,7 @@ import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
 import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
-import { testSearch, getRegionNameById, getTestHotels, getLocRateInUserSelectedCurrency } from '../../../requester';
+import { testSearch, getRegionNameById, getCurrencyRates, getLocRateInUserSelectedCurrency } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
     constructor(props) {
@@ -69,6 +69,9 @@ class HotelsSearchPage extends React.Component {
         });
 
         this.getLocRate();
+        getCurrencyRates().then((json) => {
+            this.setState({ rates: json });
+        });
     }
 
     componentWillMount() {
@@ -399,7 +402,7 @@ class HotelsSearchPage extends React.Component {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <HotelItem key={i} listing={item} locRate={this.state.locRate} />;
+                return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} />;
             });
         }
 

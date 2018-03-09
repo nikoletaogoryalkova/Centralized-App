@@ -2,6 +2,8 @@ import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
     contactHost,
+    login,
+    getCurrentLoggedInUserInfo
 } from '../../../requester';
 
 import { Config } from '../../../config';
@@ -14,8 +16,11 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
+import LoginModal from '../../mainNav/modals/LoginModal';
 
-import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency } from '../../../requester';
+import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
+import { setIsLogged, setUserInfo } from '../../../actions/userInfo.js';
+import { Wallet } from '../../../services/blockchain/wallet.js';
 
 class HotelDetailsPage extends React.Component {
     constructor(props) {
@@ -75,6 +80,8 @@ class HotelDetailsPage extends React.Component {
         this.sendMessageToHost = this.sendMessageToHost.bind(this);
         this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
+        this.handleBookRoom = this.handleBookRoom.bind(this);
+        this.login = this.login.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -95,6 +102,9 @@ class HotelDetailsPage extends React.Component {
         });
 
         this.getLocRate();
+        getCurrencyRates().then((json) => {
+            this.setState({ rates: json });
+        });
     }
 
     componentWillMount() {
@@ -171,9 +181,9 @@ class HotelDetailsPage extends React.Component {
     
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-        if (this.updateParamsMap) {
-            this.updateParamsMap(e.target.name, e.target.value);
-        }
+        // if (this.updateParamsMap) {
+        //     this.updateParamsMap(e.target.name, e.target.value);
+        // }
     }
     
     handleToggleChildren() {
@@ -425,6 +435,97 @@ class HotelDetailsPage extends React.Component {
         });
     }
 
+    // login(captchaToken) {
+    //     let user = {
+    //         email: this.state.loginEmail,
+    //         password: this.state.loginPassword
+    //     };
+
+    //     console.log(user);
+    //     console.log(captchaToken);
+
+    //     login(user, captchaToken).then((res) => {
+    //         if (res.success) {
+    //             res.response.json().then((data) => {
+
+    //                 localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = data.Authorization;
+    //                 // TODO Get first name + last name from response included with Authorization token (Backend)
+
+    //                 localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
+    //                 getCurrentLoggedInUserInfo().then(info => {
+    //                     // this.setState({ userName: user.email, userToken: data.Authorization });
+    //                     if (info.jsonFile != null && info.jsonFile.length > 1) {
+    //                         this.setUserInfo().then(() => {
+    //                             // this.closeModal('showLoginModal');
+    //                             this.handleBookRoom();
+    //                             // if (this.state.recoveryToken !== '') {
+    //                             //     this.props.history.push('/');
+    //                             // }
+    //                         });
+    //                     } else {
+    //                         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+    //                         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
+    //                         // this.openModal('createWallet');
+    //                     }
+
+    //                     this.closeModal('showLoginModal');
+    //                 });
+    //             });
+    //         } else {
+    //             res.response.then(res => {
+    //                 const errors = res.errors;
+    //                 for (let key in errors) {
+    //                     if (typeof errors[key] !== 'function') {
+    //                         NotificationManager.warning(errors[key].message);
+    //                     }
+    //                 }
+    //             });
+
+    //             this.captcha.reset();
+    //         }
+    //     });
+    // }
+
+    // async setUserInfo() {
+    //     if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+    //         getCurrentLoggedInUserInfo()
+    //             .then(res => {
+    //                 Wallet.getBalance(res.locAddress).then(x => {
+    //                     const ethBalance = x / (Math.pow(10, 18));
+    //                     Wallet.getTokenBalance(res.locAddress).then(y => {
+    //                         const locBalance = y / (Math.pow(10, 18));
+    //                         const { firstName, lastName, phoneNumber, email, locAddress } = res;
+    //                         this.props.dispatch(setIsLogged(true));
+    //                         this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
+    //                     });
+    //                 });
+    //             });
+    //     }
+    //     else {
+    //         this.setState({ loaded: true, loading: false });
+    //     }
+    // }
+    
+    handleBookRoom (event, quoteId) {
+        if (event) {
+            event.preventDefault();
+        }
+        
+        if (quoteId) {
+            localStorage.setItem('quoteId', quoteId);
+        }
+
+        // console.log(event, quoteId)
+        // this.closeModal('showLoginModal');
+        // if (this.props.userInfo.isLogged) {
+            const id = this.props.match.params.id;
+            const search = this.props.location.search;
+            window.location.href = `/hotels/listings/book/${id}${search}`;
+        // } else {
+        //     this.openModal('showLoginModal');
+        // }
+    }
+
     render() {
         let loading, allEvents, images;
         if (!this.state.data
@@ -523,8 +624,10 @@ class HotelDetailsPage extends React.Component {
                                     endDate={this.state.calendarEndDate}
                                     data={this.state.data}
                                     locRate={this.state.locRate}
+                                    rates={this.state.rates}
                                     loading={this.state.loading}
                                     currencySign={this.props.paymentInfo.currencySign}
+                                    handleBookRoom={this.handleBookRoom}
                                 />
                                 
                                 {/* <HotelReservationPanel
@@ -550,6 +653,7 @@ class HotelDetailsPage extends React.Component {
                         </section>
                     </div>
                 }
+                {/* <LoginModal isActive={this.state.showLoginModal} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} /> */}
             </div>
         );
     }

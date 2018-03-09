@@ -25,16 +25,6 @@ function HomeDetailsInfoSection(props) {
         return result;
     };
 
-    const bookRoom = (event, quoteId) => {
-        if (event) {
-            event.preventDefault();
-        }
-        localStorage.setItem("quoteId", quoteId);
-        const id = props.match.params.id;
-        const search = props.location.search;
-        window.location.href = `/hotels/listings/book/${id}${search}`;
-    };
-
     const getTotalPrice = (room) => {
         let total = 0;
         for (let i = 0; i < room.length; i++) {
@@ -145,9 +135,13 @@ function HomeDetailsInfoSection(props) {
                                                 <div key={roomIndex} className="room">
                                                     <span><b>{room.name}</b> ({room.mealType}) - </span>
                                                     {props.userInfo.isLogged && 
-                                                        <span><b>{props.currencySign}{Number(room.price / props.nights).toFixed(2)}</b> (</span>
+                                                        <span>{props.currencySign}{props.rates && Number((room.price * props.rates['USD'][props.paymentInfo.currency]) / props.nights).toFixed(2)} </span>
                                                     }
-                                                    <span><b>{Number((room.price / props.nights) / props.locRate).toFixed(2)} {props.userInfo.isLogged ? ')' : ''} LOC</b> / night</span>
+                                                    <span>
+                                                        {props.userInfo.isLogged && '('}
+                                                        <b>{Number((room.price / props.nights) / props.locRate).toFixed(2)} LOC</b>
+                                                        {props.userInfo.isLogged && ')'} / night
+                                                    </span>
                                                 </div>
                                             );
                                         })}
@@ -158,7 +152,7 @@ function HomeDetailsInfoSection(props) {
                                         <span className="price-details">
                                             <span><b>{props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</b></span>
                                             {props.userInfo.isLogged && 
-                                                <span>{props.currencySign}{ Number(getTotalPrice(results.roomsResults)).toFixed(2) } (</span>
+                                                <span>{props.currencySign}{props.rates && Number(getTotalPrice(results.roomsResults) * props.rates['USD'][props.paymentInfo.currency]).toFixed(2) } (</span>
                                             }
                                             <span><b>{ Number(getTotalPrice(results.roomsResults) / props.locRate).toFixed(2) } LOC{props.userInfo.isLogged ? ')' : ''}</b></span>
                                         </span>
@@ -166,7 +160,7 @@ function HomeDetailsInfoSection(props) {
                                     </div>
                                 </div>
                                 <div className="col col-md-2 content-center">
-                                    <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
+                                    <button className="btn btn-primary" onClick={(e) => props.handleBookRoom(e, results.quoteId)}>Book</button>
                                 </div>
                             </div>
                         );
