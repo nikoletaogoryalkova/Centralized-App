@@ -81,7 +81,7 @@ class HotelDetailsPage extends React.Component {
         this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
         this.handleBookRoom = this.handleBookRoom.bind(this);
-        this.login = this.login.bind(this);
+        // this.login = this.login.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {

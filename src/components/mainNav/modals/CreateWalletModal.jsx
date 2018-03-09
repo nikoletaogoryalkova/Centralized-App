@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Wallet } from '../../../services/blockchain/wallet.js';
+import { modals } from '../../../constants/modals.js';
 
 const modal = {
     current: 'createWallet',
@@ -37,8 +38,8 @@ export default class CreateWalletModal extends React.Component {
                         localStorage.setItem('walletAddress', wallet.address);
                         localStorage.setItem('walletMnemonic', wallet.mnemonic);
                         localStorage.setItem('walletJson', JSON.stringify(wallet.jsonFile));
-                        this.props.closeModal(modal.current);
-                        this.props.openModal(modal.next);
+                        this.props.closeModal(modals.CREATE_WALLET);
+                        this.props.openModal(modals.SAVE_WALLET);
                     });
                 }, 1000);
                 
@@ -51,13 +52,12 @@ export default class CreateWalletModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.CREATE_WALLET, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Enter your wallet password</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.CREATE_WALLET, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
-                        {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
                         <form onSubmit={(e) => { e.preventDefault(); this.submitPassword(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />

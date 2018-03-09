@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { postNewPassword } from '../../../requester.js';
+import { modals } from '../../../constants/modals.js';
 
 const modal = {
     current: 'showLoginModal',
@@ -17,10 +18,10 @@ export default class LoginModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={() => this.props.closeModal(modal.current)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={() => this.props.closeModal(modals.LOGIN)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Login</h1>
-                        <button type="button" className="close" onClick={() => this.props.closeModal(modal.current)}>&times;</button>
+                        <button type="button" className="close" onClick={() => this.props.closeModal(modals.LOGIN)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
@@ -48,7 +49,7 @@ export default class LoginModal extends React.Component {
                         </form>
 
                         <hr />
-                        <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.props.closeModal(modal.current); this.openModal(modal.next); }}>Sign up</a>. Forgot your password? <a onClick={(e) => { this.closeLogIn(e); this.openModal('sendRecoveryEmail', e); }}>Recover</a></div>
+                        <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.props.closeModal(modals.LOGIN); this.props.openModal(modals.REGISTER); }}>Sign up</a>. Forgot your password? <a onClick={(e) => { this.props.closeModal(modals.LOGIN, e); this.props.openModal(modals.SEND_RECOVERY_EMAIL, e); }}>Recover</a></div>
                     </Modal.Body>
                 </Modal>
                 <NotificationContainer />

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { postNewPassword } from '../../../requester.js';
+import { modals } from '../../../constants/modals.js';
 
 const modal = {
     current: 'changePassword',
@@ -50,8 +51,8 @@ export default class ChangePasswordModal extends React.Component {
 
         postNewPassword(postObj, captchaToken).then((res) => {
             if (res.success) {
-                this.props.closeModal(modal.current);
-                this.props.openModal(modal.next);
+                this.props.closeModal(modals.CHANGE_PASSWORD);
+                this.props.openModal(modals.LOGIN);
                 NotificationManager.success('Successfully changed', 'Password');
             }
             else {
@@ -64,10 +65,10 @@ export default class ChangePasswordModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.CHANGE_PASSWORD, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Recover your password (3)</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.CHANGE_PASSWORD, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
@@ -89,7 +90,7 @@ export default class ChangePasswordModal extends React.Component {
                                 onChange={token => this.submitPassword(token)}
                             />
 
-                            <button type="submit" className="btn btn-primary">Send email</button>
+                            <button type="submit" className="btn btn-primary">Save Password</button>
                             <div className="clearfix"></div>
                         </form>
                     </Modal.Body>

@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Wallet } from '../../../services/blockchain/wallet.js';
+import { modals } from '../../../constants/modals.js';
 
 const modal = {
     current: 'saveWallet',
@@ -33,17 +34,17 @@ export default class SaveWalletModal extends React.Component {
     }
 
     handleSubmit() {
-        this.props.closeModal(modal.current); 
-        this.props.openModal(modal.next);
+        this.props.closeModal(modals.SAVE_WALLET); 
+        this.props.openModal(modals.CONFIRM_WALLET);
     }
 
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.SAVE_WALLET, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Save your wallet info.</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.SAVE_WALLET, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <p>Wallet public address:</p>

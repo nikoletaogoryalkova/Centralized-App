@@ -7,6 +7,7 @@ import React from 'react';
 import { Wallet } from '../../../services/blockchain/wallet.js';
 import { updateUserInfo, getCurrentLoggedInUserInfo } from '../../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { modals } from '../../../constants/modals.js';
 
 const modal = {
     current: 'confirmWallet',
@@ -34,15 +35,15 @@ export default class CreateWalletModal extends React.Component {
 
     onWordsForget() {
         NotificationManager.warning('Last call for saving your mnemonic words!');
-        this.props.closeModal(modal.current);
-        this.props.openModal(modal.prev);
+        this.props.closeModal(modals.CONFIRM_WALLET);
+        this.props.openModal(modals.SAVE_WALLET);
     }
 
     handleSubmit(token) {
         if (this.state.mnemonic.trim() !== localStorage.walletMnemonic) {
             NotificationManager.warning('Wrong mnemonic words. Last call for saving them!');
-            this.props.closeModal(modal.current);
-            this.props.openModal(modal.prev);
+            this.props.closeModal(modals.CONFIRM_WALLET);
+            this.props.openModal(modals.SAVE_WALLET);
         } 
         // else if (this.state.jsonFile.trim() !== localStorage.walletJson) {
         //     NotificationManager.warning("Wrong json file. You need to create a new wallet.");
@@ -50,7 +51,7 @@ export default class CreateWalletModal extends React.Component {
         //     this.props.openModal(modal.prev);
         // }
          else {
-            this.props.closeModal(modal.current);
+            this.props.closeModal(modals.CONFIRM_WALLET);
             this.captcha.execute();
         }
     }
@@ -58,13 +59,12 @@ export default class CreateWalletModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.CONFIRM_WALLET, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Confirm Wallet Information</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.CONFIRM_WALLET, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
-                        {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
                         <p>Enter your wallet mnemonic words:</p>
                         <textarea name="mnemonic" className="form-control" onChange={this.onChange} onFocus={this.handleFocus} value={this.state.mnemonic}/>
                         <br/>

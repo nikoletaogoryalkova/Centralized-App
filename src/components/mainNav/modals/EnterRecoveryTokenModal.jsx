@@ -5,6 +5,7 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { sendRecoveryToken } from '../../../requester.js';
+import { modals } from '../../../constants/modals.js';
 
 const modal = {
     current: 'enterRecoveryToken',
@@ -25,8 +26,8 @@ export default class EnterRecoveryTokenModal extends React.Component {
     onSubmit() {
         sendRecoveryToken(this.props.recoveryToken).then((res) => {
             if (res.success) {
-                this.props.closeModal(modal.current);
-                this.props.openModal(modal.next);
+                this.props.closeModal(modals.ENTER_RECOVERY_TOKEN);
+                this.props.openModal(modals.CHANGE_PASSWORD);
             }
             else {
                 NotificationManager.warning('Invalid token', 'Token');
@@ -37,10 +38,10 @@ export default class EnterRecoveryTokenModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.ENTER_RECOVERY_TOKEN, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Recover your password (2)</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.ENTER_RECOVERY_TOKEN, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <p>A confirmation email has been sent. To enter a new password open the link from your email or enter the token in the field below. </p>

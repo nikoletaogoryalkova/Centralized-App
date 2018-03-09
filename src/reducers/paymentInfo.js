@@ -8,21 +8,21 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
     switch(action.type) {
-        case paymentInfo.SET_CURRENCY:
-            return {
-                ...state,
-                currency: action.currency,
-                currencySign: getCurrencySign(action.currency)
-            };
+    case paymentInfo.SET_CURRENCY:
+        return {
+            ...state,
+            currency: action.currency,
+            currencySign: getCurrencySign(action.currency)
+        };
 
-        case paymentInfo.SET_LOC_RATE:
-            return {
-                ...state,
-                locRate: action.locRate
-            };
+    case paymentInfo.SET_LOC_RATE:
+        return {
+            ...state,
+            locRate: action.locRate
+        };
 
-        default:
-            return state;
+    default:
+        return state;
     }
 }
 
