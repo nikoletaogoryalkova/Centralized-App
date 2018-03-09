@@ -4,7 +4,9 @@
     }
 
     #room-book .title-select,
-    #room-book .guest-name {
+    #room-book .guest-name,
+    #room-book label,
+    #room-book .child-age {
         width: 100%;
         margin-bottom: 5px;
     }
@@ -51,6 +53,10 @@
     }
 
     .hotel-content .room-group .room {
+        text-align: center;
+    }
+
+    .hotel-info {
         text-align: center;
     }
 }
