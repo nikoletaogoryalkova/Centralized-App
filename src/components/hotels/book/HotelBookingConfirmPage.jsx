@@ -88,12 +88,13 @@ class HotelBookingConfirmPage extends React.Component {
                         bookingId: preparedBookingId,
                         transactionHash: transactionHash.transactionHash
                     };
-        
+                    
+                    console.log(bookingConfirmObj);
                     confirmBooking(bookingConfirmObj).then(() => {
                         NotificationManager.success('You will receive a confirmation message');
                         setTimeout(() => {
-                            window.location.href = '/profile/messages';
-                        }, 3000);
+                            this.props.history.push('/profile/messages');
+                        }, 2000);
                     });
                 }).catch(error => {
                     if (error.hasOwnProperty('message')) {
@@ -103,8 +104,10 @@ class HotelBookingConfirmPage extends React.Component {
                     } else if (typeof x === 'string') {
                         NotificationManager.warning(error, 'Send Tokens');
                     } else {
-                        console.log(error);
+                        NotificationManager.warning(error);
                     }
+
+                    this.closeModal('showCredentialsModal');
                 });
             }, 1000);
         });
