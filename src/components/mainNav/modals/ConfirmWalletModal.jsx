@@ -94,10 +94,10 @@ export default class CreateWalletModal extends React.Component {
                                         lastName: info.lastName,
                                         phoneNumber: info.phoneNumber,
                                         preferredLanguage: info.preferredLanguage,
-                                        preferredCurrency: info.preferredCurrency.id,
+                                        preferredCurrency: info.preferredCurrency != null ? info.preferredCurrency.id : null,
                                         gender: info.gender,
-                                        country: info.country.id,
-                                        city: info.city.id,
+                                        country: info.country != null ? info.country.id : null,
+                                        city: info.city != null ? info.city.id : null,
                                         birthday: info.birthday,
                                         locAddress: localStorage.getItem('walletAddress'),
                                         jsonFile:  localStorage.getItem('walletJson')

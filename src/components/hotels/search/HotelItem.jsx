@@ -12,7 +12,7 @@ function HotelItem(props) {
     const { currency, currencySign } = props.paymentInfo;
     const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
     const locPrice = (price / locRate).toFixed(2);
-    const priceInSelectedCurrency = rates && (price * (rates['USD'][props.paymentInfo.currency])).toFixed(2);
+    const priceInSelectedCurrency = rates && (price * (rates['EUR'][props.paymentInfo.currency])).toFixed(2);
     const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
     return (
         <div className="list-hotel">
