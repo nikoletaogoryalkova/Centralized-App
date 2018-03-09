@@ -73,7 +73,7 @@ function HomeDetailsInfoSection(props) {
             <div className="list-hotel-description">
                 <h2>Description</h2>
                 <hr />
-                {props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0].text}
+                {props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0] ? props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0].text : (props.data.descriptions.filter(x => x.type === 'General')[0] ? props.data.descriptions.filter(x => x.type === 'General')[0].text : '')}
             </div>
 
             <div id="facilities">
