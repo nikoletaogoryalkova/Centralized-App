@@ -10,10 +10,25 @@ import { Config } from '../../../config.js';
 function HotelItem(props) {
     const { locRate, rates } = props;
     const { currency, currencySign } = props.paymentInfo;
-    const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
+    const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price, stars} = props.listing;
+    console.log(description);
     const locPrice = (price / locRate).toFixed(2);
     const priceInSelectedCurrency = rates && (price * (rates['EUR'][props.paymentInfo.currency])).toFixed(2);
     const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
+
+    const calculateStars = (ratingNumber) => {
+        let starsElements = [];
+        let rating = Math.round(ratingNumber);
+        for (let i = 0; i < rating; i++) {
+            starsElements.push(<span key={i} className="full-star"></span>);
+        }
+        for (let i = 0; i < 5 - rating; i++) {
+            starsElements.push(<span key={100 - i} className="empty-star"></span>);
+        }
+
+        return starsElements;
+    };
+
     return (
         <div className="list-hotel">
             <div className="list-image">
@@ -21,9 +36,13 @@ function HotelItem(props) {
             </div>
             <div className="list-content">
                 <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>
+                <div className="list-hotel-rating">
+                    <div className="list-hotel-rating-stars">
+                        {calculateStars(stars)}
+                    </div>
+                </div>
                 <div className="clearfix"></div>
-                <div className="list-hotel-text">
-                    {description.substr(0, 300)}...
+                <div className="list-hotel-text" dangerouslySetInnerHTML={{__html: description.substr(0, 300) + '...'}}>
                 </div>
             </div>
             <div className="list-price">

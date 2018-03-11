@@ -65,9 +65,28 @@ function HomeDetailsInfoSection(props) {
         roomsResults.push(usedRoomsByTypeAndMeal[key]); 
     }
     roomsResults = roomsResults.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1);
+
+    const calculateStars = (ratingNumber) => {
+        let starsElements = [];
+        let rating = Math.round(ratingNumber);
+        for (let i = 0; i < rating; i++) {
+            starsElements.push(<span key={i} className="full-star"></span>);
+        }
+        for (let i = 0; i < 5 - rating; i++) {
+            starsElements.push(<span key={100 - i} className="empty-star"></span>);
+        }
+
+        return starsElements;
+    };
+
     return (
         <div className="hotel-content" id="hotel-section">
             <h1> {props.data.name} </h1>
+            <div className="list-hotel-rating">
+                <div className="list-hotel-rating-stars">
+                    {calculateStars(props.data.star)}
+                </div>
+            </div>
             <div className="clearfix" />
             <p>{street}, {city}, {country}</p>
             <div className="list-hotel-description">
