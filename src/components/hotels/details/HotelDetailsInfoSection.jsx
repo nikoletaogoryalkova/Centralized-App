@@ -90,9 +90,8 @@ function HomeDetailsInfoSection(props) {
             <div className="clearfix" />
             <p>{street}, {city}, {country}</p>
             <div className="list-hotel-description">
-                <h2>Description</h2>
-                <hr />
-                {props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0] ? props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0].text : (props.data.descriptions.filter(x => x.type === 'General')[0] ? props.data.descriptions.filter(x => x.type === 'General')[0].text : '')}
+                <h2>Description</h2>            
+                <span dangerouslySetInnerHTML={{__html: props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0] ? props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0].text : (props.data.descriptions.filter(x => x.type === 'General')[0] ? props.data.descriptions.filter(x => x.type === 'General')[0].text : '')}}></span>
             </div>
 
             <div id="facilities">
