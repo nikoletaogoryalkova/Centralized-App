@@ -12,12 +12,11 @@ class PopularListingItem extends React.Component {
         let listingPrice;
         let pictures;
         let rating;
-        let reviewsCount;
-        if (listingsType === "homes") {
+        if (listingsType === 'homes') {
             listingPrice = (this.props.listing.prices) && this.props.paymentInfo.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed(2) : parseInt(this.props.listing.prices[this.props.paymentInfo.currency], 10).toFixed(2);
             pictures = this.props.listing.pictures;
             rating = this.props.listing.averageRating;
-        } else if (listingsType === "hotels") {
+        } else if (listingsType === 'hotels') {
             listingPrice = 0.0;
             pictures = this.props.listing.hotelPhotos.map(x => { return {thumbnail: 'http://roomsxml.com' + x.externalThumbnailUrl}; });
             rating = this.props.listing.star;

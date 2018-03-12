@@ -8,3 +8,7 @@ export const modals = {
     ENTER_RECOVERY_TOKEN: 'SHOW_ENTER_RECOVERY_TOKEN',
     CHANGE_PASSWORD: 'SHOW_CHANGE_PASSWORD',
 };
+
+export const currency = {
+    ROOMS_XML: 'EUR'
+};

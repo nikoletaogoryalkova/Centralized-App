@@ -1,16 +1,9 @@
 import { NotificationContainer } from 'react-notifications';
 
-import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Wallet } from '../../../services/blockchain/wallet.js';
-import { modals } from '../../../constants/modals.js';
-
-const modal = {
-    current: 'saveWallet',
-    next: 'confirmWallet',
-};
+import { modals } from '../../../constants/constants.js';
 
 export default class SaveWalletModal extends React.Component {
     constructor(props) {

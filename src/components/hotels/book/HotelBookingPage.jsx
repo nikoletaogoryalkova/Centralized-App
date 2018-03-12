@@ -6,8 +6,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import validator from 'validator';
+import { currency } from '../../../constants/constants.js';
 
-import { getTestHotelById, testBook, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
+import { getTestHotelById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 
 class HotelBookingPage extends React.Component {
     constructor(props) {
@@ -159,7 +160,8 @@ class HotelBookingPage extends React.Component {
             const encodedBooking = encodeURI(JSON.stringify(booking));
             const id = this.props.match.params.id;
             const query = `?booking=${encodedBooking}`;
-            window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+            this.props.history.push(`/hotels/listings/book/confirm/${id}${query}`);
+            // window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
         }
     }
 
@@ -204,7 +206,7 @@ class HotelBookingPage extends React.Component {
         const hotelCityName = this.state.hotel && this.state.hotel.city.name;
         const rooms = this.state.rooms;
         const hotelPicUrl = this.state.pictures && this.state.pictures[0].externalUrl;
-        const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates['USD'][this.props.paymentInfo.currency]).toFixed(2);
+        const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2);
         return (
             <div>
                 <div>
@@ -227,7 +229,7 @@ class HotelBookingPage extends React.Component {
                                 <div className="col-md-5">
                                     <div className="hotel-info">
                                         <div className="hotel-picture">
-                                            <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel Picture"/>
+                                            <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel"/>
                                         </div>
                                         <h2>{hotelName}</h2>
                                         <h3>{hotelMainAddress}, {hotelCityName}</h3>
@@ -242,7 +244,7 @@ class HotelBookingPage extends React.Component {
                                             } else {
                                                 return (
                                                     <h3 key={index}>
-                                                        {room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{this.state.rates && (room.price * this.state.rates['USD'][this.props.paymentInfo.currency]).toFixed(2)} (LOC {Number(room.price / this.state.locRate).toFixed(2)})
+                                                        {room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{this.state.rates && (room.price * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2)} (LOC {Number(room.price / this.state.locRate).toFixed(2)})
                                                     </h3>
                                                 );
                                             }

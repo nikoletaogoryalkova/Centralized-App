@@ -58,8 +58,7 @@ function SearchBar(props) {
             });
     };
 
-    const { startDate, endDate, rooms, adults, childrenCount, childrenAges } = props;
-    const { onChange, handleDatePick, handleAdultsChange, handleChildrenChange, handleChildAgeChange } = props;
+    const { rooms } = props;
 
     return (
         <section id="search-bar">

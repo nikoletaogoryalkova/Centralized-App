@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 
 import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
-import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
 import { testSearch, getRegionNameById, getCurrencyRates, getLocRateInUserSelectedCurrency } from '../../../requester';
 
@@ -143,7 +142,7 @@ class HotelsSearchPage extends React.Component {
         const rooms = this.state.rooms.slice(0);
         if (hasChildren) {
             for (let i = 0; i < rooms.length; i++) {
-                rooms[i].children = new Array();
+                rooms[i].children = [];
             }
         }
         

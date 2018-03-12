@@ -3,8 +3,9 @@ import HotelDetailsAmenityColumn from './HotelDetailsAmenityColumn';
 import HotelDetailsReviewBox from './HotelDetailsReviewBox';
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { modals } from '../../../constants/modals.js';
+import { withRouter, Link } from 'react-router-dom';
+import { modals } from '../../../constants/constants.js';
+import { currency } from '../../../constants/constants.js';
 import { openModal } from '../../../actions/modalsInfo.js';
 
 function HomeDetailsInfoSection(props) {
@@ -34,6 +35,17 @@ function HomeDetailsInfoSection(props) {
         }
 
         return total;
+    };
+
+    const getRoomURL = (quoteId) => {
+        if (quoteId) {
+            localStorage.setItem('quoteId', quoteId);
+        }
+
+        const id = props.match.params.id;
+        const search = props.location.search;
+        const URL = `/hotels/listings/book/${id}${search}`;
+        return URL;
     };
 
     const allAmenities = props.data.amenities;
@@ -155,7 +167,7 @@ function HomeDetailsInfoSection(props) {
                                                 <div key={roomIndex} className="room">
                                                     <span><b>{room.name}</b> ({room.mealType}) - </span>
                                                     {props.userInfo.isLogged && 
-                                                        <span>{props.currencySign}{props.rates && Number((room.price * props.rates['USD'][props.paymentInfo.currency]) / props.nights).toFixed(2)} </span>
+                                                        <span>{props.currencySign}{props.rates && Number((room.price * props.rates[currency.ROOMS_XML][props.paymentInfo.currency]) / props.nights).toFixed(2)} </span>
                                                     }
                                                     <span>
                                                         {props.userInfo.isLogged && '('}
@@ -172,7 +184,7 @@ function HomeDetailsInfoSection(props) {
                                         <span className="price-details">
                                             <span><b>{props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</b></span>
                                             {props.userInfo.isLogged && 
-                                                <span>{props.currencySign}{props.rates && Number(getTotalPrice(results.roomsResults) * props.rates['USD'][props.paymentInfo.currency]).toFixed(2) } (</span>
+                                                <span>{props.currencySign}{props.rates && Number(getTotalPrice(results.roomsResults) * props.rates[currency.ROOMS_XML][props.paymentInfo.currency]).toFixed(2) } (</span>
                                             }
                                             <span><b>{ Number(getTotalPrice(results.roomsResults) / props.locRate).toFixed(2) } LOC{props.userInfo.isLogged ? ')' : ''}</b></span>
                                         </span>
@@ -181,7 +193,7 @@ function HomeDetailsInfoSection(props) {
                                 </div>
                                 <div className="col col-md-2 content-center">
                                     {props.userInfo.isLogged ? 
-                                        <button className="btn btn-primary" onClick={(e) => props.handleBookRoom(e, results.quoteId)}>Book</button> :
+                                        <Link to={getRoomURL(results.quoteId)} className="btn btn-primary">Book now</Link> :
                                         <button className="btn btn-primary" onClick={(e) => props.dispatch(openModal(modals.LOGIN, e))}>Login</button>
                                     }
                                 </div>

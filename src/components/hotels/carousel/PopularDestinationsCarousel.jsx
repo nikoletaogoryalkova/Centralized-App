@@ -2,7 +2,6 @@ import React from 'react';
 import OwlCarousel from 'react-owl-carousel';
 import PropTypes from 'prop-types';
 import { Config } from '../../../config.js';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { connect } from 'react-redux';
 

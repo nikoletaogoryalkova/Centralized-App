@@ -6,12 +6,7 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { postNewPassword } from '../../../requester.js';
-import { modals } from '../../../constants/modals.js';
-
-const modal = {
-    current: 'changePassword',
-    next: 'showLoginModal',
-};
+import { modals } from '../../../constants/constants.js';
 
 export default class ChangePasswordModal extends React.Component {
     constructor(props) {

@@ -1,5 +1,3 @@
-import { getListings } from '../../requester';
-
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -8,12 +6,12 @@ import PopularDestinationsCarousel from './carousel/PopularDestinationsCarousel'
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 
 import { getTestHotels } from '../../requester';
-import { testSearch, getCurrencyRates } from '../../requester';
+import { getCurrencyRates } from '../../requester';
 import { connect } from 'react-redux';
 
 import ChildrenModal from './modals/ChildrenModal';
 
-class HomePage extends React.Component {
+class HotelsHomePage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -184,7 +182,7 @@ class HomePage extends React.Component {
         const rooms = this.state.rooms.slice(0);
         if (hasChildren) {
             for (let i = 0; i < rooms.length; i++) {
-                rooms[i].children = new Array();
+                rooms[i].children = [];
             }
         }
 
@@ -275,7 +273,7 @@ class HomePage extends React.Component {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(HomePage));
+export default withRouter(connect(mapStateToProps)(HotelsHomePage));
 
 function mapStateToProps(state) {
     const { paymentInfo } = state;

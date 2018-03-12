@@ -1,5 +1,4 @@
 import { userInfo } from '../actions/actionTypes';
-import { Wallet } from '../services/blockchain/wallet';
 
 const initialState = {
     isLogged: false,

@@ -2,8 +2,6 @@ import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
     contactHost,
-    login,
-    getCurrentLoggedInUserInfo
 } from '../../../requester';
 
 import { Config } from '../../../config';
@@ -18,8 +16,6 @@ import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
 
 import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
-import { setIsLogged, setUserInfo } from '../../../actions/userInfo.js';
-import { Wallet } from '../../../services/blockchain/wallet.js';
 
 class HotelDetailsPage extends React.Component {
     constructor(props) {
@@ -190,7 +186,7 @@ class HotelDetailsPage extends React.Component {
         const rooms = this.state.rooms.slice(0);
         if (hasChildren) {
             for (let i = 0; i < rooms.length; i++) {
-                rooms[i].children = new Array();
+                rooms[i].children = [];
             }
         }
         
@@ -519,14 +515,15 @@ class HotelDetailsPage extends React.Component {
         // if (this.props.userInfo.isLogged) {
             const id = this.props.match.params.id;
             const search = this.props.location.search;
-            window.location.href = `/hotels/listings/book/${id}${search}`;
+            this.props.history.push(`/hotels/listings/book/${id}${search}`);
+            // window.location.href = `/hotels/listings/book/${id}${search}`;
         // } else {
         //     this.openModal('showLoginModal');
         // }
     }
 
     render() {
-        let loading, allEvents, images;
+        let loading, images;
         if (!this.state.data
             // this.state.prices === null ||
             // this.state.reservations === null ||

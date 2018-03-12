@@ -1,18 +1,17 @@
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import validator from 'validator';
-import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
+import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo, getEmailFreeResponse } from '../../requester';
 import { setIsLogged, setUserInfo } from '../../actions/userInfo';
 import { openModal, closeModal } from '../../actions/modalsInfo';
-import { modals } from '../../constants/modals.js';
+import { modals } from '../../constants/constants.js';
 
 import ChangePasswordModal from './modals/ChangePasswordModal';
 import { Config } from '../../config';
 import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
 import PropTypes from 'prop-types';
-import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
 

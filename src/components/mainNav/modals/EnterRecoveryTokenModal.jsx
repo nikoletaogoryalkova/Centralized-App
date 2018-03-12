@@ -5,12 +5,7 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { sendRecoveryToken } from '../../../requester.js';
-import { modals } from '../../../constants/modals.js';
-
-const modal = {
-    current: 'enterRecoveryToken',
-    next: 'changePassword',
-};
+import { modals } from '../../../constants/constants.js';
 
 export default class EnterRecoveryTokenModal extends React.Component {
     constructor(props) {

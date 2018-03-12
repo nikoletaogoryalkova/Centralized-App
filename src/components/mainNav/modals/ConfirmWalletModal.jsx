@@ -4,16 +4,9 @@ import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Wallet } from '../../../services/blockchain/wallet.js';
 import { updateUserInfo, getCurrentLoggedInUserInfo } from '../../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { modals } from '../../../constants/modals.js';
-
-const modal = {
-    current: 'confirmWallet',
-    prev: 'saveWallet',
-    next: 'showLoginModal',
-};
+import { modals } from '../../../constants/constants.js';
 
 export default class CreateWalletModal extends React.Component {
     constructor(props) {
@@ -84,7 +77,7 @@ export default class CreateWalletModal extends React.Component {
                         console.log(this.props);
                         console.log("items");
                         console.log(localStorage);
-                        if (this.props.userName != '' && this.props.userToken != '') {
+                        if (this.props.userName !== '' && this.props.userToken !== '') {
                             if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
                                 localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.props.userToken;
                                 localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.props.userName;

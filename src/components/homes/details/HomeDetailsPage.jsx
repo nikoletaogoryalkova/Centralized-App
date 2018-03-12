@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 import HomeDetailsInfoSection from './HomeDetailsInfoSection';
 import React from 'react';
 import HomesSearchBar from '../search/HomesSearchBar';
-import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
