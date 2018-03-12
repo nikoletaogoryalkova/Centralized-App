@@ -57,7 +57,7 @@ export default function HomeTripsTable(props) {
                                     <div  style={{ display: 'none' }} ><button type="submit" onClick={e => { e.preventDefault(); props.onTripSelect(trip.id); props.onTripCancel(); }}>Cancel Trip</button></div>}
                             </div>
                             <div className="col-md-2">
-                                <div className="reservation-status bold">{capitalize(trip.status.toLowerCase())}</div>
+                                {/* <div className="reservation-status bold">{capitalize(trip.status)}</div> */}
                             </div>
                         </div>
                     </div>
