@@ -62,9 +62,11 @@ class HotelsSearchPage extends React.Component {
 
     componentDidMount() {
         testSearch(this.props.location.search).then((json) => {
+            console.log(json);
             this.setState({
                 listings: json, 
-                loading: false 
+                loading: false,
+                totalElements: json.length
             });
         });
 
@@ -278,12 +280,12 @@ class HotelsSearchPage extends React.Component {
         });
 
         const searchTerms = this.getSearchTerms(this.state.searchParams);
-        testSearch(searchTerms + `&page=${page - 1}`).then(data => {
-            // this.setState({
-            //     listings: data.content,
-            //     loading: false,
-            //     totalElements: data.totalElements
-            // });
+        testSearch(searchTerms + `&page=${page - 1}`).then(json => {
+            this.setState({
+                listings: json,
+                loading: false,
+                totalElements: json.length
+            });
         });
     }
 
