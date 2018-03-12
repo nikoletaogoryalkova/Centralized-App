@@ -1,14 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Config } from '../../../config.js';
+
 import moment from 'moment';
 
 export default function HomeTripsTable(props) {
-    
+
     const capitalize = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
+    let tomorrow = new Date();
+    tomorrow.setHours(24);
+    let afterTomorrow = new Date();
+    afterTomorrow.setHours(48);
+    
     return (
         <div>
             <div className="table-header bold">
@@ -36,7 +43,7 @@ export default function HomeTripsTable(props) {
                         <div className="col-md-12">
                             <div className="col-md-1">
                                 <div className="reservation-image-box">
-                                    <span className="session-nav-user-thumb"><img src={`http://roomsxml.com${JSON.parse(trip.hotel_photo).original}`} alt="host-profile" /></span>
+                                    <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${JSON.parse(trip.hotel_photo).original}`} alt="host-profile" /></span>
                                 </div>
                             </div>
                             <div className="col-md-2">
@@ -46,7 +53,7 @@ export default function HomeTripsTable(props) {
                                 {trip.hostEmail ? <div><span className="send-message-icon"></span><a href={`mailto:${trip.hostEmail}`}>Send Message</a></div> : ''}
                             </div>
                             <div className="col-md-2">
-                                <div><Link to={`/hotels/listings/${trip.hotel_id}`}><u>{trip.hotel_name}</u></Link></div>
+                                <div><Link to={`/hotels/listings/${trip.hotel_id}?currency=GBP&startDate=${moment(tomorrow).format('DD/MM/YYYY')}&endDate=${moment(afterTomorrow).format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`}><u>{trip.hotel_name}</u></Link></div>
                             </div>
                             <div className="col-md-3">
                                 <div>{moment(new Date(trip.arrival_date)).format('DD MMM, YYYY')}<i aria-hidden="true" className="fa fa-long-arrow-right"></i>{moment(new Date(trip.arrival_date)).add(trip.nights, 'days').format('DD MMM, YYYY')}</div>
@@ -57,7 +64,10 @@ export default function HomeTripsTable(props) {
                                     <div  style={{ display: 'none' }} ><button type="submit" onClick={e => { e.preventDefault(); props.onTripSelect(trip.id); props.onTripCancel(); }}>Cancel Trip</button></div>}
                             </div>
                             <div className="col-md-2">
-                                {/* <div className="reservation-status bold">{capitalize(trip.status)}</div> */}
+                                <div className="reservation-status bold">{capitalize(trip.status != null && trip.status.length > 0 ? trip.status : 'PENDING')}</div>
+                                {trip.status && trip.status.toUpperCase() === 'DONE' && 
+                                    <span>Reference No.: {trip.booking_id}</span>
+                                }
                             </div>
                         </div>
                     </div>
