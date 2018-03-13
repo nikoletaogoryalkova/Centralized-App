@@ -38,13 +38,9 @@ function HomeDetailsInfoSection(props) {
     };
 
     const getRoomURL = (quoteId) => {
-        if (quoteId) {
-            localStorage.setItem('quoteId', quoteId);
-        }
-
         const id = props.match.params.id;
         const search = props.location.search;
-        const URL = `/hotels/listings/book/${id}${search}`;
+        const URL = `/hotels/listings/book/${id}${search}&quoteId=${quoteId}`;
         return URL;
     };
 
@@ -77,6 +73,7 @@ function HomeDetailsInfoSection(props) {
         roomsResults.push(usedRoomsByTypeAndMeal[key]); 
     }
     roomsResults = roomsResults.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1);
+    console.log(roomsResults);
 
     const calculateStars = (ratingNumber) => {
         let starsElements = [];

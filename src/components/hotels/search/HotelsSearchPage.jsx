@@ -8,6 +8,7 @@ import { getListingsByFilter } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { currency } from '../../../constants/constants.js';
 
 import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
@@ -57,6 +58,7 @@ class HotelsSearchPage extends React.Component {
         this.getLocRate = this.getLocRate.bind(this);
         this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
+        this.getLocRate = this.getLocRate.bind(this);
     }
 
     componentDidMount() {
@@ -124,7 +126,7 @@ class HotelsSearchPage extends React.Component {
     }
 
     getLocRate() {
-        const currency = this.props.paymentInfo.currency;
+        const currency = 'EUR';
         getLocRateInUserSelectedCurrency(currency).then((json) => {
             this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
         });

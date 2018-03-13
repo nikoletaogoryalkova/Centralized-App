@@ -27,11 +27,12 @@ class HotelBookingPage extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        const search = this.props.location.search;
-        const quoteId = localStorage.getItem('quoteId');
+        let search = this.props.location.search;
         const searchParams = this.getSearchParams(this.props.location.search);
+        const quoteId = searchParams.get('quoteId');
         const rooms = this.getRooms(searchParams);
         const nights = this.getNights(searchParams);
+        search = search.substr(0, search.indexOf('&quoteId='));
         getTestHotelById(id, search).then((data) => {
             const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
             const totalPrice = this.getTotalPrice(roomResults);
