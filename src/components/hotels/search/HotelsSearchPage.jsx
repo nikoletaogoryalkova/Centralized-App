@@ -83,10 +83,14 @@ class HotelsSearchPage extends React.Component {
             const rooms = JSON.parse(decodeURI(searchParams.get('rooms')));
             const adults = this.getAdults(rooms);
             const hasChildren = this.getHasChildren(rooms);
+            const startDate = moment(searchParams.get('startDate'), 'DD/MM/YYYY');
+            const endDate = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
+            const nights = this.calculateNights(startDate, endDate);
             this.setState({
                 searchParams: searchParams,
-                startDate: moment(searchParams.get('startDate'), 'DD/MM/YYYY'),
-                endDate: moment(searchParams.get('endDate'), 'DD/MM/YYYY'),
+                startDate: startDate,
+                endDate: endDate,
+                nights: nights,
                 rooms: rooms,
                 adults: adults,
                 hasChildren: hasChildren
@@ -131,6 +135,12 @@ class HotelsSearchPage extends React.Component {
             this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
         });
     }
+
+    calculateNights(startDate, endDate) {
+        const checkIn = moment(startDate, 'DD/MM/YYYY');
+        const checkOut = moment(endDate, 'DD/MM/YYYY');
+        return (checkOut > checkIn) ? checkOut.diff(checkIn, 'days') : 0;
+    };
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
@@ -181,6 +191,7 @@ class HotelsSearchPage extends React.Component {
             testSearch(queryString).then((json) => {
                 this.setState({
                     listings: json,
+                    nights: this.calculateNights(this.state.startDate, this.state.endDate),
                     loading: false,
                 });
             });
@@ -405,7 +416,7 @@ class HotelsSearchPage extends React.Component {
             renderListings = <div className="text-center"><h3>No results</h3></div>;
         } else {
             renderListings = listings.map((item, i) => {
-                return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} />;
+                return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights}/>;
             });
         }
 
