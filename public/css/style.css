@@ -30,6 +30,7 @@
 }
 
 .btn {
+    font-family: 'FuturaStd-Light', sans-serif;
     font-weight: 400;
     border-radius: 4px;
     font-size: 18px;
@@ -2909,8 +2910,7 @@ select {
 .btn-book {
     float: right;
     margin-bottom: 25px;
-    font-weight: bold;
-    font-size: 1em;
+    font-weight: 400;
 }
 
 .hotels-input-daterange {
