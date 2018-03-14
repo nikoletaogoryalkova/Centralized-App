@@ -370,8 +370,8 @@ class MainNav extends React.Component {
                                     </NavDropdown>
                                 </Nav> :
                                 <Nav pullRight>
-                                    <NavItem componentClass={Link} href="/login" to="/login" onClick={() => this.openModal(modals.LOGIN)}>Login</NavItem>
-                                    <NavItem componentClass={Link} href="/signup" to="/signup" onClick={() => this.openModal(modals.REGISTER)}>Register</NavItem>
+                                    <MenuItem componentClass={Link} to="/login" onClick={() => this.openModal(modals.LOGIN)}>Login</MenuItem>
+                                    <MenuItem componentClass={Link} to="/signup" onClick={() => this.openModal(modals.REGISTER)}>Register</MenuItem>
                                 </Nav>
                             }
                         </Navbar.Collapse>
