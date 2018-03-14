@@ -464,10 +464,10 @@ class HotelDetailsPage extends React.Component {
         // this.setState({ roomAvailability: roomAvailability });
         // return;
 
-        testBook(booking).then((res) => {
-            const roomAvailability = new Map(this.state.roomAvailability);
-            roomAvailability.set(quoteId, 'loading');
-            this.setState({ roomAvailability: roomAvailability }, () => {
+        const roomAvailability = new Map(this.state.roomAvailability);
+        roomAvailability.set(quoteId, 'loading');
+        this.setState({ roomAvailability: roomAvailability }, () => {
+            testBook(booking).then((res) => {
                 const updatedRoomAvailability = new Map(this.state.roomAvailability);
                 if (res.ok) {
                     updatedRoomAvailability.set(quoteId, true);
