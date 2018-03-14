@@ -91,13 +91,15 @@ function HomeDetailsInfoSection(props) {
     const getButton = (quoteId) => {
         if (!props.userInfo.isLogged) {
             return <button className="btn btn-primary" onClick={(e) => props.dispatch(openModal(modals.LOGIN, e))}>Login</button>;
-        } else if (props.roomAvailability.has(quoteId) && props.roomAvailability.get(quoteId)) {
+        } else if (props.roomAvailability.has(quoteId) && props.roomAvailability.get(quoteId) === 'loading') { 
+            return <div className='loader'></div>;
+        } else if (props.roomAvailability.has(quoteId) && props.roomAvailability.get(quoteId) === true) {
             return <Link to={getRoomURL(quoteId)} className="btn btn-primary">Book now</Link>;
+        } else if (props.roomAvailability.has(quoteId) && props.roomAvailability.get(quoteId) === false) {
+            return <button className="btn btn-primary" disabled>Not Available</button>;
         } else if (!props.roomAvailability.has(quoteId)) {
             return <button className="btn btn-primary" onClick={() => props.checkAvailability(quoteId)}>Check Availability</button>;
-        }else {
-            return <button className="btn btn-primary" disabled>Not Available</button>;
-        }
+        } 
     };
 
     return (

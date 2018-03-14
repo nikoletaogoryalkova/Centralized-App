@@ -50,6 +50,15 @@ class HotelBookingConfirmPage extends React.Component {
                         this.setState({ rates: json });
                     });
                 });
+            } else {
+                res.then((res) => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
             }
         });
     }
