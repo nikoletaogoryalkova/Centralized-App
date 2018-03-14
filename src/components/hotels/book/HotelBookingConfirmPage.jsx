@@ -36,17 +36,21 @@ class HotelBookingConfirmPage extends React.Component {
         const search = this.props.location.search;
         const searchParams = this.getSearchParams(search);
         const booking = JSON.parse(decodeURI(searchParams.get('booking')));
-        testBook(booking).then((json) => {
-            this.setState({ data: json });
-            console.log(json);
-
-            getLocRateInUserSelectedCurrency(json.currency).then((data) => {
-                this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
-            });
-
-            getCurrencyRates().then((json) => {
-                this.setState({ rates: json });
-            });
+        testBook(booking).then((res) => {
+            if (res.ok) {
+                res.json().then((json) => {
+                    this.setState({ data: json });
+                    console.log(json);
+        
+                    getLocRateInUserSelectedCurrency(json.currency).then((data) => {
+                        this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
+                    });
+        
+                    getCurrencyRates().then((json) => {
+                        this.setState({ rates: json });
+                    });
+                });
+            }
         });
     }
 

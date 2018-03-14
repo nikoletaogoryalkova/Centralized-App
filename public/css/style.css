@@ -2830,6 +2830,11 @@ select {
     margin: 5px;
 }
 
+.hotel-content .room-group .btn {
+    width: 200px;
+    font-family: 'FuturaStd-Light', sans-serif;
+}
+
 .success-reservation-alert h2 {
     color: white;
     font-size: 28px;
