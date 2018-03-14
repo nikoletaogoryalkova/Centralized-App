@@ -88,6 +88,18 @@ function HomeDetailsInfoSection(props) {
         return starsElements;
     };
 
+    const getButton = (quoteId) => {
+        if (!props.userInfo.isLogged) {
+            return <button className="btn btn-primary" onClick={(e) => props.dispatch(openModal(modals.LOGIN, e))}>Login</button>;
+        } else if (props.roomAvailability.has(quoteId) && props.roomAvailability.get(quoteId)) {
+            return <Link to={getRoomURL(quoteId)} className="btn btn-primary">Book now</Link>;
+        } else if (!props.roomAvailability.has(quoteId)) {
+            return <button className="btn btn-primary" onClick={() => props.checkAvailability(quoteId)}>Check Availability</button>;
+        }else {
+            return <button className="btn btn-primary" disabled>Not Available</button>;
+        }
+    };
+
     return (
         <div className="hotel-content" id="hotel-section">
             <h1> {props.data.name} </h1>
@@ -157,7 +169,7 @@ function HomeDetailsInfoSection(props) {
                     {roomsResults && roomsResults.map((results, resultIndex) => {
                         return (
                             <div key={resultIndex} className="row room-group">
-                                <div className="col col-md-7 parent vertical-block-center">
+                                <div className="col col-md-6 parent vertical-block-center">
                                     <div className="room-titles">
                                         {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
                                             return (
@@ -188,11 +200,8 @@ function HomeDetailsInfoSection(props) {
                                         
                                     </div>
                                 </div>
-                                <div className="col col-md-2 content-center">
-                                    {props.userInfo.isLogged ? 
-                                        <Link to={getRoomURL(results.quoteId)} className="btn btn-primary">Book now</Link> :
-                                        <button className="btn btn-primary" onClick={(e) => props.dispatch(openModal(modals.LOGIN, e))}>Login</button>
-                                    }
+                                <div className="col col-md-3 content-center">
+                                    { getButton(results.quoteId) }
                                 </div>
                             </div>
                         );

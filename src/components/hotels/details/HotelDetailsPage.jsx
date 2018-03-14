@@ -15,7 +15,7 @@ import moment from 'moment';
 import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
 
-import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
+import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
 class HotelDetailsPage extends React.Component {
     constructor(props) {
@@ -51,7 +51,8 @@ class HotelDetailsPage extends React.Component {
             // loaded: false,
             userInfo: null,
             loading: true,
-            isShownContactHostModal: false
+            isShownContactHostModal: false,
+            roomAvailability: new Map(),
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -77,6 +78,7 @@ class HotelDetailsPage extends React.Component {
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
         this.handleBookRoom = this.handleBookRoom.bind(this);
         // this.login = this.login.bind(this);
+        this.checkAvailability = this.checkAvailability.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -430,76 +432,49 @@ class HotelDetailsPage extends React.Component {
         });
     }
 
-    // login(captchaToken) {
-    //     let user = {
-    //         email: this.state.loginEmail,
-    //         password: this.state.loginPassword
-    //     };
+    checkAvailability (quoteId) {
+        const rooms = this.state.rooms.map((room) => {
+            const adults = [];
+            const children = room.children;
+            for (let j = 0; j < room.adults; j++) {
+                const adult = {
+                    title: 'Mr',
+                    firstName: null,
+                    lastName: null,
+                };
 
-    //     console.log(user);
-    //     console.log(captchaToken);
+                adults.push(adult);
+            }
 
-    //     login(user, captchaToken).then((res) => {
-    //         if (res.success) {
-    //             res.response.json().then((data) => {
+            return {
+                adults: adults,
+                children: children
+            };
+        });
 
-    //                 localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = data.Authorization;
-    //                 // TODO Get first name + last name from response included with Authorization token (Backend)
+        const currency = this.props.paymentInfo.currency;
+        const booking = {
+            quoteId: quoteId,
+            rooms: rooms,
+            currency: currency
+        };
 
-    //                 localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
-    //                 getCurrentLoggedInUserInfo().then(info => {
-    //                     // this.setState({ userName: user.email, userToken: data.Authorization });
-    //                     if (info.jsonFile != null && info.jsonFile.length > 1) {
-    //                         this.setUserInfo().then(() => {
-    //                             // this.closeModal('showLoginModal');
-    //                             this.handleBookRoom();
-    //                             // if (this.state.recoveryToken !== '') {
-    //                             //     this.props.history.push('/');
-    //                             // }
-    //                         });
-    //                     } else {
-    //                         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
-    //                         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
-    //                         // this.openModal('createWallet');
-    //                     }
+        // const roomAvailability = new Map(this.state.roomAvailability);
+        // roomAvailability.set(quoteId, true);
+        // this.setState({ roomAvailability: roomAvailability });
+        // return;
 
-    //                     this.closeModal('showLoginModal');
-    //                 });
-    //             });
-    //         } else {
-    //             res.response.then(res => {
-    //                 const errors = res.errors;
-    //                 for (let key in errors) {
-    //                     if (typeof errors[key] !== 'function') {
-    //                         NotificationManager.warning(errors[key].message);
-    //                     }
-    //                 }
-    //             });
+        testBook(booking).then((res) => {
+            const roomAvailability = new Map(this.state.roomAvailability);
+            if (res.ok) {
+                roomAvailability.set(quoteId, true);
+            } else {
+                roomAvailability.set(quoteId, false);
+            }
 
-    //             this.captcha.reset();
-    //         }
-    //     });
-    // }
-
-    // async setUserInfo() {
-    //     if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-    //         getCurrentLoggedInUserInfo()
-    //             .then(res => {
-    //                 Wallet.getBalance(res.locAddress).then(x => {
-    //                     const ethBalance = x / (Math.pow(10, 18));
-    //                     Wallet.getTokenBalance(res.locAddress).then(y => {
-    //                         const locBalance = y / (Math.pow(10, 18));
-    //                         const { firstName, lastName, phoneNumber, email, locAddress } = res;
-    //                         this.props.dispatch(setIsLogged(true));
-    //                         this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
-    //                     });
-    //                 });
-    //             });
-    //     }
-    //     else {
-    //         this.setState({ loaded: true, loading: false });
-    //     }
-    // }
+            this.setState({ roomAvailability: roomAvailability });
+        });
+    }
     
     handleBookRoom (event, quoteId) {
         if (event) {
@@ -624,6 +599,8 @@ class HotelDetailsPage extends React.Component {
                                     loading={this.state.loading}
                                     currencySign={this.props.paymentInfo.currencySign}
                                     handleBookRoom={this.handleBookRoom}
+                                    checkAvailability={this.checkAvailability}
+                                    roomAvailability={this.state.roomAvailability}
                                 />
                                 
                                 {/* <HotelReservationPanel
