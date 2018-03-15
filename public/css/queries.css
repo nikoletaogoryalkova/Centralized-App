@@ -59,4 +59,8 @@
     .hotel-info {
         text-align: center;
     }
+
+    #attached-footer {
+        display: none;
+    }
 }

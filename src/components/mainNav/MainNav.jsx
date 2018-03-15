@@ -357,6 +357,7 @@ class MainNav extends React.Component {
                                 <Nav>
                                     <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                     <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
+                                    <NavItem componentClass={Link} href="/profile/wallet" to="/profile/wallet">Wallet</NavItem>
                                     <NavItem componentClass={Link} href="/profile/messages" to="/profile/messages">
                                         <div className={(this.state.unreadMessages === 0 ? 'not ' : '') + 'unread-messages-box'}>
                                             {this.state.unreadMessages > 0 && <span className="bold unread" style={{ right: this.state.unreadMessages.toString().split('').length === 2 ? '2px' : '4px' }}>{this.state.unreadMessages}</span>}
