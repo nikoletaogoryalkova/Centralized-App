@@ -491,8 +491,8 @@ export async function getEmailFreeResponse(email) {
     });
 }
 
-export async function getMyHotelBookings() {
-    return sendRequest(`${host}users/me/bookings`, RequestMethod.GET).then(res => {
+export async function getMyHotelBookings(page) {
+    return sendRequest(`${host}users/me/bookings${page}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
