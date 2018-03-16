@@ -22,6 +22,7 @@ function getHeaders(headers = null) {
 async function sendRequest(endpoint, method, postObj = null, captchaToken = null, headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
     'Captcha': captchaToken
 }) {
     let allHeaders = getHeaders(headers);

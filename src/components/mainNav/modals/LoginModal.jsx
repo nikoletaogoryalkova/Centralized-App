@@ -18,7 +18,7 @@ export default class LoginModal extends React.Component {
                         <button type="button" className="close" onClick={() => this.props.closeModal(modals.LOGIN)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
-                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
+                        <form onSubmit={(e) => { e.preventDefault(); /* this.captcha.execute(); */ this.props.login(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="mail" />
                                 <input type="email" name="loginEmail" value={this.props.loginEmail} onChange={this.props.onChange} className="form-control" placeholder="Email address" />
