@@ -28,6 +28,10 @@ import {
 	signTransaction
 } from "./utils/signTransaction";
 
+import {
+	fundTransactionAmountIfNeeded
+} from "./utils/ethFuncs"
+
 const gasConfig = require('./config/gas-config.json');
 const errors = require('./config/errors.json');
 
@@ -68,7 +72,15 @@ export class HotelReservation {
 			numberOfTravelers,
 			callOptions);
 
-		await validateLocBalance(userKeys.address, reservationCostLOC);
+		await validateLocBalance(userKeys.address, reservationCostLOC, gasConfig.hotelReservation.create);
+
+		// result.FundTransactionAmountTxn =
+		await fundTransactionAmountIfNeeded(
+			userKeys.address,
+			userKeys.privateKey,
+			gasConfig.hotelReservation.create
+		);
+
 
 		await approveContract(userKeys.address, userKeys.privateKey, reservationCostLOC, HotelReservationFactoryContract._address);
 
@@ -118,7 +130,7 @@ export class HotelReservation {
 		const hotelReservationIdHex = web3.utils.utf8ToHex(hotelReservationId);
 
 		const reservation = await this.getReservation(hotelReservationId);
-		// ToDo: Rename customerAddress to _customerAddress after fix in contract
+
 		validateCancellation(reservation._refundPercentage,
 			reservation._daysBeforeStartForRefund,
 			reservation._reservationStartDate,

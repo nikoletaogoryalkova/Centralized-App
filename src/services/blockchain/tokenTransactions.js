@@ -9,13 +9,17 @@ import {
 } from './validators/token-validators';
 import {
 	LOCTokenContract
-} from './config/contracts-config.js'
+} from './config/contracts-config.js';
 import {
 	signTransaction
-} from './utils/signTransaction.js'
+} from './utils/signTransaction.js';
 import {
 	web3
 } from './config/contracts-config.js';
+
+import {
+	fundTransactionAmountIfNeeded
+} from './utils/ethFuncs,js'
 const gasConfig = require('./config/gas-config.json');
 const errors = require('./config/errors.json');
 
@@ -32,11 +36,11 @@ export class TokenTransactions {
 		}
 
 		// TODO: Future implementation for the fund transactions
-		// 	result.FundTransactionAmountTxn =
-		// 	await exchangeController.fundTransactionAmountIfNeeded(
-		// 		body.JSONPassPublicKey,
-		// 		body.JSONPassPrivateKey
-		// 	);
+		await fundTransactionAmountIfNeeded(
+			result.address,
+			result.privateKey,
+			gasConfig.hotelReservation.create
+		);
 
 		// validateReceiptStatus(result.FundTransactionAmountTxn);
 

@@ -1,13 +1,19 @@
-import { web3 } from '../config/contracts-config.js';
-import { signTransaction } from "./signTransaction";
-import { LOCTokenContract } from './../config/contracts-config.js';
+import {
+	web3
+} from '../config/contracts-config.js';
+import {
+	signTransaction
+} from "./signTransaction";
+import {
+	LOCTokenContract
+} from '../config/contracts-config.js';
 
 const gasConfig = require('./../config/gas-config.json');
 
 export async function approveContract(senderAddress,
-                                      senderPrivateKey,
-                                      amount,
-                                      contractAddressToApprove) {
+	senderPrivateKey,
+	amount,
+	contractAddressToApprove) {
 	const callOptions = {
 		from: senderAddress
 	};
