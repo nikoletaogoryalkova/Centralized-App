@@ -14,7 +14,7 @@ export async function getGasPrice() {
 
 	try {
 		let response = await axios.get(GAS_STATION_API);
-		return web3.utils.toWei(response.data.average_calc / 10, 'gwei');
+		return web3.utils.toWei(response.data.fast / 10, 'gwei');
 
 	} catch (e) {
 		return web3.eth.getGasPrice();
