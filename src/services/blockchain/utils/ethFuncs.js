@@ -53,7 +53,6 @@ export async function exchangeLocForEth(JSONPassPublicKey, JSONPassPrivateKey, a
 	validateContractBalance(amount);
 	const locWeiAmount = await LOCExchangeContract.methods.weiToLocWei(
 		amount.toString(10)).call();
-	console.log(locWeiAmount);
 	result.ApproveContractTxn = await approveContract(
 		JSONPassPublicKey,
 		JSONPassPrivateKey,
@@ -98,7 +97,6 @@ export async function fundTransactionAmountIfNeeded(JSONPassPublicKey, JSONPassP
 			amount: gasAmountNeeded.toString(10),
 			recipient: JSONPassPublicKey
 		})
-		console.log(gasAmountNeeded.toString(10));
 		accountBalance = await web3.eth.getBalance(JSONPassPublicKey);
 	}
 

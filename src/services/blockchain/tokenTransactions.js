@@ -35,7 +35,6 @@ export class TokenTransactions {
 			gas: gasConfig.transferTokens,
 		}
 
-		// TODO: Future implementation for the fund transactions
 		await fundTransactionAmountIfNeeded(
 			result.address,
 			result.privateKey,
