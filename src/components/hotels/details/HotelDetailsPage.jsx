@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
+import { ROOMS_XML_CURRENCY } from '../../../constants/constants.js';
 
 import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
@@ -154,9 +155,8 @@ class HotelDetailsPage extends React.Component {
     }
 
     getLocRate() {
-        const currency = this.props.paymentInfo.currency;
-        getLocRateInUserSelectedCurrency(currency).then((json) => {
-            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
+        getLocRateInUserSelectedCurrency(ROOMS_XML_CURRENCY).then((json) => {
+            this.setState({ locRate: Number(json[0][`price_${ROOMS_XML_CURRENCY.toLowerCase()}`]) });
         });
     }
 

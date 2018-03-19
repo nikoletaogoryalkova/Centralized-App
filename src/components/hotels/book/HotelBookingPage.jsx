@@ -6,7 +6,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import validator from 'validator';
-import { currency } from '../../../constants/constants.js';
+import { ROOMS_XML_CURRENCY } from '../../../constants/constants.js';
 
 import { getTestHotelById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 
@@ -56,9 +56,8 @@ class HotelBookingPage extends React.Component {
     }
 
     getLocRate() {
-        const currency = 'EUR';
-        getLocRateInUserSelectedCurrency(currency).then((json) => {
-            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
+        getLocRateInUserSelectedCurrency(ROOMS_XML_CURRENCY).then((json) => {
+            this.setState({ locRate: Number(json[0][`price_${ROOMS_XML_CURRENCY.toLowerCase()}`]) });
         });
     }
 
@@ -207,7 +206,7 @@ class HotelBookingPage extends React.Component {
         const hotelCityName = this.state.hotel && this.state.hotel.city.name;
         const rooms = this.state.rooms;
         const hotelPicUrl = this.state.pictures && this.state.pictures[0].externalUrl;
-        const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2);
+        const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2);
         return (
             <div>
                 <div>
@@ -245,7 +244,7 @@ class HotelBookingPage extends React.Component {
                                             } else {
                                                 return (
                                                     <h3 key={index}>
-                                                        {room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{this.state.rates && (room.price * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2)} (LOC {Number(room.price / this.state.locRate).toFixed(2)})
+                                                        {room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{this.state.rates && (room.price * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} (LOC {Number(room.price / this.state.locRate).toFixed(2)})
                                                     </h3>
                                                 );
                                             }

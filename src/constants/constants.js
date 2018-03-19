@@ -12,3 +12,5 @@ export const modals = {
 export const currency = {
     ROOMS_XML: 'EUR'
 };
+
+export const ROOMS_XML_CURRENCY = 'EUR';

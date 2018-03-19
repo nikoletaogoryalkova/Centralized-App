@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { currency } from '../../../constants/constants.js';
+import { ROOMS_XML_CURRENCY } from '../../../constants/constants.js';
 
 import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
 
@@ -164,7 +164,7 @@ class HotelBookingConfirmPage extends React.Component {
                 rows.push(
                     <tr key={index} className="booking-room">
                         <td>{booking.room.roomType.text}</td>
-                        <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (booking.room.totalSellingPrice.amt * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2)} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</span></td>
+                        <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (booking.room.totalSellingPrice.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</span></td>
                         <td><button onClick={() => this.toggleCanxDetails(index)}>{this.state.showRoomCanxDetails[index] ? 'Hide' : 'Show'}</button></td>
                     </tr>
                 );
@@ -182,7 +182,7 @@ class HotelBookingConfirmPage extends React.Component {
                     rows.push(
                         <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                             <td>Cancellation fee</td>
-                            <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
+                            <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
                             <td></td>
                         </tr>
                     );
@@ -191,7 +191,7 @@ class HotelBookingConfirmPage extends React.Component {
                         rows.push(
                             <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                                 <td key={feeIndex}>{`Cancel up to ${moment(fee.from).format('DD MM YYYY')}`}</td>
-                                <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fee.amount.amt * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2)} ({(fee.locPrice).toFixed(4)} LOC)</span></td>
+                                <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fee.amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fee.locPrice).toFixed(4)} LOC)</span></td>
                                 <td></td>
                             </tr>
                         );
@@ -200,7 +200,7 @@ class HotelBookingConfirmPage extends React.Component {
                     rows.push(
                         <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                             <td key={fees.length}>{`Cancel on or after ${moment(this.getLastDate(fees).from).format('DD MM YYYY')}`}</td>
-                            <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
+                            <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
                             <td></td>
                         </tr>
                     );
@@ -263,7 +263,7 @@ class HotelBookingConfirmPage extends React.Component {
                                         <p>Name: <span className="booking-for">{this.props.userInfo.firstName} {this.props.userInfo.lastName}</span></p>    
                                     </div>
                                     <div className="row order-total">
-                                        <p>Order Total: <span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fiatPrice* this.state.rates[currency.ROOMS_XML][this.props.paymentInfo.currency]).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
+                                        <p>Order Total: <span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fiatPrice* this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
                                     </div>
                                 </div>
                                 <button className="btn btn-primary btn-book" onClick={() => this.openModal('showCredentialsModal')}>Confirm and Pay</button>
