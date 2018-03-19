@@ -91,7 +91,7 @@ class HotelBookingConfirmPage extends React.Component {
 
     handleSubmit(password) {
         const preparedBookingId = this.state.data.preparedBookingId;
-        const recipient = '0xa032235b81ceb313f57877acee273ea5ae8e776b';
+        const recipient = '0xa99c523BfC2E1374ac528FE39e4dD7c35F6C1d46';
         const amount = this.state.data.locPrice * Math.pow(10, 18);
         // const amount = 1 * Math.pow(10, 18);
         NotificationManager.info('We are processing your transaction through the ethereum network. It might freeze your screen for several seconds...', 'Transactions');
