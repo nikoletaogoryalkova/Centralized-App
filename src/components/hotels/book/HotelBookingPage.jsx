@@ -56,7 +56,7 @@ class HotelBookingPage extends React.Component {
     }
 
     getLocRate() {
-        const currency = this.props.paymentInfo.currency;
+        const currency = currency.ROOMS_XML;
         getLocRateInUserSelectedCurrency(currency).then((json) => {
             this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
         });
