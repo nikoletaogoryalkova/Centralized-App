@@ -44,7 +44,7 @@ export default class LoginModal extends React.Component {
                             />
                             <div className="clearfix"></div>
                         </form>
-                        <button className="btn btn-primary" onClick={this.props.openWalletInfo}>Proceed</button>
+                        <button type="submit" className="btn btn-primary" onClick={this.props.openWalletInfo}>Proceed</button>
                         <div className="signup-rights">
                             <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>
                         </div>

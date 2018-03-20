@@ -53,7 +53,7 @@ class HotelDetailsPage extends React.Component {
             userInfo: null,
             loading: true,
             isShownContactHostModal: false,
-            roomAvailability: new Map(),
+            roomLoader: undefined,
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -78,8 +78,6 @@ class HotelDetailsPage extends React.Component {
         this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
         this.handleBookRoom = this.handleBookRoom.bind(this);
-        // this.login = this.login.bind(this);
-        this.checkAvailability = this.checkAvailability.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -480,25 +478,72 @@ class HotelDetailsPage extends React.Component {
         });
     }
     
-    handleBookRoom (event, quoteId) {
-        if (event) {
-            event.preventDefault();
-        }
-        
-        if (quoteId) {
-            localStorage.setItem('quoteId', quoteId);
+    handleBookRoom (roomsResults) {
+        this.setState({ roomLoader: true });
+        NotificationManager.info('Checking room availability...');
+        const rooms = this.state.rooms.map((room) => {
+            const adults = [];
+            const children = room.children;
+            for (let j = 0; j < room.adults; j++) {
+                const adult = {
+                    title: 'Mr',
+                    firstName: null,
+                    lastName: null,
+                };
+
+                adults.push(adult);
+            }
+
+            return {
+                adults: adults,
+                children: children
+            };
+        });
+
+        const currency = this.props.paymentInfo.currency;
+        const booking = {
+            rooms: rooms,
+            currency: currency
+        };
+
+        const allRooms = [];
+        for (let i = 0; i < roomsResults.length; i++) {
+            for (let j = 0; j < roomsResults[i].length; j++) {
+                allRooms.push({
+                    key: roomsResults[i][j].key,
+                    quoteId: roomsResults[i][j].quoteId,
+                    price: roomsResults[i][j].totalPrice,
+                });
+            }
         }
 
-        // console.log(event, quoteId)
-        // this.closeModal('showLoginModal');
-        // if (this.props.userInfo.isLogged) {
-            const id = this.props.match.params.id;
+        this.checkNextRoom(allRooms, 0, booking);
+    }
+    
+    checkNextRoom(allRooms, index, booking) {
+        if (index > allRooms.length) {
+            NotificationManager.warning('Unfortunatelly all rooms in that hotel were already taken, please try another one.', '', 5000);
             const search = this.props.location.search;
-            this.props.history.push(`/hotels/listings/book/${id}${search}`);
-            // window.location.href = `/hotels/listings/book/${id}${search}`;
-        // } else {
-        //     this.openModal('showLoginModal');
-        // }
+            const URL = `/hotels/listings/${search}`;
+            this.props.history.push(URL);
+            return;
+        }
+
+        booking.quoteId = allRooms[index].quoteId;
+        testBook(booking).then((res) => {
+            if (res.ok) {
+                if (index !== 0) {
+                    NotificationManager.info('The room that you requested is no longer available. You were given a similar room which may have slightly different price and extras.', '', 5000);
+                }
+
+                const id = this.props.match.params.id;
+                const search = this.props.location.search;
+                const URL = `/hotels/listings/book/${id}${search}&quoteId=${booking.quoteId}`;
+                this.props.history.push(URL);
+            } else {
+                this.checkNextRoom(allRooms, index + 1, booking);
+            }
+        });
     }
 
     render() {
@@ -575,7 +620,7 @@ class HotelDetailsPage extends React.Component {
                                             <a href="#reviews">Access Info</a>
                                         </li>
                                     }
-                                    {this.state.data.reviews && this.state.data.reviews.lenght > 0 &&
+                                    {this.state.data.reviews && this.state.data.reviews.length > 0 &&
                                         <li>
                                             <a href="#reviews">Reviews</a>
                                         </li>
@@ -604,7 +649,7 @@ class HotelDetailsPage extends React.Component {
                                     currencySign={this.props.paymentInfo.currencySign}
                                     handleBookRoom={this.handleBookRoom}
                                     checkAvailability={this.checkAvailability}
-                                    roomAvailability={this.state.roomAvailability}
+                                    roomLoader={this.state.roomLoader}
                                 />
                                 
                                 {/* <HotelReservationPanel

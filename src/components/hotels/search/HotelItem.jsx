@@ -16,8 +16,6 @@ function HotelItem(props) {
     const priceInSelectedCurrency = rates && ((price * (rates[currency.ROOMS_XML][props.paymentInfo.currency])) / props.nights).toFixed(2);
     const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
 
-    console.log(props);
-
     const calculateStars = (ratingNumber) => {
         let starsElements = [];
         let rating = Math.round(ratingNumber);
