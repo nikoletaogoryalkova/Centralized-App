@@ -179,7 +179,7 @@ function HomeDetailsInfoSection(props) {
                 <div className="clearfix" />
 
                 {props.roomLoader ? 
-                    <div id="rooms"><div className="loader"></div></div> :
+                    <div id="rooms"><h2>Available Rooms</h2><div className="loader"></div></div> :
                     <div id="rooms">
                         <h2>Available Rooms</h2>
                         {roomsResults && roomsResults.map((results, resultIndex) => {
