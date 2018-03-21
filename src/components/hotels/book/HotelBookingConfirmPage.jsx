@@ -7,6 +7,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
+import { ENTER_WALLET_PASSWORD } from '../../../constants/modals.js';
+import { openModal, closeModal } from '../../../actions/modalsInfo.js';
 
 import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
 
@@ -132,9 +134,7 @@ class HotelBookingConfirmPage extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({
-            [modal]: true,
-        }, () => {console.log(this.state)});
+        this.props.dispatch(openModal(modal));
     }
 
     closeModal(modal, e) {
@@ -142,9 +142,7 @@ class HotelBookingConfirmPage extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({
-            [modal]: false
-        });
+        this.props.dispatch(closeModal(modal));
     }
 
     onChange(e) {
@@ -266,9 +264,9 @@ class HotelBookingConfirmPage extends React.Component {
                                         <p>Order Total: <span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fiatPrice* this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
                                     </div>
                                 </div>
-                                <button className="btn btn-primary btn-book" onClick={() => this.openModal('showCredentialsModal')}>Confirm and Pay</button>
+                                <button className="btn btn-primary btn-book" onClick={() => this.openModal(ENTER_WALLET_PASSWORD)}>Confirm and Pay</button>
                             </div>
-                            <CredentialsModal modalId={'showCredentialsModal'} handleSubmit={this.handleSubmit} closeModal={this.closeModal} isActive={this.state.showCredentialsModal} />
+                            <CredentialsModal isActive={this.props.modalsInfo.modals.get(ENTER_WALLET_PASSWORD)} handleSubmit={this.handleSubmit} closeModal={this.closeModal} walletPassword={this.state.walletPassword} onChange={this.onChange} />
                         </div>
                     }
                 </div>
@@ -288,15 +286,17 @@ HotelBookingConfirmPage.propTypes = {
     // start Redux props
     dispatch: PropTypes.func,
     userInfo: PropTypes.object,
-    paymentInfo: PropTypes.object
+    paymentInfo: PropTypes.object,
+    modalsInfo: PropTypes.object
 };
 
 export default withRouter(connect(mapStateToProps)(HotelBookingConfirmPage));
 
 function mapStateToProps(state) {
-    const { userInfo, paymentInfo } = state;
+    const { userInfo, paymentInfo, modalsInfo } = state;
     return {
         userInfo,
-        paymentInfo
+        paymentInfo,
+        modalsInfo,
     };
 }

@@ -2,42 +2,31 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default class CredentialsModal extends React.Component {
-    constructor(props) {
-        super(props);
+import { ENTER_WALLET_PASSWORD } from '../../../../constants/modals.js';
 
-        this.state = {
-            walletPassword: '',
-            jsonFile: '',
-        };
+export default function CredentialsModal(props) {
 
-        this.onChange = this.onChange.bind(this);
-    }
-
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    render() {
-        return (
-            <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(this.props.modalId, e)} className="modal fade myModal">
-                    <Modal.Header>
-                        <h1>Enter your wallet password</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(this.props.modalId, e)}>&times;</button>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <input type="password" placeholder="Wallet Password" name={'walletPassword'} className="form-control"  value={this.state.walletPassword} onChange={this.onChange} />
-                        <button className="btn btn-primary" onClick={() => this.props.handleSubmit(this.state.walletPassword)}>Confirm</button>
-                    </Modal.Body>
-                </Modal>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <Modal show={props.isActive} onHide={e => props.closeModal(ENTER_WALLET_PASSWORD, e)} className="modal fade myModal">
+                <Modal.Header>
+                    <h1>Enter your wallet password</h1>
+                    <button type="button" className="close" onClick={(e) => props.closeModal(ENTER_WALLET_PASSWORD, e)}>&times;</button>
+                </Modal.Header>
+                <Modal.Body>
+                    <input type="password" placeholder="Wallet Password" name="walletPassword" className="form-control"  value={props.walletPassword} onChange={props.onChange} />
+                    <button className="btn btn-primary" onClick={props.handleSubmit}>Confirm</button>
+                </Modal.Body>
+            </Modal>
+        </div>
+    );
 }
 
 CredentialsModal.propTypes = {
+    walletPassword: PropTypes.string,
     openModal: PropTypes.func,
     closeModal: PropTypes.func,
+    onChange: PropTypes.func,
+    handleSubmit: PropTypes.func,
     isActive: PropTypes.bool
 };
