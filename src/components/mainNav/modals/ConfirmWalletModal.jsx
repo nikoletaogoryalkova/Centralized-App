@@ -93,7 +93,6 @@ export default class CreateWalletModal extends React.Component {
     }
 
     handleEnterKeyPress(event) {
-        console.log(event.key);
         if(event.key === 'Enter'){
             this.handleSubmit();
         }

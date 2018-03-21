@@ -1,6 +1,5 @@
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import validator from 'validator';
 import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import ChangePasswordModal from './modals/ChangePasswordModal';
@@ -23,8 +22,7 @@ import {
     getCountOfUnreadMessages, 
     login, 
     register, 
-    getCurrentLoggedInUserInfo, 
-    getEmailFreeResponse 
+    getCurrentLoggedInUserInfo,
 } from '../../requester';
 
 import { 
@@ -38,15 +36,6 @@ import {
     CONFIRM_WALLET
 } from '../../constants/modals.js';
 
-import { 
-    INVALID_EMAIL,
-    EMAIL_ALREADY_EXISTS, 
-    INVALID_FIRST_NAME,
-    INVALID_LAST_NAME,
-    PROFILE_INVALID_PASSWORD_LENGTH,
-    PROFILE_PASSWORD_REQUIREMENTS
-} from '../../constants/warningMessages.js';
-
 import {
     PROFILE_SUCCESSFULLY_CREATED
 } from '../../constants/successMessages.js';
@@ -57,26 +46,19 @@ class MainNav extends React.Component {
         super(props);
 
         this.state = {
-            showSignUpModal: false,
-            showLoginModal: false,
             signUpEmail: '',
             signUpFirstName: '',
             signUpLastName: '',
             signUpPassword: '',
             signUpLocAddress: '',
-            signUpError: null,
             loginEmail: '',
             loginPassword: '',
             walletPassword: '',
-            loginError: null,
             userName: '',
             userToken: '',
-            sendRecoveryEmail: false,
             enterRecoveryToken: false,
-            changePassword: false,
             recoveryToken: '',
             unreadMessages: '',
-            canProceed: false
         };
 
         this.onChange = this.onChange.bind(this);
@@ -84,11 +66,9 @@ class MainNav extends React.Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.setUserInfo = this.setUserInfo.bind(this);
-        this.onEmailDone = this.onEmailDone.bind(this);
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.openWalletInfo = this.openWalletInfo.bind(this);
 
         this.messageListener = this.messageListener.bind(this);
         this.getCountOfMessages = this.getCountOfMessages.bind(this);
@@ -116,18 +96,6 @@ class MainNav extends React.Component {
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-    }
-
-    onEmailDone(e) {
-        const email = e.target.value;
-        getEmailFreeResponse(email).then(res => {
-            if(res.exist) {
-                NotificationManager.warning(EMAIL_ALREADY_EXISTS);
-                this.setState({canProceed: false});
-            } else {
-                this.setState({canProceed: true});
-            }
-        });
     }
  
     register(captchaToken) {
@@ -181,7 +149,6 @@ class MainNav extends React.Component {
                         this.setState({ userName: user.email, userToken: data.Authorization });
                         if (info.jsonFile != null && info.jsonFile.length > 1) {
                             this.setUserInfo();
-        
                             if (this.state.recoveryToken !== '') {
                                 this.props.history.push('/');
                             }
@@ -210,48 +177,6 @@ class MainNav extends React.Component {
         });
     }
 
-    openWalletInfo() {
-        getEmailFreeResponse(this.state.signUpEmail).then(res => {
-            let isEmailFree = false;
-            if(res.exist) {
-                isEmailFree = false;
-            } else {
-                isEmailFree = true;
-            }
-
-            if (!validator.isEmail(this.state.signUpEmail)) {
-                NotificationManager.warning(INVALID_EMAIL);
-            } else if (!isEmailFree) {
-                NotificationManager.warning(EMAIL_ALREADY_EXISTS);
-            } else if (validator.isEmpty(this.state.signUpFirstName)) {
-                NotificationManager.warning(INVALID_FIRST_NAME);
-            } else if (validator.isEmpty(this.state.signUpLastName)) {
-                NotificationManager.warning(INVALID_LAST_NAME);
-            } else if (this.state.signUpPassword.length < 6) {
-                NotificationManager.warning(PROFILE_INVALID_PASSWORD_LENGTH);
-            } else if (!this.state.signUpPassword.match('^([^\\s]*[a-zA-Z]+.*?[0-9]+[^\\s]*|[^\\s]*[0-9]+.*?[a-zA-Z]+[^\\s]*)$')) {
-                NotificationManager.warning(PROFILE_PASSWORD_REQUIREMENTS);            
-            } else {
-                this.closeModal(REGISTER); 
-                this.openModal(CREATE_WALLET);
-            }
-        });
-        
-    }
-
-    async isEmailFree(email) {
-        let isFree = false;
-        await getEmailFreeResponse(email).then(res => {
-            if(res.exist) {
-                isFree = true;
-            } else {
-                isFree = false;
-            }
-        });
-
-        return isFree;
-    }
-
     setUserInfo() {
         if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
             getCurrentLoggedInUserInfo().then(res => {
@@ -265,8 +190,6 @@ class MainNav extends React.Component {
                     });
                 });
             });
-        } else {
-            this.setState({ loaded: true, loading: false });
         }
     }
 
@@ -328,7 +251,7 @@ class MainNav extends React.Component {
                     <EnterRecoveryTokenModal isActive={this.props.modalsInfo.modals.get(ENTER_RECOVERY_TOKEN)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
                     <ChangePasswordModal isActive={this.props.modalsInfo.modals.get(CHANGE_PASSWORD)} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
                     <LoginModal isActive={this.props.modalsInfo.modals.get(LOGIN)} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} />
-                    <RegisterModal isActive={this.props.modalsInfo.modals.get(REGISTER)} openModal={this.openModal} closeModal={this.closeModal} signUpEmail={this.state.signUpEmail} signUpFirstName={this.state.signUpFirstName} signUpLastName={this.state.signUpLastName} signUpPassword={this.state.signUpPassword} openWalletInfo={this.openWalletInfo} onChange={this.onChange} />
+                    <RegisterModal isActive={this.props.modalsInfo.modals.get(REGISTER)} openModal={this.openModal} closeModal={this.closeModal} signUpEmail={this.state.signUpEmail} signUpFirstName={this.state.signUpFirstName} signUpLastName={this.state.signUpLastName} signUpPassword={this.state.signUpPassword} onChange={this.onChange} />
 
                     <Navbar>
                         <Navbar.Header>

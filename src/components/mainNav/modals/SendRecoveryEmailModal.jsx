@@ -15,7 +15,6 @@ export default class SendRecoveryEmailModal extends React.Component {
 
         this.state = {
             recoveryEmail: '',
-            error: null,
         };
 
         this.onChange = this.onChange.bind(this);
@@ -50,7 +49,6 @@ export default class SendRecoveryEmailModal extends React.Component {
                         <button type="button" className="close" onClick={(e) => this.props.closeModal(SEND_RECOVERY_EMAIL, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
-                        {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
                         <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
