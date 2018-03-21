@@ -5,17 +5,17 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
-import { modals } from '../../../constants/constants.js';
+import { REGISTER } from '../../../constants/modals.js';
 
 export default class LoginModal extends React.Component {
 
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={() => this.props.closeModal(modals.REGISTER)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={() => this.props.closeModal(REGISTER)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Sign up</h1>
-                        <button type="button" className="close" onClick={() => this.props.closeModal(modals.REGISTER)}>&times;</button>
+                        <button type="button" className="close" onClick={() => this.props.closeModal(REGISTER)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>

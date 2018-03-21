@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { postRecoveryEmail } from '../../../requester.js';
-import { modals } from '../../../constants/constants.js';
+import { SEND_RECOVERY_EMAIL, ENTER_RECOVERY_TOKEN } from '../../../constants/modals.js';
+import { INVALID_EMAIL } from '../../../constants/warningMessages.js';
 
 export default class SendRecoveryEmailModal extends React.Component {
     constructor(props) {
@@ -31,11 +32,11 @@ export default class SendRecoveryEmailModal extends React.Component {
         };
         postRecoveryEmail(email, captchaToken).then((res) => {
             if (res.success) {
-                this.props.closeModal(modals.SEND_RECOVERY_EMAIL);
-                this.props.openModal(modals.ENTER_RECOVERY_TOKEN);
+                this.props.closeModal(SEND_RECOVERY_EMAIL);
+                this.props.openModal(ENTER_RECOVERY_TOKEN);
             }
             else {
-                NotificationManager.warning('Invalid email', 'Email');
+                NotificationManager.warning(INVALID_EMAIL);
             }
         });
     }
@@ -43,10 +44,10 @@ export default class SendRecoveryEmailModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.SEND_RECOVERY_EMAIL, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(SEND_RECOVERY_EMAIL, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Recover your password</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.SEND_RECOVERY_EMAIL, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(SEND_RECOVERY_EMAIL, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
@@ -57,7 +58,7 @@ export default class SendRecoveryEmailModal extends React.Component {
                             </div>
 
                             <div className="login-sign">
-                                <p>Already sent an email? Enter your security <a onClick={(e) => { e.preventDefault(); this.props.closeModal(modals.SEND_RECOVERY_EMAIL); this.props.openModal(modals.ENTER_RECOVERY_TOKEN); }}>token</a>.</p>
+                                <p>Already sent an email? Enter your security <a onClick={(e) => { e.preventDefault(); this.props.closeModal(SEND_RECOVERY_EMAIL); this.props.openModal(ENTER_RECOVERY_TOKEN); }}>token</a>.</p>
                             </div>
 
                             <ReCAPTCHA

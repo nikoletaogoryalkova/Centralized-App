@@ -3,24 +3,54 @@ import { connect } from 'react-redux';
 import validator from 'validator';
 import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo, getEmailFreeResponse } from '../../requester';
-import { setIsLogged, setUserInfo } from '../../actions/userInfo';
-import { openModal, closeModal } from '../../actions/modalsInfo';
-import { modals } from '../../constants/constants.js';
-
 import ChangePasswordModal from './modals/ChangePasswordModal';
-import { Config } from '../../config';
 import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
-
 import CreateWalletModal from './modals/CreateWalletModal';
 import SaveWalletModal from './modals/SaveWalletModal';
 import ConfirmWalletModal from './modals/ConfirmWalletModal';
 import LoginModal from './modals/LoginModal';
 import RegisterModal from './modals/RegisterModal';
+
+import { Config } from '../../config';
 import { Wallet } from '../../services/blockchain/wallet.js';
+import { setIsLogged, setUserInfo } from '../../actions/userInfo';
+import { openModal, closeModal } from '../../actions/modalsInfo';
+
+import { 
+    getCountOfUnreadMessages, 
+    login, 
+    register, 
+    getCurrentLoggedInUserInfo, 
+    getEmailFreeResponse 
+} from '../../requester';
+
+import { 
+    LOGIN, 
+    REGISTER, 
+    CREATE_WALLET,
+    SEND_RECOVERY_EMAIL,
+    ENTER_RECOVERY_TOKEN,
+    CHANGE_PASSWORD,
+    SAVE_WALLET,
+    CONFIRM_WALLET
+} from '../../constants/modals.js';
+
+import { 
+    INVALID_EMAIL,
+    EMAIL_ALREADY_EXISTS, 
+    INVALID_FIRST_NAME,
+    INVALID_LAST_NAME,
+    PROFILE_INVALID_PASSWORD_LENGTH,
+    PROFILE_PASSWORD_REQUIREMENTS
+} from '../../constants/warningMessages.js';
+
+import {
+    PROFILE_SUCCESSFULLY_CREATED
+} from '../../constants/successMessages.js';
+
 
 class MainNav extends React.Component {
     constructor(props) {
@@ -91,7 +121,7 @@ class MainNav extends React.Component {
         const email = e.target.value;
         getEmailFreeResponse(email).then(res => {
             if(res.exist) {
-                NotificationManager.warning('Email already exists!', 'User registration');
+                NotificationManager.warning(EMAIL_ALREADY_EXISTS);
                 this.setState({canProceed: false});
             } else {
                 this.setState({canProceed: true});
@@ -116,8 +146,8 @@ class MainNav extends React.Component {
 
         register(user, captchaToken).then((res) => {
             if (res.success) {
-                this.openModal(modals.LOGIN);
-                NotificationManager.success('Succesfully created your account.');
+                this.openModal(LOGIN);
+                NotificationManager.success(PROFILE_SUCCESSFULLY_CREATED);
             }
             else {
                 res.response.then(res => {
@@ -155,12 +185,12 @@ class MainNav extends React.Component {
                                 this.props.history.push('/');
                             }
         
-                            this.closeModal(modals.LOGIN);
+                            this.closeModal(LOGIN);
                         } else {
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
-                            this.openModal(modals.CREATE_WALLET);
-                            this.closeModal(modals.LOGIN);
+                            this.openModal(CREATE_WALLET);
+                            this.closeModal(LOGIN);
                         }
                     });
                     // reflect that the user is logged in, both in Redux and in the local component state
@@ -189,20 +219,20 @@ class MainNav extends React.Component {
             }
 
             if (!validator.isEmail(this.state.signUpEmail)) {
-                NotificationManager.warning('Invalid email address');
+                NotificationManager.warning(INVALID_EMAIL);
             } else if (!isEmailFree) {
-                NotificationManager.warning('Email already exists!', 'User registration');
+                NotificationManager.warning(EMAIL_ALREADY_EXISTS);
             } else if (validator.isEmpty(this.state.signUpFirstName)) {
-                NotificationManager.warning('Invalid first name. Must not be empty.');
+                NotificationManager.warning(INVALID_FIRST_NAME);
             } else if (validator.isEmpty(this.state.signUpLastName)) {
-                NotificationManager.warning('Invalid last name. Must not be empty.');
+                NotificationManager.warning(INVALID_LAST_NAME);
             } else if (this.state.signUpPassword.length < 6) {
-                NotificationManager.warning('Password should be at least 6 symbols');
+                NotificationManager.warning(PROFILE_INVALID_PASSWORD_LENGTH);
             } else if (!this.state.signUpPassword.match('^([^\\s]*[a-zA-Z]+.*?[0-9]+[^\\s]*|[^\\s]*[0-9]+.*?[a-zA-Z]+[^\\s]*)$')) {
-                NotificationManager.warning('Password must contain both latin letters and digits.');            
+                NotificationManager.warning(PROFILE_PASSWORD_REQUIREMENTS);            
             } else {
-                this.closeModal(modals.REGISTER); 
-                this.openModal(modals.CREATE_WALLET);
+                this.closeModal(REGISTER); 
+                this.openModal(CREATE_WALLET);
             }
         });
         
@@ -292,55 +322,15 @@ class MainNav extends React.Component {
             <nav id="main-nav" className="navbar">
                 <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                     <NotificationContainer />
-{/* 
-                    <Modal show={this.props.modalsInfo.modals.get(modals.REGISTER)} onHide={() => this.closeModal(modals.REGISTER)} className="modal fade myModal">
-                        <Modal.Header>
-                            <h1>Sign up</h1>
-                            <button type="button" className="close" onClick={() => this.closeModal(modals.REGISTER)}>&times;</button>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
-                                    <input type="email" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
-                                    <input type="text" required="required" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" placeholder="First Name" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
-                                    <input type="text" required="required" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
-                                    <input type="password" required="required" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
-                                </div>
 
-                                <ReCAPTCHA
-                                    ref={el => this.captcha = el}
-                                    size="invisible"
-                                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                    onChange={token => { this.register(token); this.captcha.reset(); }}
-                                />
-
-                                <div className="clearfix"></div>
-                            </form>
-                            <button className="btn btn-primary" onClick={this.openWalletInfo}>Proceed</button>
-                            <div className="signup-rights">
-                                <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>
-                            </div>
-                        </Modal.Body>
-                    </Modal> */}
-
-                    <CreateWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(modals.CREATE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
-                    <SaveWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(modals.SAVE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
-                    <ConfirmWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(modals.CONFIRM_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} register={this.register} />
-                    <SendRecoveryEmailModal isActive={this.props.modalsInfo.modals.get(modals.SEND_RECOVERY_EMAIL)} openModal={this.openModal} closeModal={this.closeModal} />
-                    <EnterRecoveryTokenModal isActive={this.props.modalsInfo.modals.get(modals.ENTER_RECOVERY_TOKEN)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
-                    <ChangePasswordModal isActive={this.props.modalsInfo.modals.get(modals.CHANGE_PASSWORD)} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
-                    <LoginModal isActive={this.props.modalsInfo.modals.get(modals.LOGIN)} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} />
-                    <RegisterModal isActive={this.props.modalsInfo.modals.get(modals.REGISTER)} openModal={this.openModal} closeModal={this.closeModal} signUpEmail={this.state.signUpEmail} signUpFirstName={this.state.signUpFirstName} signUpLastName={this.state.signUpLastName} signUpPassword={this.state.signUpPassword} openWalletInfo={this.openWalletInfo} onChange={this.onChange} />
+                    <CreateWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(CREATE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <SaveWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(SAVE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <ConfirmWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(CONFIRM_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} register={this.register} />
+                    <SendRecoveryEmailModal isActive={this.props.modalsInfo.modals.get(SEND_RECOVERY_EMAIL)} openModal={this.openModal} closeModal={this.closeModal} />
+                    <EnterRecoveryTokenModal isActive={this.props.modalsInfo.modals.get(ENTER_RECOVERY_TOKEN)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
+                    <ChangePasswordModal isActive={this.props.modalsInfo.modals.get(CHANGE_PASSWORD)} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
+                    <LoginModal isActive={this.props.modalsInfo.modals.get(LOGIN)} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} />
+                    <RegisterModal isActive={this.props.modalsInfo.modals.get(REGISTER)} openModal={this.openModal} closeModal={this.closeModal} signUpEmail={this.state.signUpEmail} signUpFirstName={this.state.signUpFirstName} signUpLastName={this.state.signUpLastName} signUpPassword={this.state.signUpPassword} openWalletInfo={this.openWalletInfo} onChange={this.onChange} />
 
                     <Navbar>
                         <Navbar.Header>
@@ -371,8 +361,8 @@ class MainNav extends React.Component {
                                     </NavDropdown>
                                 </Nav> :
                                 <Nav pullRight>
-                                    <MenuItem componentClass={Link} to="/login" onClick={() => this.openModal(modals.LOGIN)}>Login</MenuItem>
-                                    <MenuItem componentClass={Link} to="/signup" onClick={() => this.openModal(modals.REGISTER)}>Register</MenuItem>
+                                    <MenuItem componentClass={Link} to="/login" onClick={() => this.openModal(LOGIN)}>Login</MenuItem>
+                                    <MenuItem componentClass={Link} to="/signup" onClick={() => this.openModal(REGISTER)}>Register</MenuItem>
                                 </Nav>
                             }
                         </Navbar.Collapse>
@@ -390,7 +380,7 @@ function mapStateToProps(state) {
     return {
         userInfo,
         modalsInfo
-    }
+    };
 }
 
 MainNav.propTypes = {

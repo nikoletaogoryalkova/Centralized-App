@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
-import { ROOMS_XML_CURRENCY } from '../../../constants/constants.js';
+import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
@@ -49,7 +49,6 @@ class HotelDetailsPage extends React.Component {
             currentImage: 0,
             prices: null,
             oldCurrency: this.props.paymentInfo.currency,
-            // loaded: false,
             userInfo: null,
             loading: true,
             isShownContactHostModal: false,
@@ -66,7 +65,6 @@ class HotelDetailsPage extends React.Component {
         this.gotoImage = this.gotoImage.bind(this);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
-        // this.getUserInfo = this.getUserInfo.bind(this);
         this.handleRoomsChange = this.handleRoomsChange.bind(this);
         this.handleAdultsChange = this.handleAdultsChange.bind(this);
         this.handleChildrenChange = this.handleChildrenChange.bind(this);
@@ -80,10 +78,6 @@ class HotelDetailsPage extends React.Component {
         this.handleBookRoom = this.handleBookRoom.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        // this.getUserInfo();
-    }
-
     componentDidMount() {
         const id = this.props.match.params.id;
         const search = this.props.location.search;
@@ -94,7 +88,6 @@ class HotelDetailsPage extends React.Component {
             getRegionNameById(regionId).then((json) => {
                 this.setState({ region: json });
             });
-            console.log(data);
         });
 
         this.getLocRate();
@@ -119,8 +112,6 @@ class HotelDetailsPage extends React.Component {
                 adults: adults,
                 hasChildren: hasChildren
             });
-            
-           
         }
     }
 
@@ -176,9 +167,6 @@ class HotelDetailsPage extends React.Component {
     
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-        // if (this.updateParamsMap) {
-        //     this.updateParamsMap(e.target.name, e.target.value);
-        // }
     }
     
     handleToggleChildren() {
@@ -229,7 +217,6 @@ class HotelDetailsPage extends React.Component {
 
         let index = 0;
         while (adults > 0) {
-            // console.log(`${adults} / ${rooms.length - index} = ${Math.ceil(adults / (rooms.length - index))}`)
             const quotient = Math.ceil(adults / (rooms.length - index));
             rooms[index].adults = quotient;
             adults -= quotient;
@@ -242,31 +229,6 @@ class HotelDetailsPage extends React.Component {
     distributeChildren() {
         this.openModal('childrenModal');
     }
-
-    // getRooms() {
-    //     return this.state.rooms.map((room) => {
-    //         return {
-    //             adults: room.adults,
-    //             children: room.children.map((age) => { return { age: age}; })
-    //         };
-    //     });
-    // }
-
-    // getUserInfo() {
-    //     if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-    //         getCurrentLoggedInUserInfo()
-    //             .then(res => {
-    //                 this.setState({
-    //                     loaded: true,
-    //                     userInfo: res,
-    //                     loading: false
-    //                 });
-    //             });
-    //     }
-    //     else {
-    //         this.setState({ loaded: true, loading: false });
-    //     }
-    // }
 
     handleApply(event, picker) {
         const { startDate, endDate } = picker;
@@ -457,11 +419,6 @@ class HotelDetailsPage extends React.Component {
             currency: currency
         };
 
-        // const roomAvailability = new Map(this.state.roomAvailability);
-        // roomAvailability.set(quoteId, true);
-        // this.setState({ roomAvailability: roomAvailability });
-        // return;
-
         const roomAvailability = new Map(this.state.roomAvailability);
         roomAvailability.set(quoteId, 'loading');
         this.setState({ roomAvailability: roomAvailability }, () => {
@@ -548,14 +505,9 @@ class HotelDetailsPage extends React.Component {
 
     render() {
         let loading, images;
-        if (!this.state.data
-            // this.state.prices === null ||
-            // this.state.reservations === null ||
-            // this.state.loaded === false
-        ) {
+        if (!this.state.data) {
             loading = true;
         } else {
-            // allEvents = this.state.prices;
             images = null;
             if (this.state.data.hotelPhotos !== undefined) {
                 images = this.state.data.hotelPhotos.map(x => {
@@ -568,7 +520,6 @@ class HotelDetailsPage extends React.Component {
             <div>
                 <div>
                     <NotificationContainer />
-                    {/* <ListingTypeNav /> */}
                     <HotelsSearchBar
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
@@ -637,7 +588,6 @@ class HotelDetailsPage extends React.Component {
                             <div className="container">
 
                                 <HotelDetailsInfoSection
-                                    // allEvents={allEvents}
                                     nights={this.state.nights}
                                     onApply={this.handleApply}
                                     startDate={this.state.calendarStartDate}
@@ -651,17 +601,6 @@ class HotelDetailsPage extends React.Component {
                                     checkAvailability={this.checkAvailability}
                                     roomLoader={this.state.roomLoader}
                                 />
-                                
-                                {/* <HotelReservationPanel
-                                    isLogged={this.props.userInfo.isLogged}
-                                    calendar={this.state.calendar}
-                                    nights={this.state.nights}
-                                    onApply={this.handleApply}
-                                    startDate={this.state.calendarStartDate}
-                                    endDate={this.state.calendarEndDate}
-                                    listing={this.state.data}
-                                    loading={loading} 
-                                /> */}
                             </div>
                             <ChildrenModal
                                 modalId="childrenModal"
@@ -675,7 +614,6 @@ class HotelDetailsPage extends React.Component {
                         </section>
                     </div>
                 }
-                {/* <LoginModal isActive={this.state.showLoginModal} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} /> */}
             </div>
         );
     }

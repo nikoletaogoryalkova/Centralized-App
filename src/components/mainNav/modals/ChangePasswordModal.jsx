@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { postNewPassword } from '../../../requester.js';
-import { modals } from '../../../constants/constants.js';
+import { LOGIN, CHANGE_PASSWORD } from '../../../constants/modals.js';
+import { PASSWORDS_DONT_MATCH, INVALID_PASSWORD } from '../../../constants/warningMessages';
+import { PASSWORD_SUCCESSFULLY_CHANGED } from '../../../constants/successMessages';
+import { NOT_FOUND } from '../../../constants/errorMessages';
 
 export default class ChangePasswordModal extends React.Component {
     constructor(props) {
@@ -28,13 +31,13 @@ export default class ChangePasswordModal extends React.Component {
 
     submitPassword(captchaToken) {
         if (this.state.password !== this.state.confirmPassword) {
-            NotificationManager.warning('Passwords don\'t match', 'Password');
+            NotificationManager.warning(PASSWORDS_DONT_MATCH);
             this.captcha.reset();
             return;
         }
 
         if (this.state.password.length < 6) {
-            NotificationManager.warning('Should be at least 6 characters long, containing characters and digits', 'Password');
+            NotificationManager.warning(INVALID_PASSWORD);
             this.captcha.reset();
             return;
         }
@@ -46,12 +49,12 @@ export default class ChangePasswordModal extends React.Component {
 
         postNewPassword(postObj, captchaToken).then((res) => {
             if (res.success) {
-                this.props.closeModal(modals.CHANGE_PASSWORD);
-                this.props.openModal(modals.LOGIN);
-                NotificationManager.success('Successfully changed', 'Password');
+                this.props.closeModal(CHANGE_PASSWORD);
+                this.props.openModal(LOGIN);
+                NotificationManager.success(PASSWORD_SUCCESSFULLY_CHANGED);
             }
             else {
-                NotificationManager.warning('Not found', '404');
+                NotificationManager.error(NOT_FOUND);
                 this.captcha.reset();
             }
         });
@@ -60,10 +63,10 @@ export default class ChangePasswordModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.CHANGE_PASSWORD, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(CHANGE_PASSWORD, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Recover your password (3)</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.CHANGE_PASSWORD, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(CHANGE_PASSWORD, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}

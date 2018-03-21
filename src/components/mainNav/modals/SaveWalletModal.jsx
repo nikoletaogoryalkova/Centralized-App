@@ -3,7 +3,7 @@ import { NotificationContainer } from 'react-notifications';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { modals } from '../../../constants/constants.js';
+import { SAVE_WALLET, CONFIRM_WALLET } from '../../../constants/modals.js';
 
 export default class SaveWalletModal extends React.Component {
     constructor(props) {
@@ -27,17 +27,17 @@ export default class SaveWalletModal extends React.Component {
     }
 
     handleSubmit() {
-        this.props.closeModal(modals.SAVE_WALLET); 
-        this.props.openModal(modals.CONFIRM_WALLET);
+        this.props.closeModal(SAVE_WALLET); 
+        this.props.openModal(CONFIRM_WALLET);
     }
 
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.SAVE_WALLET, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(SAVE_WALLET, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Save your wallet info.</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.SAVE_WALLET, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(SAVE_WALLET, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <p>Wallet public address:</p>

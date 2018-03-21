@@ -1,0 +1,1 @@
+export const SCREEN_FREEZE = 'We are creating your wallet through the ethereum network. The screen might be unavailable for about 10 seconds...';

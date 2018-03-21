@@ -6,7 +6,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { updateUserInfo, getCurrentLoggedInUserInfo } from '../../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { modals } from '../../../constants/constants.js';
+import { CONFIRM_WALLET, SAVE_WALLET } from '../../../constants/modals.js';
+import { MNEMONIC_LAST_CALL, WRONG_MNEMONIC_WORDS } from '../../../constants/warningMessages.js';
+import { PROFILE_SUCCESSFULLY_UPDATED } from '../../../constants/successMessages.js';
+import { PROFILE_UPDATE_ERROR } from '../../../constants/errorMessages.js';
 
 export default class CreateWalletModal extends React.Component {
     constructor(props) {
@@ -27,24 +30,18 @@ export default class CreateWalletModal extends React.Component {
     }
 
     onWordsForget() {
-        NotificationManager.warning('Last call for saving your mnemonic words!');
-        this.props.closeModal(modals.CONFIRM_WALLET);
-        this.props.openModal(modals.SAVE_WALLET);
+        NotificationManager.warning(MNEMONIC_LAST_CALL);
+        this.props.closeModal(CONFIRM_WALLET);
+        this.props.openModal(SAVE_WALLET);
     }
 
     handleSubmit(token) {
         if (this.state.mnemonic.trim() !== localStorage.walletMnemonic) {
-            NotificationManager.warning('Wrong mnemonic words. Last call for saving them!');
-            this.props.closeModal(modals.CONFIRM_WALLET);
-            this.props.openModal(modals.SAVE_WALLET);
-        } 
-        // else if (this.state.jsonFile.trim() !== localStorage.walletJson) {
-        //     NotificationManager.warning("Wrong json file. You need to create a new wallet.");
-        //     this.props.closeModal(modal.current);
-        //     this.props.openModal(modal.prev);
-        // }
-         else {
-            this.props.closeModal(modals.CONFIRM_WALLET);
+            NotificationManager.warning(WRONG_MNEMONIC_WORDS);
+            this.props.closeModal(CONFIRM_WALLET);
+            this.props.openModal(SAVE_WALLET);
+        } else {
+            this.props.closeModal(CONFIRM_WALLET);
             this.captcha.execute();
         }
     }
@@ -52,10 +49,10 @@ export default class CreateWalletModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.CONFIRM_WALLET, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(CONFIRM_WALLET, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Confirm Wallet Information</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.CONFIRM_WALLET, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(CONFIRM_WALLET, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <p>Enter your wallet mnemonic words:</p>
@@ -98,13 +95,13 @@ export default class CreateWalletModal extends React.Component {
 
                                     updateUserInfo(userInfo, token).then((res) => {
                                         if (res.success) {
-                                            NotificationManager.success('Successfully updated your profile', 'Update user profile');
+                                            NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
                                             localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.props.userToken;
                                             localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.props.userName;
                                         } else {
                                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
                                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
-                                            NotificationManager.error('Error!', 'Update user profile');
+                                            NotificationManager.error(PROFILE_UPDATE_ERROR);
                                         }
 
                                         this.props.setUserInfo();

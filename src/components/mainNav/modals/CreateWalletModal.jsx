@@ -4,7 +4,9 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Wallet } from '../../../services/blockchain/wallet.js';
-import { modals } from '../../../constants/constants.js';
+import { CREATE_WALLET, SAVE_WALLET } from '../../../constants/modals.js';
+import { WALLET_INVALID_PASSWORD_LENGTH } from '../../../constants/warningMessages.js';
+import { SCREEN_FREEZE } from '../../../constants/infoMessages.js';
 
 export default class CreateWalletModal extends React.Component {
     constructor(props) {
@@ -24,17 +26,17 @@ export default class CreateWalletModal extends React.Component {
 
     submitPassword() {
         if (this.state.walletPassword.length < 9) {
-            NotificationManager.warning('Password should be at least 9 symbols');
+            NotificationManager.warning(WALLET_INVALID_PASSWORD_LENGTH);
         } else {
             try {
-                NotificationManager.info('We are creating your wallet through the ethereum network. The screen might be unavailable for about 10 seconds...');
+                NotificationManager.info(SCREEN_FREEZE);
                 setTimeout(() => {
                     Wallet.createFromPassword(this.state.walletPassword).then((wallet) => {
                         localStorage.setItem('walletAddress', wallet.address);
                         localStorage.setItem('walletMnemonic', wallet.mnemonic);
                         localStorage.setItem('walletJson', JSON.stringify(wallet.jsonFile));
-                        this.props.closeModal(modals.CREATE_WALLET);
-                        this.props.openModal(modals.SAVE_WALLET);
+                        this.props.closeModal(CREATE_WALLET);
+                        this.props.openModal(SAVE_WALLET);
                     });
                 }, 1000);
                 
@@ -47,10 +49,10 @@ export default class CreateWalletModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.CREATE_WALLET, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(CREATE_WALLET, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Enter your wallet password</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.CREATE_WALLET, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(CREATE_WALLET, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <form onSubmit={(e) => { e.preventDefault(); this.submitPassword(); }}>

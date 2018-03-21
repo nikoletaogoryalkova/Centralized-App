@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { ROOMS_XML_CURRENCY } from '../../../constants/constants.js';
+import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
 

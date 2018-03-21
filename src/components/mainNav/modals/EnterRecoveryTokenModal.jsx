@@ -5,7 +5,8 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { sendRecoveryToken } from '../../../requester.js';
-import { modals } from '../../../constants/constants.js';
+import { ENTER_RECOVERY_TOKEN, CHANGE_PASSWORD } from '../../../constants/modals.js';
+import { INVALID_TOKEN } from '../../../constants/warningMessages.js';
 
 export default class EnterRecoveryTokenModal extends React.Component {
     constructor(props) {
@@ -21,11 +22,11 @@ export default class EnterRecoveryTokenModal extends React.Component {
     onSubmit() {
         sendRecoveryToken(this.props.recoveryToken).then((res) => {
             if (res.success) {
-                this.props.closeModal(modals.ENTER_RECOVERY_TOKEN);
-                this.props.openModal(modals.CHANGE_PASSWORD);
+                this.props.closeModal(ENTER_RECOVERY_TOKEN);
+                this.props.openModal(CHANGE_PASSWORD);
             }
             else {
-                NotificationManager.warning('Invalid token', 'Token');
+                NotificationManager.warning(INVALID_TOKEN);
             }
         });
     }
@@ -33,10 +34,10 @@ export default class EnterRecoveryTokenModal extends React.Component {
     render() {
         return (
             <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modals.ENTER_RECOVERY_TOKEN, e)} className="modal fade myModal">
+                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(ENTER_RECOVERY_TOKEN, e)} className="modal fade myModal">
                     <Modal.Header>
                         <h1>Recover your password (2)</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modals.ENTER_RECOVERY_TOKEN, e)}>&times;</button>
+                        <button type="button" className="close" onClick={(e) => this.props.closeModal(ENTER_RECOVERY_TOKEN, e)}>&times;</button>
                     </Modal.Header>
                     <Modal.Body>
                         <p>A confirmation email has been sent. To enter a new password open the link from your email or enter the token in the field below. </p>

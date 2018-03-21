@@ -1,0 +1,12 @@
+export const PASSWORDS_DONT_MATCH = 'Passwords don\'t match';
+export const INVALID_PASSWORD = 'Password should be at least 6 characters long, containing characters and digits';
+export const WALLET_INVALID_PASSWORD_LENGTH = 'Password should be at least 9 symbols';
+export const PROFILE_INVALID_PASSWORD_LENGTH = 'Password should be at least 6 symbols';
+export const PROFILE_PASSWORD_REQUIREMENTS = 'Password must contain both latin letters and digits.';
+export const MNEMONIC_LAST_CALL = 'Last call for saving your mnemonic words!';
+export const WRONG_MNEMONIC_WORDS = 'Wrong mnemonic words. Last call for saving them!';
+export const INVALID_TOKEN = 'Invalid token';
+export const INVALID_EMAIL = 'Invalid email address';
+export const EMAIL_ALREADY_EXISTS = 'Email already exists!';
+export const INVALID_FIRST_NAME = 'Invalid first name. Must not be empty.';
+export const INVALID_LAST_NAME = 'Invalid last name. Must not be empty.';

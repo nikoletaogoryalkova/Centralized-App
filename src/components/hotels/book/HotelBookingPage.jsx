@@ -6,7 +6,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import validator from 'validator';
-import { ROOMS_XML_CURRENCY } from '../../../constants/constants.js';
+import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 import { getTestHotelById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 
