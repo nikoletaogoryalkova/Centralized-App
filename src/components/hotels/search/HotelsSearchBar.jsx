@@ -58,8 +58,15 @@ function SearchBar(props) {
             });
     };
 
-    const { startDate, endDate, rooms, adults, childrenCount, childrenAges } = props;
-    const { onChange, handleDatePick, handleAdultsChange, handleChildrenChange, handleChildAgeChange } = props;
+    // const onInputKeyDown = (event) => {
+    //     switch (event.keyCode) {
+    //         case 13:
+    //             document.getElementById("btn-search").click();
+    //         break;
+    //     }
+    // };
+
+    const { rooms } = props;
 
     return (
         <section id="search-bar">
@@ -82,6 +89,7 @@ function SearchBar(props) {
                         loadOptions={getRegions}
                         backspaceRemoves={true}
                         arrowRenderer={null}
+                        // onInputKeyDown={onInputKeyDown}
                     />
 
                 </div>
@@ -141,7 +149,7 @@ function SearchBar(props) {
                         </select> */}
                     </div>
                 </div>
-                <button className="btn btn-primary">Search</button>
+                <button className="btn btn-primary" id="btn-search">Search</button>
             </form>
         </section>
     );

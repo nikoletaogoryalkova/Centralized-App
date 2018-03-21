@@ -6,10 +6,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
+import { ENTER_WALLET_PASSWORD } from '../../../constants/modals.js';
+import { openModal, closeModal } from '../../../actions/modalsInfo.js';
+import { PROCESSING_TRANSACTION } from '../../../constants/infoMessages.js';
 
 import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
 
-import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile, confirmBooking } from '../../../requester';
+import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile, confirmBooking, getCurrencyRates } from '../../../requester';
 
 class HotelBookingConfirmPage extends React.Component {
     constructor(props) {
@@ -20,7 +24,6 @@ class HotelBookingConfirmPage extends React.Component {
             showRoomCanxDetails: [],
             loading: true,
             locRate: null,
-            showCredentialsModal: false,
             walletPassword: ''
         };
 
@@ -35,13 +38,30 @@ class HotelBookingConfirmPage extends React.Component {
         const search = this.props.location.search;
         const searchParams = this.getSearchParams(search);
         const booking = JSON.parse(decodeURI(searchParams.get('booking')));
-        testBook(booking).then((json) => {
-            this.setState({ data: json });
-            console.log(json);
-
-            getLocRateInUserSelectedCurrency(json.currency).then((data) => {
-                this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
-            });
+        testBook(booking).then((res) => {
+            if (res.ok) {
+                res.json().then((json) => {
+                    this.setState({ data: json });
+                    console.log(json);
+        
+                    getLocRateInUserSelectedCurrency(json.currency).then((data) => {
+                        this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
+                    });
+        
+                    getCurrencyRates().then((json) => {
+                        this.setState({ rates: json });
+                    });
+                });
+            } else {
+                res.then((res) => {
+                    const errors = res.errors;
+                    for (let key in errors) {
+                        if (typeof errors[key] !== 'function') {
+                            NotificationManager.warning(errors[key].message);
+                        }
+                    }
+                });
+            }
         });
     }
 
@@ -71,25 +91,43 @@ class HotelBookingConfirmPage extends React.Component {
         return end.diff(start, 'days');
     }
 
-    handleSubmit(password) {
+    handleSubmit(token) {
+        const password = this.state.walletPassword;
         const preparedBookingId = this.state.data.preparedBookingId;
-        const recipient = '0xa032235b81ceb313f57877acee273ea5ae8e776b';
-        // const amount = this.state.data.locPrice * Math.pow(10, 18);
-        const amount = 1 * Math.pow(10, 18);
+        const recipient = '0xa99c523BfC2E1374ac528FE39e4dD7c35F6C1d46';
+        const amount = this.state.data.locPrice * Math.pow(10, 18);
+        // const amount = 1 * Math.pow(10, 18);
+        NotificationManager.info(PROCESSING_TRANSACTION, 'Transactions');
+        // console.log(password); return;
         getCurrentlyLoggedUserJsonFile().then((json) => {
-            TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount).then((transactionHash) => {
-                const bookingConfirmObj = {
-                    bookingId: preparedBookingId,
-                    transactionHash: transactionHash.transactionHash
-                };
-    
-                confirmBooking(bookingConfirmObj).then(() => {
-                    NotificationManager.success('You will receive a confirmation message');
+            setTimeout(() => {
+                TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount.toString()).then((transactionHash) => {
+                    const bookingConfirmObj = {
+                        bookingId: preparedBookingId,
+                        transactionHash: transactionHash.transactionHash
+                    };
+                    
+                    console.log(bookingConfirmObj);
+                    confirmBooking(bookingConfirmObj).then(() => {
+                        NotificationManager.success('You will receive a confirmation message');
+                        setTimeout(() => {
+                            this.props.history.push('/profile/trips/hotels');
+                        }, 2000);
+                    });
+                }).catch(error => {
+                    if (error.hasOwnProperty('message')) {
+                        NotificationManager.warning(error.message, 'Send Tokens');
+                    } else if (error.hasOwnProperty('err') && error.err.hasOwnProperty('message')) {
+                        NotificationManager.warning(error.err.message, 'Send Tokens');
+                    } else if (typeof x === 'string') {
+                        NotificationManager.warning(error, 'Send Tokens');
+                    } else {
+                        NotificationManager.warning(error);
+                    }
+
+                    this.closeModal(ENTER_WALLET_PASSWORD);
                 });
-            }).catch(error => {
-                console.log(error);
-                // NotificationManager.warning(error);
-            });
+            }, 1000);
         });
     }
 
@@ -98,9 +136,7 @@ class HotelBookingConfirmPage extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({
-            [modal]: true,
-        }, () => {console.log(this.state)});
+        this.props.dispatch(openModal(modal));
     }
 
     closeModal(modal, e) {
@@ -108,9 +144,7 @@ class HotelBookingConfirmPage extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({
-            [modal]: false
-        });
+        this.props.dispatch(closeModal(modal));
     }
 
     onChange(e) {
@@ -124,14 +158,13 @@ class HotelBookingConfirmPage extends React.Component {
     }
 
     getRoomRows(booking) {
-        const currency = this.state.data.currency;
         const rows = [];
         if (booking) {
             booking.forEach((booking, index) => {
                 rows.push(
                     <tr key={index} className="booking-room">
                         <td>{booking.room.roomType.text}</td>
-                        <td><span className="booking-price">{this.state.data.currency} {(booking.room.totalSellingPrice.amt).toFixed(2)} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</span></td>
+                        <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (booking.room.totalSellingPrice.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</span></td>
                         <td><button onClick={() => this.toggleCanxDetails(index)}>{this.state.showRoomCanxDetails[index] ? 'Hide' : 'Show'}</button></td>
                     </tr>
                 );
@@ -149,7 +182,7 @@ class HotelBookingConfirmPage extends React.Component {
                     rows.push(
                         <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                             <td>Cancellation fee</td>
-                            <td><span className="booking-price">{currency} {(fees[0].amount.amt).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
+                            <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
                             <td></td>
                         </tr>
                     );
@@ -158,7 +191,7 @@ class HotelBookingConfirmPage extends React.Component {
                         rows.push(
                             <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                                 <td key={feeIndex}>{`Cancel up to ${moment(fee.from).format('DD MM YYYY')}`}</td>
-                                <td><span className="booking-price">{currency} {(fee.amount.amt).toFixed(2)} ({(fee.locPrice).toFixed(4)} LOC)</span></td>
+                                <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fee.amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fee.locPrice).toFixed(4)} LOC)</span></td>
                                 <td></td>
                             </tr>
                         );
@@ -167,7 +200,7 @@ class HotelBookingConfirmPage extends React.Component {
                     rows.push(
                         <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                             <td key={fees.length}>{`Cancel on or after ${moment(this.getLastDate(fees).from).format('DD MM YYYY')}`}</td>
-                            <td><span className="booking-price">{(fees[0].amount.amt).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
+                            <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
                             <td></td>
                         </tr>
                     );
@@ -184,7 +217,6 @@ class HotelBookingConfirmPage extends React.Component {
 
     render() {
         const booking = this.state.data && this.state.data.booking.hotelBooking;
-        const currency = this.state.data && this.state.data.currency;
         const fiatPrice = this.state.data && this.state.data.fiatPrice;
         const locPrice = this.state.data && this.state.data.locPrice;
 
@@ -228,15 +260,15 @@ class HotelBookingConfirmPage extends React.Component {
                                     
                                     <hr/>
                                     <div className="row order-name">
-                                        <p>Name - {this.props.userInfo.firstName} {this.props.userInfo.lastName}</p>    
+                                        <p>Name: <span className="booking-for">{this.props.userInfo.firstName} {this.props.userInfo.lastName}</span></p>    
                                     </div>
                                     <div className="row order-total">
-                                        <p>Order Total - <span className="booking-price">{currency} {(fiatPrice).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
+                                        <p>Order Total: <span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fiatPrice* this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
                                     </div>
                                 </div>
-                                <button className="btn btn-primary btn-book" onClick={() => this.openModal('showCredentialsModal')}>Confirm and pay</button>
+                                <button className="btn btn-primary btn-book" onClick={() => this.openModal(ENTER_WALLET_PASSWORD)}>Confirm and Pay</button>
                             </div>
-                            <CredentialsModal modalId={'showCredentialsModal'} handleSubmit={this.handleSubmit} closeModal={this.closeModal} isActive={this.state.showCredentialsModal} />
+                            <CredentialsModal isActive={this.props.modalsInfo.modals.get(ENTER_WALLET_PASSWORD)} handleSubmit={this.handleSubmit} closeModal={this.closeModal} walletPassword={this.state.walletPassword} onChange={this.onChange} />
                         </div>
                     }
                 </div>
@@ -256,15 +288,17 @@ HotelBookingConfirmPage.propTypes = {
     // start Redux props
     dispatch: PropTypes.func,
     userInfo: PropTypes.object,
-    paymentInfo: PropTypes.object
+    paymentInfo: PropTypes.object,
+    modalsInfo: PropTypes.object
 };
 
 export default withRouter(connect(mapStateToProps)(HotelBookingConfirmPage));
 
 function mapStateToProps(state) {
-    const { userInfo, paymentInfo } = state;
+    const { userInfo, paymentInfo, modalsInfo } = state;
     return {
         userInfo,
-        paymentInfo
+        paymentInfo,
+        modalsInfo,
     };
 }

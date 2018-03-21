@@ -447,7 +447,7 @@ export async function testSearch(query) {
 
 export async function testBook(bookingObj) {
     return sendRequest(`${host}api/test/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
-        return res.response.json();
+        return res.response;
         // console.log(res.response)
     });
 }
@@ -487,6 +487,12 @@ export async function getRegionNameById(id) {
 export async function getEmailFreeResponse(email) {
     email = email || 'info@lockchain.co';
     return sendRequest(`${host}users/email/${encodeURIComponent(email.replace(/\./g, '&#46;')).replace(/%26%2346%3B/g, '.')}/`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getMyHotelBookings(page) {
+    return sendRequest(`${host}users/me/bookings${page}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

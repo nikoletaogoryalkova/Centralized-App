@@ -30,6 +30,7 @@
 }
 
 .btn {
+    font-family: 'FuturaStd-Light', sans-serif;
     font-weight: 400;
     border-radius: 4px;
     font-size: 18px;
@@ -2830,6 +2831,11 @@ select {
     margin: 5px;
 }
 
+.hotel-content .room-group .btn {
+    width: 200px;
+    font-family: 'FuturaStd-Light', sans-serif;
+}
+
 .success-reservation-alert h2 {
     color: white;
     font-size: 28px;
@@ -2841,7 +2847,7 @@ select {
 }
 
 #room-book-confirm {
-    margin: 10px;
+    margin: 30px 10px 10px 10px;
 }
 
 #room-book-confirm .booking-details {
@@ -2850,6 +2856,7 @@ select {
     background-color: white;
     padding: 20px;
     margin-bottom: 30px;
+    border-radius: 3px;
 }
 
 #room-book-confirm table {
@@ -2872,7 +2879,7 @@ select {
     border-bottom: 1px solid #ccc;
 }
 
-#room-book-confirm .booking-price {
+#room-book-confirm .booking-price, .booking-for {
     font-weight: bold;
 }
 
@@ -2903,8 +2910,7 @@ select {
 .btn-book {
     float: right;
     margin-bottom: 25px;
-    font-weight: bold;
-    font-size: 1em;
+    font-weight: 400;
 }
 
 .hotels-input-daterange {

@@ -1,20 +1,34 @@
 import { Link, withRouter } from 'react-router-dom';
 
 import ListingItemPictureCarousel from '../../common/listing/ListingItemPictureCarousel';
-import ListingItemRatingBox from '../../common/listing/ListingItemRatingBox';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getLocRateFromCoinMarketCap } from '../../../requester.js';
+import { Config } from '../../../config.js';
+import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 function HotelItem(props) {
+    const { locRate, rates } = props;
+    const { currencySign } = props.paymentInfo;
+    const { id, name, description, photos, price, stars} = props.listing;
+    const locPrice = ((price / locRate) / props.nights).toFixed(2);
+    const priceInSelectedCurrency = rates && ((price * (rates[ROOMS_XML_CURRENCY][props.paymentInfo.currency])) / props.nights).toFixed(2);
+    const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
 
-    const locRate = props.locRate;
-    const { currency, currencySign } = props.paymentInfo;
-    const { currency_code, userCurrencyPrice, locCurrencyPrice, id, name, description, photos, price} = props.listing;
-    const locPrice = (price / locRate).toFixed(2);
-    const pictures = photos.map(x => { return {thumbnail: 'http://roomsxml.com' + x}; });
+    const calculateStars = (ratingNumber) => {
+        let starsElements = [];
+        let rating = Math.round(ratingNumber);
+        for (let i = 0; i < rating; i++) {
+            starsElements.push(<span key={i} className="full-star"></span>);
+        }
+        for (let i = 0; i < 5 - rating; i++) {
+            starsElements.push(<span key={100 - i} className="empty-star"></span>);
+        }
+
+        return starsElements;
+    };
+
     return (
         <div className="list-hotel">
             <div className="list-image">
@@ -22,22 +36,18 @@ function HotelItem(props) {
             </div>
             <div className="list-content">
                 <h2><Link to={`/hotels/listings/${id}${props.location.search}`}>{name}</Link></h2>
-                {/* <ListingItemRatingBox rating={averageRating} reviewsCount={reviewsCount} /> */}
-                <div className="clearfix"></div>
-                {/* <p>{cityName}, {countryName}</p> */}
-                <div className="list-hotel-text">
-                    {description.substr(0, 300)}...
+                <div className="list-hotel-rating">
+                    <div className="list-hotel-rating-stars">
+                        {calculateStars(stars)}
+                    </div>
                 </div>
-                {/* <div className="list-hotel-comfort">
-                    <div className="icon-hotel-4"></div>
-                    <div className="icon-hotel-3"></div>
-                    <div className="icon-hotel-2"></div>
-                    <div className="icon-hotel-1"></div>
-                </div> */}
+                <div className="clearfix"></div>
+                <div className="list-hotel-text" dangerouslySetInnerHTML={{__html: description.substr(0, 300) + '...'}}>
+                </div>
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
-                {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {price}</div>}
+                {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {priceInSelectedCurrency}</div>}
                 <div className="list-hotel-price-loc">(LOC {locPrice})</div>
                 <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>

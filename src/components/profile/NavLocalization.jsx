@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 
 function NavLocalization(props) {
-    console.log(props);
     const { currency, locRate } = props.paymentInfo;
     const { locBalance, ethBalance, isLogged } = props.userInfo;
     if (!locRate) {

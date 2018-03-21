@@ -1,45 +1,44 @@
-import { NotificationManager } from 'react-notifications';
-
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
-export default class CredentialsModal extends React.Component {
-    constructor(props) {
-        super(props);
+import { ENTER_WALLET_PASSWORD } from '../../../../constants/modals.js';
 
-        this.state = {
-            walletPassword: '',
-            jsonFile: '',
-        };
+let captcha = undefined;
 
-        this.onChange = this.onChange.bind(this);
-    }
+export default function CredentialsModal(props) {
 
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
+    return (
+        <div>
+            <Modal show={props.isActive} onHide={e => props.closeModal(ENTER_WALLET_PASSWORD, e)} className="modal fade myModal">
+                <Modal.Header>
+                    <h1>Enter your wallet password</h1>
+                    <button type="button" className="close" onClick={(e) => props.closeModal(ENTER_WALLET_PASSWORD, e)}>&times;</button>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
+                        <input type="password" placeholder="Wallet Password" name="walletPassword" className="form-control"  value={props.walletPassword} onChange={props.onChange} />
+                        <button type="submit" className="btn btn-primary">Confirm</button>
 
-    render() {
-        return (
-            <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(this.props.modalId, e)} className="modal fade myModal">
-                    <Modal.Header>
-                        <h1>Enter your wallet password</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(this.props.modalId, e)}>&times;</button>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <input type="password" placeholder="Wallet Password" name={'walletPassword'} className="form-control"  value={this.state.walletPassword} onChange={this.onChange} />
-                        <button className="btn btn-primary" onClick={() => this.props.handleSubmit(this.state.walletPassword)}>Confirm</button>
-                    </Modal.Body>
-                </Modal>
-            </div>
-        );
-    }
+                        <ReCAPTCHA
+                            ref={el => captcha = el}
+                            size="invisible"
+                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            onChange={(token) => {props.handleSubmit(token); captcha.reset();}}
+                        />
+                    </form>
+                </Modal.Body>
+            </Modal>
+        </div>
+    );
 }
 
 CredentialsModal.propTypes = {
+    walletPassword: PropTypes.string,
     openModal: PropTypes.func,
     closeModal: PropTypes.func,
+    onChange: PropTypes.func,
+    handleSubmit: PropTypes.func,
     isActive: PropTypes.bool
 };

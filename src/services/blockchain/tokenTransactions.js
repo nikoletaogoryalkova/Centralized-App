@@ -54,11 +54,22 @@ export class TokenTransactions {
 
 		return new Promise(function (resolve, reject) {
 			web3.eth.sendSignedTransaction(signedData)
-				.once('transactionHash', function (transactionHash) {
-					resolve({
-						transactionHash
-					});
-				});
+				.once(
+						'transactionHash', 
+						transactionHash => {
+							resolve({
+								transactionHash
+							});
+						}
+				)
+				.once(
+						'error',
+						err => {
+							reject({
+								err
+							});
+						}	
+				);
 		});    
 	};
 

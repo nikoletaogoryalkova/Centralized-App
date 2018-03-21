@@ -2,29 +2,32 @@ import React from 'react';
 import OwlCarousel from 'react-owl-carousel';
 import PropTypes from 'prop-types';
 import { Config } from '../../../config.js';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
 function PopularDestinationsCarousel(props) {
     const pictures = [
         {
-            name: 'London',
+            id: 52612,
+            query: 'London',
             image: `${Config.getValue('basePath')}images/destinations/London.png`,
             searchUrl: `hotels/listings?region=52612&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
         },
         {
-            name: 'Madrid',
+            id: 18417,
+            query: 'Madrid',
             image: `${Config.getValue('basePath')}images/destinations/Madrid.png`,
             searchUrl: `hotels/listings?region=18417&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
         },
         {
-            name: 'Paris',
+            id: 16471,
+            query: 'Paris',
             image: `${Config.getValue('basePath')}images/destinations/Paris.png`,
             searchUrl: `hotels/listings?region=16471&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
         },
         {
-            name: 'Canberra',
+            id: 15286,
+            query: 'Canberra',
             image: `${Config.getValue('basePath')}images/destinations/Canberra.png`,
             searchUrl: `hotels/listings?region=15286&currency=${props.paymentInfo.currency}&startDate=${moment().add(1, 'days').format('DD/MM/YYYY')}&endDate=${moment().add(2, 'days').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":2,"children":%5B%5D%7D%5D`,
         },
@@ -60,9 +63,9 @@ function PopularDestinationsCarousel(props) {
                 {pictures.map((dest, i) => {
                     return (
                         <div key={i} className="popular-destination-image-container">
-                            <Link to={dest.searchUrl}>
-                                <img src={dest.image} alt={dest.name}/>
-                            </Link>
+                            <div onClick={() => props.handleDestinationPick({ id: dest.id, query: dest.query })}>
+                                <img src={dest.image} alt={dest.query}/>
+                            </div>
                         </div>
                     );
                 })}

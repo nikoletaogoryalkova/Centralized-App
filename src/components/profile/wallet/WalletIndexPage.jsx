@@ -7,8 +7,6 @@ import { getCurrentLoggedInUserInfo, getCurrentlyLoggedUserJsonFile } from '../.
 
 import { Config } from '../../../config';
 import { TokenTransactions } from '../../../services/blockchain/tokenTransactions';
-import ReCAPTCHA from 'react-google-recaptcha';
-
 
 export default class WalletIndexPage extends React.Component {
     constructor(props) {
@@ -27,24 +25,37 @@ export default class WalletIndexPage extends React.Component {
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value }, () => {
-            this.setState({ canProceed: this.state.locAddress != null && this.state.password != '' && this.state.recipientAddress != '' && this.state.locAmount > 0 });
+            this.setState({ canProceed: this.state.locAddress !== null && this.state.password !== '' && this.state.recipientAddress !== '' && this.state.locAmount > 0 });
         });
     }
 
     sendTokens() {
-        console.log("amount : " + this.state.locAmount * Math.pow(10, 18));
+        console.log('amount : ' + this.state.locAmount * Math.pow(10, 18));
         NotificationManager.info('We are processing your transaction through the ethereum network. It might freeze your screen for about 10 seconds...', 'Transactions');
         setTimeout(() => {
             TokenTransactions.sendTokens(
                 JSON.parse(this.state.jsonFile),
                 this.state.password,
                 this.state.recipientAddress,
-                this.state.locAmount * Math.pow(10, 18)
+                (this.state.locAmount * Math.pow(10, 18)).toString()
             ).then((x) => {
                 NotificationManager.success('Transaction made successfully', 'Send Tokens');
+                this.setState({ 
+                    recipientAddress: '',
+                    locAmount: 0,
+                    password: ''
+                });
                 console.log(x); 
             }).catch(x => {
-                NotificationManager.warning(x.message, 'Send Tokens');
+                if (x.hasOwnProperty('message')) {
+                    NotificationManager.warning(x.message, 'Send Tokens');
+                } else if (x.hasOwnProperty('err') && x.err.hasOwnProperty('message')) {
+                    NotificationManager.warning(x.err.message, 'Send Tokens');
+                } else if (typeof x === 'string') {
+                    NotificationManager.warning(x, 'Send Tokens');
+                } else {
+                    console.log(x);
+                }
             });
         }, 1000);   
     }

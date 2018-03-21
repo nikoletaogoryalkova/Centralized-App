@@ -5,8 +5,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import validator from 'validator';
+import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
-import { getTestHotelById, testBook, getLocRateInUserSelectedCurrency } from '../../../requester';
+import { getTestHotelById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 
 class HotelBookingPage extends React.Component {
     constructor(props) {
@@ -25,11 +27,12 @@ class HotelBookingPage extends React.Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        const search = this.props.location.search;
-        const quoteId = localStorage.getItem('quoteId');
+        let search = this.props.location.search;
         const searchParams = this.getSearchParams(this.props.location.search);
+        const quoteId = searchParams.get('quoteId');
         const rooms = this.getRooms(searchParams);
         const nights = this.getNights(searchParams);
+        search = search.substr(0, search.indexOf('&quoteId='));
         getTestHotelById(id, search).then((data) => {
             const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
             const totalPrice = this.getTotalPrice(roomResults);
@@ -47,12 +50,14 @@ class HotelBookingPage extends React.Component {
         });
 
         this.getLocRate();
+        getCurrencyRates().then((json) => {
+            this.setState({ rates: json });
+        });
     }
 
     getLocRate() {
-        const currency = this.props.paymentInfo.currency;
-        getLocRateInUserSelectedCurrency(currency).then((json) => {
-            this.setState({ locRate: Number(json[0][`price_${currency.toLowerCase()}`]) });
+        getLocRateInUserSelectedCurrency(ROOMS_XML_CURRENCY).then((json) => {
+            this.setState({ locRate: Number(json[0][`price_${ROOMS_XML_CURRENCY.toLowerCase()}`]) });
         });
     }
 
@@ -138,19 +143,61 @@ class HotelBookingPage extends React.Component {
     }
 
     handleSubmit() {
-        const quoteId = this.state.quoteId;
-        const rooms = this.state.rooms;
-        const currency = this.props.paymentInfo.currency;
-        const booking = {
-            quoteId: quoteId,
-            rooms: rooms,
-            currency: currency
-        };
+        if (!this.isValidNames()) {
+            NotificationManager.warning('Names should be at least 3 characters long and contain only characters');
+        } else if (!this.isValidAges()) {
+            NotificationManager.warning('Child age should be between 1 and 17 years');
+        } else {
+            const quoteId = this.state.quoteId;
+            const rooms = this.state.rooms;
+            const currency = this.props.paymentInfo.currency;
+            const booking = {
+                quoteId: quoteId,
+                rooms: rooms,
+                currency: currency
+            };
+    
+            const encodedBooking = encodeURI(JSON.stringify(booking));
+            const id = this.props.match.params.id;
+            const query = `?booking=${encodedBooking}`;
+            this.props.history.push(`/hotels/listings/book/confirm/${id}${query}`);
+            // window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+        }
+    }
 
-        const encodedBooking = encodeURI(JSON.stringify(booking));
-        const id = this.props.match.params.id;
-        const query = `?booking=${encodedBooking}`;
-        window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+    isValidNames() {
+        const regexp = /^[a-zA-Z]{3,}$/;
+        const rooms = this.state.rooms;
+        for (let i = 0; i < rooms.length; i++) {
+            const adults = rooms[i].adults;
+            for (let j = 0; j < adults.length; j++) {
+                const first = adults[j].firstName;
+                const last = adults[j].lastName;
+                console.log(adults[j]);
+                console.log(validator.matches(first, regexp));
+                console.log(validator.matches(last, regexp));
+                if (!(validator.matches(first, regexp) && validator.matches(last, regexp))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    isValidAges() {
+        const rooms = this.state.rooms;
+        for (let i = 0; i < rooms.length; i++) {
+            const children = rooms[i].children;
+            for (let j = 0; j < children.length; j++) {
+                const age = children[j].age;
+                if (age < 1 || 17 < age) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     render() {
@@ -159,7 +206,7 @@ class HotelBookingPage extends React.Component {
         const hotelCityName = this.state.hotel && this.state.hotel.city.name;
         const rooms = this.state.rooms;
         const hotelPicUrl = this.state.pictures && this.state.pictures[0].externalUrl;
-        const totalPrice = this.state.roomResults && this.state.roomResults.reduce((x, y) => x.price + y.price);
+        const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2);
         return (
             <div>
                 <div>
@@ -182,21 +229,29 @@ class HotelBookingPage extends React.Component {
                                 <div className="col-md-5">
                                     <div className="hotel-info">
                                         <div className="hotel-picture">
-                                            <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel Picture"/>
+                                            <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel"/>
                                         </div>
                                         <h2>{hotelName}</h2>
                                         <h3>{hotelMainAddress}, {hotelCityName}</h3>
                                         <hr/>
                                         {this.state.roomResults && this.state.roomResults.map((room, index) => {
                                             if (!this.props.userInfo.isLogged) {
-                                                return (<h3 key={index}>{room.name}, {this.state.nights} nights: LOC {Number(room.price / this.state.locRate).toFixed(2)}</h3>);
+                                                return (
+                                                    <h3 key={index}>
+                                                        {room.name}, {this.state.nights} nights: LOC {Number(room.price / this.state.locRate).toFixed(2)}
+                                                    </h3>
+                                                );
                                             } else {
-                                                return (<h3 key={index}>{room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{room.price} (LOC {Number(room.price / this.state.locRate).toFixed(2)})</h3>);
+                                                return (
+                                                    <h3 key={index}>
+                                                        {room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{this.state.rates && (room.price * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} (LOC {Number(room.price / this.state.locRate).toFixed(2)})
+                                                    </h3>
+                                                );
                                             }
                                         })}
                                         <hr/>
                                         {this.props.userInfo.isLogged ? 
-                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{Number(this.state.totalPrice).toFixed(2)} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
+                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{priceInSelectedCurrency} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
                                             <h2 className="total-price">Total: LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)}</h2>
                                         }
                                         <div className="clearfix"></div>
@@ -236,7 +291,7 @@ class HotelBookingPage extends React.Component {
                                     })}
                                 </div>
                                 <div className="col col-md-12">
-                                    <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Comming Soon</button>
+                                    <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Proceed</button>
                                 </div>
                             </div>
                         </section>

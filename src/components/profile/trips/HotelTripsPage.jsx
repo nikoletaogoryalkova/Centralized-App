@@ -1,15 +1,17 @@
-import { cancelTrip, getMyTrips } from '../../../requester';
+import { cancelTrip, getMyHotelBookings } from '../../../requester';
 
 import CancellationModal from '../../common/modals/CancellationModal';
 import LPagination from '../../common/LPagination';
 import { Link } from 'react-router-dom';
-import MyTripsTable from './MyTripsTable';
+import HotelTripsTable from './HotelTripsTable';
 import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 
-export default class MyTripsPage extends React.Component {
+import { withRouter } from 'react-router-dom';
+
+class HotelTripsPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -45,7 +47,8 @@ export default class MyTripsPage extends React.Component {
                 }
             }
         }
-        getMyTrips('?page=0').then((data) => {
+        getMyHotelBookings('?page=0').then((data) => {
+            console.log(data);
             this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTripId: id });
             if (id) {
                 NotificationManager.success('Booking Request Sent Successfully, your host will get back to you with additional questions.', 'Reservation Operations');
@@ -88,7 +91,7 @@ export default class MyTripsPage extends React.Component {
             loadingListing: true
         });
 
-        getMyTrips(`?page=${page - 1}`).then(data => {
+        getMyHotelBookings(`?page=${page - 1}`).then(data => {
             this.setState({
                 trips: data.content,
                 totalTrips: data.totalElements,
@@ -137,10 +140,10 @@ export default class MyTripsPage extends React.Component {
                     onSubmit={this.onTripCancel} />
 
                 <section id="profile-my-reservations">
-                    <div className="container">
+                    <div>
                         <h2>Upcoming Trips ({this.state.totalTrips})</h2>
                         <hr />
-                        <MyTripsTable
+                        <HotelTripsTable
                             trips={this.state.trips}
                             currentTripId={this.state.currentTripId}
                             onTripSelect={this.onTripSelect}
@@ -163,6 +166,8 @@ export default class MyTripsPage extends React.Component {
     }
 }
 
-MyTripsPage.propTypes = {
+HotelTripsPage.propTypes = {
     location: PropTypes.object
 };
+
+export default withRouter(HotelTripsPage);

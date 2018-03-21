@@ -4,41 +4,25 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Wallet } from '../../../services/blockchain/wallet.js';
+import { CREATE_WALLET, SAVE_WALLET } from '../../../constants/modals.js';
+import { WALLET_INVALID_PASSWORD_LENGTH } from '../../../constants/warningMessages.js';
+import { SCREEN_FREEZE } from '../../../constants/infoMessages.js';
 
-const modal = {
-    current: 'createWallet',
-    next: 'saveWallet',
-};
-
-export default class CreateWalletModal extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            walletPassword: '',
-        };
-
-        this.onChange = this.onChange.bind(this);
-        this.submitPassword = this.submitPassword.bind(this);
-    }
-
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    submitPassword() {
-        if (this.state.walletPassword.length < 9) {
-            NotificationManager.warning('Password should be at least 9 symbols');
+export default function CreateWalletModal(props) {
+    
+    const submitPassword = () => {
+        if (props.walletPassword.length < 9) {
+            NotificationManager.warning(WALLET_INVALID_PASSWORD_LENGTH);
         } else {
             try {
-                NotificationManager.info('We are creating your wallet through the ethereum network. The screen might be unavailable for about 10 seconds...');
+                NotificationManager.info(SCREEN_FREEZE);
                 setTimeout(() => {
-                    Wallet.createFromPassword(this.state.walletPassword).then((wallet) => {
+                    Wallet.createFromPassword(props.walletPassword).then((wallet) => {
                         localStorage.setItem('walletAddress', wallet.address);
                         localStorage.setItem('walletMnemonic', wallet.mnemonic);
                         localStorage.setItem('walletJson', JSON.stringify(wallet.jsonFile));
-                        this.props.closeModal(modal.current);
-                        this.props.openModal(modal.next);
+                        props.closeModal(CREATE_WALLET);
+                        props.openModal(SAVE_WALLET);
                     });
                 }, 1000);
                 
@@ -46,41 +30,40 @@ export default class CreateWalletModal extends React.Component {
                 console.log(error);
             }
         }
-    }
+    };
 
-    render() {
-        return (
-            <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
-                    <Modal.Header>
-                        <h1>Enter your wallet password</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
-                        <form onSubmit={(e) => { e.preventDefault(); this.submitPassword(); }}>
-                            <div className="form-group">
-                                <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
-                                <input type="password" name="walletPassword" value={this.state.recoveryEmail} onChange={this.onChange} className="form-control" placeholder="Password" />
-                            </div>
+    return (
+        <div>
+            <Modal show={props.isActive} onHide={e => props.closeModal(CREATE_WALLET, e)} className="modal fade myModal">
+                <Modal.Header>
+                    <h1>Enter your wallet password</h1>
+                    <button type="button" className="close" onClick={(e) => props.closeModal(CREATE_WALLET, e)}>&times;</button>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={(e) => { e.preventDefault(); submitPassword(); }}>
+                        <div className="form-group">
+                            <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
+                            <input autoFocus type="password" name="walletPassword" value={props.walletPassword} onChange={props.onChange} className="form-control" placeholder="Password" />
+                        </div>
 
-                            <div className="login-sign">
-                                <p><b>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</b></p>
-                            </div>
+                        <div className="login-sign">
+                            <p><b>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</b></p>
+                        </div>
 
-                            <button type="submit" className="btn btn-primary">Submit password</button>
-                            <div className="clearfix"></div>
-                        </form>
-                    </Modal.Body>
-                </Modal>
-                <NotificationContainer />
-            </div>
-        );
-    }
+                        <button type="submit" className="btn btn-primary">Submit password</button>
+                        <div className="clearfix"></div>
+                    </form>
+                </Modal.Body>
+            </Modal>
+            <NotificationContainer />
+        </div>
+    );
 }
 
 CreateWalletModal.propTypes = {
+    walletPassword: PropTypes.string,
     openModal: PropTypes.func,
     closeModal: PropTypes.func,
+    onChange: PropTypes.func,
     isActive: PropTypes.bool
 };

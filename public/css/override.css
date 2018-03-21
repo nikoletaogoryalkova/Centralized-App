@@ -27,6 +27,9 @@ a.dropdown-toggle {
   height: auto;
   padding: 0;
 }
+.Select-menu-outer {
+  z-index: 999 !important;
+}
 @media screen and (min-width: 768px) {
   .navbar-collapse.collapse {
     display: flex!important;

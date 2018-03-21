@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import HomesSearchBar from './HomesSearchBar';
-import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
 class ListingSearchPage extends React.Component {
     constructor(props) {
