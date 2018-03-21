@@ -23,6 +23,7 @@ export default class CreateWalletModal extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onWordsForget = this.onWordsForget.bind(this);
+        this.updateUser = this.updateUser.bind(this);
     }
 
     onChange(e) {
@@ -35,7 +36,7 @@ export default class CreateWalletModal extends React.Component {
         this.props.openModal(SAVE_WALLET);
     }
 
-    handleSubmit(token) {
+    handleSubmit() {
         if (this.state.mnemonic.trim() !== localStorage.walletMnemonic) {
             NotificationManager.warning(WRONG_MNEMONIC_WORDS);
             this.props.closeModal(CONFIRM_WALLET);
@@ -44,6 +45,49 @@ export default class CreateWalletModal extends React.Component {
             this.props.closeModal(CONFIRM_WALLET);
             this.captcha.execute();
         }
+    }
+
+    updateUser(token) {
+        if (this.props.userName !== '' && this.props.userToken !== '') {
+            if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
+                // Set user token in localstorage se getCurrentLoggedInUserInfo can fetch user info 
+                localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.props.userToken;
+                localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.props.userName;
+                getCurrentLoggedInUserInfo().then(info => {
+                    let userInfo = {
+                        firstName: info.firstName,
+                        lastName: info.lastName,
+                        phoneNumber: info.phoneNumber,
+                        preferredLanguage: info.preferredLanguage,
+                        preferredCurrency: info.preferredCurrency != null ? info.preferredCurrency.id : null,
+                        gender: info.gender,
+                        country: info.country != null ? info.country.id : null,
+                        city: info.city != null ? info.city.id : null,
+                        birthday: info.birthday,
+                        locAddress: localStorage.getItem('walletAddress'),
+                        jsonFile:  localStorage.getItem('walletJson')
+                    };
+
+                    updateUserInfo(userInfo, token).then((res) => {
+                        if (res.success) {
+                            NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
+                            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.props.userToken;
+                            localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.props.userName;
+                        } else {
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
+                            NotificationManager.error(PROFILE_UPDATE_ERROR);
+                        }
+
+                        this.props.setUserInfo();
+                    });
+                });
+            }
+        } else { 
+            this.props.register(token); 
+        }
+
+        this.captcha.reset(); 
     }
 
     render() {
@@ -58,9 +102,6 @@ export default class CreateWalletModal extends React.Component {
                         <p>Enter your wallet mnemonic words:</p>
                         <textarea name="mnemonic" className="form-control" onChange={this.onChange} onFocus={this.handleFocus} value={this.state.mnemonic}/>
                         <br/>
-                        {/* <p>Enter your wallet JSON:</p>
-                        <input type="text" name="jsonFile" className="form-control" onChange={this.onChange} onFocus={this.handleFocus} value={this.state.jsonFile}/>
-                        <br/> */}
                         <button className="btn btn-primary" onClick={this.handleSubmit}>Confirm Wallet</button>
                         <button className="btn btn-primary" onClick={this.onWordsForget}>Sorry, I did not save them</button>
                     </Modal.Body>
@@ -70,50 +111,7 @@ export default class CreateWalletModal extends React.Component {
                     ref={el => this.captcha = el}
                     size="invisible"
                     sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                    onChange={token => {
-                        console.log(this.props);
-                        console.log("items");
-                        console.log(localStorage);
-                        if (this.props.userName !== '' && this.props.userToken !== '') {
-                            if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
-                                localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.props.userToken;
-                                localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.props.userName;
-                                getCurrentLoggedInUserInfo().then(info => {
-                                    let userInfo = {
-                                        firstName: info.firstName,
-                                        lastName: info.lastName,
-                                        phoneNumber: info.phoneNumber,
-                                        preferredLanguage: info.preferredLanguage,
-                                        preferredCurrency: info.preferredCurrency != null ? info.preferredCurrency.id : null,
-                                        gender: info.gender,
-                                        country: info.country != null ? info.country.id : null,
-                                        city: info.city != null ? info.city.id : null,
-                                        birthday: info.birthday,
-                                        locAddress: localStorage.getItem('walletAddress'),
-                                        jsonFile:  localStorage.getItem('walletJson')
-                                    };
-
-                                    updateUserInfo(userInfo, token).then((res) => {
-                                        if (res.success) {
-                                            NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
-                                            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.props.userToken;
-                                            localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.props.userName;
-                                        } else {
-                                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
-                                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
-                                            NotificationManager.error(PROFILE_UPDATE_ERROR);
-                                        }
-
-                                        this.props.setUserInfo();
-                                    });
-                                });
-                            }
-                        } else { 
-                            this.props.register(token); 
-                        }
-                        this.captcha.reset(); 
-                    }
-                    }
+                    onChange={this.updateUser}
                 />
             </div>
         );
@@ -123,5 +121,9 @@ export default class CreateWalletModal extends React.Component {
 CreateWalletModal.propTypes = {
     openModal: PropTypes.func,
     closeModal: PropTypes.func,
+    register: PropTypes.func,
+    setUserInfo: PropTypes.func,
+    userName: PropTypes.string,
+    userToken: PropTypes.string,
     isActive: PropTypes.bool
 };

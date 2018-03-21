@@ -253,21 +253,18 @@ class MainNav extends React.Component {
 
     setUserInfo() {
         if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-            getCurrentLoggedInUserInfo()
-                .then(res => {
-                    Wallet.getBalance(res.locAddress).then(x => {
-                        const ethBalance = x / (Math.pow(10, 18));
-                        Wallet.getTokenBalance(res.locAddress).then(y => {
-                            const locBalance = y / (Math.pow(10, 18));
-                            const { firstName, lastName, phoneNumber, email, locAddress } = res;
-                            this.props.dispatch(setIsLogged(true));
-                            this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
-                        });
+            getCurrentLoggedInUserInfo().then(res => {
+                Wallet.getBalance(res.locAddress).then(x => {
+                    const ethBalance = x / (Math.pow(10, 18));
+                    Wallet.getTokenBalance(res.locAddress).then(y => {
+                        const locBalance = y / (Math.pow(10, 18));
+                        const { firstName, lastName, phoneNumber, email, locAddress } = res;
+                        this.props.dispatch(setIsLogged(true));
+                        this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
                     });
-                    
                 });
-        }
-        else {
+            });
+        } else {
             this.setState({ loaded: true, loading: false });
         }
     }
