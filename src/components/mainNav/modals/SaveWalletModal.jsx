@@ -41,7 +41,7 @@ export default class SaveWalletModal extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <p>Wallet public address:</p>
-                        <input type="text" name="locAddress" className="form-control" onFocus={this.handleFocus} value={localStorage.walletAddress}/>
+                        <input type="text" name="locAddress" className="form-control" onFocus={this.handleFocus} value={localStorage.walletAddress} />
                         <br/>
                         <p>Wallet mnemonic words:</p>
                         <textarea name="mnemonic" className="form-control" onFocus={this.handleFocus} value={localStorage.walletMnemonic}/>

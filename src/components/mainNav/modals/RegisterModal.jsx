@@ -1,13 +1,13 @@
-import { NotificationContainer } from 'react-notifications';
+import React from 'react';
+import validator from 'validator';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import { NotificationManager } from 'react-notifications';
 
 import { Config } from '../../../config';
-import validator from 'validator';
-import { Modal } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import ReCAPTCHA from 'react-google-recaptcha';
-import React from 'react';
+import { getEmailFreeResponse } from '../../../requester';
 import { REGISTER, CREATE_WALLET } from '../../../constants/modals.js';
-import { NotificationManager } from 'react-notifications';
+
 import { 
     INVALID_EMAIL,
     EMAIL_ALREADY_EXISTS, 
@@ -16,10 +16,6 @@ import {
     PROFILE_INVALID_PASSWORD_LENGTH,
     PROFILE_PASSWORD_REQUIREMENTS
 } from '../../../constants/warningMessages.js';
-
-import { 
-    getEmailFreeResponse 
-} from '../../../requester';
 
 export default function LoginModal(props) {
 
@@ -84,12 +80,16 @@ export default function LoginModal(props) {
                     </div>
                 </Modal.Body>
             </Modal>
-            <NotificationContainer />
         </div>
     );
 }
 
 LoginModal.propTypes = {
+    signUpEmail: PropTypes.string,
+    signUpFirstName: PropTypes.string,
+    signUpLastName: PropTypes.string,
+    signUpPassword: PropTypes.string,
+    onChange: PropTypes.func,
     openModal: PropTypes.func,
     closeModal: PropTypes.func,
     isActive: PropTypes.bool

@@ -24,10 +24,12 @@ export default class CreateWalletModal extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onWordsForget = this.onWordsForget.bind(this);
         this.updateUser = this.updateUser.bind(this);
+        this.handleEnterKeyPress = this.handleEnterKeyPress.bind(this);
     }
 
     onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
+        const value = e.target.value.replace(/\n/g, '');
+        this.setState({ [e.target.name]: value });
     }
 
     onWordsForget() {
@@ -90,6 +92,13 @@ export default class CreateWalletModal extends React.Component {
         this.captcha.reset(); 
     }
 
+    handleEnterKeyPress(event) {
+        console.log(event.key);
+        if(event.key === 'Enter'){
+            this.handleSubmit();
+        }
+    }
+
     render() {
         return (
             <div>
@@ -100,9 +109,11 @@ export default class CreateWalletModal extends React.Component {
                     </Modal.Header>
                     <Modal.Body>
                         <p>Enter your wallet mnemonic words:</p>
-                        <textarea name="mnemonic" className="form-control" onChange={this.onChange} onFocus={this.handleFocus} value={this.state.mnemonic}/>
-                        <br/>
-                        <button className="btn btn-primary" onClick={this.handleSubmit}>Confirm Wallet</button>
+                        <form onSubmit={(e) => { e.preventDefault(); this.handleSubmit(); }}>
+                            <textarea name="mnemonic" className="form-control" onChange={this.onChange} value={this.state.mnemonic} autoFocus onKeyPress={this.handleEnterKeyPress}/>
+                            <br/>
+                            <button type="submit" className="btn btn-primary">Confirm Wallet</button>
+                        </form>
                         <button className="btn btn-primary" onClick={this.onWordsForget}>Sorry, I did not save them</button>
                     </Modal.Body>
                 </Modal>
