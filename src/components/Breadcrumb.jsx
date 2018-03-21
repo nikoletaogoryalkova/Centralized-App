@@ -15,6 +15,6 @@ export default class Breadcrumb extends React.Component {
                     <div className="search-term">Listings</div>
                 </div>
             </section>
-        )
+        );
     }
 }

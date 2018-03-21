@@ -37,7 +37,7 @@ export default class WalletIndexPage extends React.Component {
                 JSON.parse(this.state.jsonFile),
                 this.state.password,
                 this.state.recipientAddress,
-                this.state.locAmount * Math.pow(10, 18)
+                (this.state.locAmount * Math.pow(10, 18)).toString()
             ).then((x) => {
                 NotificationManager.success('Transaction made successfully', 'Send Tokens');
                 this.setState({ 

@@ -72,7 +72,6 @@ class HotelDetailsPage extends React.Component {
         this.handleSelectRegion = this.handleSelectRegion.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.sendMessageToHost = this.sendMessageToHost.bind(this);
         this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
         this.handleBookRoom = this.handleBookRoom.bind(this);
@@ -307,18 +306,6 @@ class HotelDetailsPage extends React.Component {
         else {
             return 0;
         }
-    }
-
-    sendMessageToHost(id, message, captchaToken) {
-        this.setState({ loading: true });
-        let contactHostObj = {
-            message: message
-        };
-
-        contactHost(id, contactHostObj, captchaToken)
-            .then(res => {
-                this.props.history.push(`/profile/messages/chat/${res.conversation}`);
-            });
     }
 
     handleSelectRegion(value) {

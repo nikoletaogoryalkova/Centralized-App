@@ -97,7 +97,7 @@ class HotelBookingConfirmPage extends React.Component {
         NotificationManager.info('We are processing your transaction through the ethereum network. It might freeze your screen for several seconds...', 'Transactions');
         getCurrentlyLoggedUserJsonFile().then((json) => {
             setTimeout(() => {
-                TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount).then((transactionHash) => {
+                TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount.toString()).then((transactionHash) => {
                     const bookingConfirmObj = {
                         bookingId: preparedBookingId,
                         transactionHash: transactionHash.transactionHash
