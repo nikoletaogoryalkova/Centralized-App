@@ -1,0 +1,66 @@
+@media only screen and (max-width: 600px) {
+    #room-book .hotel-info {
+        margin: 0;
+    }
+
+    #room-book .title-select,
+    #room-book .guest-name,
+    #room-book label,
+    #room-book .child-age {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    #room-book .btn-book {
+        width: 100%;
+        margin: 0 auto 20px auto;
+    }
+
+    .list-hotel-box .list-image,
+    .list-hotel-box .list-content,
+    .list-hotel-box .list-price {
+        float: none;
+        width: 100%;
+    }
+
+    .list-hotel-box .list-price {
+        padding-top: 1px;
+    }
+
+    #search-bar {
+        padding: 10px;
+    }
+
+    #search-bar .btn {
+        margin-top: 10px;
+    }
+
+    .list-hotel-box .list-hotel-price-button {
+        width: 90%;
+    }
+
+    #main-nav #search-bar .form-group {
+        margin-bottom: 10px;
+    }
+
+    .hotel-content .room-group {
+        flex-direction: column;
+    }
+
+    .hotel-content .room-group .btn {
+        margin: 10px auto;
+        width: 100%;
+    }
+
+    .hotel-content .room-group .room {
+        text-align: center;
+    }
+
+    .hotel-info {
+        text-align: center;
+    }
+
+    #attached-footer {
+        display: none;
+    }
+}

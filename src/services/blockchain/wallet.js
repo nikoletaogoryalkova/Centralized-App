@@ -4,13 +4,23 @@ import bip39 from 'bip39';
 import hdkey from 'ethereumjs-wallet/hdkey';
 
 import { validateAddress, validatePassword } from './validators/base-validators';
+import { web3 } from './config/contracts-config.js';
+import { LOCTokenContract } from './config/contracts-config.js';
 
 const { HD_WALLET_PATH } = require('./config/constants.json');
 const ERROR = require('./config/errors.json');
 
 class Wallet {
 
-    static createFromPassword(password) {
+    static async getTokenBalance(address) {
+        return LOCTokenContract.methods.balanceOf(address).call().then(balance => balance);
+    }
+
+    static async getBalance(address) {
+        return await web3.eth.getBalance(address);
+    }
+
+    static async createFromPassword(password) {
         validatePassword(password);
 
         const mnemonic = bip39.generateMnemonic();

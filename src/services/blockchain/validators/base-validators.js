@@ -17,26 +17,26 @@ export function validateHexString(str) {
 };
 
 export function validateJsonObj(jsonObj) {
-	if (_.isEmpty(jsonObj)) {
-		throw new Error(ERROR.INVALID_JSON);
-	}
+    if (_.isEmpty(jsonObj)) {
+        throw new Error(ERROR.INVALID_JSON);
+    }
 
-	return true;
+    return true;
 }
 
 export function validateAddress(address, error) {
-	if (!validateEtherAddress(address)) {
-		throw new Error(error);
-	}
+    if (!validateEtherAddress(address)) {
+        throw new Error(error);
+    }
 
-	return true;
+    return true;
 }
 
 export function validatePassword(password) {
-	if (password === '') {
-		throw new Error(ERROR.INVALID_PASSWORD);
-	}
+    if (password === '') {
+        throw new Error(ERROR.INVALID_PASSWORD);
+    }
 
-	return true;
+    return true;
 
 }

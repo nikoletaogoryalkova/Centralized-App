@@ -2,9 +2,6 @@ import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
     contactHost,
-    getCalendarByListingIdAndDateRange,
-    getCurrentLoggedInUserInfo,
-    getPropertyById
 } from '../../../requester';
 
 import { Config } from '../../../config';
@@ -13,21 +10,20 @@ import PropTypes from 'prop-types';
 import HotelDetailsInfoSection from './HotelDetailsInfoSection';
 import React from 'react';
 import HotelsSearchBar from '../search/HotelsSearchBar';
-import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { parse } from 'query-string';
-import HotelReservationPanel from './HotelReservationPanel';
-import RoomInfoModal from '../search/modals/RoomInfoModal';
+import ChildrenModal from '../modals/ChildrenModal';
+import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
-import { getTestHotelById } from '../../../requester';
+import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
 class HotelDetailsPage extends React.Component {
     constructor(props) {
         super(props);
         
-        let startDate = moment();
-        let endDate = moment().add(1, 'day');
+        let startDate = moment().add(1, 'day');
+        let endDate = moment().add(2, 'day');
 
         if (this.props) {
             let queryParams = parse(this.props.location.search);
@@ -45,16 +41,18 @@ class HotelDetailsPage extends React.Component {
             calendarStartDate: startDate,
             calendarEndDate: endDate,
             rooms: [{ adults: 1, children: [] }],
+            adults: '2',
+            children: '0',
             nights: nights,
             data: null,
             lightboxIsOpen: false,
             currentImage: 0,
             prices: null,
             oldCurrency: this.props.paymentInfo.currency,
-            // loaded: false,
             userInfo: null,
             loading: true,
-            isShownContactHostModal: false
+            isShownContactHostModal: false,
+            roomLoader: undefined,
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -67,7 +65,6 @@ class HotelDetailsPage extends React.Component {
         this.gotoImage = this.gotoImage.bind(this);
         this.handleClickImage = this.handleClickImage.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
-        // this.getUserInfo = this.getUserInfo.bind(this);
         this.handleRoomsChange = this.handleRoomsChange.bind(this);
         this.handleAdultsChange = this.handleAdultsChange.bind(this);
         this.handleChildrenChange = this.handleChildrenChange.bind(this);
@@ -75,11 +72,9 @@ class HotelDetailsPage extends React.Component {
         this.handleSelectRegion = this.handleSelectRegion.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.sendMessageToHost = this.sendMessageToHost.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // this.getUserInfo();
+        this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
+        this.handleToggleChildren = this.handleToggleChildren.bind(this);
+        this.handleBookRoom = this.handleBookRoom.bind(this);
     }
 
     componentDidMount() {
@@ -87,10 +82,17 @@ class HotelDetailsPage extends React.Component {
         const search = this.props.location.search;
         getTestHotelById(id, search).then((data) => {
             this.setState({ data: data, loading: false });
-            console.log(data)
+            const searchParams = this.getSearchParams(this.props.location.search);
+            const regionId = searchParams.get('region') || data.region.externalId;
+            getRegionNameById(regionId).then((json) => {
+                this.setState({ region: json });
+            });
         });
 
-        // this.getUserInfo();
+        this.getLocRate();
+        getCurrencyRates().then((json) => {
+            this.setState({ rates: json });
+        });
     }
 
     componentWillMount() {
@@ -98,10 +100,16 @@ class HotelDetailsPage extends React.Component {
             const searchParams = this.getSearchParams(this.props.location.search);
             const startDate = moment(searchParams.get('startDate'), 'DD/MM/YYYY');
             const endDate = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
+            const rooms = JSON.parse(decodeURI(searchParams.get('rooms')));
+            const adults = this.getAdults(rooms);
+            const hasChildren = this.getHasChildren(rooms);
             this.setState({
                 startDate: startDate,
                 endDate: endDate,
-                nights: this.calculateNights(startDate, endDate)
+                nights: this.calculateNights(startDate, endDate),
+                rooms: rooms,
+                adults: adults,
+                hasChildren: hasChildren
             });
         }
     }
@@ -115,6 +123,29 @@ class HotelDetailsPage extends React.Component {
         }
 
         return map;
+    }
+    
+    getAdults(rooms) {
+        let adults = 0;
+        for (let i = 0; i < rooms.length; i++) {
+            adults += Number(rooms[i].adults);
+        }
+        return adults;
+    }
+    
+    getHasChildren(rooms) {
+        for (let i = 0; i < rooms.length; i++) {
+            if (rooms[i].children.length !== 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    getLocRate() {
+        getLocRateInUserSelectedCurrency(ROOMS_XML_CURRENCY).then((json) => {
+            this.setState({ locRate: Number(json[0][`price_${ROOMS_XML_CURRENCY.toLowerCase()}`]) });
+        });
     }
 
     updateParamsMap(key, value) {
@@ -135,51 +166,68 @@ class HotelDetailsPage extends React.Component {
     
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
-        if (this.updateParamsMap) {
-            this.updateParamsMap(e.target.name, e.target.value);
+    }
+    
+    handleToggleChildren() {
+        const hasChildren = this.state.hasChildren;
+        const rooms = this.state.rooms.slice(0);
+        if (hasChildren) {
+            for (let i = 0; i < rooms.length; i++) {
+                rooms[i].children = [];
+            }
         }
+        
+        this.setState({
+            hasChildren: !hasChildren,
+            rooms: rooms
+        });
     }
 
-    handleSearch(e) {
-        if (e) {
-            e.preventDefault();
+    handleSearch(event) {
+        if (event) {
+            event.preventDefault();
         }
 
-        let queryString = '?';
+        this.distributeAdults().then(() => {
+            if (this.state.hasChildren) {
+                this.distributeChildren();
+            } else {
+                this.redirectToSearchPage(event);
+            }
+        });
+    }
 
+    redirectToSearchPage() {
+        let queryString = '?';
         queryString += 'region=' + this.state.region.id;
         queryString += '&currency=' + this.props.paymentInfo.currency;
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        queryString += '&rooms=' + encodeURI(JSON.stringify(this.getRooms()));
-
+        queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
         this.props.history.push('/hotels/listings' + queryString);
     }
 
-    getRooms() {
-        return this.state.rooms.map((room) => {
-            return {
-                adults: room.adults,
-                children: room.children.map((age) => { return { age: age}; })
-            };
-        });
+    async distributeAdults() {
+        let adults = Number(this.state.adults);
+        let rooms = this.state.rooms.slice(0);
+        if (adults < rooms.length) {
+            rooms = rooms.slice(0, adults);
+        }
+
+        let index = 0;
+        while (adults > 0) {
+            const quotient = Math.ceil(adults / (rooms.length - index));
+            rooms[index].adults = quotient;
+            adults -= quotient;
+            index++;
+        }
+
+        await this.setState({ rooms: rooms });
     }
 
-    // getUserInfo() {
-    //     if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-    //         getCurrentLoggedInUserInfo()
-    //             .then(res => {
-    //                 this.setState({
-    //                     loaded: true,
-    //                     userInfo: res,
-    //                     loading: false
-    //                 });
-    //             });
-    //     }
-    //     else {
-    //         this.setState({ loaded: true, loading: false });
-    //     }
-    // }
+    distributeChildren() {
+        this.openModal('childrenModal');
+    }
 
     handleApply(event, picker) {
         const { startDate, endDate } = picker;
@@ -260,29 +308,12 @@ class HotelDetailsPage extends React.Component {
         }
     }
 
-    sendMessageToHost(id, message, captchaToken) {
-        this.setState({ loading: true });
-        let contactHostObj = {
-            message: message
-        };
-
-        contactHost(id, contactHostObj, captchaToken)
-            .then(res => {
-                this.props.history.push(`/profile/messages/chat/${res.conversation}`);
-            });
-    }
-
     handleSelectRegion(value) {
         this.setState({ region: value });
     }
 
     handleRoomsChange(event) {
         let value = event.target.value;
-        if (value < 1) {
-            value = 1;
-        } else if (value > 5) {
-            value = 5;
-        }
         let rooms = this.state.rooms.slice();
         if (rooms.length < value) {
             while (rooms.length < value) {
@@ -311,7 +342,7 @@ class HotelDetailsPage extends React.Component {
         let children = rooms[roomIndex].children;
         if (children.length < value) {
             while (children.length < value) {
-                children.push('');
+                children.push({ age: '1' });
             }
         } else if (children.length > value) {
             children = children.slice(0, value);
@@ -324,7 +355,7 @@ class HotelDetailsPage extends React.Component {
     handleChildAgeChange(event, roomIndex, childIndex) {
         const value = event.target.value;
         const rooms = this.state.rooms.slice();
-        rooms[roomIndex].children[childIndex] = value;
+        rooms[roomIndex].children[childIndex].age = value;
         this.setState({ rooms: rooms });
     }
 
@@ -348,20 +379,126 @@ class HotelDetailsPage extends React.Component {
         });
     }
 
+    checkAvailability (quoteId) {
+        const rooms = this.state.rooms.map((room) => {
+            const adults = [];
+            const children = room.children;
+            for (let j = 0; j < room.adults; j++) {
+                const adult = {
+                    title: 'Mr',
+                    firstName: null,
+                    lastName: null,
+                };
+
+                adults.push(adult);
+            }
+
+            return {
+                adults: adults,
+                children: children
+            };
+        });
+
+        const currency = this.props.paymentInfo.currency;
+        const booking = {
+            quoteId: quoteId,
+            rooms: rooms,
+            currency: currency
+        };
+
+        const roomAvailability = new Map(this.state.roomAvailability);
+        roomAvailability.set(quoteId, 'loading');
+        this.setState({ roomAvailability: roomAvailability }, () => {
+            testBook(booking).then((res) => {
+                const updatedRoomAvailability = new Map(this.state.roomAvailability);
+                if (res.ok) {
+                    updatedRoomAvailability.set(quoteId, true);
+                } else {
+                    updatedRoomAvailability.set(quoteId, false);
+                }
+    
+                this.setState({ roomAvailability: updatedRoomAvailability });
+            });
+        });
+    }
+    
+    handleBookRoom (roomsResults) {
+        this.setState({ roomLoader: true });
+        NotificationManager.info('Checking room availability...');
+        const rooms = this.state.rooms.map((room) => {
+            const adults = [];
+            const children = room.children;
+            for (let j = 0; j < room.adults; j++) {
+                const adult = {
+                    title: 'Mr',
+                    firstName: null,
+                    lastName: null,
+                };
+
+                adults.push(adult);
+            }
+
+            return {
+                adults: adults,
+                children: children
+            };
+        });
+
+        const currency = this.props.paymentInfo.currency;
+        const booking = {
+            rooms: rooms,
+            currency: currency
+        };
+
+        const allRooms = [];
+        for (let i = 0; i < roomsResults.length; i++) {
+            for (let j = 0; j < roomsResults[i].length; j++) {
+                allRooms.push({
+                    key: roomsResults[i][j].key,
+                    quoteId: roomsResults[i][j].quoteId,
+                    price: roomsResults[i][j].totalPrice,
+                });
+            }
+        }
+
+        this.checkNextRoom(allRooms, 0, booking);
+    }
+    
+    checkNextRoom(allRooms, index, booking) {
+        if (index > allRooms.length) {
+            NotificationManager.warning('Unfortunatelly all rooms in that hotel were already taken, please try another one.', '', 5000);
+            const search = this.props.location.search;
+            const URL = `/hotels/listings/${search}`;
+            this.props.history.push(URL);
+            return;
+        }
+
+        booking.quoteId = allRooms[index].quoteId;
+        testBook(booking).then((res) => {
+            if (res.ok) {
+                if (index !== 0) {
+                    NotificationManager.info('The room that you requested is no longer available. You were given a similar room which may have slightly different price and extras.', '', 5000);
+                }
+
+                const id = this.props.match.params.id;
+                const search = this.props.location.search;
+                const URL = `/hotels/listings/book/${id}${search}&quoteId=${booking.quoteId}`;
+                this.props.history.push(URL);
+            } else {
+                this.checkNextRoom(allRooms, index + 1, booking);
+            }
+        });
+    }
+
     render() {
-        let loading, allEvents, images;
-        if (!this.state.data
-            // this.state.prices === null ||
-            // this.state.reservations === null ||
-            // this.state.loaded === false
-        ) {
+        let loading, images;
+        if (!this.state.data) {
             loading = true;
         } else {
-            // allEvents = this.state.prices;
             images = null;
             if (this.state.data.hotelPhotos !== undefined) {
                 images = this.state.data.hotelPhotos.map(x => {
-                    return { src: 'http://roomsxml.com' + x.externalUrl };
+                    return { src: Config.getValue('imgHost') + x.externalUrl };
                 });
             }
         }
@@ -370,18 +507,20 @@ class HotelDetailsPage extends React.Component {
             <div>
                 <div>
                     <NotificationContainer />
-                    <ListingTypeNav />
                     <HotelsSearchBar
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
                         region={this.state.region}
                         rooms={this.state.rooms}
+                        adults={this.state.adults}
+                        hasChildren={this.state.hasChildren}
                         guests={this.state.guests}
                         onChange={this.onChange}
                         handleRoomsChange={this.handleRoomsChange}
-                        handleSearch={(e) => this.openModal(`roomInfo${0}`, e)}
+                        handleSearch={this.handleSearch}
                         handleDatePick={this.handleDatePick}
                         handleSelectRegion={this.handleSelectRegion}
+                        handleToggleChildren={this.handleToggleChildren}
                     />
                 </div>
                 
@@ -419,7 +558,7 @@ class HotelDetailsPage extends React.Component {
                                             <a href="#reviews">Access Info</a>
                                         </li>
                                     }
-                                    {this.state.data.reviews && this.state.data.reviews.lenght > 0 &&
+                                    {this.state.data.reviews && this.state.data.reviews.length > 0 &&
                                         <li>
                                             <a href="#reviews">Reviews</a>
                                         </li>
@@ -436,48 +575,30 @@ class HotelDetailsPage extends React.Component {
                             <div className="container">
 
                                 <HotelDetailsInfoSection
-                                    // allEvents={allEvents}
                                     nights={this.state.nights}
                                     onApply={this.handleApply}
                                     startDate={this.state.calendarStartDate}
                                     endDate={this.state.calendarEndDate}
                                     data={this.state.data}
-                                    prices={this.state.prices}
+                                    locRate={this.state.locRate}
+                                    rates={this.state.rates}
                                     loading={this.state.loading}
                                     currencySign={this.props.paymentInfo.currencySign}
+                                    handleBookRoom={this.handleBookRoom}
+                                    checkAvailability={this.checkAvailability}
+                                    roomLoader={this.state.roomLoader}
                                 />
-                                
-                                {/* <HotelReservationPanel
-                                    isLogged={this.props.userInfo.isLogged}
-                                    calendar={this.state.calendar}
-                                    nights={this.state.nights}
-                                    onApply={this.handleApply}
-                                    startDate={this.state.calendarStartDate}
-                                    endDate={this.state.calendarEndDate}
-                                    listing={this.state.data}
-                                    loading={loading} 
-                                /> */}
                             </div>
+                            <ChildrenModal
+                                modalId="childrenModal"
+                                rooms={this.state.rooms}
+                                handleChildrenChange={this.handleChildrenChange}
+                                handleChildAgeChange={this.handleChildAgeChange}
+                                isActive={this.state.childrenModal}
+                                closeModal={this.closeModal}
+                                handleSubmit={this.redirectToSearchPage}
+                            />
                         </section>
-
-                        {this.state.rooms && this.state.rooms.map((room, i) => {
-                            return (
-                                <RoomInfoModal
-                                    key={i}
-                                    roomId={i}
-                                    modalId={`roomInfo${i}`}
-                                    room={room}
-                                    rooms={this.state.rooms}
-                                    handleAdultsChange={this.handleAdultsChange}
-                                    handleChildrenChange={this.handleChildrenChange}
-                                    handleChildAgeChange={this.handleChildAgeChange}
-                                    isActive={this.state[`roomInfo${i}`]}
-                                    openModal={this.openModal}
-                                    closeModal={this.closeModal}
-                                    handleSearch={this.handleSearch}
-                                />
-                            );
-                        })}
                     </div>
                 }
             </div>
@@ -502,9 +623,10 @@ HotelDetailsPage.propTypes = {
 export default withRouter(connect(mapStateToProps)(HotelDetailsPage));
 
 function mapStateToProps(state) {
-    const { userInfo, paymentInfo } = state;
+    const { userInfo, paymentInfo, modalsInfo } = state;
     return {
         userInfo,
-        paymentInfo
+        paymentInfo,
+        modalsInfo
     };
 }

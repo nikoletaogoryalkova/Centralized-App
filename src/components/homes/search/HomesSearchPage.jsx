@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
 import HomesSearchBar from './HomesSearchBar';
-import ListingTypeNav from '../../common/listingTypeNav/ListingTypeNav';
 
 class ListingSearchPage extends React.Component {
     constructor(props) {
@@ -280,7 +279,7 @@ class ListingSearchPage extends React.Component {
 
         return (
             <div>
-                <ListingTypeNav />
+                {/* <ListingTypeNav /> */}
                 <HomesSearchBar
                     countryId={this.state.countryId} 
                     countries={this.props.countries}

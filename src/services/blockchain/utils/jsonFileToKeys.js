@@ -10,7 +10,6 @@ export function parseJsonFile(jsonFile) {
 }
 
 export function jsonFileToKeys(jsonFile, password) {
-
 	validateJsonObj(jsonFile);
 	validatePassword(password);
 	let parsedJsonFile = parseJsonFile(jsonFile);
