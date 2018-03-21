@@ -19,7 +19,7 @@ import {
 
 import {
 	fundTransactionAmountIfNeeded
-} from './utils/ethFuncs,js'
+} from './utils/ethFuncs.js'
 const gasConfig = require('./config/gas-config.json');
 const errors = require('./config/errors.json');
 
