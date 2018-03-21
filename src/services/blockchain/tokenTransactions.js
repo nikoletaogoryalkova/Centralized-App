@@ -22,14 +22,14 @@ const errors = require('./config/errors.json');
 export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
-
 		validateAddress(recipient, errors.INVALID_ADDRESS);
+		
 		let result = jsonFileToKeys(jsonObj, password);
 
 		let callOptions = {
 			from: result.address,
 			gas: gasConfig.transferTokens,
-		}
+		};
 
 		// TODO: Future implementation for the fund transactions
 		// 	result.FundTransactionAmountTxn =
@@ -52,7 +52,6 @@ export class TokenTransactions {
 			funcData,
 		);
 
-
 		return new Promise(function (resolve, reject) {
 			web3.eth.sendSignedTransaction(signedData)
 				.once('transactionHash', function (transactionHash) {
@@ -63,16 +62,11 @@ export class TokenTransactions {
 		});    
 	};
 
-	static async getBalances(tokenContractAddress, recipientAddress) {
+    static async getLOCBalance(address) {
+        return await LOCTokenContract.methods.balanceOf(address).call();
+    }
 
-		let tokenContractBalance = await LOCTokenContract.methods.balanceOf(tokenContractAddress).call()
-		let recipientBalance = await LOCTokenContract.methods.balanceOf(recipientAddress).call()
-		let balances = {}
-		balances.tokenContractBalance = tokenContractBalance;
-		balances.recipientBalance = recipientBalance;
-
-		return balances
+	static async getETHBalance(address) {
+        return await web3.eth.getBalance(address);
 	}
-
-
-};
+}

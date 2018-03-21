@@ -1,12 +1,15 @@
 import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import CredentialsModal from './modals/CredentialsModal';
 
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { testBook, getLocRateInUserSelectedCurrency } from '../../../requester';
+import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
+
+import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile, confirmBooking } from '../../../requester';
 
 class HotelBookingConfirmPage extends React.Component {
     constructor(props) {
@@ -14,13 +17,18 @@ class HotelBookingConfirmPage extends React.Component {
 
         this.state = {
             data: null,
+            showRoomCanxDetails: [],
             loading: true,
             locRate: null,
+            showCredentialsModal: false,
             walletPassword: ''
         };
 
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.toggleCanxDetails = this.toggleCanxDetails.bind(this);
     }
 
     componentDidMount() {
@@ -29,6 +37,7 @@ class HotelBookingConfirmPage extends React.Component {
         const booking = JSON.parse(decodeURI(searchParams.get('booking')));
         testBook(booking).then((json) => {
             this.setState({ data: json });
+            console.log(json);
 
             getLocRateInUserSelectedCurrency(json.currency).then((data) => {
                 this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
@@ -62,39 +71,122 @@ class HotelBookingConfirmPage extends React.Component {
         return end.diff(start, 'days');
     }
 
-    handleSubmit() {
-        const quoteId = this.state.quoteId;
-        const rooms = this.state.rooms;
-        const currency = this.props.paymentInfo.currency;
-        const booking = {
-            quoteId: quoteId,
-            rooms: rooms,
-            currency: currency
-        };
+    handleSubmit(password) {
+        const preparedBookingId = this.state.data.preparedBookingId;
+        const recipient = '0xa032235b81ceb313f57877acee273ea5ae8e776b';
+        // const amount = this.state.data.locPrice * Math.pow(10, 18);
+        const amount = 1 * Math.pow(10, 18);
+        getCurrentlyLoggedUserJsonFile().then((json) => {
+            TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount).then((transactionHash) => {
+                const bookingConfirmObj = {
+                    bookingId: preparedBookingId,
+                    transactionHash: transactionHash.transactionHash
+                };
+    
+                confirmBooking(bookingConfirmObj).then(() => {
+                    NotificationManager.success('You will receive a confirmation message');
+                });
+            }).catch(error => {
+                console.log(error);
+                // NotificationManager.warning(error);
+            });
+        });
+    }
 
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
 
+        this.setState({
+            [modal]: true,
+        }, () => {console.log(this.state)});
+    }
 
-        const encodedBooking = encodeURI(JSON.stringify(booking));
-        const id = this.props.match.params.id;
-        const query = `?booking${encodedBooking}`;
-        window.location.href = `/hotels/listings/book/confirm/${id}${query}`;
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    toggleCanxDetails(index) {
+        const showRoomCanxDetails = this.state.showRoomCanxDetails.slice(0);
+        showRoomCanxDetails[index] = !showRoomCanxDetails[index];
+        this.setState({ showRoomCanxDetails: showRoomCanxDetails });
+    }
+
+    getRoomRows(booking) {
+        const currency = this.state.data.currency;
+        const rows = [];
+        if (booking) {
+            booking.forEach((booking, index) => {
+                rows.push(
+                    <tr key={index} className="booking-room">
+                        <td>{booking.room.roomType.text}</td>
+                        <td><span className="booking-price">{this.state.data.currency} {(booking.room.totalSellingPrice.amt).toFixed(2)} ({(booking.room.totalSellingPrice.locPrice).toFixed(4)} LOC)</span></td>
+                        <td><button onClick={() => this.toggleCanxDetails(index)}>{this.state.showRoomCanxDetails[index] ? 'Hide' : 'Show'}</button></td>
+                    </tr>
+                );
+
+                const fees = booking.room.canxFees;
+                if (fees.length === 0) {
+                    rows.push(
+                        <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                            <td>No cancellation fees</td>
+                            <td>No fee</td>
+                            <td></td>
+                        </tr>
+                    );
+                } else if (fees.length === 1) {
+                    rows.push(
+                        <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                            <td>Cancellation fee</td>
+                            <td><span className="booking-price">{currency} {(fees[0].amount.amt).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
+                            <td></td>
+                        </tr>
+                    );
+                } else {
+                    fees.forEach((fee, feeIndex) => {
+                        rows.push(
+                            <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                                <td key={feeIndex}>{`Cancel up to ${moment(fee.from).format('DD MM YYYY')}`}</td>
+                                <td><span className="booking-price">{currency} {(fee.amount.amt).toFixed(2)} ({(fee.locPrice).toFixed(4)} LOC)</span></td>
+                                <td></td>
+                            </tr>
+                        );
+                    });
+
+                    rows.push(
+                        <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                            <td key={fees.length}>{`Cancel on or after ${moment(this.getLastDate(fees).from).format('DD MM YYYY')}`}</td>
+                            <td><span className="booking-price">{(fees[0].amount.amt).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
+                            <td></td>
+                        </tr>
+                    );
+                }
+            });
+        }
+
+        return rows;
+    }
+
+    getLastDate(fees) {
+        return fees.sort((x, y) => x.from < y.from ? 1 : -1)[0];
+    }
+
     render() {
         const booking = this.state.data && this.state.data.booking.hotelBooking;
         const currency = this.state.data && this.state.data.currency;
-
-        let bookingTotalPrice = null;
-
-        if (booking !== null && currency !== null) {
-            for (let i = 0; i < booking.length; i++) {
-                bookingTotalPrice += parseFloat(booking[i].totalSellingPrice.amt);
-            }
-        }
+        const fiatPrice = this.state.data && this.state.data.fiatPrice;
+        const locPrice = this.state.data && this.state.data.locPrice;
 
         return (
             <div>
@@ -111,44 +203,40 @@ class HotelBookingConfirmPage extends React.Component {
                         </div>
                     </div>
 
-                    {!this.state.data && !bookingTotalPrice ?
+                    {!this.state.data ?
                         <div className="loader"></div> :
-                        <div className="container">
-                            <div>
-                                <h2>Confirm and Pay</h2>
-                                <hr />
-
-
-                                <div id="room-book-confirm">
-                                    <div className="col-md-12 text-center">
-                                        <h4>Lockchain</h4>
+                        <div id="room-book-confirm">
+                            <div className="container">
+                                <div className="booking-details">
+                                    <h2>Confirm and Pay</h2>
+                                    <hr />
+                                    <div className="row text-center">
+                                        {moment(booking[0].arrivalDate, 'YYYY-MM-DD').format('DD MMM, YYYY')} <i className="fa fa-long-arrow-right"></i> {moment(booking[0].arrivalDate, 'YYYY-MM-DD').add(booking[0].nights, 'days').format('DD MMM, YYYY')}
                                     </div>
-                                    <div className="col-md-12 text-center">
-                                        {moment(booking[0].creationDate, 'YYYY-MM-DD').format('DD MMM, DDD')} <i className="fa fa-long-arrow-right"></i> {moment(booking[0].arrivalDate, 'YYYY-MM-DD').format('DD MMM, DDD')}
+                                    <div className="row">
+                                        <table>
+                                            <thead>
+                                                <th>Room Type</th>
+                                                <th>Price</th>
+                                                <th>Cancellation Fees</th>
+                                            </thead>
+                                            <tbody>
+                                                {this.getRoomRows(booking)}
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div className="col-md-12">
-                                        <div className="col-md-6">
-                                            <p>Name</p>
-                                        </div>
-                                        <div className="col-md-6 bold">
-                                            {this.props.userInfo.firstName} {this.props.userInfo.lastName}
-                                        </div>
+                                    
+                                    <hr/>
+                                    <div className="row order-name">
+                                        <p>Name - {this.props.userInfo.firstName} {this.props.userInfo.lastName}</p>    
                                     </div>
-                                    <div className="col-md-12 order">
-                                        <div className="col-md-6">
-                                            <p>Order Total</p>
-                                        </div>
-                                        <div className="col-md-6 bold">
-                                            {currency} {bookingTotalPrice} ({(this.state.locRate * bookingTotalPrice).toFixed(4)} LOC)
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <p htmlFor="walletpass">Wallet password</p>
-                                        <input id="walletpass" name="walletPassword" value={this.state.walletPassword} onChange={this.onChange} type="password" required />
+                                    <div className="row order-total">
+                                        <p>Order Total - <span className="booking-price">{currency} {(fiatPrice).toFixed(2)} ({(locPrice).toFixed(4)} LOC)</span></p>
                                     </div>
                                 </div>
+                                <button className="btn btn-primary btn-book" onClick={() => this.openModal('showCredentialsModal')}>Confirm and pay</button>
                             </div>
-                            <button className="btn btn-primary btn-book" onClick={this.handleSubmit}>Confirm and pay</button>
+                            <CredentialsModal modalId={'showCredentialsModal'} handleSubmit={this.handleSubmit} closeModal={this.closeModal} isActive={this.state.showCredentialsModal} />
                         </div>
                     }
                 </div>

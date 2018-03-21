@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import HotelDetailsAmenityColumn from './HotelDetailsAmenityColumn';
 import HotelDetailsReviewBox from './HotelDetailsReviewBox';
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 function HomeDetailsInfoSection(props) {
@@ -49,10 +50,31 @@ function HomeDetailsInfoSection(props) {
     const street = props.data.additionalInfo.mainAddress;
     const city = props.data.city.name;
     const country = props.data.region.country.name;
-    const rooms = props.data.rooms && props.data.rooms.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1).slice(0, 5);
-    
+    const rooms = props.data.rooms;
+    const usedRoomsByTypeAndMeal = {};
+    for (let room of rooms) {
+        let key = '';
+        let price = 0;
+        for (let result of room.roomsResults) {
+            key += result.name + '|' + result.mealType + '%';
+            price += result.price;
+        }
+        if (!usedRoomsByTypeAndMeal.hasOwnProperty(key)) {
+            usedRoomsByTypeAndMeal[key] = {totalPrice: price};
+        }
+        if (usedRoomsByTypeAndMeal[key].totalPrice >= price) {
+            usedRoomsByTypeAndMeal[key].quoteId = room.quoteId;
+            usedRoomsByTypeAndMeal[key].roomsResults = room.roomsResults;
+            usedRoomsByTypeAndMeal[key].totalPrice = price;
+        }
+    }
+    let roomsResults = [];
+    for (let key in usedRoomsByTypeAndMeal) {
+        roomsResults.push(usedRoomsByTypeAndMeal[key]); 
+    }
+    roomsResults = roomsResults.sort((x, y) => getTotalPrice(x.roomsResults) > getTotalPrice(y.roomsResults) ? 1 : -1);
     return (
-        <div className="hotel-content" id="overview">
+        <div className="hotel-content" id="hotel-section">
             <h1> {props.data.name} </h1>
             <div className="clearfix" />
             <p>{street}, {city}, {country}</p>
@@ -113,26 +135,38 @@ function HomeDetailsInfoSection(props) {
 
                 <div id="rooms">
                     <h2>Available Rooms</h2>
-                    {rooms && rooms.map((results, resultIndex) => {
+                    {roomsResults && roomsResults.map((results, resultIndex) => {
                         return (
                             <div key={resultIndex} className="row room-group">
-                                <div className="col col-md-8">
+                                <div className="col col-md-7 parent vertical-block-center">
                                     <div className="room-titles">
                                         {results.roomsResults && results.roomsResults.map((room, roomIndex) => {
                                             return (
                                                 <div key={roomIndex} className="room">
-                                                    {room.name} - Price per night: {props.currencySign}{Number(room.price / props.nights).toFixed(2)}
+                                                    <span><b>{room.name}</b> ({room.mealType}) - </span>
+                                                    {props.userInfo.isLogged && 
+                                                        <span><b>{props.currencySign}{Number(room.price / props.nights).toFixed(2)}</b> (</span>
+                                                    }
+                                                    <span><b>{Number((room.price / props.nights) / props.locRate).toFixed(2)} {props.userInfo.isLogged ? ')' : ''} LOC</b> / night</span>
                                                 </div>
                                             );
                                         })}
                                     </div>
                                 </div>
-                                <div className="col col-md-4">
-                                    <div className="price-details">
-                                        <p>Price for {props.nights} nights</p>
-                                        <p>{props.currencySign}{getTotalPrice(results.roomsResults)}</p>
-                                        <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
+                                <div className="col col-md-3">
+                                    <div className="book-details vertical-block-center">
+                                        <span className="price-details">
+                                            <span><b>{props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</b></span>
+                                            {props.userInfo.isLogged && 
+                                                <span>{props.currencySign}{ Number(getTotalPrice(results.roomsResults)).toFixed(2) } (</span>
+                                            }
+                                            <span><b>{ Number(getTotalPrice(results.roomsResults) / props.locRate).toFixed(2) } LOC{props.userInfo.isLogged ? ')' : ''}</b></span>
+                                        </span>
+                                        
                                     </div>
+                                </div>
+                                <div className="col col-md-2 content-center">
+                                    <button className="btn btn-primary" onClick={(e) => bookRoom(e, results.quoteId)}>Book</button>
                                 </div>
                             </div>
                         );
@@ -175,4 +209,12 @@ HomeDetailsInfoSection.propTypes = {
     descriptionText: PropTypes.string
 };
 
-export default withRouter(HomeDetailsInfoSection);
+export default withRouter(connect(mapStateToProps)(HomeDetailsInfoSection));
+
+function mapStateToProps(state) {
+    const { userInfo, paymentInfo } = state;
+    return {
+        userInfo,
+        paymentInfo
+    };
+}

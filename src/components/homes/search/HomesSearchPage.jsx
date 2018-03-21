@@ -280,7 +280,7 @@ class ListingSearchPage extends React.Component {
 
         return (
             <div>
-                <ListingTypeNav />
+                {/* <ListingTypeNav /> */}
                 <HomesSearchBar
                     countryId={this.state.countryId} 
                     countries={this.props.countries}

@@ -4,6 +4,7 @@ import ListingItemRatingBox from './ListingItemRatingBox';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 class PopularListingItem extends React.Component {
     render() {
@@ -33,7 +34,7 @@ class PopularListingItem extends React.Component {
                         />
                     </div>
                     <div className="popular-list-data">
-                        <h3><Link to={`/${listingsType}/listings/${this.props.listing.id}`}>{this.props.listing.name}</Link></h3>
+                        <h3><Link to={`/${listingsType}/listings/${this.props.listing.id}?startDate=${moment(new Date(new Date().setHours(24)), 'DD/MM/YYYY').format('DD/MM/YYYY')}&endDate=${ moment(new Date(new Date().setHours(48)), 'DD/MM/YYYY').format('DD/MM/YYYY')}&rooms=%5B%7B"adults":1,"children":%5B%5D%7D%5D`}>{this.props.listing.name.substr(0, 35)}{this.props.listing.name.length > 35 ? '...' : ''}</Link></h3>
                         <ListingItemRatingBox 
                             rating={rating} 
                         />

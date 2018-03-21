@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import validator from 'validator';
 import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo } from '../../requester';
+import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo, getEmailFreeResponse } from '../../requester';
 import { setIsLogged, setUserInfo } from '../../actions/userInfo';
 
 import ChangePasswordModal from './modals/ChangePasswordModal';
@@ -17,6 +17,7 @@ import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
 import CreateWalletModal from './modals/CreateWalletModal';
 import SaveWalletModal from './modals/SaveWalletModal';
 import ConfirmWalletModal from './modals/ConfirmWalletModal';
+import { Wallet } from '../../services/blockchain/wallet.js';
 
 class MainNav extends React.Component {
     constructor(props) {
@@ -35,11 +36,13 @@ class MainNav extends React.Component {
             loginPassword: '',
             loginError: null,
             userName: '',
+            userToken: '',
             sendRecoveryEmail: false,
             enterRecoveryToken: false,
             changePassword: false,
             recoveryToken: '',
-            unreadMessages: ''
+            unreadMessages: '',
+            canProceed: false
         };
 
         this.closeSignUp = this.closeSignUp.bind(this);
@@ -50,6 +53,8 @@ class MainNav extends React.Component {
         this.register = this.register.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.setUserInfo = this.setUserInfo.bind(this);
+        this.onEmailDone = this.onEmailDone.bind(this);
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -118,6 +123,18 @@ class MainNav extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    onEmailDone(e) {
+        const email = e.target.value;
+        getEmailFreeResponse(email).then(res => {
+            if(res.exist) {
+                NotificationManager.warning('Email already exists!', 'User registration');
+                this.setState({canProceed: false});
+            } else {
+                this.setState({canProceed: true});
+            }
+        });
+    }
+ 
     register(captchaToken) {
         let user = {
             email: this.state.signUpEmail,
@@ -143,7 +160,7 @@ class MainNav extends React.Component {
                     const errors = res.errors;
                     for (let key in errors) {
                         if (typeof errors[key] !== 'function') {
-                            NotificationManager.warning(errors[key].message);
+                            NotificationManager.warning(errors[key].message, 'Field: ' + key.toUpperCase());
                         }
                     }
                 });
@@ -160,20 +177,30 @@ class MainNav extends React.Component {
         login(user, captchaToken).then((res) => {
             if (res.success) {
                 res.response.json().then((data) => {
+
                     localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
                     localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
-
+                    getCurrentLoggedInUserInfo().then(info => {
+                        this.setState({ userName: user.email, userToken: data.Authorization });
+                        if (info.jsonFile != null && info.jsonFile.length > 1) {
+                            this.setUserInfo();
+        
+                            if (this.state.recoveryToken !== '') {
+                                this.props.history.push('/');
+                            }
+        
+                            this.closeLogIn();
+                        } else {
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
+                            this.openModal('createWallet');
+                            this.closeLogIn();
+                        }
+                    });
                     // reflect that the user is logged in, both in Redux and in the local component state
-                    this.setUserInfo();
-                    this.setState({ userName: user.email });
-
-                    if (this.state.recoveryToken !== '') {
-                        this.props.history.push('/');
-                    }
-
-                    this.closeLogIn();
+                    
                 });
             } else {
                 res.response.then(res => {
@@ -191,27 +218,61 @@ class MainNav extends React.Component {
     }
 
     openWalletInfo() {
-        if (!validator.isEmail(this.state.signUpEmail)) {
-            NotificationManager.warning('Invalid email address');
-        } else if (validator.isEmpty(this.state.signUpFirstName)) {
-            NotificationManager.warning('Invalid first name');
-        } else if (validator.isEmpty(this.state.signUpLastName)) {
-            NotificationManager.warning('Invalid last name');
-        } else if (validator.isEmpty(this.state.signUpPassword)) {
-            NotificationManager.warning('Invalid password');
-        } else {
-            this.closeModal('showSignUpModal'); 
-            this.openModal('createWallet');
-        }
+        getEmailFreeResponse(this.state.signUpEmail).then(res => {
+            let isEmailFree = false;
+            if(res.exist) {
+                isEmailFree = false;
+            } else {
+                isEmailFree = true;
+            }
+
+            if (!validator.isEmail(this.state.signUpEmail)) {
+                NotificationManager.warning('Invalid email address');
+            } else if (!isEmailFree) {
+                NotificationManager.warning('Email already exists!', 'User registration');
+            } else if (validator.isEmpty(this.state.signUpFirstName)) {
+                NotificationManager.warning('Invalid first name. Must not be empty.');
+            } else if (validator.isEmpty(this.state.signUpLastName)) {
+                NotificationManager.warning('Invalid last name. Must not be empty.');
+            } else if (this.state.signUpPassword.length < 6) {
+                NotificationManager.warning('Password should be at least 6 symbols');
+            } else if (!this.state.signUpPassword.match('^([^\\s]*[a-zA-Z]+.*?[0-9]+[^\\s]*|[^\\s]*[0-9]+.*?[a-zA-Z]+[^\\s]*)$')) {
+                NotificationManager.warning('Password must contain both latin letters and digits.');            
+            } else {
+                this.closeModal('showSignUpModal'); 
+                this.openModal('createWallet');
+            }
+        });
+        
+    }
+
+    async isEmailFree(email) {
+        let isFree = false;
+        await getEmailFreeResponse(email).then(res => {
+            if(res.exist) {
+                isFree = true;
+            } else {
+                isFree = false;
+            }
+        });
+
+        return isFree;
     }
 
     setUserInfo() {
         if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
             getCurrentLoggedInUserInfo()
                 .then(res => {
-                    const { firstName, lastName, phoneNumber, email } = res;
-                    this.props.dispatch(setIsLogged(true));
-                    this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email));
+                    Wallet.getBalance(res.locAddress).then(x => {
+                        const ethBalance = x / (Math.pow(10, 18));
+                        Wallet.getTokenBalance(res.locAddress).then(y => {
+                            const locBalance = y / (Math.pow(10, 18));
+                            const { firstName, lastName, phoneNumber, email, locAddress } = res;
+                            this.props.dispatch(setIsLogged(true));
+                            this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
+                        });
+                    });
+                    
                 });
         }
         else {
@@ -345,20 +406,19 @@ class MainNav extends React.Component {
                                     onChange={token => { this.register(token); this.captcha.reset(); }}
                                 />
 
-                                <button type="submit" className="btn btn-primary">Sign up</button>
+                                {/* <button type="submit" className="btn btn-primary">Sign up</button> */}
                                 <div className="clearfix"></div>
                             </form>
-                            <button className="btn btn-primary" onClick={this.openWalletInfo}>Create LOC/ETH Wallet</button>
-
+                            <button className="btn btn-primary" onClick={this.openWalletInfo}>Proceed</button>
                             <div className="signup-rights">
                                 <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>
                             </div>
                         </Modal.Body>
                     </Modal>
 
-                    <CreateWalletModal isActive={this.state.createWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
-                    <SaveWalletModal isActive={this.state.saveWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
-                    <ConfirmWalletModal isActive={this.state.confirmWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} register={this.register} />
+                    <CreateWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.state.createWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <SaveWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.state.saveWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <ConfirmWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.state.confirmWallet} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} register={this.register} />
                     <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
                     <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
                     <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />

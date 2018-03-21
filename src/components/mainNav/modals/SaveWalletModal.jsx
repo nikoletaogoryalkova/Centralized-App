@@ -50,12 +50,12 @@ export default class SaveWalletModal extends React.Component {
                         <input type="text" name="locAddress" className="form-control" onFocus={this.handleFocus} value={localStorage.walletAddress}/>
                         <br/>
                         <p>Wallet mnemonic words:</p>
-                        <input type="text" name="mnemonic" className="form-control" onFocus={this.handleFocus} value={localStorage.walletMnemonic}/>
+                        <textarea name="mnemonic" className="form-control" onFocus={this.handleFocus} value={localStorage.walletMnemonic}/>
                         <br/>
-                        <p>Wallet JSON:</p>
-                        <input type="text" name="json" className="form-control" onFocus={this.handleFocus} value={localStorage.walletJson}/>
-                        <br/>
-                        <p>You can use the following JSON file or mnemonic phrases to decrypt the wallet from external wallet manager such as MyEtherWallet or MetaMask. Save them carefully, they are irrecoverable.</p>
+                        {/* <p>Wallet JSON:</p> */}
+                        <input type="hidden" name="json" className="form-control" onFocus={this.handleFocus} value={localStorage.walletJson}/>
+                        {/* <br/> */}
+                        <p><b>You can use the mnemonic phrases to decrypt the wallet from external wallet manager such as MyEtherWallet or MetaMask. Save them carefully, they are irrecoverable.</b></p>
                         <button className="btn btn-primary" onClick={this.handleSubmit}>Continue</button>
                     </Modal.Body>
                 </Modal>
