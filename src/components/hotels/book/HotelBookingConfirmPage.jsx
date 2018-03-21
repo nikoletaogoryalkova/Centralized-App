@@ -9,6 +9,7 @@ import moment from 'moment';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 import { ENTER_WALLET_PASSWORD } from '../../../constants/modals.js';
 import { openModal, closeModal } from '../../../actions/modalsInfo.js';
+import { PROCESSING_TRANSACTION } from '../../../constants/infoMessages.js';
 
 import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
 
@@ -23,7 +24,6 @@ class HotelBookingConfirmPage extends React.Component {
             showRoomCanxDetails: [],
             loading: true,
             locRate: null,
-            showCredentialsModal: false,
             walletPassword: ''
         };
 
@@ -91,12 +91,14 @@ class HotelBookingConfirmPage extends React.Component {
         return end.diff(start, 'days');
     }
 
-    handleSubmit(password) {
+    handleSubmit(token) {
+        const password = this.state.walletPassword;
         const preparedBookingId = this.state.data.preparedBookingId;
         const recipient = '0xa99c523BfC2E1374ac528FE39e4dD7c35F6C1d46';
         const amount = this.state.data.locPrice * Math.pow(10, 18);
         // const amount = 1 * Math.pow(10, 18);
-        NotificationManager.info('We are processing your transaction through the ethereum network. It might freeze your screen for several seconds...', 'Transactions');
+        NotificationManager.info(PROCESSING_TRANSACTION, 'Transactions');
+        // console.log(password); return;
         getCurrentlyLoggedUserJsonFile().then((json) => {
             setTimeout(() => {
                 TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount.toString()).then((transactionHash) => {
@@ -123,7 +125,7 @@ class HotelBookingConfirmPage extends React.Component {
                         NotificationManager.warning(error);
                     }
 
-                    this.closeModal('showCredentialsModal');
+                    this.closeModal(ENTER_WALLET_PASSWORD);
                 });
             }, 1000);
         });
