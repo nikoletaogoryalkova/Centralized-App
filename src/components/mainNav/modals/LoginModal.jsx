@@ -21,7 +21,7 @@ export default class LoginModal extends React.Component {
                         <form onSubmit={(e) => { e.preventDefault(); /* this.captcha.execute(); */ this.props.login(); }}>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="mail" />
-                                <input type="email" name="loginEmail" value={this.props.loginEmail} onChange={this.props.onChange} className="form-control" placeholder="Email address" />
+                                <input type="email" name="loginEmail" value={this.props.loginEmail} onChange={this.props.onChange} className="form-control" placeholder="Email address" autoFocus/>
                             </div>
                             <div className="form-group">
                                 <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
