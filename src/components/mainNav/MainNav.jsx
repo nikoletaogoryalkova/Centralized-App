@@ -112,7 +112,6 @@ class MainNav extends React.Component {
     }
 
     handleMnemonicWordsChange(e) {
-        console.log("change");
         const value = e.target.value.replace(/\n/g, '');
         this.setState({ [e.target.name]: value });
     }

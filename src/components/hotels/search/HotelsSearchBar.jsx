@@ -84,8 +84,8 @@ function SearchBar(props) {
                         style={{ boxShadow: 'none', border: 'none', fontSize: '15px', top: '5px' }}
                         value={props.region}
                         onChange={props.handleSelectRegion}
-                        valueKey={"id"}
-                        labelKey={"query"}
+                        valueKey={'id'}
+                        labelKey={'query'}
                         loadOptions={getRegions}
                         backspaceRemoves={true}
                         arrowRenderer={null}
@@ -162,13 +162,18 @@ const calculateNights = (startDate, endDate) => {
 };
 
 SearchBar.propTypes = {
-    place: PropTypes.string,
+    adults: PropTypes.string,
+    rooms: PropTypes.string,
+    region: PropTypes.object,
     startDate: PropTypes.any,
     endDate: PropTypes.any,
-    guests: PropTypes.string,
+    hasChildren: PropTypes.bool,
     onChange: PropTypes.func,
     handleSearch: PropTypes.func,
     handleDatePick: PropTypes.func,
+    handleRoomsChange: PropTypes.func,
+    handleSelectRegion: PropTypes.func,
+    handleToggleChildren: PropTypes.func,
 };
 
 export default SearchBar;
