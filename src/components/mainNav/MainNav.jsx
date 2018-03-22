@@ -26,6 +26,7 @@ import {
     register, 
     getCurrentLoggedInUserInfo,
     sendRecoveryToken,
+    updateUserInfo,
 } from '../../requester';
 
 import { 
@@ -39,9 +40,9 @@ import {
     CONFIRM_WALLET
 } from '../../constants/modals.js';
 
-import { PROFILE_SUCCESSFULLY_CREATED, PASSWORD_SUCCESSFULLY_CHANGED } from '../../constants/successMessages.js';
+import { PROFILE_SUCCESSFULLY_CREATED, PROFILE_SUCCESSFULLY_UPDATED, PASSWORD_SUCCESSFULLY_CHANGED } from '../../constants/successMessages.js';
 import { PASSWORDS_DONT_MATCH, INVALID_PASSWORD, INVALID_TOKEN, INVALID_EMAIL } from '../../constants/warningMessages';
-import { NOT_FOUND } from '../../constants/errorMessages';
+import { NOT_FOUND, PROFILE_UPDATE_ERROR } from '../../constants/errorMessages';
 
 
 class MainNav extends React.Component {
@@ -57,6 +58,7 @@ class MainNav extends React.Component {
             loginEmail: '',
             loginPassword: '',
             walletPassword: '',
+            mnemonicWords: '',
             userName: '',
             userToken: '',
             newPassword: '',
@@ -72,15 +74,17 @@ class MainNav extends React.Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.setUserInfo = this.setUserInfo.bind(this);
-
+        
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-
+        
         this.messageListener = this.messageListener.bind(this);
         this.getCountOfMessages = this.getCountOfMessages.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleMnemonicWordsChange = this.handleMnemonicWordsChange.bind(this);
         this.handleSubmitRecoveryToken = this.handleSubmitRecoveryToken.bind(this);
         this.handleSubmitRecoveryEmail = this.handleSubmitRecoveryEmail.bind(this);
+        this.handleUpdateUserWallet = this.handleUpdateUserWallet.bind(this);
     }
 
     componentDidMount() {
@@ -105,6 +109,12 @@ class MainNav extends React.Component {
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    handleMnemonicWordsChange(e) {
+        console.log("change");
+        const value = e.target.value.replace(/\n/g, '');
+        this.setState({ [e.target.name]: value });
     }
  
     register(captchaToken) {
@@ -301,6 +311,47 @@ class MainNav extends React.Component {
             }
         });
     }
+    
+    handleUpdateUserWallet(token) {
+        if (this.state.userName !== '' && this.state.userToken !== '') {
+            if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
+                // Set user token in localstorage se getCurrentLoggedInUserInfo can fetch user info 
+                localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
+                getCurrentLoggedInUserInfo().then(info => {
+                    let userInfo = {
+                        firstName: info.firstName,
+                        lastName: info.lastName,
+                        phoneNumber: info.phoneNumber,
+                        preferredLanguage: info.preferredLanguage,
+                        preferredCurrency: info.preferredCurrency != null ? info.preferredCurrency.id : null,
+                        gender: info.gender,
+                        country: info.country != null ? info.country.id : null,
+                        city: info.city != null ? info.city.id : null,
+                        birthday: info.birthday,
+                        locAddress: localStorage.getItem('walletAddress'),
+                        jsonFile:  localStorage.getItem('walletJson')
+                    };
+
+                    updateUserInfo(userInfo, token).then((res) => {
+                        if (res.success) {
+                            NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
+                            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                            localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
+                        } else {
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
+                            NotificationManager.error(PROFILE_UPDATE_ERROR);
+                        }
+
+                        this.setUserInfo();
+                    });
+                });
+            }
+        } else { 
+            this.register(token); 
+        }
+    }
 
     render() {
         return (
@@ -310,7 +361,7 @@ class MainNav extends React.Component {
 
                     <CreateWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} walletPassword={this.state.walletPassword} isActive={this.props.modalsInfo.modals.get(CREATE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
                     <SaveWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(SAVE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
-                    <ConfirmWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(CONFIRM_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} register={this.register} />
+                    <ConfirmWalletModal isActive={this.props.modalsInfo.modals.get(CONFIRM_WALLET)} openModal={this.openModal} closeModal={this.closeModal} handleMnemonicWordsChange={this.handleMnemonicWordsChange} mnemonicWords={this.state.mnemonicWords} handleUpdateUserWallet={this.handleUpdateUserWallet} />
                     <SendRecoveryEmailModal isActive={this.props.modalsInfo.modals.get(SEND_RECOVERY_EMAIL)} openModal={this.openModal} closeModal={this.closeModal} recoveryEmail={this.state.recoveryEmail} handleSubmitRecoveryEmail={this.handleSubmitRecoveryEmail} onChange={this.onChange} />
                     <EnterRecoveryTokenModal isActive={this.props.modalsInfo.modals.get(ENTER_RECOVERY_TOKEN)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} handleSubmitRecoveryToken={this.handleSubmitRecoveryToken} />
                     <ChangePasswordModal isActive={this.props.modalsInfo.modals.get(CHANGE_PASSWORD)} openModal={this.openModal} closeModal={this.closeModal} newPassword={this.state.newPassword} confirmNewPassword={this.state.confirmNewPassword} onChange={this.onChange} handlePasswordChange={this.handlePasswordChange} />
