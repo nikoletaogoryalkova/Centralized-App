@@ -27,7 +27,7 @@ export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
 		validateAddress(recipient, errors.INVALID_ADDRESS);
-		
+
 		let result = jsonFileToKeys(jsonObj, password);
 
 		let callOptions = {
@@ -38,10 +38,8 @@ export class TokenTransactions {
 		await fundTransactionAmountIfNeeded(
 			result.address,
 			result.privateKey,
-			gasConfig.hotelReservation.create
+			gasConfig.transferTokens
 		);
-
-		// validateReceiptStatus(result.FundTransactionAmountTxn);
 
 		await validateLocBalance(result.address, amount);
 
@@ -58,29 +56,29 @@ export class TokenTransactions {
 		return new Promise(function (resolve, reject) {
 			web3.eth.sendSignedTransaction(signedData)
 				.once(
-						'transactionHash', 
-						transactionHash => {
-							resolve({
-								transactionHash
-							});
-						}
+					'transactionHash',
+					transactionHash => {
+						resolve({
+							transactionHash
+						});
+					}
 				)
 				.once(
-						'error',
-						err => {
-							reject({
-								err
-							});
-						}	
+					'error',
+					err => {
+						reject({
+							err
+						});
+					}
 				);
 		});    
 	};
 
-    static async getLOCBalance(address) {
-        return await LOCTokenContract.methods.balanceOf(address).call();
-    }
+	static async getLOCBalance(address) {
+		return await LOCTokenContract.methods.balanceOf(address).call();
+	}
 
 	static async getETHBalance(address) {
-        return await web3.eth.getBalance(address);
+		return await web3.eth.getBalance(address);
 	}
 }

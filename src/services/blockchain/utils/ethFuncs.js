@@ -19,9 +19,13 @@ import {
 import {
 	signTransaction
 } from '../utils/signTransaction.js';
+import {
+	Config
+} from '../../../config.js';
 
 const {
-	GAS_STATION_API
+	GAS_STATION_API,
+	JAVA_REST_API_SEND_FUNDS
 } = require('../config/constants.json');
 const gasConfig = require('../config/gas-config.json');
 
@@ -45,7 +49,7 @@ export async function exchangeLocForEth(JSONPassPublicKey, JSONPassPrivateKey, a
 
 	let result = {};
 
-	validateContractBalance(amount);
+	await validateContractBalance(amount);
 	const locWeiAmount = await LOCExchangeContract.methods.weiToLocWei(
 		amount.toString(10)).call();
 	result.ApproveContractTxn = await approveContract(
@@ -86,9 +90,10 @@ export async function fundTransactionAmountIfNeeded(JSONPassPublicKey, JSONPassP
 	const gasAmountNeeded = gasAmountApprove.plus(gasAmountExchange);
 	const gasAmountAction = new BigNumber(gasPrice * actionGas);
 
-	//This should be in the Java
+
 	if (gasAmountNeeded.gt(accountBalance)) {
-		result.FundInitialGas = await axios.post('http://localhost:8080/sendFundsToAccount', {
+		// TODO: This should point to the backend java rest-api
+		result.FundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
 			amount: gasAmountNeeded.toString(10),
 			recipient: JSONPassPublicKey
 		})

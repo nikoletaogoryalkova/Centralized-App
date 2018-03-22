@@ -74,7 +74,6 @@ export class HotelReservation {
 
 		await validateLocBalance(userKeys.address, reservationCostLOC, gasConfig.hotelReservation.create);
 
-		// result.FundTransactionAmountTxn =
 		await fundTransactionAmountIfNeeded(
 			userKeys.address,
 			userKeys.privateKey,
@@ -126,6 +125,12 @@ export class HotelReservation {
 		if (!jsonObj || !password || !hotelReservationId) {
 			throw new Error(errors.INVALID_PARAMS);
 		}
+
+		await fundTransactionAmountIfNeeded(
+			userKeys.address,
+			userKeys.privateKey,
+			gasConfig.hotelReservation.cancel
+		);
 
 		const hotelReservationIdHex = web3.utils.utf8ToHex(hotelReservationId);
 
