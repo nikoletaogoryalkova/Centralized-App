@@ -387,7 +387,7 @@ class HotelsSearchPage extends React.Component {
         let children = rooms[roomIndex].children;
         if (children.length < value) {
             while (children.length < value) {
-                children.push({ age: '1' });
+                children.push({ age: '' });
             }
         } else if (children.length > value) {
             children = children.slice(0, value);
