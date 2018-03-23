@@ -4,6 +4,7 @@ import moment from 'moment';
 import HotelsSearchBar from './search/HotelsSearchBar';
 import PopularDestinationsCarousel from './carousel/PopularDestinationsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
+import PropTypes from 'prop-types';
 
 import { getTestHotels } from '../../requester';
 import { getCurrencyRates } from '../../requester';
@@ -26,7 +27,6 @@ class HotelsHomePage extends React.Component {
             hasChildren: false,
             listings: undefined,
             childrenModal: false,
-            // region: { id: undefined, query: undefined },
         };
 
         this.onChange = this.onChange.bind(this);
@@ -57,9 +57,27 @@ class HotelsHomePage extends React.Component {
     }
 
     onChange(e) {
-        console.log(e.target.name)
-        console.log(e.target.value)
         this.setState({ [e.target.name]: e.target.value });
+    }
+    
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     handleSelectRegion(value) {
@@ -116,15 +134,6 @@ class HotelsHomePage extends React.Component {
     distributeChildren() {
         this.openModal('childrenModal');
     }
-
-    // getRooms() {
-    //     return this.state.rooms.map((room) => {
-    //         return {
-    //             adults: room.adults,
-    //             children: room.children.map((age) => { return { age: age}; })
-    //         };
-    //     });
-    // }
     
     handleDatePick(event, picker) {
         this.setState({
@@ -189,26 +198,6 @@ class HotelsHomePage extends React.Component {
         this.setState({
             hasChildren: !hasChildren,
             rooms: rooms
-        });
-    }
-
-    openModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            [modal]: true
-        });
-    }
-
-    closeModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            [modal]: false
         });
     }
 
@@ -281,3 +270,15 @@ function mapStateToProps(state) {
         paymentInfo
     };
 }
+
+HotelsHomePage.propTypes = {
+    // start Router props
+    location: PropTypes.object,
+    history: PropTypes.object,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    userInfo: PropTypes.object,
+    paymentInfo: PropTypes.object,
+    modalsInfo: PropTypes.object,
+};

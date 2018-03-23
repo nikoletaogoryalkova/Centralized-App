@@ -139,13 +139,33 @@ class HotelsSearchPage extends React.Component {
         const checkIn = moment(startDate, 'DD/MM/YYYY');
         const checkOut = moment(endDate, 'DD/MM/YYYY');
         return (checkOut > checkIn) ? checkOut.diff(checkIn, 'days') : 0;
-    };
+    }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
         if (this.updateParamsMap) {
             this.updateParamsMap(e.target.name, e.target.value);
         }
+    }
+    
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     handleToggleChildren() {
@@ -367,7 +387,7 @@ class HotelsSearchPage extends React.Component {
         let children = rooms[roomIndex].children;
         if (children.length < value) {
             while (children.length < value) {
-                children.push({ age: '1' });
+                children.push({ age: '' });
             }
         } else if (children.length > value) {
             children = children.slice(0, value);
@@ -382,26 +402,6 @@ class HotelsSearchPage extends React.Component {
         const rooms = this.state.rooms.slice();
         rooms[roomIndex].children[childIndex].age = value;
         this.setState({ rooms: rooms });
-    }
-    
-    openModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            [modal]: true
-        });
-    }
-
-    closeModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            [modal]: false
-        });
     }
 
     render() {
@@ -421,7 +421,6 @@ class HotelsSearchPage extends React.Component {
 
         return (
             <div>
-                {/* <ListingTypeNav /> */}
                 <HotelsSearchBar
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
@@ -483,12 +482,6 @@ class HotelsSearchPage extends React.Component {
     }
 }
 
-HotelsSearchPage.propTypes = {
-    countries: PropTypes.array,
-    location: PropTypes.object,
-    history: PropTypes.object
-};
-
 export default withRouter(connect(mapStateToProps)(HotelsSearchPage));
 
 function mapStateToProps(state) {
@@ -497,3 +490,14 @@ function mapStateToProps(state) {
         paymentInfo
     };
 }
+
+HotelsSearchPage.propTypes = {
+    countries: PropTypes.array,
+    
+    // start Router props
+    location: PropTypes.object,
+    history: PropTypes.object,
+
+    // start Redux props
+    paymentInfo: PropTypes.object,
+};

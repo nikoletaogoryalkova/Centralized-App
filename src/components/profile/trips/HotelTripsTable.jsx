@@ -38,12 +38,17 @@ export default function HomeTripsTable(props) {
                 </div>
             </div>
             {props.trips.map(trip => {
+                console.log(trip);
                 return (
                     <div key={trip.id} style={trip.id === props.currentTripId ? { backgroundColor: '#e1e1e1' } : {}} className="row reservation-box">
                         <div className="col-md-12">
                             <div className="col-md-1">
                                 <div className="reservation-image-box">
-                                    <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${JSON.parse(trip.hotel_photo).original}`} alt="host-profile" /></span>
+                                    {trip.hotel_photo &&
+                                        <span className="session-nav-user-thumb">
+                                            <img src={`${Config.getValue('imgHost')}${JSON.parse(trip.hotel_photo).original}`} alt="host-profile" />
+                                        </span>
+                                    }
                                 </div>
                             </div>
                             <div className="col-md-2">

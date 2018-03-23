@@ -9,13 +9,7 @@ import { Config } from '../../../config.js';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 function HotelItem(props) {
-    const { locRate, rates } = props;
-    const { currencySign } = props.paymentInfo;
-    const { id, name, description, photos, price, stars} = props.listing;
-    const locPrice = ((price / locRate) / props.nights).toFixed(2);
-    const priceInSelectedCurrency = rates && ((price * (rates[ROOMS_XML_CURRENCY][props.paymentInfo.currency])) / props.nights).toFixed(2);
-    const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
-
+    
     const calculateStars = (ratingNumber) => {
         let starsElements = [];
         let rating = Math.round(ratingNumber);
@@ -28,6 +22,15 @@ function HotelItem(props) {
 
         return starsElements;
     };
+
+    const { locRate, rates } = props;
+    const { currencySign } = props.paymentInfo;
+    const { id, name, description, photos, price, stars} = props.listing;
+    
+    const locPrice = ((price / locRate) / props.nights).toFixed(2);
+    const priceInSelectedCurrency = rates && ((price * (rates[ROOMS_XML_CURRENCY][props.paymentInfo.currency])) / props.nights).toFixed(2);
+    
+    const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
 
     return (
         <div className="list-hotel">
@@ -56,15 +59,6 @@ function HotelItem(props) {
     );
 }
 
-HotelItem.propTypes = {
-    listing: PropTypes.object,
-    location: PropTypes.object,
-
-    // start Redux props
-    dispatch: PropTypes.func,
-    paymentInfo: PropTypes.object
-};
-
 export default withRouter(connect(mapStateToProps)(HotelItem));
 
 function mapStateToProps(state) {
@@ -74,3 +68,16 @@ function mapStateToProps(state) {
         userInfo
     };
 }
+
+HotelItem.propTypes = {
+    listing: PropTypes.object,
+    location: PropTypes.object,
+    nights: PropTypes.number,
+    locRate: PropTypes.number,
+    rates: PropTypes.any,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    paymentInfo: PropTypes.object,
+    userInfo: PropTypes.object
+};
