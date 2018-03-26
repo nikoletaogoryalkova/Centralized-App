@@ -311,7 +311,7 @@ class HotelsSearchPage extends React.Component {
             loading: true
         });
 
-        const searchTerms = this.getSearchTerms(this.state.searchParams);
+        const searchTerms = `?${this.getSearchTerms(this.state.searchParams)}`;
         testSearch(searchTerms, page - 1).then(json => {
             this.setState({
                 listings: json.content,
