@@ -26,7 +26,7 @@ export default class LPagination extends React.Component {
                     {!this.props.loading && <Pagination
                         itemRender={textItemRender}
                         className="pagination"
-                        defaultPageSize={3}
+                        defaultPageSize={20}
                         showTitle={false}
                         onChange={this.props.onPageChange}
                         current={this.props.currentPage}
