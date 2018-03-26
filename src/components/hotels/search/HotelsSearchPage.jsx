@@ -65,9 +65,9 @@ class HotelsSearchPage extends React.Component {
         testSearch(this.props.location.search).then((json) => {
             console.log(json);
             this.setState({
-                listings: json, 
+                listings: json.content, 
                 loading: false,
-                totalElements: json.length
+                totalElements: json.totalElements
             });
         });
 
