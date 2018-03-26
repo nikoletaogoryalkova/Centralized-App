@@ -209,7 +209,8 @@ class HotelsSearchPage extends React.Component {
         this.setState({ loading: true, childrenModal: false }, () => {
             testSearch(queryString).then((json) => {
                 this.setState({
-                    listings: json,
+                    listings: json.content,
+                    totalElements: json.totalElements,
                     nights: this.calculateNights(this.state.startDate, this.state.endDate),
                     loading: false,
                 });
