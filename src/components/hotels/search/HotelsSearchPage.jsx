@@ -304,6 +304,7 @@ class HotelsSearchPage extends React.Component {
     }
 
     onPageChange(page) {
+        console.log(page);
         window.scrollTo(0, 0);
         this.setState({
             currentPage: page,
@@ -311,11 +312,11 @@ class HotelsSearchPage extends React.Component {
         });
 
         const searchTerms = this.getSearchTerms(this.state.searchParams);
-        testSearch(searchTerms + `&page=${page - 1}`).then(json => {
+        testSearch(searchTerms, page - 1).then(json => {
             this.setState({
-                listings: json,
+                listings: json.content,
                 loading: false,
-                totalElements: json.length
+                totalElements: json.totalElements
             });
         });
     }
@@ -457,7 +458,7 @@ class HotelsSearchPage extends React.Component {
                                     {renderListings}
 
                                     <LPagination
-                                        loading={this.state.totalElements === 0}
+                                        loading={this.state.loading}
                                         onPageChange={this.onPageChange}
                                         currentPage={this.state.currentPage}
                                         totalElements={this.state.totalElements}
