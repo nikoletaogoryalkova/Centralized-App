@@ -206,7 +206,7 @@ class HotelsSearchPage extends React.Component {
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
         console.log(this.state);
         console.log(queryString);
-        this.setState({ loading: true, childrenModal: false }, () => {
+        this.setState({ loading: true, childrenModal: false, currentPage: 1 }, () => {
             testSearch(queryString).then((json) => {
                 this.setState({
                     listings: json.content,
@@ -305,14 +305,13 @@ class HotelsSearchPage extends React.Component {
     }
 
     onPageChange(page) {
-        console.log(page);
         window.scrollTo(0, 0);
         this.setState({
             currentPage: page,
             loading: true
         });
 
-        const searchTerms = `?${this.getSearchTerms(this.state.searchParams)}`;
+        const searchTerms = this.props.location.search;
         testSearch(searchTerms, page - 1).then(json => {
             this.setState({
                 listings: json.content,
