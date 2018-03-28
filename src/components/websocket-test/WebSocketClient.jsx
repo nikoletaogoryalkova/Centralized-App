@@ -18,14 +18,19 @@ export default class WebSocketClient extends React.Component {
     }
 
     onMessageReceive(msg) {
-        this.setState(prevState => ({
-            messages: [...prevState.messages, msg]
-        }));
+        console.log(msg);
+        // this.setState(prevState => ({
+        //     messages: [...prevState.messages, msg]
+        // }));
     }
 
     sendMessage() {
         try {
-            this.clientRef.sendMessage('/all', JSON.stringify(this.state.message));
+            const msg = {
+                "msg": msg,
+            }
+            this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
+            console.log("asd");
             this.setState({ message: '' });
         } catch (e) {
             console.log(e);
@@ -54,7 +59,7 @@ export default class WebSocketClient extends React.Component {
         const wsSourceUrl = 'http://localhost:8080/handler';
         const headers = { 
             xhrFields: {
-                withCredentials: false
+                withCredentials: true
             }, 
         };
         console.log(wsSourceUrl);
@@ -70,6 +75,7 @@ export default class WebSocketClient extends React.Component {
                     onConnect={() => { this.setState({ clientConnected: true }); }}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
                     headers={headers}
+                    withCredentials='false'    
                     debug={false} />
             </div>
         );
