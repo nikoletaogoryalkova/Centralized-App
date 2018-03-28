@@ -7,6 +7,7 @@ import { Config } from '../../config';
 import CreateListingPage from '../listingCRUD/CreateListingPage';
 import EditListingPage from '../listingCRUD/EditListingPage';
 import HomeRouterPage from '../home/HomeRouterPage';
+import WebSocketClient from '../websocket-test/WebSocketClient';
 import HomesRouterPage from '../homes/HomesRouterPage';
 import HotelsRouterPage from '../hotels/HotelsRouterPage';
 import React from 'react';
@@ -43,6 +44,7 @@ class App extends React.Component {
                 <NavLocalization />
                 <Switch>
                     <Route exact path="/" render={() => <HomeRouterPage />} />
+                    <Route exact path="/websocket" render={() => <WebSocketClient />} />
                     <Route exact path="/profile/listings/edit/:step/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} />
                     <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
                     <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage />} />
