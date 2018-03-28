@@ -2552,6 +2552,18 @@ input[type="checkbox"].tick:checked+label:after {
     width: 100%;
 }
 
+.carousel .hotels-item {
+    width: 250px;
+    height: 185px;
+    background-size: cover;
+    background-position: center;
+}
+
+.list-hotel .list-content {
+    height: 185px;
+    overflow: hidden;
+}
+
 .dropdown button {
     font-size: 14px;
 }

@@ -83,6 +83,7 @@
 .list-hotel-box .list-hotel-price-curency {
   text-align: center;
   font-size: 28px;
+  min-height: 40px;
 }
 .list-hotel-box .list-hotel-price-loc {
   text-align: center;
