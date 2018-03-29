@@ -419,6 +419,7 @@ class HotelsSearchPage extends React.Component {
 
         if (response.hasOwnProperty('totalElements')) {
             this.setState({ totalElements: response.totalElements });
+            console.log('total elements set');
         } else {
             this.setState(prevState => ({
                 listings: [...prevState.listings, response]
@@ -440,27 +441,6 @@ class HotelsSearchPage extends React.Component {
 
         searchParams.forEach(addElement);
         this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
-    }
-
-    getPagination() {
-        if (this.state.loading) {
-            return null;
-        }
-
-        if (!this.state.totalElements) {
-            return (
-                <div className="loader"></div>
-            );
-        }
-
-        return (
-            <LPagination
-                loading={this.state.loading}
-                onPageChange={this.onPageChange}
-                currentPage={this.state.currentPage}
-                totalElements={this.state.totalElements}
-            />
-        );
     }
  
     render() {
@@ -514,7 +494,15 @@ class HotelsSearchPage extends React.Component {
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
                                     {hotelItems}
-                                    {this.getPagination.bind(this)}
+                                    {!this.state.loading && !this.state.totalElements
+                                        ? <div className="loader"></div>
+                                        : <LPagination
+                                            loading={this.state.loading}
+                                            onPageChange={this.onPageChange}
+                                            currentPage={this.state.currentPage}
+                                            totalElements={this.state.totalElements}
+                                        />
+                                    }
                                 </div>
                             </div>
                         </div>
