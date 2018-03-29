@@ -428,8 +428,10 @@ class HotelsSearchPage extends React.Component {
 
     sendInitialWebsocketRequest() {
         const msg = {
-            query: this.props.location.search
+            query: this.props.location.search.substr(1)
         };
+
+        console.log(msg);
         
         const searchParams = this.getSearchParams(this.props.location.search);
         function addElement(value, key) {
