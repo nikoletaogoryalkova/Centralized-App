@@ -38,6 +38,7 @@ class HotelsSearchPage extends React.Component {
             loading: false,
             totalElements: 0,
             currentPage: 1,
+            messages: []
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -60,6 +61,7 @@ class HotelsSearchPage extends React.Component {
         this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
         this.getLocRate = this.getLocRate.bind(this);
+        this.handleReceiveSingleHotel = this.handleReceiveSingleHotel.bind(this);
     }
 
     componentDidMount() {
@@ -85,9 +87,13 @@ class HotelsSearchPage extends React.Component {
         searchParams.forEach(addElement);
         
         console.log(msg);
-        
-        this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
-        
+        const that = this;
+        setTimeout(function() {
+            that.clientRef.sendMessage('/app/all', JSON.stringify(msg));
+            console.log(that.clientRef)
+        }, 5000);
+
+
         getCurrencyRates().then((json) => {
             this.setState({ rates: json });
         });
@@ -425,11 +431,12 @@ class HotelsSearchPage extends React.Component {
 
     handleReceiveSingleHotel(hotel) {
         this.setState(prevState => ({
-            listings: [...prevState.listings, hotel.msg]
+            messages: [...prevState.messages, hotel.msg]
         }));
     }
 
     render() {
+        console.log(this.clientRef)
         const listings = this.state.listings;
 
         let renderListings;

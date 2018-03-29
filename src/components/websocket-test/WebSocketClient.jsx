@@ -59,6 +59,7 @@ export default class WebSocketClient extends React.Component {
     }
 
     render() {
+        console.log(this.clientRef)
         const wsSourceUrl = 'http://localhost:8080/handler';
         return (
             <div>
