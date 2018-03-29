@@ -12,6 +12,7 @@ import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
+import SockJsClient from 'react-stomp';
 
 import { testSearch, getRegionNameById, getCurrencyRates, getLocRateInUserSelectedCurrency } from '../../../requester';
 
@@ -405,6 +406,12 @@ class HotelsSearchPage extends React.Component {
         this.setState({ rooms: rooms });
     }
 
+    handleReceiveSingleHotel(hotel) {
+        this.setState(prevState => ({
+            listings: [...prevState.listings, hotel.msg]
+        }));
+    }
+
     render() {
         const listings = this.state.listings;
 
@@ -478,6 +485,12 @@ class HotelsSearchPage extends React.Component {
                     closeModal={this.closeModal}
                     handleSubmit={this.redirectToSearchPage}
                 />
+
+                <SockJsClient url={'http://localhost:8080/handler'} topics={['/user/topic/all']}
+                    onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
+                    onConnect={() => { this.setState({ clientConnected: true }); }}
+                    onDisconnect={() => { this.setState({ clientConnected: false }); }}
+                    debug={true} />
             </div>
         );
     }

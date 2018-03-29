@@ -18,19 +18,18 @@ export default class WebSocketClient extends React.Component {
     }
 
     onMessageReceive(msg) {
-        console.log(msg);
-        // this.setState(prevState => ({
-        //     messages: [...prevState.messages, msg]
-        // }));
+        this.setState(prevState => ({
+            messages: [...prevState.messages, msg.msg]
+        }));
     }
 
     sendMessage() {
         try {
             const msg = {
-                "msg": msg,
-            }
+                'message': msg,
+            };
+
             this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
-            console.log("asd");
             this.setState({ message: '' });
         } catch (e) {
             console.log(e);
@@ -44,7 +43,7 @@ export default class WebSocketClient extends React.Component {
 
     disconnect() {
         this.clientRef.disconnect();
-        this.setState({ clientConnected: false });
+        this.setState({ clientConnected: false, messages: [] });
     }
 
     componentWillMount() {
@@ -55,27 +54,31 @@ export default class WebSocketClient extends React.Component {
         // });
     }
 
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
     render() {
         const wsSourceUrl = 'http://localhost:8080/handler';
-        const headers = { 
-            xhrFields: {
-                withCredentials: true
-            }, 
-        };
-        console.log(wsSourceUrl);
         return (
             <div>
+                <div>
+                    <button onClick={this.connect}>connect</button>
+                    <button onClick={this.disconnect}>disconnect</button>
+                </div>
+                {this.state.clientConnected && 
+                    <div>
+                        <input type="text" value={this.state.message} onChange={this.onChange.bind(this)} name="message"/>
+                        <button onClick={this.sendMessage}>send</button>
+                    </div>
+                }
+                
                 <div>{this.state.messages && this.state.messages.map((msg, i) => { return (<div key={i}>{msg}</div>); })}</div>
-                <input type="text" name="message"/>
-                <button onClick={this.sendMessage}>send</button>
-                <button onClick={this.connect}>connect</button>
-                <button onClick={this.disconnect}>disconnect</button>
                 <SockJsClient url={wsSourceUrl} topics={['/user/topic/all']}
                     onMessage={this.onMessageReceive} ref={(client) => { this.clientRef = client; }}
                     onConnect={() => { this.setState({ clientConnected: true }); }}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
-                    headers={headers}
-                    withCredentials='false'    
+                    // withCredentials='false'    
                     debug={false} />
             </div>
         );
