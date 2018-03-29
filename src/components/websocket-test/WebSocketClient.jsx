@@ -19,7 +19,7 @@ export default class WebSocketClient extends React.Component {
 
     onMessageReceive(msg) {
         this.setState(prevState => ({
-            messages: [...prevState.messages, msg.msg]
+            messages: [...prevState.messages, JSON.parse(msg.msg)]
         }));
     }
 

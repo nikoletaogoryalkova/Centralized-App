@@ -35,7 +35,7 @@ class HotelsSearchPage extends React.Component {
             countryCode: '',
             searchParams: undefined,
             listings: [],
-            loading: false,
+            loading: true,
             totalElements: 0,
             currentPage: 1,
             messages: []
@@ -62,6 +62,7 @@ class HotelsSearchPage extends React.Component {
         this.handleToggleChildren = this.handleToggleChildren.bind(this);
         this.getLocRate = this.getLocRate.bind(this);
         this.handleReceiveSingleHotel = this.handleReceiveSingleHotel.bind(this);
+        this.sendInitialWebsocketRequest = this.sendInitialWebsocketRequest.bind(this);
     }
 
     componentDidMount() {
@@ -75,25 +76,6 @@ class HotelsSearchPage extends React.Component {
         // });
 
         this.getLocRate();
-        const searchParams = this.getSearchParams(this.props.location.search);
-        const msg = {
-            query: this.props.location.search
-        };
-
-        function addElement(value, key) {
-            msg[key] = value;
-        }
-
-        searchParams.forEach(addElement);
-        
-        console.log(msg);
-        const that = this;
-        setTimeout(function() {
-            that.clientRef.sendMessage('/app/all', JSON.stringify(msg));
-            console.log(that.clientRef)
-        }, 5000);
-
-
         getCurrencyRates().then((json) => {
             this.setState({ rates: json });
         });
@@ -429,14 +411,42 @@ class HotelsSearchPage extends React.Component {
         this.setState({ rooms: rooms });
     }
 
-    handleReceiveSingleHotel(hotel) {
-        this.setState(prevState => ({
-            messages: [...prevState.messages, hotel.msg]
-        }));
+    handleReceiveSingleHotel(response) {
+        if (this.state.loading) {
+            this.setState({ loading: false });
+        }
+        console.log(response);
+
+        if (response.hasOwnProperty('totalElements')) {
+            this.setState({ totalElements: response.totalElements });
+        } else {
+            this.setState(prevState => ({
+                listings: [...prevState.listings, response]
+            }));
+        }
     }
 
+    sendInitialWebsocketRequest() {
+        const msg = {
+            query: this.props.location.search
+        };
+        
+        const searchParams = this.getSearchParams(this.props.location.search);
+        function addElement(value, key) {
+            msg[key] = value;
+        }
+
+        searchParams.forEach(addElement);
+        this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
+        // const that = this;
+        // setTimeout(function() {
+            
+        // }, 5000);
+
+
+    }
+ 
     render() {
-        console.log(this.clientRef)
         const listings = this.state.listings;
 
         let renderListings;
@@ -512,7 +522,7 @@ class HotelsSearchPage extends React.Component {
 
                 <SockJsClient url={'http://localhost:8080/handler'} topics={['/user/topic/all']}
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
-                    onConnect={() => { this.setState({ clientConnected: true }); }}
+                    onConnect={this.sendInitialWebsocketRequest}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
                     debug={true} />
             </div>
