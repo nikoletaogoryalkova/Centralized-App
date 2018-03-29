@@ -14,6 +14,8 @@ import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
 import SockJsClient from 'react-stomp';
 
+import { Config } from '../../../config.js';
+
 import { testSearch, getRegionNameById, getCurrencyRates, getLocRateInUserSelectedCurrency } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
@@ -63,6 +65,7 @@ class HotelsSearchPage extends React.Component {
         this.getLocRate = this.getLocRate.bind(this);
         this.handleReceiveSingleHotel = this.handleReceiveSingleHotel.bind(this);
         this.sendInitialWebsocketRequest = this.sendInitialWebsocketRequest.bind(this);
+        this.sendSubsequentWebsocketRequest = this.sendSubsequentWebsocketRequest.bind(this);
     }
 
     componentDidMount() {
@@ -210,19 +213,11 @@ class HotelsSearchPage extends React.Component {
         queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
-        console.log(this.state);
-        console.log(queryString);
-        this.setState({ loading: true, childrenModal: false, currentPage: 1 }, () => {
-            testSearch(queryString).then((json) => {
-                this.setState({
-                    listings: json.content,
-                    totalElements: json.totalElements,
-                    nights: this.calculateNights(this.state.startDate, this.state.endDate),
-                    loading: false,
-                });
-            });
-        });
         this.props.history.push('/hotels/listings' + queryString);
+        
+        this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [] }, () => {
+            this.sendSubsequentWebsocketRequest();
+        });
     }
 
     async distributeAdults() {
@@ -415,8 +410,8 @@ class HotelsSearchPage extends React.Component {
         if (this.state.loading) {
             this.setState({ loading: false });
         }
+        
         console.log(response);
-
         if (response.hasOwnProperty('totalElements')) {
             this.setState({ totalElements: response.totalElements });
             console.log('total elements set');
@@ -435,6 +430,29 @@ class HotelsSearchPage extends React.Component {
         console.log(msg);
         
         const searchParams = this.getSearchParams(this.props.location.search);
+        function addElement(value, key) {
+            msg[key] = value;
+        }
+
+        searchParams.forEach(addElement);
+        this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
+    }
+
+    sendSubsequentWebsocketRequest() {
+        let query = '?';
+        query += 'region=' + this.state.region.id;
+        query += '&currency=' + this.props.paymentInfo.currency;
+        query += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
+        query += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
+        query += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
+
+        const msg = {
+            query: query
+        };
+
+        console.log(msg);
+        
+        const searchParams = this.getSearchParams(query);
         function addElement(value, key) {
             msg[key] = value;
         }
@@ -494,14 +512,16 @@ class HotelsSearchPage extends React.Component {
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
                                     {hotelItems}
-                                    {!this.state.loading && !this.state.totalElements
-                                        ? <div className="loader"></div>
-                                        : <LPagination
-                                            loading={this.state.loading}
-                                            onPageChange={this.onPageChange}
-                                            currentPage={this.state.currentPage}
-                                            totalElements={this.state.totalElements}
-                                        />
+                                    {!this.state.loading && 
+                                        (this.state.totalElements || this.state.totalElements === 0
+                                            ? <LPagination
+                                                loading={this.state.loading}
+                                                onPageChange={this.onPageChange}
+                                                currentPage={this.state.currentPage}
+                                                totalElements={this.state.totalElements}
+                                            />
+                                            : <div className="loader"></div>
+                                        )
                                     }
                                 </div>
                             </div>
@@ -519,7 +539,7 @@ class HotelsSearchPage extends React.Component {
                     handleSubmit={this.redirectToSearchPage}
                 />
 
-                <SockJsClient url={'http://localhost:8080/handler'} topics={['/user/topic/all']}
+                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={['/user/topic/all']}
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
                     onConnect={this.sendInitialWebsocketRequest}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
