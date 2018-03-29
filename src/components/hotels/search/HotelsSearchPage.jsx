@@ -73,6 +73,21 @@ class HotelsSearchPage extends React.Component {
         // });
 
         this.getLocRate();
+        const searchParams = this.getSearchParams(this.props.location.search);
+        const msg = {
+            query: this.props.location.search
+        };
+
+        function addElement(value, key) {
+            msg[key] = value;
+        }
+
+        searchParams.forEach(addElement);
+        
+        console.log(msg);
+        
+        this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
+        
         getCurrencyRates().then((json) => {
             this.setState({ rates: json });
         });
@@ -111,6 +126,8 @@ class HotelsSearchPage extends React.Component {
             currentPage: 1,
             totalElements: 0
         });
+
+        this.clientRef.disconnect();
     }
 
     getAdults(rooms) {
