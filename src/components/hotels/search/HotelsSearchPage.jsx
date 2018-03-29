@@ -34,8 +34,8 @@ class HotelsSearchPage extends React.Component {
             state: '',
             countryCode: '',
             searchParams: undefined,
-            listings: undefined,
-            loading: true,
+            listings: [],
+            loading: false,
             totalElements: 0,
             currentPage: 1,
         };
@@ -63,14 +63,14 @@ class HotelsSearchPage extends React.Component {
     }
 
     componentDidMount() {
-        testSearch(this.props.location.search).then((json) => {
-            console.log(json);
-            this.setState({
-                listings: json.content, 
-                loading: false,
-                totalElements: json.totalElements
-            });
-        });
+        // testSearch(this.props.location.search).then((json) => {
+        //     console.log(json);
+        //     this.setState({
+        //         listings: json.content, 
+        //         loading: false,
+        //         totalElements: json.totalElements
+        //     });
+        // });
 
         this.getLocRate();
         getCurrencyRates().then((json) => {
