@@ -16,9 +16,9 @@ function HotelItem(props) {
         for (let i = 0; i < rating; i++) {
             starsElements.push(<span key={i} className="full-star"></span>);
         }
-        for (let i = 0; i < 5 - rating; i++) {
-            starsElements.push(<span key={100 - i} className="empty-star"></span>);
-        }
+        // for (let i = 0; i < 5 - rating; i++) {
+        //     starsElements.push(<span key={100 - i} className="empty-star"></span>);
+        // }
 
         return starsElements;
     };

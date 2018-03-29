@@ -215,7 +215,7 @@ class HotelsSearchPage extends React.Component {
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
         this.props.history.push('/hotels/listings' + queryString);
         
-        this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [] }, () => {
+        this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [], totalElements: undefined }, () => {
             this.sendSubsequentWebsocketRequest();
         });
     }
