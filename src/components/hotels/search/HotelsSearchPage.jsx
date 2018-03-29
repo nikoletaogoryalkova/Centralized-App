@@ -36,7 +36,7 @@ class HotelsSearchPage extends React.Component {
             searchParams: undefined,
             listings: [],
             loading: true,
-            totalElements: 0,
+            totalElements: undefined,
             currentPage: 1,
             messages: []
         };
@@ -438,25 +438,40 @@ class HotelsSearchPage extends React.Component {
 
         searchParams.forEach(addElement);
         this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
-        // const that = this;
-        // setTimeout(function() {
-            
-        // }, 5000);
+    }
 
+    getPagination() {
+        if (this.state.loading) {
+            return null;
+        }
 
+        if (!this.state.totalElements) {
+            return (
+                <div className="loader"></div>
+            );
+        }
+
+        return (
+            <LPagination
+                loading={this.state.loading}
+                onPageChange={this.onPageChange}
+                currentPage={this.state.currentPage}
+                totalElements={this.state.totalElements}
+            />
+        );
     }
  
     render() {
         const listings = this.state.listings;
 
-        let renderListings;
+        let hotelItems;
 
         if (!listings || this.state.loading === true) {
-            renderListings = <div className="text-center"><h2>Looking for the best rates for your trip...</h2><br/><br/><br/><div className="loader"></div></div>;
+            hotelItems = <div className="text-center"><h2>Looking for the best rates for your trip...</h2><br/><br/><br/><div className="loader"></div></div>;
         } else if (listings.length === 0) {
-            renderListings = <div className="text-center"><h3>No results</h3></div>;
+            hotelItems = <div className="text-center"><h3>No results</h3></div>;
         } else {
-            renderListings = listings.map((item, i) => {
+            hotelItems = listings.map((item, i) => {
                 return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights}/>;
             });
         }
@@ -496,14 +511,8 @@ class HotelsSearchPage extends React.Component {
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
-                                    {renderListings}
-
-                                    <LPagination
-                                        loading={this.state.loading}
-                                        onPageChange={this.onPageChange}
-                                        currentPage={this.state.currentPage}
-                                        totalElements={this.state.totalElements}
-                                    />
+                                    {hotelItems}
+                                    {this.getPagination.bind(this)}
                                 </div>
                             </div>
                         </div>
