@@ -1,9 +1,7 @@
 import {
-	jsonFileToKeys
-} from "./utils/jsonFileToKeys";
-import {
 	HotelReservationFactoryContract,
 	initHotelReservationContract,
+	HotelReservationFactoryContractWithWallet
 } from "./config/contracts-config";
 import {
 	validateBookingExists,
@@ -11,12 +9,8 @@ import {
 	validateReservationParams
 } from "./validators/reservation-validators";
 import {
-	web3
-} from './config/contracts-config.js';
-import {
 	formatEndDateTimestamp,
 	formatStartDateTimestamp,
-	formatTimestamp
 } from "./utils/timeHelper";
 import {
 	validateLocBalance
@@ -25,12 +19,10 @@ import {
 	approveContract
 } from "./utils/approveContract";
 import {
-	signTransaction
-} from "./utils/signTransaction";
-
-import {
-	fundTransactionAmountIfNeeded
+	fundTransactionAmountIfNeeded,
+	getGasPrice
 } from "./utils/ethFuncs"
+import ethers from 'ethers';
 
 const gasConfig = require('./config/gas-config.json');
 const errors = require('./config/errors.json');
@@ -47,17 +39,14 @@ export class HotelReservation {
 		hotelId,
 		roomId,
 		numberOfTravelers) {
-		const userKeys = jsonFileToKeys(jsonObj, password);
-		const callOptions = {
-			from: userKeys.address,
-			gas: gasConfig.hotelReservation.create
-		};
 
 		const reservationStartDateFormatted = formatStartDateTimestamp(reservationStartDate);
 		const reservationEndDateFormatted = formatEndDateTimestamp(reservationEndDate);
-		const hotelReservationIdHex = web3.utils.utf8ToHex(hotelReservationId);
-		const hotelIdHex = web3.utils.utf8ToHex(hotelId);
-		const roomIdHex = web3.utils.utf8ToHex(roomId);
+		const hotelReservationIdHex = ethers.utils.toUtf8Bytes(hotelReservationId);
+		const hotelIdHex = ethers.utils.toUtf8Bytes(hotelId);
+		const roomIdHex = ethers.utils.toUtf8Bytes(roomId);
+		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
+		const gasPrice = await getGasPrice();
 
 		await validateReservationParams(jsonObj,
 			password,
@@ -69,21 +58,26 @@ export class HotelReservation {
 			refundPercentage,
 			hotelIdHex,
 			roomIdHex,
-			numberOfTravelers,
-			callOptions);
+			numberOfTravelers);
 
-		await validateLocBalance(userKeys.address, reservationCostLOC, gasConfig.hotelReservation.create);
+		await validateLocBalance(wallet.address, reservationCostLOC, wallet, gasConfig.hotelReservation.create);
 
 		await fundTransactionAmountIfNeeded(
-			userKeys.address,
-			userKeys.privateKey,
+			wallet.address,
+			wallet.privateKey,
 			gasConfig.hotelReservation.create
 		);
 
 
-		await approveContract(userKeys.address, userKeys.privateKey, reservationCostLOC, HotelReservationFactoryContract._address);
+		await approveContract(wallet, reservationCostLOC, HotelReservationFactoryContract.address, gasPrice);
 
-		const createReservationMethod = HotelReservationFactoryContract.methods.createHotelReservation(hotelReservationIdHex,
+		let HotelReservationFactoryContractWithWalletInstance = await HotelReservationFactoryContractWithWallet(wallet);
+		const overrideOptions = {
+			gasLimit: gasConfig.hotelReservation.create,
+			gasPrice: gasPrice
+		};
+
+		const createReservationTxHash = await HotelReservationFactoryContractWithWalletInstance.createHotelReservation(hotelReservationIdHex,
 			reservationCostLOC,
 			reservationStartDateFormatted,
 			reservationEndDateFormatted,
@@ -91,48 +85,29 @@ export class HotelReservation {
 			refundPercentage,
 			hotelIdHex,
 			roomIdHex,
-			numberOfTravelers
+			numberOfTravelers,
+			overrideOptions
 		);
 
-		const funcData = await createReservationMethod.encodeABI(callOptions);
-		const signedData = await signTransaction(
-			HotelReservationFactoryContract._address,
-			userKeys.address,
-			userKeys.privateKey,
-			gasConfig.hotelReservation.create,
-			funcData
-		);
-
-		return new Promise(function (resolve, reject) {
-			web3.eth.sendSignedTransaction(signedData)
-				.once('transactionHash', function (transactionHash) {
-					resolve({
-						transactionHash
-					});
-				});
-		});
+		return createReservationTxHash;
 	}
 
 	static async cancelReservation(jsonObj,
 		password,
 		hotelReservationId) {
-		const userKeys = jsonFileToKeys(jsonObj, password);
-		const callOptions = {
-			from: userKeys.address,
-			gas: gasConfig.hotelReservation.cancel
-		};
 
 		if (!jsonObj || !password || !hotelReservationId) {
 			throw new Error(errors.INVALID_PARAMS);
 		}
-
+		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
+		const gasPrice = await getGasPrice();
 		await fundTransactionAmountIfNeeded(
-			userKeys.address,
-			userKeys.privateKey,
+			wallet.address,
+			wallet.privateKey,
 			gasConfig.hotelReservation.cancel
 		);
 
-		const hotelReservationIdHex = web3.utils.utf8ToHex(hotelReservationId);
+		const hotelReservationIdHex = ethers.utils.toUtf8Bytes(hotelReservationId);
 
 		const reservation = await this.getReservation(hotelReservationId);
 
@@ -140,32 +115,23 @@ export class HotelReservation {
 			reservation._daysBeforeStartForRefund,
 			reservation._reservationStartDate,
 			reservation._customerAddress,
-			userKeys.address);
+			wallet.address);
 
-		const cancelReservationMethod = HotelReservationFactoryContract.methods.cancelHotelReservation(hotelReservationIdHex);
-		const funcData = await cancelReservationMethod.encodeABI(callOptions);
-		const signedData = await signTransaction(
-			HotelReservationFactoryContract._address,
-			userKeys.address,
-			userKeys.privateKey,
-			gasConfig.hotelReservation.cancel,
-			funcData
-		);
+		let HotelReservationFactoryContractWithWalletInstance = await HotelReservationFactoryContractWithWallet(wallet);
+		const overrideOptions = {
+			gasLimit: gasConfig.hotelReservation.cancel,
+			gasPrice: gasPrice
+		};
 
-		return new Promise(function (resolve, reject) {
-			web3.eth.sendSignedTransaction(signedData)
-				.once('transactionHash', function (transactionHash) {
-					resolve({
-						transactionHash
-					});
-				});
-		});
+		const cancelReservationTxHash = await HotelReservationFactoryContractWithWalletInstance.cancelHotelReservation(hotelReservationIdHex, overrideOptions);
+
+		return cancelReservationTxHash;
 	}
 
 	static async getReservation(hotelReservationId) {
 		const hotelReservationContractAddress = await validateBookingExists(hotelReservationId);
 		const hotelReservationContract = initHotelReservationContract(hotelReservationContractAddress);
-		const reservation = await hotelReservationContract.methods.getHotelReservation().call();
+		const reservation = await hotelReservationContract.getHotelReservation();
 		return reservation;
 	}
 }

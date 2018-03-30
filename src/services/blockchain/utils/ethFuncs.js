@@ -1,12 +1,7 @@
 import axios from 'axios';
 import {
-	BigNumber
-} from 'bignumber.js';
-import {
-	web3
-} from '../config/contracts-config.js';
-import {
-	LOCExchangeContract
+	LOCExchangeContract,
+	LOCExchangeContractWithWallet
 } from '../config/contracts-config.js';
 
 import {
@@ -15,106 +10,103 @@ import {
 import {
 	approveContract
 } from "../utils/approveContract";
-
-import {
-	signTransaction
-} from '../utils/signTransaction.js';
 import {
 	Config
 } from '../../../config.js';
+import ethers from 'ethers';
 
 const {
 	GAS_STATION_API,
 	JAVA_REST_API_SEND_FUNDS
 } = require('../config/constants.json');
 const gasConfig = require('../config/gas-config.json');
+const providers = ethers.providers;
+const localNodeProvider = new providers.JsonRpcProvider(Config.getValue('WEB3_HTTP_PROVIDER'), providers.networks.unspecified);
 
 export async function getGasPrice() {
 
 	try {
 		let response = await axios.get(GAS_STATION_API);
-		return web3.utils.toWei(response.data.fast / 10, 'gwei');
+		return ethers.utils.parseUnits((response.data.fast / 10).toString(10), 'gwei');
 
 	} catch (e) {
-		return web3.eth.getGasPrice();
+		return await localNodeProvider.getGasPrice();
 	}
 };
 
 export async function gasToLoc(gasAmount) {
-	const gasCost = await getGasPrice() * gasAmount;
-	return await LOCExchangeContract.methods.weiToLocWei(gasCost).call();
+	let gasCostPrice = await getGasPrice();
+	let gasCost = gasCostPrice.mul(gasAmount);
+	const gasCoonst = ethers.utils.bigNumberify(gasCost);
+	let contractBalacne = await LOCExchangeContract.getLocBalance();
+
+	return await LOCExchangeContract.weiToLocWei(gasCoonst);
 };
 
-export async function exchangeLocForEth(JSONPassPublicKey, JSONPassPrivateKey, amount) {
-
+export async function exchangeLocForEth(walletAddress, walletPrivateKey, amount) {
 	let result = {};
+	let wallet = new ethers.Wallet(walletPrivateKey);
+	const gasPrice = await getGasPrice();
 
 	await validateContractBalance(amount);
-	const locWeiAmount = await LOCExchangeContract.methods.weiToLocWei(
-		amount.toString(10)).call();
+	const locWeiAmount = await LOCExchangeContract.weiToLocWei(amount);
+
 	result.ApproveContractTxn = await approveContract(
-		JSONPassPublicKey,
-		JSONPassPrivateKey,
+		wallet,
 		locWeiAmount,
-		LOCExchangeContract._address
+		LOCExchangeContract.address,
+		gasPrice
 	);
 
-	const exchangeMethod = await LOCExchangeContract.methods.exchangeLocWeiToEthWei(
-		locWeiAmount
+	const LOCExchangeContractInstance = await LOCExchangeContractWithWallet(wallet);
+	const overrideOptions = {
+		gasLimit: gasConfig.exchangeLocToEth,
+		gasPrice: gasPrice
+	};
+	result.exchangeLocToEthTxn = await LOCExchangeContractInstance.exchangeLocWeiToEthWei(
+		locWeiAmount, overrideOptions
 	);
-	const funcData = await exchangeMethod.encodeABI({
-		from: JSONPassPublicKey
-	});
-
-	const signedData = await signTransaction(
-		LOCExchangeContract._address,
-		JSONPassPublicKey,
-		JSONPassPrivateKey,
-		gasConfig.exchangeLocToEth,
-		funcData,
-	);
-
-	result.exchangeLocToEthTxn = await web3.eth.sendSignedTransaction(signedData);
+	await localNodeProvider.waitForTransaction(result.exchangeLocToEthTxn.hash);
 	return result;
 };
 
-export async function fundTransactionAmountIfNeeded(JSONPassPublicKey, JSONPassPrivateKey,
+export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivateKey,
 	actionGas = 0) {
 
 	let result = {};
-	let accountBalance = await web3.eth.getBalance(JSONPassPublicKey);
+	let accountBalance = await localNodeProvider.getBalance(walletAddress);
 
-	const gasPrice = await web3.eth.getGasPrice();
-	const gasAmountApprove = new BigNumber(gasPrice * gasConfig.approve);
-	const gasAmountExchange = new BigNumber(gasPrice * gasConfig.exchangeLocToEth);
-	const gasAmountNeeded = gasAmountApprove.plus(gasAmountExchange);
-	const gasAmountAction = new BigNumber(gasPrice * actionGas);
+	const gasPrice = await getGasPrice();
+	result.gasPrice = gasPrice;
 
+	const gasAmountApprove = gasPrice.mul(gasConfig.approve);
+	const gasAmountExchange = gasPrice.mul(gasConfig.exchangeLocToEth);
+	const gasAmountNeeded = gasAmountApprove.add(gasAmountExchange);
+	const gasAmountAction = gasPrice.mul(actionGas);
 
 	if (gasAmountNeeded.gt(accountBalance)) {
 		// TODO: This should point to the backend java rest-api
 		result.FundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
 			amount: gasAmountNeeded.toString(10),
-			recipient: JSONPassPublicKey
+			recipient: walletAddress
 		})
-		accountBalance = await web3.eth.getBalance(JSONPassPublicKey);
-	}
+		accountBalance = await localNodeProvider.getBalance(walletAddress);
 
-	const minAllowedGasAmount = (gasAmountAction
-			.plus(gasAmountNeeded))
-		.times(gasConfig.MIN_TIMES_GAS_AMOUNT);
+	}
+	const minAllowedGasAmountFirst = (gasAmountAction
+		.add(gasAmountNeeded));
+
+	const minAllowedGasAmount = minAllowedGasAmountFirst.mul(gasConfig.MIN_TIMES_GAS_AMOUNT)
 
 	if (minAllowedGasAmount.gt(accountBalance)) {
 		const amountToExchange = (gasAmountAction
-				.plus(gasAmountApprove))
-			.times(gasConfig.TIMES_GAS_AMOUNT);
-
+				.add(gasAmountApprove))
+			.mul(gasConfig.TIMES_GAS_AMOUNT);
 		result.exchangeLocToEthTxn = await exchangeLocForEth(
-			JSONPassPublicKey,
-			JSONPassPrivateKey,
+			walletAddress,
+			walletPrivateKey,
 			amountToExchange
 		);
 	}
-
 	return result;
 }

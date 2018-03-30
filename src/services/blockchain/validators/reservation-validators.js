@@ -9,9 +9,7 @@ import {
 import {
 	validateAddress
 } from "./base-validators";
-import {
-	web3
-} from './../config/contracts-config.js';
+import ethers from 'ethers';
 
 const ERROR = require('./../config/errors.json');
 
@@ -25,8 +23,7 @@ export async function validateReservationParams(jsonObj,
 	refundPercentage,
 	hotelId,
 	roomId,
-	numberOfTravelers,
-	callOptions) {
+	numberOfTravelers) {
 	if (!jsonObj ||
 		!password ||
 		!hotelReservationId ||
@@ -48,7 +45,7 @@ export async function validateReservationParams(jsonObj,
 		throw new Error(ERROR.INVALID_REFUND_AMOUNT);
 	}
 
-	await validateBookingDoNotExists(hotelReservationId, callOptions);
+	await validateBookingDoNotExists(hotelReservationId);
 
 	validateReservationDates(reservationStartDate, reservationEndDate, daysBeforeStartForRefund);
 
@@ -58,9 +55,9 @@ export async function validateReservationParams(jsonObj,
 
 export async function validateBookingExists(hotelReservationId) {
 	await isHotelReservationIdEmpty(hotelReservationId);
-	const bookingContractAddress = await HotelReservationFactoryContract.methods.getHotelReservationContractAddress(
-		web3.utils.utf8ToHex(hotelReservationId)
-	).call();
+	const bookingContractAddress = await HotelReservationFactoryContract.getHotelReservationContractAddress(
+		ethers.utils.toUtf8Bytes(hotelReservationId)
+	);
 	if (bookingContractAddress === '0x0000000000000000000000000000000000000000') {
 		throw ERROR.MISSING_BOOKING;
 	}
@@ -74,10 +71,10 @@ function isHotelReservationIdEmpty(hotelReservationId) {
 	}
 }
 
-export async function validateBookingDoNotExists(hotelReservationId, callOptions) {
-	let bookingAddress = await HotelReservationFactoryContract.methods.getHotelReservationContractAddress(
+export async function validateBookingDoNotExists(hotelReservationId) {
+	let bookingAddress = await HotelReservationFactoryContract.getHotelReservationContractAddress(
 		hotelReservationId
-	).call(callOptions);
+	);
 
 	if (bookingAddress === '0x0000000000000000000000000000000000000000') {
 		return true;

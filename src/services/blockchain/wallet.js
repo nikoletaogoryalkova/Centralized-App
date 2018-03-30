@@ -2,22 +2,36 @@
 
 import bip39 from 'bip39';
 import hdkey from 'ethereumjs-wallet/hdkey';
+import ethers from 'ethers';
+import {
+    validateAddress,
+    validatePassword
+} from './validators/base-validators';
+import {
+    LOCTokenContract
+} from './config/contracts-config.js';
+import {
+    Config
+} from './../../config';
 
-import { validateAddress, validatePassword } from './validators/base-validators';
-import { web3 } from './config/contracts-config.js';
-import { LOCTokenContract } from './config/contracts-config.js';
-
-const { HD_WALLET_PATH } = require('./config/constants.json');
+const {
+    HD_WALLET_PATH
+} = require('./config/constants.json');
 const ERROR = require('./config/errors.json');
+const providers = ethers.providers;
+const localNodeProvider = new providers.JsonRpcProvider(Config.getValue('WEB3_HTTP_PROVIDER'), providers.networks.unspecified);
+
 
 class Wallet {
 
     static async getTokenBalance(address) {
-        return LOCTokenContract.methods.balanceOf(address).call().then(balance => balance);
+        let balance = await LOCTokenContract.balanceOf(address);
+        return balance;
     }
 
     static async getBalance(address) {
-        return await web3.eth.getBalance(address);
+        let balance = await localNodeProvider.getBalance(address);
+        return balance;
     }
 
     static async createFromPassword(password) {
@@ -68,4 +82,6 @@ class Wallet {
     }
 }
 
-export { Wallet };
+export {
+    Wallet
+};

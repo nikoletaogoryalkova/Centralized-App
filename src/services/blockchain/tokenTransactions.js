@@ -1,6 +1,4 @@
-import {
-	jsonFileToKeys,
-} from './utils/jsonFileToKeys.js'
+import ethers from 'ethers';
 import {
 	validateAddress
 } from './validators/base-validators';
@@ -8,77 +6,49 @@ import {
 	validateLocBalance
 } from './validators/token-validators';
 import {
-	LOCTokenContract
+	LOCTokenContract,
+	LOCTokenContractWithWallet
 } from './config/contracts-config.js';
-import {
-	signTransaction
-} from './utils/signTransaction.js';
-import {
-	web3
-} from './config/contracts-config.js';
-
 import {
 	fundTransactionAmountIfNeeded
 } from './utils/ethFuncs.js'
+import {
+	Config
+} from '../../config';
 const gasConfig = require('./config/gas-config.json');
 const errors = require('./config/errors.json');
+const providers = ethers.providers;
+const localNodeProvider = new providers.JsonRpcProvider(Config.getValue('WEB3_HTTP_PROVIDER'), providers.networks.unspecified);
 
 export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
 		validateAddress(recipient, errors.INVALID_ADDRESS);
 
-		let result = jsonFileToKeys(jsonObj, password);
+		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
 
-		let callOptions = {
-			from: result.address,
-			gas: gasConfig.transferTokens,
-		};
-
-		await fundTransactionAmountIfNeeded(
-			result.address,
-			result.privateKey,
+		let result = await fundTransactionAmountIfNeeded(
+			wallet.address,
+			wallet.privateKey,
 			gasConfig.transferTokens
 		);
+		await validateLocBalance(wallet.address, amount, wallet, gasConfig.transferTokens);
 
-		await validateLocBalance(result.address, amount);
+		const LOCTokenContractWallet = LOCTokenContractWithWallet(wallet);
+		var overrideOptions = {
+			gasLimit: gasConfig.transferTokens,
+			gasPrice: result.gasPrice
+		};
+		return await LOCTokenContractWallet.transfer(recipient, amount, overrideOptions);
 
-		const transferLOCMethod = LOCTokenContract.methods.transfer(recipient, amount);
-		const funcData = transferLOCMethod.encodeABI(callOptions);
-		const signedData = await signTransaction(
-			LOCTokenContract._address,
-			result.address,
-			result.privateKey,
-			gasConfig.transferTokens,
-			funcData,
-		);
-
-		return new Promise(function (resolve, reject) {
-			web3.eth.sendSignedTransaction(signedData)
-				.once(
-					'transactionHash',
-					transactionHash => {
-						resolve({
-							transactionHash
-						});
-					}
-				)
-				.once(
-					'error',
-					err => {
-						reject({
-							err
-						});
-					}
-				);
-		});    
 	};
 
 	static async getLOCBalance(address) {
-		return await LOCTokenContract.methods.balanceOf(address).call();
+		return await LOCTokenContract.balanceOf(address);
 	}
 
 	static async getETHBalance(address) {
-		return await web3.eth.getBalance(address);
+		return await localNodeProvider.getBalance(address);
+
 	}
 }
