@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
@@ -207,6 +208,10 @@ class HotelsSearchPage extends React.Component {
     }
 
     redirectToSearchPage() {
+        if (this.clientRef) {
+            this.clientRef.disconnect();
+        }
+
         let queryString = '?';
         queryString += 'region=' + this.state.region.id;
         queryString += '&currency=' + this.props.paymentInfo.currency;
@@ -216,7 +221,7 @@ class HotelsSearchPage extends React.Component {
         this.props.history.push('/hotels/listings' + queryString);
         
         this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [], totalElements: undefined }, () => {
-            this.sendSubsequentWebsocketRequest();
+            this.clientRef.connect();
         });
     }
 
@@ -316,8 +321,7 @@ class HotelsSearchPage extends React.Component {
         testSearch(searchTerms, page - 1).then(json => {
             this.setState({
                 listings: json.content,
-                loading: false,
-                totalElements: json.totalElements
+                loading: false
             });
         });
     }
@@ -423,13 +427,20 @@ class HotelsSearchPage extends React.Component {
     }
 
     sendInitialWebsocketRequest() {
+        let query = '';
+        query += 'region=' + this.state.region.id;
+        query += '&currency=' + this.props.paymentInfo.currency;
+        query += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
+        query += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
+        query += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
+
         const msg = {
-            query: this.props.location.search.substr(1)
+            query: query
         };
 
         console.log(msg);
         
-        const searchParams = this.getSearchParams(this.props.location.search);
+        const searchParams = this.getSearchParams(query);
         function addElement(value, key) {
             msg[key] = value;
         }
@@ -439,7 +450,7 @@ class HotelsSearchPage extends React.Component {
     }
 
     sendSubsequentWebsocketRequest() {
-        let query = '?';
+        let query = '';
         query += 'region=' + this.state.region.id;
         query += '&currency=' + this.props.paymentInfo.currency;
         query += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
@@ -467,9 +478,9 @@ class HotelsSearchPage extends React.Component {
         let hotelItems;
 
         if (!listings || this.state.loading === true) {
-            hotelItems = <div className="text-center"><h2>Looking for the best rates for your trip...</h2><br/><br/><br/><div className="loader"></div></div>;
+            hotelItems = <div className="text-center"><div className="loader"></div><h2 style={{ marginBottom: '80px' }}>Looking for the best rates for your trip...</h2></div>;
         } else if (listings.length === 0) {
-            hotelItems = <div className="text-center"><h3>No results</h3></div>;
+            hotelItems = <div className="text-center"><h2 style={{ marginBottom: '80px' }}>No Results</h2></div>;
         } else {
             hotelItems = listings.map((item, i) => {
                 return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights}/>;
@@ -511,6 +522,12 @@ class HotelsSearchPage extends React.Component {
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
+                                    {/* <ReactCSSTransitionGroup
+                                        transitionName="example"
+                                        transitionEnterTimeout={500}
+                                        transitionLeaveTimeout={0}>
+                                        {hotelItems}
+                                    </ReactCSSTransitionGroup> */}
                                     {hotelItems}
                                     {!this.state.loading && 
                                         (this.state.totalElements || this.state.totalElements === 0
