@@ -26,22 +26,20 @@ class HotelsSearchPage extends React.Component {
         let endDate = moment().add(2, 'day');
 
         this.state = {
+            allElements: true,
             startDate: startDate,
             endDate: endDate,
             adults: '2',
             children: '0',
             rooms: [{ adults: 1, children: [] }],
-            country: '',
             city: '',
             state: '',
-            countryCode: '',
             searchParams: undefined,
             listings: [],
             loading: true,
             totalElements: 0,
             currentPage: 1,
             messages: [],
-            allElements: true
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);

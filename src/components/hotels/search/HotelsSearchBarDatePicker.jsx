@@ -31,7 +31,7 @@ function HotelsSearchBarDatePicker(props) {
                         isInvalidDate={props.isInvalidDate}
                         autoApply={true}
                         minDate={moment().format('DD/MM/YYYY')}
-                        maxDate={moment().add(90, 'days').format('DD/MM/YYYY')}
+                        maxDate={moment().add(12, 'months').format('DD/MM/YYYY')}
                         locale={{ format: 'DD/MM/YYYY' }}
                         {...pickerProps}>
                         <input
