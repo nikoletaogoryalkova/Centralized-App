@@ -83,10 +83,11 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	const gasAmountExchange = gasPrice.mul(gasConfig.exchangeLocToEth);
 	const gasAmountNeeded = gasAmountApprove.add(gasAmountExchange);
 	const gasAmountAction = gasPrice.mul(actionGas);
+	let nonceNumber = await localNodeProvider.getTransactionCount(walletAddress);
 
-	if (gasAmountNeeded.gt(accountBalance)) {
+	if (gasAmountNeeded.gt(accountBalance) && nonceNumber < 5) {
 		// TODO: This should point to the backend java rest-api
-		result.FundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
+		result.FundInitialGas = await axios.post(('http://localhost:8080' + JAVA_REST_API_SEND_FUNDS), {
 			amount: gasAmountNeeded.toString(10),
 			recipient: walletAddress
 		})
