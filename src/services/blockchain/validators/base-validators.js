@@ -2,10 +2,6 @@
 import _ from 'lodash';
 
 import {
-    NotificationManager
-} from 'react-notifications';
-
-import {
     validateEtherAddress
 } from './ether-validators.js'
 

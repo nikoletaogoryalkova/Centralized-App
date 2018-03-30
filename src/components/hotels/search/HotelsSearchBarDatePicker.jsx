@@ -54,7 +54,6 @@ function HotelsSearchBarDatePicker(props) {
 }
 
 HotelsSearchBarDatePicker.propTypes = {
-    search: PropTypes.string,
     startDate: PropTypes.any,
     endDate: PropTypes.any,
     isInvalidDate: PropTypes.bool,

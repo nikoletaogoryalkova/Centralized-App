@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
@@ -39,9 +38,10 @@ class HotelsSearchPage extends React.Component {
             searchParams: undefined,
             listings: [],
             loading: true,
-            totalElements: undefined,
+            totalElements: 0,
             currentPage: 1,
-            messages: []
+            messages: [],
+            allElements: true
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -66,7 +66,6 @@ class HotelsSearchPage extends React.Component {
         this.getLocRate = this.getLocRate.bind(this);
         this.handleReceiveSingleHotel = this.handleReceiveSingleHotel.bind(this);
         this.sendInitialWebsocketRequest = this.sendInitialWebsocketRequest.bind(this);
-        this.sendSubsequentWebsocketRequest = this.sendSubsequentWebsocketRequest.bind(this);
     }
 
     componentDidMount() {
@@ -94,6 +93,7 @@ class HotelsSearchPage extends React.Component {
             const startDate = moment(searchParams.get('startDate'), 'DD/MM/YYYY');
             const endDate = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
             const nights = this.calculateNights(startDate, endDate);
+            const regionId = searchParams.get('region');
             this.setState({
                 searchParams: searchParams,
                 startDate: startDate,
@@ -101,10 +101,10 @@ class HotelsSearchPage extends React.Component {
                 nights: nights,
                 rooms: rooms,
                 adults: adults,
-                hasChildren: hasChildren
+                hasChildren: hasChildren,
+                region: { id: regionId }
             });
             
-            const regionId = searchParams.get('region');
             getRegionNameById(regionId).then((json) => {
                 this.setState({ region: json });
             });
@@ -220,7 +220,7 @@ class HotelsSearchPage extends React.Component {
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
         this.props.history.push('/hotels/listings' + queryString);
         
-        this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [], totalElements: undefined }, () => {
+        this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [], totalElements: 0 }, () => {
             this.clientRef.connect();
         });
     }
@@ -415,10 +415,11 @@ class HotelsSearchPage extends React.Component {
             this.setState({ loading: false });
         }
         
-        console.log(response);
         if (response.hasOwnProperty('totalElements')) {
-            this.setState({ totalElements: response.totalElements });
-            console.log('total elements set');
+            this.setState({ totalElements: response.totalElements, allElements: response.allElements });
+            if (response.allElements) {
+                this.clientRef.disconnect();
+            }
         } else {
             this.setState(prevState => ({
                 listings: [...prevState.listings, response]
@@ -437,31 +438,6 @@ class HotelsSearchPage extends React.Component {
         const msg = {
             query: query
         };
-
-        console.log(msg);
-        
-        const searchParams = this.getSearchParams(query);
-        function addElement(value, key) {
-            msg[key] = value;
-        }
-
-        searchParams.forEach(addElement);
-        this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
-    }
-
-    sendSubsequentWebsocketRequest() {
-        let query = '';
-        query += 'region=' + this.state.region.id;
-        query += '&currency=' + this.props.paymentInfo.currency;
-        query += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
-        query += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
-        query += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
-
-        const msg = {
-            query: query
-        };
-
-        console.log(msg);
         
         const searchParams = this.getSearchParams(query);
         function addElement(value, key) {
@@ -529,16 +505,27 @@ class HotelsSearchPage extends React.Component {
                                         {hotelItems}
                                     </ReactCSSTransitionGroup> */}
                                     {hotelItems}
-                                    {!this.state.loading && 
-                                        (this.state.totalElements || this.state.totalElements === 0
-                                            ? <LPagination
+                                    {/* {!this.state.loading && 
+                                        (this.state.totalElements <= 20 && !this.state.allElements
+                                            ? <div className="loader" style={{ margin: '20px' }}></div>
+                                            : <LPagination
                                                 loading={this.state.loading}
                                                 onPageChange={this.onPageChange}
                                                 currentPage={this.state.currentPage}
                                                 totalElements={this.state.totalElements}
                                             />
-                                            : <div className="loader"></div>
                                         )
+                                    } */}
+
+                                    <LPagination
+                                        loading={this.state.loading}
+                                        onPageChange={this.onPageChange}
+                                        currentPage={this.state.currentPage}
+                                        totalElements={this.state.totalElements}
+                                    />
+
+                                    {!this.state.loading && !this.state.allElements &&
+                                            <div className="loader" style={{ marginBottom: '40px' }}></div>
                                     }
                                 </div>
                             </div>
@@ -560,7 +547,7 @@ class HotelsSearchPage extends React.Component {
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
                     onConnect={this.sendInitialWebsocketRequest}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
-                    debug={true} />
+                    debug={false} />
             </div>
         );
     }

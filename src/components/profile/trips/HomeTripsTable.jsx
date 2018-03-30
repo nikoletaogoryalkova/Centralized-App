@@ -26,9 +26,9 @@ export default function HomeTripsTable(props) {
                     <span>Status</span>
                 </div>
             </div>
-            {props.trips.map(trip => {
+            {props.trips.map((trip, i) => {
                 return (
-                    <div key={trip.id} style={trip.id === props.currentTripId ? { backgroundColor: '#e1e1e1' } : {}} className="row reservation-box">
+                    <div key={i} style={trip.id === props.currentTripId ? { backgroundColor: '#e1e1e1' } : {}} className="row reservation-box">
                         <div className="col-md-12">
                             <div className="col-md-1">
                                 <div className="reservation-image-box">

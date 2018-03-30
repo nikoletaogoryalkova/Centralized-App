@@ -36,7 +36,6 @@ class HotelBookingPage extends React.Component {
         getTestHotelById(id, search).then((data) => {
             const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
             const totalPrice = this.getTotalPrice(roomResults);
-            console.log(data);
             this.setState({
                 hotel: data,
                 nights: nights,

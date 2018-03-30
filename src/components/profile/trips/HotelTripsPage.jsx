@@ -48,7 +48,6 @@ class HotelTripsPage extends React.Component {
             }
         }
         getMyHotelBookings('?page=0').then((data) => {
-            console.log(data);
             this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTripId: id });
             if (id) {
                 NotificationManager.success('Booking Request Sent Successfully, your host will get back to you with additional questions.', 'Reservation Operations');

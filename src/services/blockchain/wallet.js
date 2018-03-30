@@ -11,7 +11,7 @@ import {
     validatePassword
 } from './validators/base-validators';
 import { web3 } from './config/contracts-config.js';
-import { LOCTokenContract } from './config/contracts-config.js';
+// import { LOCTokenContract } from './config/contracts-config.js';
 import { Config } from '../../config';
 
 const {

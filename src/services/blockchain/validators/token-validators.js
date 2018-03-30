@@ -5,15 +5,15 @@ import {
 	LOCTokenContract
 } from '../config/contracts-config.js';
 
-import {
-	gasToLoc
-} from '../utils/ethFuncs.js';
+// import {
+// 	gasToLoc
+// } from '../utils/ethFuncs.js';
 
 const ERROR = require('./../config/errors.json');
-const gasConfig = require('./../config/gas-config.json');
-const {
-	TIMES_GAS_AMOUNT
-} = require('../config/constants.json');
+// const gasConfig = require('./../config/gas-config.json');
+// const {
+// 	TIMES_GAS_AMOUNT
+// } = require('../config/constants.json');
 
 export async function validateLocBalance(account, locAmount, actionGas = 0) {
 	// For future implementation of the LOCExchange

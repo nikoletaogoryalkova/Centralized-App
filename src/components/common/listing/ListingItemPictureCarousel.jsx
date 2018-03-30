@@ -1,9 +1,9 @@
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { React_Bootstrap_Carousel } from 'react-bootstrap-carousel';
+import { React_Bootstrap_Carousel as ReactBootstrapCarousel } from 'react-bootstrap-carousel';
 
-function HomeItemPictureCarousel(props) {
+function ListingItemPictureCarousel(props) {
     const listingsType = props.listingsType;
     const leftIcon = <span className="left-carousel"> </span>;
     const rightIcon = <span className="right-carousel"> </span>;
@@ -25,8 +25,8 @@ function HomeItemPictureCarousel(props) {
             );
         } else {
             return (
-                <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`}>
-                    <div className={listingsType + '-item'} key={i} style={{ backgroundImage: 'url(' + item.thumbnail + ')'}}>
+                <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`} key={i}>
+                    <div className={listingsType + '-item'} style={{ backgroundImage: 'url(' + item.thumbnail + ')'}}>
                     </div>
                 </Link>
             );
@@ -36,7 +36,7 @@ function HomeItemPictureCarousel(props) {
     return (
         <div>
             {pictures && 
-                <React_Bootstrap_Carousel
+                <ReactBootstrapCarousel
                     animation={true}
                     autoplay={false}
                     leftIcon={leftIcon}
@@ -46,16 +46,16 @@ function HomeItemPictureCarousel(props) {
                     {pictures.map((item, i) => {
                         return getCarouselItem(item, i);
                     })}
-                </React_Bootstrap_Carousel>
+                </ReactBootstrapCarousel>
             }
         </div>
     );
 }
 
-export default withRouter(HomeItemPictureCarousel);
+export default withRouter(ListingItemPictureCarousel);
 
-HomeItemPictureCarousel.propTypes = {
-    pictures: PropTypes.string,
+ListingItemPictureCarousel.propTypes = {
+    pictures: PropTypes.array,
     id: PropTypes.number,
     listingsType: PropTypes.string,
 };
