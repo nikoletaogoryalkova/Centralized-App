@@ -115,3 +115,20 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	}
 	return result;
 }
+
+export async function transactionCostInEth(wallet, actionGas = 0) {
+	const gasPrice = await getGasPrice();
+	return actionGas.mul(gasPrice);
+
+}
+
+export async function transactionCostInLoc(wallet, actionGas = 0) {
+
+}
+
+function checkIfFundingIsNeeded(wallet, actionGas = 0) {
+	const gasAmountApprove = gasPrice.mul(gasConfig.approve);
+	const gasAmountExchange = gasPrice.mul(gasConfig.exchangeLocToEth);
+	const gasAmountNeeded = gasAmountApprove.add(gasAmountExchange);
+	const gasAmountAction = gasPrice.mul(actionGas);
+}
