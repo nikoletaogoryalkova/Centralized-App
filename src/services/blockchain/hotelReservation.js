@@ -71,7 +71,7 @@ export class HotelReservation {
 
 		await approveContract(wallet, reservationCostLOC, HotelReservationFactoryContract.address, gasPrice);
 
-		let HotelReservationFactoryContractWithWalletInstance = await HotelReservationFactoryContractWithWallet(wallet);
+		let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
 		const overrideOptions = {
 			gasLimit: gasConfig.hotelReservation.create,
 			gasPrice: gasPrice
@@ -117,7 +117,7 @@ export class HotelReservation {
 			reservation._customerAddress,
 			wallet.address);
 
-		let HotelReservationFactoryContractWithWalletInstance = await HotelReservationFactoryContractWithWallet(wallet);
+		let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
 		const overrideOptions = {
 			gasLimit: gasConfig.hotelReservation.cancel,
 			gasPrice: gasPrice

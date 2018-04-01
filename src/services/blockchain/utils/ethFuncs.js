@@ -57,7 +57,7 @@ export async function exchangeLocForEth(walletAddress, walletPrivateKey, amount)
 		gasPrice
 	);
 
-	const LOCExchangeContractInstance = await LOCExchangeContractWithWallet(wallet);
+	const LOCExchangeContractInstance = LOCExchangeContractWithWallet(wallet);
 	const overrideOptions = {
 		gasLimit: gasConfig.exchangeLocToEth,
 		gasPrice: gasPrice
