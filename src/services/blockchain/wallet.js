@@ -8,7 +8,8 @@ import {
     validatePassword
 } from './validators/base-validators';
 import {
-    LOCTokenContract
+    LOCTokenContract,
+    nodeProvider
 } from './config/contracts-config.js';
 import {
     Config
@@ -18,9 +19,6 @@ const {
     HD_WALLET_PATH
 } = require('./config/constants.json');
 const ERROR = require('./config/errors.json');
-const providers = ethers.providers;
-const localNodeProvider = new providers.JsonRpcProvider(Config.getValue('WEB3_HTTP_PROVIDER'), providers.networks.unspecified);
-
 
 class Wallet {
 
@@ -30,7 +28,7 @@ class Wallet {
     }
 
     static async getBalance(address) {
-        let balance = await localNodeProvider.getBalance(address);
+        let balance = await nodeProvider.getBalance(address);
         return balance;
     }
 

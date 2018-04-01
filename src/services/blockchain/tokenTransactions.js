@@ -7,7 +7,8 @@ import {
 } from './validators/token-validators';
 import {
 	LOCTokenContract,
-	LOCTokenContractWithWallet
+	LOCTokenContractWithWallet,
+	nodeProvider
 } from './config/contracts-config.js';
 import {
 	fundTransactionAmountIfNeeded
@@ -17,8 +18,6 @@ import {
 } from '../../config';
 const gasConfig = require('./config/gas-config.json');
 const errors = require('./config/errors.json');
-const providers = ethers.providers;
-const localNodeProvider = new providers.JsonRpcProvider(Config.getValue('WEB3_HTTP_PROVIDER'), providers.networks.unspecified);
 
 export class TokenTransactions {
 
@@ -48,7 +47,7 @@ export class TokenTransactions {
 	}
 
 	static async getETHBalance(address) {
-		return await localNodeProvider.getBalance(address);
+		return await nodeProvider.getBalance(address);
 
 	}
 }
