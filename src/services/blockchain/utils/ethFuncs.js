@@ -18,7 +18,8 @@ import ethers from 'ethers';
 
 const {
 	GAS_STATION_API,
-	JAVA_REST_API_SEND_FUNDS
+	JAVA_REST_API_SEND_FUNDS,
+	nonceMaxNumber
 } = require('../config/constants.json');
 const gasConfig = require('../config/gas-config.json');
 
@@ -84,9 +85,9 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	const gasAmountAction = gasPrice.mul(actionGas);
 	let nonceNumber = await localNodeProvider.getTransactionCount(walletAddress);
 
-	if (gasAmountNeeded.gt(accountBalance) && nonceNumber < 5) {
+	if (gasAmountNeeded.gt(accountBalance) && nonceNumber < nonceMaxNumber) {
 		// TODO: This should point to the backend java rest-api
-		result.FundInitialGas = await axios.post(('http://localhost:8080' + JAVA_REST_API_SEND_FUNDS), {
+		result.FundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
 			amount: gasAmountNeeded.toString(10),
 			recipient: walletAddress
 		})
