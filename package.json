@@ -4,9 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "bignumber.js": "^6.0.0",
     "bip39": "^2.5.0",
-    "bn.js": "^4.11.8",
     "bootstrap-daterangepicker": "^2.1.25",
     "copy-to-clipboard": "^3.0.8",
     "create-react-class": "^15.6.2",
@@ -58,8 +56,7 @@
     "searchkit": "^2.3.0",
     "superagent": "^3.8.2",
     "toggle-selection": "^1.0.6",
-    "validator": "^9.4.1",
-    "web3": "^1.0.0-beta.30"
+    "validator": "^9.4.1"
   },
   "scripts": {
     "start": "sh -ac '. ./.env; react-scripts start'",

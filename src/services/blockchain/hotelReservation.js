@@ -42,22 +42,22 @@ export class HotelReservation {
 
 		const reservationStartDateFormatted = formatStartDateTimestamp(reservationStartDate);
 		const reservationEndDateFormatted = formatEndDateTimestamp(reservationEndDate);
-		const hotelReservationIdHex = ethers.utils.toUtf8Bytes(hotelReservationId);
-		const hotelIdHex = ethers.utils.toUtf8Bytes(hotelId);
-		const roomIdHex = ethers.utils.toUtf8Bytes(roomId);
+		const hotelReservationIdBytes = ethers.utils.toUtf8Bytes(hotelReservationId);
+		const hotelIdBytes = ethers.utils.toUtf8Bytes(hotelId);
+		const roomIdBytes = ethers.utils.toUtf8Bytes(roomId);
 		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
 		const gasPrice = await getGasPrice();
 
 		await validateReservationParams(jsonObj,
 			password,
-			hotelReservationIdHex,
+			hotelReservationIdBytes,
 			reservationCostLOC,
 			reservationStartDateFormatted,
 			reservationEndDateFormatted,
 			daysBeforeStartForRefund,
 			refundPercentage,
-			hotelIdHex,
-			roomIdHex,
+			hotelIdBytes,
+			roomIdBytes,
 			numberOfTravelers);
 
 		await validateLocBalance(wallet.address, reservationCostLOC, wallet, gasConfig.hotelReservation.create);
@@ -77,14 +77,14 @@ export class HotelReservation {
 			gasPrice: gasPrice
 		};
 
-		const createReservationTxHash = await HotelReservationFactoryContractWithWalletInstance.createHotelReservation(hotelReservationIdHex,
+		const createReservationTxHash = await HotelReservationFactoryContractWithWalletInstance.createHotelReservation(hotelReservationIdBytes,
 			reservationCostLOC,
 			reservationStartDateFormatted,
 			reservationEndDateFormatted,
 			daysBeforeStartForRefund,
 			refundPercentage,
-			hotelIdHex,
-			roomIdHex,
+			hotelIdBytes,
+			roomIdBytes,
 			numberOfTravelers,
 			overrideOptions
 		);
@@ -107,7 +107,7 @@ export class HotelReservation {
 			gasConfig.hotelReservation.cancel
 		);
 
-		const hotelReservationIdHex = ethers.utils.toUtf8Bytes(hotelReservationId);
+		const hotelReservationIdBytes = ethers.utils.toUtf8Bytes(hotelReservationId);
 
 		const reservation = await this.getReservation(hotelReservationId);
 
@@ -123,7 +123,7 @@ export class HotelReservation {
 			gasPrice: gasPrice
 		};
 
-		const cancelReservationTxHash = await HotelReservationFactoryContractWithWalletInstance.cancelHotelReservation(hotelReservationIdHex, overrideOptions);
+		const cancelReservationTxHash = await HotelReservationFactoryContractWithWalletInstance.cancelHotelReservation(hotelReservationIdBytes, overrideOptions);
 
 		return cancelReservationTxHash;
 	}

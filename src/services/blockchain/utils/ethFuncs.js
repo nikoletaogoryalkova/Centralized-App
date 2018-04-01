@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {
 	LOCExchangeContract,
-	LOCExchangeContractWithWallet
+	LOCExchangeContractWithWallet,
+	nodeProvider
 } from '../config/contracts-config.js';
 
 import {
@@ -20,8 +21,6 @@ const {
 	JAVA_REST_API_SEND_FUNDS
 } = require('../config/constants.json');
 const gasConfig = require('../config/gas-config.json');
-const providers = ethers.providers;
-const localNodeProvider = new providers.JsonRpcProvider(Config.getValue('WEB3_HTTP_PROVIDER'), providers.networks.unspecified);
 
 export async function getGasPrice() {
 
@@ -30,7 +29,7 @@ export async function getGasPrice() {
 		return ethers.utils.parseUnits((response.data.fast / 10).toString(10), 'gwei');
 
 	} catch (e) {
-		return await localNodeProvider.getGasPrice();
+		return await nodeProvider.getGasPrice();
 	}
 };
 
@@ -66,7 +65,7 @@ export async function exchangeLocForEth(walletAddress, walletPrivateKey, amount)
 	result.exchangeLocToEthTxn = await LOCExchangeContractInstance.exchangeLocWeiToEthWei(
 		locWeiAmount, overrideOptions
 	);
-	await localNodeProvider.waitForTransaction(result.exchangeLocToEthTxn.hash);
+	await nodeProvider.waitForTransaction(result.exchangeLocToEthTxn.hash);
 	return result;
 };
 
@@ -74,7 +73,7 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	actionGas = 0) {
 
 	let result = {};
-	let accountBalance = await localNodeProvider.getBalance(walletAddress);
+	let accountBalance = await nodeProvider.getBalance(walletAddress);
 
 	const gasPrice = await getGasPrice();
 	result.gasPrice = gasPrice;
@@ -91,7 +90,7 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 			amount: gasAmountNeeded.toString(10),
 			recipient: walletAddress
 		})
-		accountBalance = await localNodeProvider.getBalance(walletAddress);
+		accountBalance = await nodeProvider.getBalance(walletAddress);
 
 	}
 	const minAllowedGasAmountFirst = (gasAmountAction
