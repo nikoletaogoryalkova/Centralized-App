@@ -75,7 +75,7 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 
 	let result = {};
 	let accountBalance = await nodeProvider.getBalance(walletAddress);
-	let accountFirstBalance = accountBalance;
+	let initialAccountBalance = accountBalance;
 	let remainderForExchange;
 
 	const gasPrice = await getGasPrice();
@@ -95,7 +95,7 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 			recipient: walletAddress
 		})
 		accountBalance = await nodeProvider.getBalance(walletAddress);
-		remainderForExchange = accountBalance.sub(accountFirstBalance);
+		remainderForExchange = accountBalance.sub(initialAccountBalance);
 	}
 	const minAllowedGasAmountFirst = (gasAmountAction
 		.add(gasAmountNeeded));
