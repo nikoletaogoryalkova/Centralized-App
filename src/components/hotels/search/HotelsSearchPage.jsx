@@ -434,7 +434,8 @@ class HotelsSearchPage extends React.Component {
         query += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
 
         const msg = {
-            query: query
+            query: query,
+            allElelemnts: this.state.allElements
         };
         
         const searchParams = this.getSearchParams(query);
