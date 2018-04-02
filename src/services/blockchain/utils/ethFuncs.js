@@ -90,12 +90,12 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	if (gasAmountNeeded.gt(accountBalance) && nonceNumber < nonceMaxNumber) {
 		// TODO: This should point to the backend java rest-api
 
-		result.FundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
+		result.fundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
 			amount: gasAmountNeeded.toString(10),
 			recipient: walletAddress
 		})
 		accountBalance = await nodeProvider.getBalance(walletAddress);
-		remainderForExchange = accountBalance.sub(initialAccountBalance);
+		remainderForExchange = gasAmountNeeded;
 	}
 	const minAllowedGasAmountFirst = (gasAmountAction
 		.add(gasAmountNeeded));
