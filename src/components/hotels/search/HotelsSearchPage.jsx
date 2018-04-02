@@ -13,6 +13,7 @@ import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 import HotelsSearchBar from './HotelsSearchBar';
 import ChildrenModal from '../modals/ChildrenModal';
 import SockJsClient from 'react-stomp';
+import uuid from 'uuid';
 
 import { Config } from '../../../config.js';
 
@@ -80,6 +81,10 @@ class HotelsSearchPage extends React.Component {
         getCurrencyRates().then((json) => {
             this.setState({ rates: json });
         });
+
+        if (!localStorage.getItem('uuid')) {
+            localStorage.setItem('uuid', `${uuid()}`);
+        }
     }
 
     componentWillMount() {
@@ -435,8 +440,10 @@ class HotelsSearchPage extends React.Component {
 
         const msg = {
             query: query,
-            allElelemnts: this.state.allElements
+            uuid: localStorage.getItem('uuid')
         };
+
+        console.log(msg);
         
         const searchParams = this.getSearchParams(query);
         function addElement(value, key) {
