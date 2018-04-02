@@ -7,7 +7,6 @@ import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 import PropTypes from 'prop-types';
 
 import { getTestHotels } from '../../requester';
-import { getCurrencyRates } from '../../requester';
 import { connect } from 'react-redux';
 
 import ChildrenModal from './modals/ChildrenModal';
@@ -23,7 +22,7 @@ class HotelsHomePage extends React.Component {
             startDate: startDate,
             endDate: endDate,
             rooms: [{ adults: 1, children: [] }],
-            adults: '2',
+            adults: 2,
             hasChildren: false,
             listings: undefined,
             childrenModal: false,
@@ -49,10 +48,6 @@ class HotelsHomePage extends React.Component {
     componentDidMount() {
         getTestHotels().then((data) => {
             this.setState({ listings: data.content });
-        });
-
-        getCurrencyRates('USD').then((json) => {
-            console.log(json);
         });
     }
 
@@ -86,7 +81,7 @@ class HotelsHomePage extends React.Component {
     
     handleSearch(event) {
         if (event) {
-            event.preventDefault();
+            event.persist();
         }
 
         this.distributeAdults().then(() => {

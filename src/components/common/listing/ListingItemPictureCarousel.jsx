@@ -1,9 +1,9 @@
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { React_Bootstrap_Carousel } from 'react-bootstrap-carousel';
+import { React_Bootstrap_Carousel as ReactBootstrapCarousel } from 'react-bootstrap-carousel';
 
-function HomeItemPictureCarousel(props) {
+function ListingItemPictureCarousel(props) {
     const listingsType = props.listingsType;
     const leftIcon = <span className="left-carousel"> </span>;
     const rightIcon = <span className="right-carousel"> </span>;
@@ -16,10 +16,27 @@ function HomeItemPictureCarousel(props) {
         pictures = JSON.parse(props.pictures);
     }
 
+    const getCarouselItem = (item, i) => {
+        if (listingsType === 'homes') {
+            return (
+                <div className={listingsType + '-item'} key={i}>
+                    <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`}><img src={item.thumbnail} alt="" /></Link>
+                </div>
+            );
+        } else {
+            return (
+                <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`} key={i}>
+                    <div className={listingsType + '-item'} style={{ backgroundImage: 'url(' + item.thumbnail + ')'}}>
+                    </div>
+                </Link>
+            );
+        }
+    };
+
     return (
         <div>
             {pictures && 
-                <React_Bootstrap_Carousel
+                <ReactBootstrapCarousel
                     animation={true}
                     autoplay={false}
                     leftIcon={leftIcon}
@@ -27,22 +44,18 @@ function HomeItemPictureCarousel(props) {
                     indicators={false}
                     className="carousel-fade">
                     {pictures.map((item, i) => {
-                        return (
-                            <div className="item" key={i}>
-                                <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`}><img src={item.thumbnail} alt="" /></Link>
-                            </div>
-                        );
+                        return getCarouselItem(item, i);
                     })}
-                </React_Bootstrap_Carousel>
+                </ReactBootstrapCarousel>
             }
         </div>
     );
 }
 
-export default withRouter(HomeItemPictureCarousel);
+export default withRouter(ListingItemPictureCarousel);
 
-HomeItemPictureCarousel.propTypes = {
-    pictures: PropTypes.string,
+ListingItemPictureCarousel.propTypes = {
+    pictures: PropTypes.array,
     id: PropTypes.number,
     listingsType: PropTypes.string,
 };

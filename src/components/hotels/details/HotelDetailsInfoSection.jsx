@@ -43,9 +43,10 @@ function HomeDetailsInfoSection(props) {
         for (let i = 0; i < rating; i++) {
             starsElements.push(<span key={i} className="full-star"></span>);
         }
-        for (let i = 0; i < 5 - rating; i++) {
-            starsElements.push(<span key={100 - i} className="empty-star"></span>);
-        }
+        
+        // for (let i = 0; i < 5 - rating; i++) {
+        //     starsElements.push(<span key={100 - i} className="empty-star"></span>);
+        // }
 
         return starsElements;
     };
@@ -88,7 +89,6 @@ function HomeDetailsInfoSection(props) {
         roomsResults.push(usedRoomsByTypeAndMeal[key].sort((x, y) => x.totalPrice > y.totalPrice ? 1 : -1)); 
     }
     roomsResults = roomsResults.sort((x, y) => getTotalPrice(x[0].roomsResults) > getTotalPrice(y[0].roomsResults) ? 1 : -1);
-    console.log(roomsResults);
 
     return (
         <div className="hotel-content" id="hotel-section">
@@ -217,7 +217,7 @@ function HomeDetailsInfoSection(props) {
 
 HomeDetailsInfoSection.propTypes = {
     data: PropTypes.object,
-    locRate: PropTypes.string,
+    locRate: PropTypes.number,
     showLoginModal: PropTypes.bool,
     isLogged: PropTypes.bool,
     userInfo: PropTypes.object,

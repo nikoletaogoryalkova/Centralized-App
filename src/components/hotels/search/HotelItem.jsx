@@ -16,9 +16,9 @@ function HotelItem(props) {
         for (let i = 0; i < rating; i++) {
             starsElements.push(<span key={i} className="full-star"></span>);
         }
-        for (let i = 0; i < 5 - rating; i++) {
-            starsElements.push(<span key={100 - i} className="empty-star"></span>);
-        }
+        // for (let i = 0; i < 5 - rating; i++) {
+        //     starsElements.push(<span key={100 - i} className="empty-star"></span>);
+        // }
 
         return starsElements;
     };
@@ -50,7 +50,7 @@ function HotelItem(props) {
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
-                {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {priceInSelectedCurrency}</div>}
+                <div className="list-hotel-price-curency">{props.userInfo.isLogged && `${currencySign} ${priceInSelectedCurrency}`}</div>
                 <div className="list-hotel-price-loc">(LOC {locPrice})</div>
                 <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
