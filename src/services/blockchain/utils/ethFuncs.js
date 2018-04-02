@@ -18,7 +18,8 @@ import ethers from 'ethers';
 
 const {
 	GAS_STATION_API,
-	JAVA_REST_API_SEND_FUNDS
+	JAVA_REST_API_SEND_FUNDS,
+	nonceMaxNumber
 } = require('../config/constants.json');
 const gasConfig = require('../config/gas-config.json');
 
@@ -74,6 +75,8 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 
 	let result = {};
 	let accountBalance = await nodeProvider.getBalance(walletAddress);
+	let initialAccountBalance = accountBalance;
+	let remainderForExchange;
 
 	const gasPrice = await getGasPrice();
 	result.gasPrice = gasPrice;
@@ -82,15 +85,17 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	const gasAmountExchange = gasPrice.mul(gasConfig.exchangeLocToEth);
 	const gasAmountNeeded = gasAmountApprove.add(gasAmountExchange);
 	const gasAmountAction = gasPrice.mul(actionGas);
+	let nonceNumber = await localNodeProvider.getTransactionCount(walletAddress);
 
-	if (gasAmountNeeded.gt(accountBalance)) {
+	if (gasAmountNeeded.gt(accountBalance) && nonceNumber < nonceMaxNumber) {
 		// TODO: This should point to the backend java rest-api
-		result.FundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
+
+		result.fundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
 			amount: gasAmountNeeded.toString(10),
 			recipient: walletAddress
 		})
 		accountBalance = await nodeProvider.getBalance(walletAddress);
-
+		remainderForExchange = gasAmountNeeded;
 	}
 	const minAllowedGasAmountFirst = (gasAmountAction
 		.add(gasAmountNeeded));
@@ -101,6 +106,7 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 		const amountToExchange = (gasAmountAction
 				.add(gasAmountApprove))
 			.mul(gasConfig.TIMES_GAS_AMOUNT);
+		amountToExchange.add(remainderForExchange);
 		result.exchangeLocToEthTxn = await exchangeLocForEth(
 			walletAddress,
 			walletPrivateKey,
