@@ -553,7 +553,7 @@ class HotelsSearchPage extends React.Component {
                     handleSubmit={this.redirectToSearchPage}
                 />
 
-                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={[`/user/topic/all/${localStorage.getItem('uuid')}`]}
+                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={[`/topic/all/${localStorage.getItem('uuid')}`]}
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
                     onConnect={this.sendInitialWebsocketRequest}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
