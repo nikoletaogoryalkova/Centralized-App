@@ -31,12 +31,13 @@ export default class NavProfile extends React.Component {
             <nav id="profile-nav">
                 <div className="container">
                     <ul className="navbar-profile">
-                        <li><NavLink exact activeClassName="active" to="/profile/dashboard">Dasboard</NavLink></li>
+                        <li><NavLink exact activeClassName="active" to="/profile/dashboard">Dashboard</NavLink></li>
                         <li><NavLink exact activeClassName="active" to="/profile/listings">My Listings</NavLink></li>
-                        <li><NavLink exact activeClassName="active" to="/profile/reservations">My Reservations</NavLink></li>
-                        <li><NavLink exact activeClassName="active" to="/profile/trips">My Trips</NavLink></li>
+                        <li><NavLink activeClassName="active" to="/profile/trips">My Trips</NavLink></li>
+                        <li><NavLink activeClassName="active" to="/profile/reservations">My Guests</NavLink></li>
                         <li><NavLink activeClassName="active" to="/profile/messages">Messages</NavLink></li>
                         <li><NavLink activeClassName="active" to="/profile/me/edit">Profile</NavLink></li>
+                        <li><NavLink activeClassName="active" to="/profile/wallet">Wallet</NavLink></li>
                         {this.isAdmin() && <li><NavLink activeClassName="active" to="/profile/admin/listings">All Listings</NavLink></li>}
                     </ul>
                 </div>

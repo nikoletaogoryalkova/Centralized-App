@@ -315,7 +315,7 @@ class CreateListingPage extends React.Component {
             progressId: this.state.progressId,
             listingType: this.state.listingType,
             type: this.state.propertyType,
-            location: `${this.state.city}, ${this.state.state}, ${this.state.country}`,
+            location: `${this.state.city}, ${this.state.state}, ${this.state.country}, ${this.state.countryCode}`,
             description: {
                 street: this.state.street,
                 text: this.state.text,
@@ -466,6 +466,7 @@ class CreateListingPage extends React.Component {
 
             let addressComponent = {
                 name: addressComponents[i].long_name,
+                shortName: addressComponents[i].short_name,
                 type: addressComponents[i].types[0]
             };
             addressComponentsArr.push(addressComponent);

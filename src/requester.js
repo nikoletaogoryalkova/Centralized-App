@@ -197,6 +197,12 @@ export async function getLocRateInUserSelectedCurrency(userSelectedCurrency) {
     });
 }
 
+export async function getMyJsonFile() {
+    return sendRequest(`${host}me/jsonFile`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
 export async function getCurrentLoggedInUserInfo() {
     return sendRequest(`${host}users/me/edit`, RequestMethod.GET).then(res => {
         return res.response.json();
@@ -409,6 +415,84 @@ export async function getCalendarByListingIdAndDateRange(listingId, startDate, e
     const startDateParam = `${startDate.getUTCDate()}/${startDate.getUTCMonth() + 1}/${startDate.getUTCFullYear()}`;
     const endDateParam = `${endDate.getUTCDate()}/${endDate.getUTCMonth() + 1}/${endDate.getUTCFullYear()}`;
     return sendRequest(`${host}calendars/search/findAllByListingIdAndDateBetween?listing=${listingId}&startDate=${startDateParam}&endDate=${endDateParam}&page=${page}&size=${results}${toCode !== null ? '&toCode=' + toCode : ''}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+// Test routes
+export async function getTestHotels(searchTerms) {
+    return sendRequest(`${host}api/test/hotels?${searchTerms}`, RequestMethod.GET).then(res => {
+        
+        return res.response.json();
+    });
+}
+
+export async function getTestHotelById(id, search) {
+    return sendRequest(`${host}api/test/hotels/${id}${search}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getRegionsBySearchParameter(param) {
+    return sendRequest(`${host}regions/search?query=${param}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function testSearch(query, page = 0) {
+    return sendRequest(`${host}api/test/hotels/search${query}&page=${page}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function testBook(bookingObj) {
+    return sendRequest(`${host}api/test/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
+        return res.response;
+        // console.log(res.response)
+    });
+}
+
+export async function confirmBooking(bookingObj) {
+    return sendRequest(`${host}api/test/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getLocRateFromCoinMarketCap(currency) {
+    console.log(currency);
+    return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {
+        console.log(res);
+        return res.response.json();
+    });
+}
+
+export async function getCurrencyRates() {
+    return sendRequest(`${host}rates`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getCurrentlyLoggedUserJsonFile() {
+    return sendRequest(`${host}users/me/jsonFile`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getRegionNameById(id) {
+    return sendRequest(`${host}regions/${id}/name`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getEmailFreeResponse(email) {
+    email = email || 'info@lockchain.co';
+    return sendRequest(`${host}users/email/${encodeURIComponent(email.replace(/\./g, '&#46;')).replace(/%26%2346%3B/g, '.')}/`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getMyHotelBookings(page) {
+    return sendRequest(`${host}users/me/bookings${page}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

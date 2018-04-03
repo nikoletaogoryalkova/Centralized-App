@@ -43,13 +43,14 @@ export default function CreateListingLocation(props) {
     };
 
     const changeAddressComponents = (addressComponentsMap) => {
-        let addressCountryName = addressComponentsMap.filter(x => x.type === 'country')[0].name;
-        let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0].name;
+        let addressCountry = addressComponentsMap.filter(x => x.type === 'country')[0];
+        let addressCityName = addressComponentsMap.filter(x => x.type === 'locality')[0];
         let addressStateName = addressComponentsMap.filter(x => x.type === 'administrative_area_level_1')[0];
 
-        props.onChange({ target: { name: 'city', value: addressCityName } });
-        props.onChange({ target: { name: 'country', value: addressCountryName } });
-        props.onChange({ target: { name: 'state', value: addressStateName !== undefined ? addressStateName.name : '' } });
+        props.onChange({ target: { name: 'country', value: addressCountry ? addressCountry.name : '' }});
+        props.onChange({ target: { name: 'city', value: addressCityName ? addressCityName.name : '' }});
+        props.onChange({ target: { name: 'state', value: addressStateName ? addressStateName.name : '' }});
+        props.onChange({ target: { name: 'countryCode', value: addressCountry ? addressCountry.shortName : '' }});
     };
 
     const onAddressChange = (e) => {

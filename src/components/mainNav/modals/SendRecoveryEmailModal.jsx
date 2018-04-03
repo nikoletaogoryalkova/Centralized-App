@@ -1,89 +1,53 @@
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-
 import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
-import { postRecoveryEmail } from '../../../requester.js';
+import { SEND_RECOVERY_EMAIL, ENTER_RECOVERY_TOKEN } from '../../../constants/modals.js';
 
-const modal = {
-    current: 'sendRecoveryEmail',
-    next: 'enterRecoveryToken',
-};
+let captcha = undefined;
 
-export default class SendRecoveryEmailModal extends React.Component {
-    constructor(props) {
-        super(props);
+export default function SendRecoveryEmailModal(props) {
 
-        this.state = {
-            recoveryEmail: '',
-            error: null,
-        };
+    return (
+        <div>
+            <Modal show={props.isActive} onHide={e => props.closeModal(SEND_RECOVERY_EMAIL, e)} className="modal fade myModal">
+                <Modal.Header>
+                    <h1>Recover your password</h1>
+                    <button type="button" className="close" onClick={(e) => props.closeModal(SEND_RECOVERY_EMAIL, e)}>&times;</button>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
+                        <div className="form-group">
+                            <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
+                            <input type="email" name="recoveryEmail" value={props.recoveryEmail} onChange={props.onChange} className="form-control" placeholder="Email address" />
+                        </div>
 
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.submitEmail.bind(this);
-    }
+                        <div className="login-sign">
+                            <p>Already sent an email? Enter your security <a onClick={(e) => { e.preventDefault(); props.closeModal(SEND_RECOVERY_EMAIL); props.openModal(ENTER_RECOVERY_TOKEN); }}>token</a>.</p>
+                        </div>
 
-    onChange(e) {
-        this.setState({ [e.target.name]: e.target.value });
-    }
+                        <ReCAPTCHA
+                            ref={el => captcha = el}
+                            size="invisible"
+                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            onChange={token => {props.handleSubmitRecoveryEmail(token); captcha.reset(); }}
+                        />
 
-    submitEmail(captchaToken) {
-        const email = {
-            email: this.state.recoveryEmail,
-        };
-        postRecoveryEmail(email, captchaToken).then((res) => {
-            if (res.success) {
-                this.props.closeModal(modal.current);
-                this.props.openModal(modal.next);
-            }
-            else {
-                NotificationManager.warning('Invalid email', 'Email');
-            }
-        });
-    }
-
-    render() {
-        return (
-            <div>
-                <Modal show={this.props.isActive} onHide={e => this.props.closeModal(modal.current, e)} className="modal fade myModal">
-                    <Modal.Header>
-                        <h1>Recover your password</h1>
-                        <button type="button" className="close" onClick={(e) => this.props.closeModal(modal.current, e)}>&times;</button>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {this.state.error !== null ? <div className="error">{this.state.error}</div> : ''}
-                        <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                            <div className="form-group">
-                                <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
-                                <input type="email" name="recoveryEmail" value={this.state.recoveryEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
-                            </div>
-
-                            <div className="login-sign">
-                                <p>Already sent an email? Enter your security <a onClick={(e) => { e.preventDefault(); this.props.closeModal(modal.current); this.props.openModal(modal.next); }}>token</a>.</p>
-                            </div>
-
-                            <ReCAPTCHA
-                                ref={el => this.captcha = el}
-                                size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.submitEmail(token)}
-                            />
-
-                            <button type="submit" className="btn btn-primary">Send email</button>
-                            <div className="clearfix"></div>
-                        </form>
-                    </Modal.Body>
-                </Modal>
-                <NotificationContainer />
-            </div>
-        );
-    }
+                        <button type="submit" className="btn btn-primary">Send email</button>
+                        <div className="clearfix"></div>
+                    </form>
+                </Modal.Body>
+            </Modal>
+        </div>
+    );
 }
 
 SendRecoveryEmailModal.propTypes = {
+    recoveryEmail: PropTypes.string,
     openModal: PropTypes.func,
     closeModal: PropTypes.func,
+    onChange: PropTypes.func,
+    handleSubmitRecoveryEmail: PropTypes.func,
     isActive: PropTypes.bool
 };

@@ -1,56 +1,90 @@
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MenuItem, Modal, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
+import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { getCountOfUnreadMessages, login, register, getCurrentLoggedInUserInfo } from '../../requester';
-import { setIsLogged, setUserInfo } from '../../actions/userInfo';
-
 import ChangePasswordModal from './modals/ChangePasswordModal';
-import { Config } from '../../config';
 import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
 import PropTypes from 'prop-types';
-import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import SendRecoveryEmailModal from './modals/SendRecoveryEmailModal';
+import CreateWalletModal from './modals/CreateWalletModal';
+import SaveWalletModal from './modals/SaveWalletModal';
+import ConfirmWalletModal from './modals/ConfirmWalletModal';
+import LoginModal from './modals/LoginModal';
+import RegisterModal from './modals/RegisterModal';
+
+import { Config } from '../../config';
+import { Wallet } from '../../services/blockchain/wallet.js';
+import { setIsLogged, setUserInfo } from '../../actions/userInfo';
+import { openModal, closeModal } from '../../actions/modalsInfo';
+
+import { 
+    getCountOfUnreadMessages,
+    postNewPassword,
+    postRecoveryEmail,
+    login, 
+    register, 
+    getCurrentLoggedInUserInfo,
+    sendRecoveryToken,
+    updateUserInfo,
+} from '../../requester';
+
+import { 
+    LOGIN, 
+    REGISTER, 
+    CREATE_WALLET,
+    SEND_RECOVERY_EMAIL,
+    ENTER_RECOVERY_TOKEN,
+    CHANGE_PASSWORD,
+    SAVE_WALLET,
+    CONFIRM_WALLET
+} from '../../constants/modals.js';
+
+import { PROFILE_SUCCESSFULLY_CREATED, PROFILE_SUCCESSFULLY_UPDATED, PASSWORD_SUCCESSFULLY_CHANGED } from '../../constants/successMessages.js';
+import { PASSWORDS_DONT_MATCH, INVALID_PASSWORD, INVALID_TOKEN, INVALID_EMAIL } from '../../constants/warningMessages';
+import { NOT_FOUND, PROFILE_UPDATE_ERROR } from '../../constants/errorMessages';
+
 
 class MainNav extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            showSignUpModal: false,
-            showLoginModal: false,
             signUpEmail: '',
             signUpFirstName: '',
             signUpLastName: '',
             signUpPassword: '',
             signUpLocAddress: '',
-            signUpError: null,
             loginEmail: '',
             loginPassword: '',
-            loginError: null,
+            walletPassword: '',
+            mnemonicWords: '',
             userName: '',
-            sendRecoveryEmail: false,
+            userToken: '',
+            newPassword: '',
+            confirmNewPassword: '',
             enterRecoveryToken: false,
-            changePassword: false,
             recoveryToken: '',
-            unreadMessages: ''
+            recoveryEmail: '',
+            unreadMessages: '',
         };
 
-        this.closeSignUp = this.closeSignUp.bind(this);
-        this.openSignUp = this.openSignUp.bind(this);
-        this.closeLogIn = this.closeLogIn.bind(this);
-        this.openLogIn = this.openLogIn.bind(this);
         this.onChange = this.onChange.bind(this);
         this.register = this.register.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
-
+        this.setUserInfo = this.setUserInfo.bind(this);
+        
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-
+        
         this.messageListener = this.messageListener.bind(this);
         this.getCountOfMessages = this.getCountOfMessages.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleMnemonicWordsChange = this.handleMnemonicWordsChange.bind(this);
+        this.handleSubmitRecoveryToken = this.handleSubmitRecoveryToken.bind(this);
+        this.handleSubmitRecoveryEmail = this.handleSubmitRecoveryEmail.bind(this);
+        this.handleUpdateUserWallet = this.handleUpdateUserWallet.bind(this);
     }
 
     componentDidMount() {
@@ -73,71 +107,44 @@ class MainNav extends React.Component {
         this.messageListener();
     }
 
-    closeSignUp() {
-        this.setState({ showSignUpModal: false });
-        this.setState({
-            showSignUpModal: false,
-            signUpEmail: '',
-            signUpFirstName: '',
-            signUpLastName: '',
-            signUpPassword: ''
-        });
-    }
-
-    openSignUp(e) {
-        e.preventDefault();
-        this.setState({ showSignUpModal: true });
-    }
-
-    closeLogIn() {
-        this.setState({ showLoginModal: false });
-
-        this.setState({
-            showLoginModal: false,
-            loginEmail: '',
-            loginPassword: '',
-            loginError: ''
-        });
-    }
-
-    openLogIn(e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({ showLoginModal: true });
-    }
-
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    handleMnemonicWordsChange(e) {
+        const value = e.target.value.replace(/\n/g, '');
+        this.setState({ [e.target.name]: value });
+    }
+ 
     register(captchaToken) {
         let user = {
             email: this.state.signUpEmail,
             firstName: this.state.signUpFirstName,
             lastName: this.state.signUpLastName,
             password: this.state.signUpPassword,
-            locAddress: this.state.signUpLocAddress,
+            locAddress: localStorage.walletAddress,
+            jsonFile: localStorage.walletJson,
             image: Config.getValue('basePath') + 'images/default.png'
         };
 
+        localStorage.walletAddress = '';
+        localStorage.walletMnemonic = '';
+        localStorage.walletJson = '';
+
         register(user, captchaToken).then((res) => {
             if (res.success) {
-                this.closeSignUp();
-                this.openLogIn();
+                this.openModal(LOGIN);
+                NotificationManager.success(PROFILE_SUCCESSFULLY_CREATED);
             }
             else {
                 res.response.then(res => {
                     const errors = res.errors;
                     for (let key in errors) {
                         if (typeof errors[key] !== 'function') {
-                            NotificationManager.warning(errors[key].message);
+                            NotificationManager.warning(errors[key].message, 'Field: ' + key.toUpperCase());
                         }
                     }
                 });
-
-                this.captcha.reset();
             }
         });
     }
@@ -151,25 +158,29 @@ class MainNav extends React.Component {
         login(user, captchaToken).then((res) => {
             if (res.success) {
                 res.response.json().then((data) => {
+
                     localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
                     localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
-
+                    getCurrentLoggedInUserInfo().then(info => {
+                        this.setState({ userName: user.email, userToken: data.Authorization });
+                        if (info.jsonFile != null && info.jsonFile.length > 1) {
+                            this.setUserInfo();
+                            if (this.state.recoveryToken !== '') {
+                                this.props.history.push('/');
+                            }
+        
+                            this.closeModal(LOGIN);
+                        } else {
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
+                            this.openModal(CREATE_WALLET);
+                            this.closeModal(LOGIN);
+                        }
+                    });
                     // reflect that the user is logged in, both in Redux and in the local component state
-                    this.setUserInfo();
-                    this.setState({ userName: user.email });
-
-                    if (this.state.recoveryToken !== '') {
-                        this.props.history.push('/');
-                    }
-                    // else {
-                        // this won't reload components in <main>
-                        // this.props.history.push(window.location.pathname + window.location.search); 
-                        // window.location.reload();
-                    // }
-
-                    this.closeLogIn();
+                    
                 });
             } else {
                 res.response.then(res => {
@@ -180,23 +191,27 @@ class MainNav extends React.Component {
                         }
                     }
                 });
-
-                this.captcha.reset();
             }
         });
     }
 
     setUserInfo() {
         if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-            getCurrentLoggedInUserInfo()
-                .then(res => {
-                    const { firstName, lastName, phoneNumber, email } = res;
-                    this.props.dispatch(setIsLogged(true));
-                    this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email));
+            try {
+                getCurrentLoggedInUserInfo().then(res => {
+                    Wallet.getBalance(res.locAddress).then(x => {
+                        const ethBalance = x / (Math.pow(10, 18));
+                        Wallet.getTokenBalance(res.locAddress).then(y => {
+                            const locBalance = y / (Math.pow(10, 18));
+                            const { firstName, lastName, phoneNumber, email, locAddress } = res;
+                            this.props.dispatch(setIsLogged(true));
+                            this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
+                        });
+                    });
                 });
-        }
-        else {
-            this.setState({ loaded: true, loading: false });
+            } catch (e) {
+                console.log(e);
+            }
         }
     }
 
@@ -218,9 +233,7 @@ class MainNav extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({
-            [modal]: true
-        });
+        this.props.dispatch(openModal(modal));
     }
 
     closeModal(modal, e) {
@@ -228,9 +241,7 @@ class MainNav extends React.Component {
             e.preventDefault();
         }
 
-        this.setState({
-            [modal]: false
-        });
+        this.props.dispatch(closeModal(modal));
     }
 
     messageListener() {
@@ -249,96 +260,116 @@ class MainNav extends React.Component {
         }
     }
 
+    handlePasswordChange(token) {
+        const password = this.state.newPassword;
+        const confirm = this.state.confirmNewPassword;
+        if (password !== confirm) {
+            NotificationManager.warning(PASSWORDS_DONT_MATCH);
+            return;
+        }
+
+        if (password.length < 6) {
+            NotificationManager.warning(INVALID_PASSWORD);
+            return;
+        }
+
+        const postObj = {
+            token: this.state.recoveryToken,
+            password: password,
+        };
+
+        postNewPassword(postObj, token).then((res) => {
+            if (res.success) {
+                this.closeModal(CHANGE_PASSWORD);
+                this.openModal(LOGIN);
+                NotificationManager.success(PASSWORD_SUCCESSFULLY_CHANGED);
+            }
+            else {
+                NotificationManager.error(NOT_FOUND);
+            }
+        });
+    }
+
+    handleSubmitRecoveryToken() {
+        sendRecoveryToken(this.state.recoveryToken).then((res) => {
+            if (res.success) {
+                this.closeModal(ENTER_RECOVERY_TOKEN);
+                this.openModal(CHANGE_PASSWORD);
+            }
+            else {
+                NotificationManager.warning(INVALID_TOKEN);
+            }
+        });
+    }
+    
+    handleSubmitRecoveryEmail(token) {
+        const email = { email: this.state.recoveryEmail };
+        postRecoveryEmail(email, token).then((res) => {
+            if (res.success) {
+                this.closeModal(SEND_RECOVERY_EMAIL);
+                this.openModal(ENTER_RECOVERY_TOKEN);
+            }
+            else {
+                NotificationManager.warning(INVALID_EMAIL);
+            }
+        });
+    }
+    
+    handleUpdateUserWallet(token) {
+        if (this.state.userName !== '' && this.state.userToken !== '') {
+            if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
+                // Set user token in localstorage se getCurrentLoggedInUserInfo can fetch user info 
+                localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
+                getCurrentLoggedInUserInfo().then(info => {
+                    let userInfo = {
+                        firstName: info.firstName,
+                        lastName: info.lastName,
+                        phoneNumber: info.phoneNumber,
+                        preferredLanguage: info.preferredLanguage,
+                        preferredCurrency: info.preferredCurrency != null ? info.preferredCurrency.id : null,
+                        gender: info.gender,
+                        country: info.country != null ? info.country.id : null,
+                        city: info.city != null ? info.city.id : null,
+                        birthday: info.birthday,
+                        locAddress: localStorage.getItem('walletAddress'),
+                        jsonFile:  localStorage.getItem('walletJson')
+                    };
+
+                    updateUserInfo(userInfo, token).then((res) => {
+                        if (res.success) {
+                            NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
+                            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                            localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
+                        } else {
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
+                            NotificationManager.error(PROFILE_UPDATE_ERROR);
+                        }
+
+                        this.setUserInfo();
+                    });
+                });
+            }
+        } else { 
+            this.register(token); 
+        }
+    }
+
     render() {
         return (
             <nav id="main-nav" className="navbar">
                 <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
                     <NotificationContainer />
-                    <Modal show={this.state.showLoginModal} onHide={this.closeLogIn} className="modal fade myModal">
-                        <Modal.Header>
-                            <h1>Login</h1>
-                            <button type="button" className="close" onClick={this.closeLogIn}>&times;</button>
-                        </Modal.Header>
-                        <Modal.Body>
-                            {this.state.loginError !== null ? <div className="error">{this.state.loginError}</div> : ''}
-                            <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="mail" />
-                                    <input type="email" name="loginEmail" value={this.state.loginEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
-                                    <input type="password" name="loginPassword" value={this.state.loginPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
-                                </div>
-                                <div className="checkbox login-checkbox pull-left">
-                                    <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
-                                </div>
 
-                                <ReCAPTCHA
-                                    ref={el => this.captcha = el}
-                                    size="invisible"
-                                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                    onChange={token => { this.login(token); this.captcha.reset(); }}
-                                />
-
-                                <button type="submit" className="btn btn-primary">Login</button>
-                                <div className="clearfix"></div>
-                            </form>
-
-                            <hr />
-                            <div className="login-sign">Don’t have an account? <a onClick={(e) => { this.closeLogIn(e); this.openSignUp(e); }}>Sign up</a>. Forgot your password? <a onClick={(e) => { this.closeLogIn(e); this.openModal('sendRecoveryEmail', e); }}>Recover</a></div>
-                        </Modal.Body>
-                    </Modal>
-
-                    <Modal show={this.state.showSignUpModal} onHide={this.closeSignUp} className="modal fade myModal">
-                        <Modal.Header>
-                            <h1>Sign up</h1>
-                            <button type="button" className="close" onClick={this.closeSignUp}>&times;</button>
-                        </Modal.Header>
-                        <Modal.Body>
-                            {this.state.signUpError !== null ? <div className="error">{this.state.signUpError}</div> : ''}
-                            <form onSubmit={(e) => { e.preventDefault(); this.captcha.execute(); }}>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="email" />
-                                    <input type="email" name="signUpEmail" value={this.state.signUpEmail} onChange={this.onChange} className="form-control" placeholder="Email address" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
-                                    <input type="text" required="required" name="signUpFirstName" value={this.state.signUpFirstName} onChange={this.onChange} className="form-control" placeholder="First Name" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-user.png'} alt="user" />
-                                    <input type="text" required="required" name="signUpLastName" value={this.state.signUpLastName} onChange={this.onChange} className="form-control" placeholder="Last Name" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-wallet.png'} alt="ETH wallet" />
-                                    <input type="text" name="signUpLocAddress" value={this.state.signUpLocAddress} onChange={this.onChange} className="form-control" placeholder="Your LOC/ETH Wallet Address" />
-                                </div>
-                                <div className="form-group">
-                                    <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
-                                    <input type="password" required="required" name="signUpPassword" value={this.state.signUpPassword} onChange={this.onChange} className="form-control" placeholder="Password" />
-                                </div>
-
-                                <ReCAPTCHA
-                                    ref={el => this.captcha = el}
-                                    size="invisible"
-                                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                    onChange={token => { this.register(token); this.captcha.reset(); }}
-                                />
-
-                                <button type="submit" className="btn btn-primary">Sign up</button>
-                                <div className="clearfix"></div>
-                            </form>
-
-                            <div className="signup-rights">
-                                <p>By creating an account, you are agreeing with our Terms and Conditions and Privacy Statement.</p>
-                            </div>
-                        </Modal.Body>
-                    </Modal>
-
-                    <SendRecoveryEmailModal isActive={this.state.sendRecoveryEmail} openModal={this.openModal} closeModal={this.closeModal} />
-                    <EnterRecoveryTokenModal isActive={this.state.enterRecoveryToken} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} />
-                    <ChangePasswordModal isActive={this.state.changePassword} openModal={this.openModal} closeModal={this.closeModal} recoveryToken={this.state.recoveryToken} />
+                    <CreateWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} walletPassword={this.state.walletPassword} isActive={this.props.modalsInfo.modals.get(CREATE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <SaveWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(SAVE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
+                    <ConfirmWalletModal isActive={this.props.modalsInfo.modals.get(CONFIRM_WALLET)} openModal={this.openModal} closeModal={this.closeModal} handleMnemonicWordsChange={this.handleMnemonicWordsChange} mnemonicWords={this.state.mnemonicWords} handleUpdateUserWallet={this.handleUpdateUserWallet} />
+                    <SendRecoveryEmailModal isActive={this.props.modalsInfo.modals.get(SEND_RECOVERY_EMAIL)} openModal={this.openModal} closeModal={this.closeModal} recoveryEmail={this.state.recoveryEmail} handleSubmitRecoveryEmail={this.handleSubmitRecoveryEmail} onChange={this.onChange} />
+                    <EnterRecoveryTokenModal isActive={this.props.modalsInfo.modals.get(ENTER_RECOVERY_TOKEN)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} handleSubmitRecoveryToken={this.handleSubmitRecoveryToken} />
+                    <ChangePasswordModal isActive={this.props.modalsInfo.modals.get(CHANGE_PASSWORD)} openModal={this.openModal} closeModal={this.closeModal} newPassword={this.state.newPassword} confirmNewPassword={this.state.confirmNewPassword} onChange={this.onChange} handlePasswordChange={this.handlePasswordChange} />
+                    <LoginModal isActive={this.props.modalsInfo.modals.get(LOGIN)} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} />
+                    <RegisterModal isActive={this.props.modalsInfo.modals.get(REGISTER)} openModal={this.openModal} closeModal={this.closeModal} signUpEmail={this.state.signUpEmail} signUpFirstName={this.state.signUpFirstName} signUpLastName={this.state.signUpLastName} signUpPassword={this.state.signUpPassword} onChange={this.onChange} />
 
                     <Navbar>
                         <Navbar.Header>
@@ -355,6 +386,7 @@ class MainNav extends React.Component {
                                 <Nav>
                                     <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                     <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
+                                    <NavItem componentClass={Link} href="/profile/wallet" to="/profile/wallet">Wallet</NavItem>
                                     <NavItem componentClass={Link} href="/profile/messages" to="/profile/messages">
                                         <div className={(this.state.unreadMessages === 0 ? 'not ' : '') + 'unread-messages-box'}>
                                             {this.state.unreadMessages > 0 && <span className="bold unread" style={{ right: this.state.unreadMessages.toString().split('').length === 2 ? '2px' : '4px' }}>{this.state.unreadMessages}</span>}
@@ -368,8 +400,8 @@ class MainNav extends React.Component {
                                     </NavDropdown>
                                 </Nav> :
                                 <Nav pullRight>
-                                    <NavItem componentClass={Link} href="/login" to="/login" onClick={this.openLogIn}>Login</NavItem>
-                                    <NavItem componentClass={Link} href="/signup" to="/signup" onClick={this.openSignUp}>Register</NavItem>
+                                    <MenuItem componentClass={Link} to="/login" onClick={() => this.openModal(LOGIN)}>Login</MenuItem>
+                                    <MenuItem componentClass={Link} to="/signup" onClick={() => this.openModal(REGISTER)}>Register</MenuItem>
                                 </Nav>
                             }
                         </Navbar.Collapse>
@@ -383,10 +415,11 @@ class MainNav extends React.Component {
 export default withRouter(connect(mapStateToProps)(MainNav));
 
 function mapStateToProps(state) {
-    const { userInfo } = state;
+    const { userInfo, modalsInfo } = state;
     return {
-        userInfo
-    }
+        userInfo,
+        modalsInfo
+    };
 }
 
 MainNav.propTypes = {
@@ -396,5 +429,6 @@ MainNav.propTypes = {
 
     // start Redux props
     dispatch: PropTypes.func,
-    userInfo: PropTypes.object
+    userInfo: PropTypes.object,
+    modalsInfo: PropTypes.object,
 };

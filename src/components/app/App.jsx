@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import MainNav from '../mainNav/MainNav';
 import Footer from '../footer/Footer';
 import AttachedFooter from '../footer/AttachedFooter';
+import NavLocalization from '../profile/NavLocalization';
 
 import ProfilePage from '../profile/ProfilePage';
 import PropTypes from 'prop-types';
@@ -39,6 +40,7 @@ class App extends React.Component {
         return (
             <div>
                 <MainNav />
+                <NavLocalization />
                 <Switch>
                     <Route exact path="/" render={() => <HomeRouterPage />} />
                     <Route exact path="/profile/listings/edit/:step/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} />

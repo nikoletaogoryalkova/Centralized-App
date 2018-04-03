@@ -4,11 +4,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 function DatePicker(props) {
-    let searchNightsWidth = 17.5;
-    if (props.search) {
-        searchNightsWidth = 5;
-    }
-
     const { startDate, endDate } = props;
     const start = (startDate && startDate.format('DD/MM/YYYY')) || '';
     const end = (endDate && endDate.format('DD/MM/YYYY')) || '';
@@ -25,7 +20,7 @@ function DatePicker(props) {
     };
 
     return (
-        <div>
+        <div className="date-picker">
             <div className="input-daterange">
                 <div className="form-group has-feedback has-feedback-left">
                     <i className="icon icon-calendar form-control-feedback"></i>
@@ -36,7 +31,7 @@ function DatePicker(props) {
                         isInvalidDate={props.isInvalidDate}
                         autoApply={true}
                         minDate={moment().format('DD/MM/YYYY')}
-                        maxDate={moment().add(90, 'days').format('DD/MM/YYYY')}
+                        maxDate={moment().add(12, 'months').format('DD/MM/YYYY')}
                         locale={{ format: 'DD/MM/YYYY' }}
                         {...pickerProps}>
                         <input
@@ -51,7 +46,7 @@ function DatePicker(props) {
                 </div>
             </div>
 
-            <div id="search-nights" style={{ minWidth: searchNightsWidth + '%' }}>
+            <div id="search-nights">
                 <span>{props.nights} nights</span>
             </div>
         </div>
