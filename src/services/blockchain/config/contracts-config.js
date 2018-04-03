@@ -8,8 +8,18 @@ import IHotelReservationFactory from './contracts-json/IHotelReservationFactory.
 import IHotelReservation from './contracts-json/IHotelReservation.json';
 
 const providers = ethers.providers;
-//Should be changed when using different network than mainnet
-export const nodeProvider = new providers.infuraProvider(providers.networks.mainnet, "Up5uvBHSCSqtOmnlhL87");
+
+export function getNodeProvider() {
+	let network = Config.getValue('ETHERS_HTTP_PROVIDER_NETWORK')
+	if (network === 'local') {
+		return new providers.JsonRpcProvider(Config.getValue('ETHERS_HTTP_PROVIDER_LOCAL'), providers.networks.unspecified);
+	} else {
+		let currentNetwork = Config.getValue('ETHERS_HTTP_PROVIDER_NETWORK');
+		return new providers.InfuraProvider(providers.networks[currentNetwork], Config.getValue('INFURA_API_KEY'));
+	}
+}
+
+const nodeProvider = getNodeProvider();
 
 /**
  * Creation of LOCTokenContract object

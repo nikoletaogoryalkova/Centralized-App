@@ -17,6 +17,7 @@ export async function validateLocBalance(account, locAmount, wallet, actionGas =
 	const gasAmountApprove = ethers.utils.bigNumberify(gasConfig.approve);
 	const gasAmountAction = ethers.utils.bigNumberify(actionGas);
 	const totalGas = gasAmountApprove.add(gasAmountAction);
+
 	const totalGasLoc = (await gasToLoc(totalGas));
 	const locAmountToValidate = (totalGasLoc
 			.add(TIMES_GAS_AMOUNT))

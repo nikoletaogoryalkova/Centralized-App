@@ -42,7 +42,6 @@ class HotelBookingConfirmPage extends React.Component {
             if (res.ok) {
                 res.json().then((json) => {
                     this.setState({ data: json });
-                    console.log(json);
         
                     getLocRateInUserSelectedCurrency(json.currency).then((data) => {
                         this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
@@ -172,7 +171,7 @@ class HotelBookingConfirmPage extends React.Component {
                 const fees = booking.room.canxFees;
                 if (fees.length === 0) {
                     rows.push(
-                        <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                        <tr  key={(1 + index) * 1000} className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                             <td>No cancellation fees</td>
                             <td>No fee</td>
                             <td></td>
@@ -180,7 +179,7 @@ class HotelBookingConfirmPage extends React.Component {
                     );
                 } else if (fees.length === 1) {
                     rows.push(
-                        <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                        <tr key={(1 + index) * 1000} className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                             <td>Cancellation fee</td>
                             <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
                             <td></td>
@@ -189,8 +188,8 @@ class HotelBookingConfirmPage extends React.Component {
                 } else {
                     fees.forEach((fee, feeIndex) => {
                         rows.push(
-                            <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
-                                <td key={feeIndex}>{`Cancel up to ${moment(fee.from).format('DD MM YYYY')}`}</td>
+                            <tr key={feeIndex} className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                                <td>{`Cancel up to ${moment(fee.from).format('DD MM YYYY')}`}</td>
                                 <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fee.amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fee.locPrice).toFixed(4)} LOC)</span></td>
                                 <td></td>
                             </tr>
@@ -198,7 +197,7 @@ class HotelBookingConfirmPage extends React.Component {
                     });
 
                     rows.push(
-                        <tr className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
+                        <tr key={(1 + index) * 1000} className={`booking-room-canx-fee ${this.state.showRoomCanxDetails[index] ? '' : 'room-cancellation-hidden'}`}>
                             <td key={fees.length}>{`Cancel on or after ${moment(this.getLastDate(fees).from).format('DD MM YYYY')}`}</td>
                             <td><span className="booking-price">{this.props.paymentInfo.currency} {this.state.rates && (fees[0].amount.amt * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} ({(fees[0].locPrice).toFixed(4)} LOC)</span></td>
                             <td></td>
@@ -248,9 +247,11 @@ class HotelBookingConfirmPage extends React.Component {
                                     <div className="row">
                                         <table>
                                             <thead>
-                                                <th>Room Type</th>
-                                                <th>Price</th>
-                                                <th>Cancellation Fees</th>
+                                                <tr>
+                                                    <th>Room Type</th>
+                                                    <th>Price</th>
+                                                    <th>Cancellation Fees</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 {this.getRoomRows(booking)}

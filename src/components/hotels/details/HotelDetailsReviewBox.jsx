@@ -32,9 +32,9 @@ function HomeDetailsReviewBox(props) {
             starsElements.push(<span key={i} className="full-star" />);
         }
         
-        for (let i = 0; i < 5 - rounded; i++) {
-            starsElements.push(<span key={100 - i} className="empty-star" />);
-        }
+        // for (let i = 0; i < 5 - rounded; i++) {
+        //     starsElements.push(<span key={100 - i} className="empty-star" />);
+        // }
 
         return starsElements;
     };

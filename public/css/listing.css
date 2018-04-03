@@ -7,6 +7,8 @@
 .list-hotel-box .list-image {
   width: 29%;
   float: left;
+  min-height: 185px;
+  background-color: #f0f1f3;
 }
 .list-hotel-box .list-content {
   float: left;
@@ -83,6 +85,7 @@
 .list-hotel-box .list-hotel-price-curency {
   text-align: center;
   font-size: 28px;
+  min-height: 40px;
 }
 .list-hotel-box .list-hotel-price-loc {
   text-align: center;

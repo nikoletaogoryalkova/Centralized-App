@@ -1,4 +1,20 @@
-@media only screen and (max-width: 600px) {
+
+
+@media (max-width: 493px) {
+    .home_page h1.home_title {
+        font-size: 40px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .home_page h2.home_title {
+        font-size: 22px;
+    }
+    #main-nav #second-nav .navbar-nav a {
+        padding-bottom: 2px;
+    }
+}
+
+@media only screen and (max-width: 667px) {
     #room-book .hotel-info {
         margin: 0;
     }
@@ -22,6 +38,11 @@
         float: none;
         width: 100%;
     }
+
+    .list-hotel-box .hotels-item {
+        width: 100%;
+    }
+
 
     .list-hotel-box .list-price {
         padding-top: 1px;
@@ -62,5 +83,54 @@
 
     #attached-footer {
         display: none;
+    }
+    
+    .list-hotel-box,
+    .filter-box {
+        max-width: 380px;
+        margin: 0 auto;
+    }
+
+    .list-hotel-box .list-price {
+        min-height: 0;
+        padding: 5px;
+    }
+
+    .list-hotel-box .list-hotel-price-curency {
+        min-height: 10px;
+      }
+}
+
+@media (max-width: 768px) {
+    #search-bar div.container {
+        max-width: 690px;
+        margin-right: 0;
+    }
+
+    .col-sm-15 {
+        width: 20%;
+        float: left;
+    }
+
+    .home_page h1.home_title {
+        margin-top: 35px;
+    }
+}
+
+@media (max-width: 992px) {
+    footer .copyright {
+        margin-bottom: 135px;
+    }
+
+    .col-md-15 {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-15 {
+        width: 20%;
+        float: left;
     }
 }

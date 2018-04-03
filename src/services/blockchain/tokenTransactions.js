@@ -8,7 +8,7 @@ import {
 import {
 	LOCTokenContract,
 	LOCTokenContractWithWallet,
-	nodeProvider
+	getNodeProvider
 } from './config/contracts-config.js';
 import {
 	fundTransactionAmountIfNeeded
@@ -47,6 +47,7 @@ export class TokenTransactions {
 	}
 
 	static async getETHBalance(address) {
+		const nodeProvider = getNodeProvider();
 		return await nodeProvider.getBalance(address);
 
 	}

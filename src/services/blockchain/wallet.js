@@ -9,7 +9,7 @@ import {
 } from './validators/base-validators';
 import {
     LOCTokenContract,
-    nodeProvider
+    getNodeProvider
 } from './config/contracts-config.js';
 import {
     Config
@@ -28,6 +28,7 @@ class Wallet {
     }
 
     static async getBalance(address) {
+        const nodeProvider = getNodeProvider();
         let balance = await nodeProvider.getBalance(address);
         return balance;
     }
