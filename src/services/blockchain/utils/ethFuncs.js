@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
 	LOCExchangeContract,
 	LOCExchangeContractWithWallet,
-	nodeProvider
+	getNodeProvider
 } from '../config/contracts-config.js';
 
 import {
@@ -30,6 +30,7 @@ export async function getGasPrice() {
 		return ethers.utils.parseUnits((response.data.fast / 10).toString(10), 'gwei');
 
 	} catch (e) {
+		const nodeProvider = getNodeProvider();
 		return await nodeProvider.getGasPrice();
 	}
 };
@@ -66,6 +67,7 @@ export async function exchangeLocForEth(walletAddress, walletPrivateKey, amount)
 	result.exchangeLocToEthTxn = await LOCExchangeContractInstance.exchangeLocWeiToEthWei(
 		locWeiAmount, overrideOptions
 	);
+	const nodeProvider = getNodeProvider();
 	await nodeProvider.waitForTransaction(result.exchangeLocToEthTxn.hash);
 	return result;
 };
@@ -74,9 +76,10 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	actionGas = 0) {
 
 	let result = {};
+	const nodeProvider = getNodeProvider();
 	let accountBalance = await nodeProvider.getBalance(walletAddress);
 	let initialAccountBalance = accountBalance;
-	let remainderForExchange;
+	let remainderForExchange = 0;
 
 	const gasPrice = await getGasPrice();
 	result.gasPrice = gasPrice;
@@ -85,12 +88,12 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	const gasAmountExchange = gasPrice.mul(gasConfig.exchangeLocToEth);
 	const gasAmountNeeded = gasAmountApprove.add(gasAmountExchange);
 	const gasAmountAction = gasPrice.mul(actionGas);
-	let nonceNumber = await localNodeProvider.getTransactionCount(walletAddress);
+	let nonceNumber = await nodeProvider.getTransactionCount(walletAddress);
 
 	if (gasAmountNeeded.gt(accountBalance) && nonceNumber < nonceMaxNumber) {
 		// TODO: This should point to the backend java rest-api
 
-		result.fundInitialGas = await axios.post((Config.getValue('basePath') + JAVA_REST_API_SEND_FUNDS), {
+		result.fundInitialGas = await axios.post(('http://localhost:8080' + JAVA_REST_API_SEND_FUNDS), {
 			amount: gasAmountNeeded.toString(10),
 			recipient: walletAddress
 		})
@@ -99,13 +102,11 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	}
 	const minAllowedGasAmountFirst = (gasAmountAction
 		.add(gasAmountNeeded));
-
 	const minAllowedGasAmount = minAllowedGasAmountFirst.mul(gasConfig.MIN_TIMES_GAS_AMOUNT)
-
 	if (minAllowedGasAmount.gt(accountBalance)) {
 		const amountToExchange = (gasAmountAction
 				.add(gasAmountApprove))
-			.mul(gasConfig.TIMES_GAS_AMOUNT);
+			.mul(gasConfig.TIMES_GAS_AMOUNT).add(remainderForExchange);
 		amountToExchange.add(remainderForExchange);
 		result.exchangeLocToEthTxn = await exchangeLocForEth(
 			walletAddress,

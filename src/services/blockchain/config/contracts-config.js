@@ -8,14 +8,18 @@ import IHotelReservationFactory from './contracts-json/IHotelReservationFactory.
 import IHotelReservation from './contracts-json/IHotelReservation.json';
 
 const providers = ethers.providers;
-const localNodeProvider = new providers.JsonRpcProvider(Config.getValue('ETHERS_HTTP_PROVIDER_LOCAL'), providers.networks.unspecified);
-const infuraProviderRopsten = new providers.infuraProvider(providers.networks.ropsten, Config.getValue('INFURA_API_KEY'));
-const infuraProviderMainnet = new providers.infuraProvider(providers.networks.mainnet, Config.getValue('INFURA_API_KEY'));
-export const nodeProvider = new providers.FallbackProvider([
-	localNodeProvider,
-	infuraProviderRopsten,
-	infuraProviderMainnet
-]);
+
+export function getNodeProvider() {
+	let network = Config.getValue('ETHERS_HTTP_PROVIDER_NETWORK')
+	if (network === 'local') {
+		return new providers.JsonRpcProvider(Config.getValue('ETHERS_HTTP_PROVIDER_LOCAL'), providers.networks.unspecified);
+	} else {
+		let currentNetwork = Config.getValue('ETHERS_HTTP_PROVIDER_NETWORK');
+		return new providers.InfuraProvider(providers.networks[currentNetwork], Config.getValue('INFURA_API_KEY'));
+	}
+}
+
+const nodeProvider = getNodeProvider();
 
 /**
  * Creation of LOCTokenContract object

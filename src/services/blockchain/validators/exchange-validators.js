@@ -1,6 +1,6 @@
 import {
 	LOCExchangeContract,
-	nodeProvider
+	getNodeProvider
 } from '../config/contracts-config.js';
 import ethers from 'ethers';
 import {
@@ -10,7 +10,7 @@ import {
 const ERROR = require('./../config/errors.json');
 
 export async function validateContractBalance(amount) {
-
+	const nodeProvider = getNodeProvider();
 	const balance = await nodeProvider.getBalance(LOCExchangeContract.address);
 	if (amount.gt(balance)) {
 		throw ERROR.INSUFFICIENT_AMOUNT_ETH_EXCHANGE_CONTRACT

@@ -59,7 +59,6 @@ export class HotelReservation {
 			hotelIdBytes,
 			roomIdBytes,
 			numberOfTravelers);
-
 		await validateLocBalance(wallet.address, reservationCostLOC, wallet, gasConfig.hotelReservation.create);
 
 		await fundTransactionAmountIfNeeded(
