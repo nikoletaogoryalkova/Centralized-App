@@ -451,7 +451,7 @@ class HotelsSearchPage extends React.Component {
         }
 
         searchParams.forEach(addElement);
-        this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
+        this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}`, JSON.stringify(msg));
     }
  
     render() {
@@ -468,6 +468,8 @@ class HotelsSearchPage extends React.Component {
                 return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights}/>;
             });
         }
+
+        console.log(`/user/topic/all/${localStorage.getItem('uuid')}`);
 
         return (
             <div>
