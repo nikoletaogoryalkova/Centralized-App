@@ -453,7 +453,7 @@ class HotelsSearchPage extends React.Component {
         console.log(`/app/all/${localStorage.getItem('uuid')}`);
 
         searchParams.forEach(addElement);
-        this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}`, JSON.stringify(msg));
+        this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`, JSON.stringify(msg));
     }
  
     render() {
@@ -553,7 +553,7 @@ class HotelsSearchPage extends React.Component {
                     handleSubmit={this.redirectToSearchPage}
                 />
 
-                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={[`/topic/all/${localStorage.getItem('uuid')}`]}
+                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={[`/topic/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`]}
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
                     onConnect={this.sendInitialWebsocketRequest}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
