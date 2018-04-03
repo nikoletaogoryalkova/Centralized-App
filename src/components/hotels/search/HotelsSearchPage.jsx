@@ -557,7 +557,7 @@ class HotelsSearchPage extends React.Component {
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
                     onConnect={this.sendInitialWebsocketRequest}
                     onDisconnect={() => { this.setState({ clientConnected: false }); }}
-                    debug={false} />
+                    debug={true} />
             </div>
         );
     }
