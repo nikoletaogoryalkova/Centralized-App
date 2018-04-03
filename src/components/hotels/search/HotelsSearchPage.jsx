@@ -321,7 +321,7 @@ class HotelsSearchPage extends React.Component {
         });
 
         const searchTerms = this.props.location.search;
-        testSearch(searchTerms, page - 1).then(json => {
+        testSearch(searchTerms, page - 1, localStorage.getItem('uuid')).then(json => {
             this.setState({
                 listings: json.content,
                 loading: false
@@ -449,6 +449,8 @@ class HotelsSearchPage extends React.Component {
         function addElement(value, key) {
             msg[key] = value;
         }
+
+        console.log(`/app/all/${localStorage.getItem('uuid')}`);
 
         searchParams.forEach(addElement);
         this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}`, JSON.stringify(msg));
