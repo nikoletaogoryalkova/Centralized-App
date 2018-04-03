@@ -116,19 +116,27 @@ export async function fundTransactionAmountIfNeeded(walletAddress, walletPrivate
 	return result;
 }
 
-export async function transactionCostInEth(wallet, actionGas = 0) {
+export async function transactionCostInEth(walletAddress, actionGas = 0) {
 	const gasPrice = await getGasPrice();
-	return actionGas.mul(gasPrice);
+	const fundingCost = checkIfFundingIsNeeded(walletAddress, actionGas);
+	return actionGas.mul(gasPrice).add(fundingCost);
 
 }
 
-export async function transactionCostInLoc(wallet, actionGas = 0) {
+export async function transactionCostInLoc(walletAddress, actionGas = 0) {
 
+	const fundingAmount = transactionCostInEth(walletAddress, actionGas);
+	const locWeiAmount = await LOCExchangeContract.weiToLocWei(fundingAmount);
+	return locWeiAmount;
 }
 
-function checkIfFundingIsNeeded(wallet, actionGas = 0) {
+function checkIfFundingIsNeeded(walletAddress, actionGas = 0) {
+	let accountBalance = await nodeProvider.getBalance(walletAddress);
 	const gasAmountApprove = gasPrice.mul(gasConfig.approve);
 	const gasAmountExchange = gasPrice.mul(gasConfig.exchangeLocToEth);
 	const gasAmountNeeded = gasAmountApprove.add(gasAmountExchange);
-	const gasAmountAction = gasPrice.mul(actionGas);
+	if (gasAmountNeeded.gt(accountBalance)) {
+		return gasAmountNeeded;
+	}
+	return 0;
 }
