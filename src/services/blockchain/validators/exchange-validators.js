@@ -1,23 +1,17 @@
 import {
-	BigNumber
-} from 'bignumber.js';
-import {
-	web3
+	LOCExchangeContract,
+	getNodeProvider
 } from '../config/contracts-config.js';
+import ethers from 'ethers';
 import {
-	LOCTokenContract
-} from '../config/contracts-config.js';
-import {
-	LOCExchangeContract
-} from '../config/contracts-config.js';
-
+	Config
+} from '../../../config';
 
 const ERROR = require('./../config/errors.json');
 
 export async function validateContractBalance(amount) {
-	const balance = await web3.eth.getBalance(LOCExchangeContract._address);
-
-	let amountBN = new BigNumber(amount);
+	const nodeProvider = getNodeProvider();
+	const balance = await nodeProvider.getBalance(LOCExchangeContract.address);
 	if (amount.gt(balance)) {
 		throw ERROR.INSUFFICIENT_AMOUNT_ETH_EXCHANGE_CONTRACT
 	}

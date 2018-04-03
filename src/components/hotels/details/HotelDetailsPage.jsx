@@ -1,9 +1,5 @@
 import { withRouter } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import {
-    contactHost,
-} from '../../../requester';
-
 import { Config } from '../../../config';
 import Lightbox from 'react-images';
 import PropTypes from 'prop-types';

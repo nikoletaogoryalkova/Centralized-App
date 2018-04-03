@@ -1,9 +1,10 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import {deleteListing} from "../../../requester";
+import {deleteListing} from '../../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+
 export default class DeletionModal extends React.Component {
     constructor(props) {
         super(props);

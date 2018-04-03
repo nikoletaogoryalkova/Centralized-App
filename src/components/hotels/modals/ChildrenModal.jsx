@@ -3,6 +3,22 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 export default function ChildrenModal(props) {
+
+    const areChildrenAgesValid = () => {
+        const rooms = props.rooms;
+        for (let i = 0; i < rooms.length; i++) {
+            const children = rooms[i].children;
+            for (let j = 0; j < children.length; j++) {
+                const age = Number(children[i].age);
+                if (age < 1 || age > 17) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    };
+
     return (
         <div>
             <Modal show={props.isActive} onHide={e => props.closeModal(props.modalId, e)} className="modal fade myModal">
@@ -36,7 +52,7 @@ export default function ChildrenModal(props) {
                                             return (
                                                 <div key={childIndex} className="col col-md-2">
                                                     <select name={`children${roomIndex}age`} className="form-control children-age-select" value={props.rooms[roomIndex].children[childIndex].age} onChange={(e) => props.handleChildAgeChange(e, roomIndex, childIndex)}>
-                                                        <option value="1" selected disabled required>Age</option>
+                                                        <option value="" selected disabled required>Age</option>
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
@@ -64,7 +80,10 @@ export default function ChildrenModal(props) {
                             </div>
                         );
                     })}
-                    <button className="btn btn-primary" onClick={props.handleSubmit}>Search</button>
+                    {areChildrenAgesValid() ? 
+                        <button className="btn btn-primary" onClick={props.handleSubmit}>Search</button> :
+                        <button className="btn btn-primary" disabled>Search</button>
+                    }
                 </Modal.Body>
             </Modal>
         </div>

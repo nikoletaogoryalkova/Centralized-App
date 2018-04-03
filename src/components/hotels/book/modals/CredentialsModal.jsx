@@ -18,7 +18,7 @@ export default function CredentialsModal(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
-                        <input type="password" placeholder="Wallet Password" name="walletPassword" className="form-control"  value={props.walletPassword} onChange={props.onChange} />
+                        <input type="password" placeholder="Wallet Password" name="walletPassword" value={props.walletPassword}  className="form-control" onChange={props.onChange} />
                         <button type="submit" className="btn btn-primary">Confirm</button>
 
                         <ReCAPTCHA

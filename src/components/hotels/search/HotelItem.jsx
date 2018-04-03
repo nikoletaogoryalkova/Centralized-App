@@ -9,25 +9,28 @@ import { Config } from '../../../config.js';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 function HotelItem(props) {
-    const { locRate, rates } = props;
-    const { currencySign } = props.paymentInfo;
-    const { id, name, description, photos, price, stars} = props.listing;
-    const locPrice = ((price / locRate) / props.nights).toFixed(2);
-    const priceInSelectedCurrency = rates && ((price * (rates[ROOMS_XML_CURRENCY][props.paymentInfo.currency])) / props.nights).toFixed(2);
-    const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
-
+    
     const calculateStars = (ratingNumber) => {
         let starsElements = [];
         let rating = Math.round(ratingNumber);
         for (let i = 0; i < rating; i++) {
             starsElements.push(<span key={i} className="full-star"></span>);
         }
-        for (let i = 0; i < 5 - rating; i++) {
-            starsElements.push(<span key={100 - i} className="empty-star"></span>);
-        }
+        // for (let i = 0; i < 5 - rating; i++) {
+        //     starsElements.push(<span key={100 - i} className="empty-star"></span>);
+        // }
 
         return starsElements;
     };
+
+    const { locRate, rates } = props;
+    const { currencySign } = props.paymentInfo;
+    const { id, name, description, photos, price, stars} = props.listing;
+    
+    const locPrice = ((price / locRate) / props.nights).toFixed(2);
+    const priceInSelectedCurrency = rates && ((price * (rates[ROOMS_XML_CURRENCY][props.paymentInfo.currency])) / props.nights).toFixed(2);
+    
+    const pictures = photos.map(url => { return {thumbnail: `${Config.getValue('imgHost')}${url}` }; });
 
     return (
         <div className="list-hotel">
@@ -47,7 +50,7 @@ function HotelItem(props) {
             </div>
             <div className="list-price">
                 <div className="list-hotel-price-bgr">Price for 1 night</div>
-                {props.userInfo.isLogged && <div className="list-hotel-price-curency">{currencySign} {priceInSelectedCurrency}</div>}
+                <div className="list-hotel-price-curency">{props.userInfo.isLogged && `${currencySign} ${priceInSelectedCurrency}`}</div>
                 <div className="list-hotel-price-loc">(LOC {locPrice})</div>
                 <Link to={`/hotels/listings/${id}${props.location.search}`} className="list-hotel-price-button btn btn-primary">Book now</Link>
             </div>
@@ -55,15 +58,6 @@ function HotelItem(props) {
         </div>
     );
 }
-
-HotelItem.propTypes = {
-    listing: PropTypes.object,
-    location: PropTypes.object,
-
-    // start Redux props
-    dispatch: PropTypes.func,
-    paymentInfo: PropTypes.object
-};
 
 export default withRouter(connect(mapStateToProps)(HotelItem));
 
@@ -74,3 +68,16 @@ function mapStateToProps(state) {
         userInfo
     };
 }
+
+HotelItem.propTypes = {
+    listing: PropTypes.object,
+    location: PropTypes.object,
+    nights: PropTypes.number,
+    locRate: PropTypes.number,
+    rates: PropTypes.any,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    paymentInfo: PropTypes.object,
+    userInfo: PropTypes.object
+};

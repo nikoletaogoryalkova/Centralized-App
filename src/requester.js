@@ -439,8 +439,8 @@ export async function getRegionsBySearchParameter(param) {
     });
 }
 
-export async function testSearch(query) {
-    return sendRequest(`${host}api/test/hotels/search${query}`, RequestMethod.GET).then(res => {
+export async function testSearch(query, page = 0) {
+    return sendRequest(`${host}api/test/hotels/search${query}&page=${page}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

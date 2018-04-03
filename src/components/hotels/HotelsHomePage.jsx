@@ -4,9 +4,9 @@ import moment from 'moment';
 import HotelsSearchBar from './search/HotelsSearchBar';
 import PopularDestinationsCarousel from './carousel/PopularDestinationsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
+import PropTypes from 'prop-types';
 
 import { getTestHotels } from '../../requester';
-import { getCurrencyRates } from '../../requester';
 import { connect } from 'react-redux';
 
 import ChildrenModal from './modals/ChildrenModal';
@@ -22,11 +22,10 @@ class HotelsHomePage extends React.Component {
             startDate: startDate,
             endDate: endDate,
             rooms: [{ adults: 1, children: [] }],
-            adults: '2',
+            adults: 2,
             hasChildren: false,
             listings: undefined,
             childrenModal: false,
-            // region: { id: undefined, query: undefined },
         };
 
         this.onChange = this.onChange.bind(this);
@@ -50,16 +49,30 @@ class HotelsHomePage extends React.Component {
         getTestHotels().then((data) => {
             this.setState({ listings: data.content });
         });
-
-        getCurrencyRates('USD').then((json) => {
-            console.log(json);
-        });
     }
 
     onChange(e) {
-        console.log(e.target.name)
-        console.log(e.target.value)
         this.setState({ [e.target.name]: e.target.value });
+    }
+    
+    openModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: true
+        });
+    }
+
+    closeModal(modal, e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.setState({
+            [modal]: false
+        });
     }
 
     handleSelectRegion(value) {
@@ -68,7 +81,7 @@ class HotelsHomePage extends React.Component {
     
     handleSearch(event) {
         if (event) {
-            event.preventDefault();
+            event.persist();
         }
 
         this.distributeAdults().then(() => {
@@ -116,15 +129,6 @@ class HotelsHomePage extends React.Component {
     distributeChildren() {
         this.openModal('childrenModal');
     }
-
-    // getRooms() {
-    //     return this.state.rooms.map((room) => {
-    //         return {
-    //             adults: room.adults,
-    //             children: room.children.map((age) => { return { age: age}; })
-    //         };
-    //     });
-    // }
     
     handleDatePick(event, picker) {
         this.setState({
@@ -189,26 +193,6 @@ class HotelsHomePage extends React.Component {
         this.setState({
             hasChildren: !hasChildren,
             rooms: rooms
-        });
-    }
-
-    openModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            [modal]: true
-        });
-    }
-
-    closeModal(modal, e) {
-        if (e) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            [modal]: false
         });
     }
 
@@ -281,3 +265,15 @@ function mapStateToProps(state) {
         paymentInfo
     };
 }
+
+HotelsHomePage.propTypes = {
+    // start Router props
+    location: PropTypes.object,
+    history: PropTypes.object,
+
+    // start Redux props
+    dispatch: PropTypes.func,
+    userInfo: PropTypes.object,
+    paymentInfo: PropTypes.object,
+    modalsInfo: PropTypes.object,
+};
