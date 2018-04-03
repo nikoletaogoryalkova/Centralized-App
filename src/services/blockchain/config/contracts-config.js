@@ -10,13 +10,12 @@ import IHotelReservation from './contracts-json/IHotelReservation.json';
 const providers = ethers.providers;
 
 export function getNodeProvider() {
-	let network = Config.getValue('ETHERS_HTTP_PROVIDER_NETWORK')
-	if (network === 'local') {
+	let currentNetwork = Config.getValue('ETHERS_HTTP_PROVIDER_NETWORK')
+	if (currentNetwork === 'local') {
 		return new providers.JsonRpcProvider(Config.getValue('ETHERS_HTTP_PROVIDER_LOCAL'), providers.networks.unspecified);
-	} else {
-		let currentNetwork = Config.getValue('ETHERS_HTTP_PROVIDER_NETWORK');
-		return new providers.InfuraProvider(providers.networks[currentNetwork], Config.getValue('INFURA_API_KEY'));
 	}
+	return new providers.InfuraProvider(providers.networks[currentNetwork], Config.getValue('INFURA_API_KEY'));
+
 }
 
 const nodeProvider = getNodeProvider();
