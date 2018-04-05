@@ -27,7 +27,7 @@ class HotelsSearchPage extends React.Component {
         let endDate = moment().add(2, 'day');
 
         this.state = {
-            allElements: true,
+            allElements: false,
             startDate: startDate,
             endDate: endDate,
             adults: '2',
@@ -97,6 +97,7 @@ class HotelsSearchPage extends React.Component {
             const endDate = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
             const nights = this.calculateNights(startDate, endDate);
             const regionId = searchParams.get('region');
+            const page = searchParams.get('page');
             this.setState({
                 searchParams: searchParams,
                 startDate: startDate,
@@ -105,7 +106,8 @@ class HotelsSearchPage extends React.Component {
                 rooms: rooms,
                 adults: adults,
                 hasChildren: hasChildren,
-                region: { id: regionId }
+                region: { id: regionId },
+                currentPage: page ? Number(page) + 1 : 1,
             });
             
             getRegionNameById(regionId).then((json) => {
@@ -122,7 +124,9 @@ class HotelsSearchPage extends React.Component {
             totalElements: 0
         });
 
-        this.clientRef.disconnect();
+        if (this.clientRef) {
+            this.clientRef.disconnect();
+        }
     }
 
     getAdults(rooms) {
@@ -224,7 +228,9 @@ class HotelsSearchPage extends React.Component {
         this.props.history.push('/hotels/listings' + queryString);
         
         this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [], totalElements: 0 }, () => {
-            this.clientRef.connect();
+            if (this.clientRef) {
+                this.clientRef.connect();
+            }
         });
     }
 
@@ -320,13 +326,25 @@ class HotelsSearchPage extends React.Component {
             loading: true
         });
 
-        const searchTerms = this.props.location.search;
+        let searchTerms = this.props.location.search;
+
+        const index = this.props.location.search.indexOf('&page=');
+        if (index != -1) {
+            searchTerms = `${this.props.location.search.substr(0, index)}&page=${page - 1}`;
+        } else {
+            searchTerms = `${this.props.location.search}&page=${page - 1}`;
+        }
+
+        console.log(index)
+        console.log(searchTerms)
         testSearch(searchTerms, page - 1, localStorage.getItem('uuid')).then(json => {
             this.setState({
                 listings: json.content,
                 loading: false
             });
         });
+
+        this.props.history.push(`/hotels/listings/${searchTerms}`);
     }
 
     getSearchTerms(searchParams) {
@@ -420,7 +438,7 @@ class HotelsSearchPage extends React.Component {
         
         if (response.hasOwnProperty('totalElements')) {
             this.setState({ totalElements: response.totalElements, allElements: response.allElements });
-            if (response.allElements) {
+            if (response.allElements && this.clientRef) {
                 this.clientRef.disconnect();
             }
         } else {
@@ -453,7 +471,9 @@ class HotelsSearchPage extends React.Component {
         console.log(`/app/all/${localStorage.getItem('uuid')}`);
 
         searchParams.forEach(addElement);
-        this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`, JSON.stringify(msg));
+        if (this.clientRef) {
+            this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`, JSON.stringify(msg));
+        }
     }
  
     render() {
@@ -553,11 +573,13 @@ class HotelsSearchPage extends React.Component {
                     handleSubmit={this.redirectToSearchPage}
                 />
 
-                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={[`/topic/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`]}
-                    onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
-                    onConnect={this.sendInitialWebsocketRequest}
-                    onDisconnect={() => { this.setState({ clientConnected: false }); }}
-                    debug={true} />
+                {!this.state.allElements && 
+                    <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={[`/topic/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`]}
+                        onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
+                        onConnect={this.sendInitialWebsocketRequest}
+                        getRetryInterval={() => { return 3000; }}
+                        debug={true} />
+                }
             </div>
         );
     }

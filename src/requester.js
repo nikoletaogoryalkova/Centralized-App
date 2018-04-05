@@ -440,7 +440,7 @@ export async function getRegionsBySearchParameter(param) {
 }
 
 export async function testSearch(query, page = 0, uuid) {
-    return sendRequest(`${host}api/test/hotels/search${query}&page=${page}&uuid=${uuid}`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}api/test/hotels/search${query}&uuid=${uuid}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
