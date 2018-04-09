@@ -46,5 +46,8 @@
   "INVALID_PRICE": "Price should be more than 0",
   "INVALID_JSON": "The provided JSON file is not valid or empty",
   "INVALID_CANCELLATION": "Cancellation is not allowed",
-  "INVALID_REFUND_DAYS": "Days for refund are greater than current date."
+  "INVALID_REFUND_DAYS": "Days for refund are greater than current date.",
+  "INVALID_REFUND_PARAMS_LENGTH": "Refund arrays are with different length",
+  "INVALID_REFUND_DAYS_ARRAY": "Refund days array is not sorted right",
+  "INVALID_REFUND_PARAMS": "Refund parameters are not correct"
 }

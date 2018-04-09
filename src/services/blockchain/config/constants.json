@@ -15,5 +15,6 @@
   "HD_WALLET_PATH": "m/44'/60'/0'/0",
   "GAS_STATION_API": "https://ethgasstation.info/json/ethgasAPI.json",
   "JAVA_REST_API_SEND_FUNDS": "/sendFundsToAccount",
-  "nonceMaxNumber": 5
+  "nonceMaxNumber": 5,
+  "maxRefundPeriods": 7
 }
