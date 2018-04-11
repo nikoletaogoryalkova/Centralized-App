@@ -5,50 +5,56 @@ import ReactBootstrapSlider from 'react-bootstrap-slider';
 
 const FilterPanel = (props) => (
     <div className="filter-box">
-        <div className="form-group">
-            <label>City</label>
-        </div>
-        <div className="clearfix" />
+        {props.isSearchReady
+            ? (
+                <div>
+                    <div className="form-group">
+                        <label>Order By</label>
 
-        <div className="form-group">
-            <label>Pricing</label>
+                        <div className="filter-price-box">
+                            <select name={'orderBy'} className="form-control" value={props.orderBy} onChange={props.handleOrderBy}>
+                                <option value=''>Order by</option>
+                                <option value='asc'>Lowest price</option>
+                                <option value='desc'>Highest price</option>
+                            </select>
+                            <div className="clearfix" />
+                        </div>
 
-            <div className="filter-price-box">
-                <ReactBootstrapSlider
-                    value={props.priceValue}
-                    slideStop={(e) => { props.setPriceValue(e); props.handleSearch(e); }}
-                    step={5}
-                    max={5000}
-                    min={1}
-                    orientation="horizontal"
-                    range={true} />
-                <div className="clearfix" />
-            </div>
-        </div>
-        <div className="clearfix" />
+                        <label>Pricing</label>
 
-        <div className="form-group">
-            <label>Property Type</label>
-        </div>
-        <div className="clearfix" />
+                        <div className="filter-price-box">
+                            <ReactBootstrapSlider
+                                value={props.priceRange}
+                                slideStop={(e) => { props.handlePriceRangeSelect(e); }}
+                                step={5}
+                                max={5000}
+                                min={1}
+                                orientation="horizontal"
+                                range={true} />
+                            <div className="clearfix" />
+                        </div>
+                    </div>
+                    <div className="clearfix" />
 
-        <div className="form-group">
-            <button type="submit" onClick={props.clearFilters} className="btn btn">Clear Filters</button>
-        </div>
+                    <div className="form-group">
+                        <button type="submit" onClick={props.clearFilters} className="btn btn">Clear Filters</button>
+                    </div>
+                </div>
+            )
+            : (
+                <div>
+                    <div className="form-group">
+                        To filter, wait for all results or stop the search 
+                        <button type="submit" onClick={props.handleStopSearch} className="btn btn">Stop Search</button>
+                    </div>
+                </div>
+            )
+        }
     </div>
 );
 
 FilterPanel.propTypes = {
-    cities: PropTypes.array,
-    citiesToggled: PropTypes.any,
-    propertyTypes: PropTypes.array,
-    propertyTypesToggled: PropTypes.any,
-    priceValue: PropTypes.array,
-    setPriceValue: PropTypes.func,
-    countryId: PropTypes.string,
-    handleSearch: PropTypes.func,
-    toggleFilter: PropTypes.func,
-    clearFilters: PropTypes.func,
+    priceRange: PropTypes.array,
 };
 
 export default FilterPanel;
