@@ -72,6 +72,7 @@ class HotelsSearchPage extends React.Component {
         this.handlePriceRangeSelect = this.handlePriceRangeSelect.bind(this);
         this.handleStopSearch = this.handleStopSearch.bind(this);
         this.handleOrderBy = this.handleOrderBy.bind(this);
+        this.applyFilters = this.applyFilters.bind(this);
     }
 
     componentDidMount() {
@@ -116,7 +117,7 @@ class HotelsSearchPage extends React.Component {
                 region: { id: regionId },
                 currentPage: page ? Number(page) : 0,
             });
-            
+
             getRegionNameById(regionId).then((json) => {
                 this.setState({ region: json });
             });
@@ -169,7 +170,7 @@ class HotelsSearchPage extends React.Component {
             this.updateParamsMap(e.target.name, e.target.value);
         }
     }
-    
+
     openModal(modal, e) {
         if (e) {
             e.preventDefault();
@@ -198,7 +199,7 @@ class HotelsSearchPage extends React.Component {
                 rooms[i].children = [];
             }
         }
-        
+
         this.setState({
             hasChildren: !hasChildren,
             rooms: rooms
@@ -231,7 +232,7 @@ class HotelsSearchPage extends React.Component {
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
         this.props.history.push('/hotels/listings' + queryString);
-        
+
         this.clearFilters();
         this.setState({ loading: true, childrenModal: false, currentPage: 0, listings: [], totalElements: 0, allElements: false }, () => {
             if (this.clientRef) {
@@ -284,7 +285,8 @@ class HotelsSearchPage extends React.Component {
 
         let searchTerms = this.getSearchTerms(this.state.searchParams);
         getListingsByFilter(searchTerms).then(data => {
-            this.setState({listings: data.filteredListings.content,
+            this.setState({
+                listings: data.filteredListings.content,
                 loading: false,
                 totalElements: data.filteredListings.totalElements,
                 countryId: this.getSearchParams().get('countryId'),
@@ -402,7 +404,7 @@ class HotelsSearchPage extends React.Component {
         } else if (rooms.length > value) {
             rooms = rooms.slice(0, value);
         }
-        
+
         this.setState({ rooms: rooms });
     }
 
@@ -427,7 +429,7 @@ class HotelsSearchPage extends React.Component {
         } else if (children.length > value) {
             children = children.slice(0, value);
         }
-        
+
         rooms[roomIndex].children = children;
         this.setState({ rooms: rooms });
     }
@@ -443,7 +445,7 @@ class HotelsSearchPage extends React.Component {
         if (this.state.loading) {
             this.setState({ loading: false });
         }
-        
+
         if (response.hasOwnProperty('totalElements')) {
             this.setState({ totalElements: response.totalElements, allElements: response.allElements });
             if (response.allElements && this.clientRef) {
@@ -470,7 +472,7 @@ class HotelsSearchPage extends React.Component {
         };
 
         console.log(msg);
-        
+
         const searchParams = this.getSearchParams(query);
         function addElement(value, key) {
             msg[key] = value;
@@ -484,27 +486,6 @@ class HotelsSearchPage extends React.Component {
         }
     }
 
-    handlePriceRangeSelect(e) {
-        const priceRange = e.target.value;
-        let filteredListings = this.state.listings.slice(0);
-        
-        if (this.state.orderBy === 'asc') {
-            filteredListings.sort((x, y) => x.price > y.price ? 1 : -1);
-        } else if (this.state.orderBy === 'desc') {
-            filteredListings.sort((x, y) => x.price > y.price ? -1 : 1);
-        }
-
-        const userCurrencyRate = this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency];
-        console.log(userCurrencyRate);
-
-        this.setState({
-            priceRange,
-            filteredListings: filteredListings.filter(x => priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]),
-        });
-
-        this.onPageChange(1);
-    }
-
     handleStopSearch() {
         this.setState({ allElements: true });
         this.clientRef.disconnect();
@@ -513,31 +494,39 @@ class HotelsSearchPage extends React.Component {
     handleOrderBy(event) {
         const orderBy = event.target.value;
         this.setState({ orderBy }, () => {
-            let filteredListings = this.state.filteredListings ? this.state.filteredListings.slice(0) : this.state.listings.slice(0);
-            
-            if (orderBy === 'asc') {
-                filteredListings.sort((x, y) => x.price > y.price ? 1 : -1);
-            } else if (orderBy === 'desc') {
-                filteredListings.sort((x, y) => x.price > y.price ? -1 : 1);
-            } else {
-                const { priceRange } = this.state;
-                const userCurrencyRate = this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency];
-                filteredListings = this.state.listings.slice(0).filter(x => priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]);
-            }
-    
-            this.setState({ 
-                filteredListings,
-                currentPage: 0
-            });
+            this.applyFilters();
         });
     }
- 
+
+    handlePriceRangeSelect(event) {
+        const priceRange = event.target.value;
+        this.setState({ priceRange }, () => {
+            this.applyFilters();
+        });
+    }
+
+    applyFilters() {
+        const currentPage = 0;
+        const { priceRange, orderBy } = this.state;
+        const userCurrencyRate = this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency];
+        const filteredListings = this.state.listings
+            .slice(0)
+            .filter(x => priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]);
+        
+        if (orderBy === 'asc') {
+            filteredListings.sort((x, y) => x.price > y.price ? 1 : -1);
+        } else if (orderBy === 'desc') {
+            filteredListings.sort((x, y) => x.price > y.price ? -1 : 1);
+        }
+
+        this.setState({ filteredListings, currentPage });
+    }
+
     render() {
         const listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
 
         const totalElements = listings.length;
         const startElement = this.state.currentPage * 20;
-        console.log(totalElements)
 
         let hotelItems;
 
@@ -547,11 +536,9 @@ class HotelsSearchPage extends React.Component {
             hotelItems = <div className="text-center"><h2 style={{ marginBottom: '80px' }}>No Results</h2></div>;
         } else {
             hotelItems = listings.slice(startElement, startElement + 20).map((item, i) => {
-                return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights}/>;
+                return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} />;
             });
         }
-
-        console.log(`/user/topic/all/${localStorage.getItem('uuid')}`);
 
         return (
             <div>
@@ -653,7 +640,7 @@ function mapStateToProps(state) {
 
 HotelsSearchPage.propTypes = {
     countries: PropTypes.array,
-    
+
     // start Router props
     location: PropTypes.object,
     history: PropTypes.object,
