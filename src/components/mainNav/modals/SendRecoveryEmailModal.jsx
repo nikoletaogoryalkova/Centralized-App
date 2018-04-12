@@ -27,18 +27,18 @@ export default function SendRecoveryEmailModal(props) {
                             <p>Already sent an email? Enter your security <a onClick={(e) => { e.preventDefault(); props.closeModal(SEND_RECOVERY_EMAIL); props.openModal(ENTER_RECOVERY_TOKEN); }}>token</a>.</p>
                         </div>
 
-                        <ReCAPTCHA
-                            ref={el => captcha = el}
-                            size="invisible"
-                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                            onChange={token => {props.handleSubmitRecoveryEmail(token); captcha.reset(); }}
-                        />
-
                         <button type="submit" className="btn btn-primary">Send email</button>
                         <div className="clearfix"></div>
                     </form>
                 </Modal.Body>
             </Modal>
+            
+            <ReCAPTCHA
+                ref={el => captcha = el}
+                size="invisible"
+                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                onChange={token => { props.handleSubmitRecoveryEmail(token); captcha.reset(); }}
+            />
         </div>
     );
 }
