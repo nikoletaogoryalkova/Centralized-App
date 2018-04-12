@@ -234,7 +234,15 @@ class HotelsSearchPage extends React.Component {
         this.props.history.push('/hotels/listings' + queryString);
 
         this.clearFilters();
-        this.setState({ loading: true, childrenModal: false, currentPage: 0, listings: [], totalElements: 0, allElements: false }, () => {
+        this.setState({ 
+            loading: true, 
+            childrenModal: false, 
+            currentPage: 0, 
+            listings: [], 
+            filteredListings: undefined, 
+            totalElements: 0, 
+            allElements: false 
+        }, () => {
             if (this.clientRef) {
                 this.clientRef.connect();
             }
