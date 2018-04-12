@@ -362,7 +362,7 @@ class HotelsSearchPage extends React.Component {
         //     });
         // });
 
-        this.props.history.push(`/hotels/listings/${searchTerms}`);
+        // this.props.history.push(`/hotels/listings/${searchTerms}`);
     }
 
     getSearchTerms(searchParams) {
