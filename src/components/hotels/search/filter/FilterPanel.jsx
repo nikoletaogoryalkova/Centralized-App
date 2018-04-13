@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FilterCheckbox from '../../../common/filter/FilterCheckbox';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
+import FilterStarCheckbox from './FilterStarCheckbox';
 
 const FilterPanel = (props) => (
     <div className="filter-box">
@@ -9,15 +9,50 @@ const FilterPanel = (props) => (
             ? (
                 <div>
                     <div className="form-group">
-                        <label>Order By</label>
+                        <label>Filters</label>
 
-                        <div className="filter-price-box">
-                            <select name={'orderBy'} className="form-control" value={props.orderBy} onChange={props.handleOrderBy}>
+                        <div className="filter-order">
+                            <select name={'orderBy'} className="form-control filter-select" value={props.orderBy} onChange={props.handleOrderBy}>
                                 <option value=''>Order by</option>
                                 <option value='asc'>Lowest price</option>
                                 <option value='desc'>Highest price</option>
                             </select>
                             <div className="clearfix" />
+                        </div>
+
+                        <label>Star Rating</label>
+
+                        <div className="filter-stars">
+                            <FilterStarCheckbox
+                                name='star-one'
+                                value={0} 
+                                text={'1'}
+                                checked={props.stars[0]}
+                                handleToggleStar={props.handleToggleStar} />
+                            <FilterStarCheckbox
+                                name='star-two'
+                                value={1}
+                                text={'2'}
+                                checked={props.stars[1]}
+                                handleToggleStar={props.handleToggleStar} />
+                            <FilterStarCheckbox
+                                name='star-three'
+                                value={2}
+                                text={'3'}
+                                checked={props.stars[2]}
+                                handleToggleStar={props.handleToggleStar} />
+                            <FilterStarCheckbox
+                                name='star-four'
+                                value={3}
+                                text={'4'}
+                                checked={props.stars[3]}
+                                handleToggleStar={props.handleToggleStar} />
+                            <FilterStarCheckbox
+                                name='star-six'
+                                value={4}
+                                text={'5'}
+                                checked={props.stars[4]}
+                                handleToggleStar={props.handleToggleStar} />
                         </div>
 
                         <label>Pricing</label>
@@ -44,7 +79,7 @@ const FilterPanel = (props) => (
             : (
                 <div>
                     <div className="form-group">
-                        To filter, wait for all results or stop the search 
+                        <h3 className="filter-info">To filter results, wait for all or stop the search</h3>
                         <button type="submit" onClick={props.handleStopSearch} className="btn btn">Stop Search</button>
                     </div>
                 </div>

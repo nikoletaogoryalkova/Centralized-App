@@ -15,6 +15,7 @@ import FilterPanel from './filter/FilterPanel';
 import ChildrenModal from '../modals/ChildrenModal';
 import SockJsClient from 'react-stomp';
 import uuid from 'uuid';
+import _ from 'lodash';
 
 import { Config } from '../../../config.js';
 
@@ -36,6 +37,7 @@ class HotelsSearchPage extends React.Component {
             rooms: [{ adults: 1, children: [] }],
             priceRange: [0, 5000],
             orderBy: '',
+            stars: new Array(false, false, false, false, false),
             city: '',
             state: '',
             searchParams: undefined,
@@ -73,6 +75,7 @@ class HotelsSearchPage extends React.Component {
         this.handleStopSearch = this.handleStopSearch.bind(this);
         this.handleOrderBy = this.handleOrderBy.bind(this);
         this.applyFilters = this.applyFilters.bind(this);
+        this.handleToggleStar = this.handleToggleStar.bind(this);
     }
 
     componentDidMount() {
@@ -517,9 +520,10 @@ class HotelsSearchPage extends React.Component {
         const currentPage = 0;
         const { priceRange, orderBy } = this.state;
         const userCurrencyRate = this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency];
+        const stars = this.state.stars.filter(x => x).length > 0 ? this.state.stars.slice(0) : [ true, true, true, true, true ];
         const filteredListings = this.state.listings
             .slice(0)
-            .filter(x => priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]);
+            .filter(x => (priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]) && stars[x.stars - 1] );
         
         if (orderBy === 'asc') {
             filteredListings.sort((x, y) => x.price > y.price ? 1 : -1);
@@ -528,6 +532,14 @@ class HotelsSearchPage extends React.Component {
         }
 
         this.setState({ filteredListings, currentPage });
+    }
+
+    handleToggleStar(star) {
+        const stars = this.state.stars;
+        stars[star] = !stars[star]; 
+        this.setState({ stars }, () => {
+            this.applyFilters();
+        });
     }
 
     render() {
@@ -572,13 +584,15 @@ class HotelsSearchPage extends React.Component {
                         <div className="row">
                             <div className="col-md-3">
                                 <FilterPanel
+                                    stars={this.state.stars}
                                     orderBy={this.state.orderBy}
                                     isSearchReady={this.state.allElements}
                                     priceRange={this.state.priceRange}
                                     handlePriceRangeSelect={this.handlePriceRangeSelect}
                                     clearFilters={this.clearFilters}
                                     handleStopSearch={this.handleStopSearch}
-                                    handleOrderBy={this.handleOrderBy} />
+                                    handleOrderBy={this.handleOrderBy}
+                                    handleToggleStar={this.handleToggleStar} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
@@ -631,7 +645,7 @@ class HotelsSearchPage extends React.Component {
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
                     onConnect={this.sendInitialWebsocketRequest}
                     getRetryInterval={() => { return 3000; }}
-                    debug={true} />
+                    debug={false} />
             </div>
         );
     }

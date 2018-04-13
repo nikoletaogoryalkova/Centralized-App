@@ -4,7 +4,7 @@ import React from 'react';
 function FilterStarCheckbox(props) {
     return (
         <div>
-            <span className={`star ${props.checked ? 'active' : ''}`}>
+            <span onClick={() => props.handleToggleStar(props.value)} className={`star ${props.checked ? 'active' : ''}`}>
                 {props.text}
             </span>
         </div>

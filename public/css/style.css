@@ -3060,3 +3060,11 @@ select {
     opacity: 0.01;
     transition: opacity 0ms ease-in;
   }
+
+  .filter-box .filter-select {
+      border: 1px solid #ccc;
+  }
+
+  .filter-box .filter-info {
+      text-align: center;
+  }
