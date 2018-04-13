@@ -11,9 +11,11 @@ import { connect } from 'react-redux';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 import HotelsSearchBar from './HotelsSearchBar';
+import FilterPanel from './filter/FilterPanel';
 import ChildrenModal from '../modals/ChildrenModal';
 import SockJsClient from 'react-stomp';
 import uuid from 'uuid';
+import _ from 'lodash';
 
 import { Config } from '../../../config.js';
 
@@ -27,19 +29,23 @@ class HotelsSearchPage extends React.Component {
         let endDate = moment().add(2, 'day');
 
         this.state = {
-            allElements: true,
+            allElements: false,
             startDate: startDate,
             endDate: endDate,
             adults: '2',
             children: '0',
             rooms: [{ adults: 1, children: [] }],
+            priceRange: [0, 5000],
+            orderBy: '',
+            stars: new Array(false, false, false, false, false),
             city: '',
             state: '',
             searchParams: undefined,
             listings: [],
+            filteredListings: undefined,
             loading: true,
             totalElements: 0,
-            currentPage: 1,
+            currentPage: 0,
             messages: [],
         };
 
@@ -65,6 +71,11 @@ class HotelsSearchPage extends React.Component {
         this.getLocRate = this.getLocRate.bind(this);
         this.handleReceiveSingleHotel = this.handleReceiveSingleHotel.bind(this);
         this.sendInitialWebsocketRequest = this.sendInitialWebsocketRequest.bind(this);
+        this.handlePriceRangeSelect = this.handlePriceRangeSelect.bind(this);
+        this.handleStopSearch = this.handleStopSearch.bind(this);
+        this.handleOrderBy = this.handleOrderBy.bind(this);
+        this.applyFilters = this.applyFilters.bind(this);
+        this.handleToggleStar = this.handleToggleStar.bind(this);
     }
 
     componentDidMount() {
@@ -97,6 +108,7 @@ class HotelsSearchPage extends React.Component {
             const endDate = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
             const nights = this.calculateNights(startDate, endDate);
             const regionId = searchParams.get('region');
+            const page = searchParams.get('page');
             this.setState({
                 searchParams: searchParams,
                 startDate: startDate,
@@ -105,9 +117,10 @@ class HotelsSearchPage extends React.Component {
                 rooms: rooms,
                 adults: adults,
                 hasChildren: hasChildren,
-                region: { id: regionId }
+                region: { id: regionId },
+                currentPage: page ? Number(page) : 0,
             });
-            
+
             getRegionNameById(regionId).then((json) => {
                 this.setState({ region: json });
             });
@@ -118,7 +131,7 @@ class HotelsSearchPage extends React.Component {
         this.setState({
             listings: null,
             loading: true,
-            currentPage: 1,
+            currentPage: 0,
             totalElements: 0
         });
 
@@ -160,7 +173,7 @@ class HotelsSearchPage extends React.Component {
             this.updateParamsMap(e.target.name, e.target.value);
         }
     }
-    
+
     openModal(modal, e) {
         if (e) {
             e.preventDefault();
@@ -189,7 +202,7 @@ class HotelsSearchPage extends React.Component {
                 rooms[i].children = [];
             }
         }
-        
+
         this.setState({
             hasChildren: !hasChildren,
             rooms: rooms
@@ -222,9 +235,20 @@ class HotelsSearchPage extends React.Component {
         queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
         this.props.history.push('/hotels/listings' + queryString);
-        
-        this.setState({ loading: true, childrenModal: false, currentPage: 1, listings: [], totalElements: 0 }, () => {
-            this.clientRef.connect();
+
+        this.clearFilters();
+        this.setState({ 
+            loading: true, 
+            childrenModal: false, 
+            currentPage: 0, 
+            listings: [], 
+            filteredListings: undefined, 
+            totalElements: 0, 
+            allElements: false 
+        }, () => {
+            if (this.clientRef) {
+                this.clientRef.connect();
+            }
         });
     }
 
@@ -272,7 +296,8 @@ class HotelsSearchPage extends React.Component {
 
         let searchTerms = this.getSearchTerms(this.state.searchParams);
         getListingsByFilter(searchTerms).then(data => {
-            this.setState({listings: data.filteredListings.content,
+            this.setState({
+                listings: data.filteredListings.content,
                 loading: false,
                 totalElements: data.filteredListings.totalElements,
                 countryId: this.getSearchParams().get('countryId'),
@@ -282,8 +307,12 @@ class HotelsSearchPage extends React.Component {
         this.props.history.push(url);
     }
 
-    clearFilters(e) {
-        this.handleFilter(e);
+    clearFilters() {
+        const defaultPriceRange = { target: { value: [0, 5000] } };
+        const defaultOrderBy = { target: { value: '' } };
+
+        this.handlePriceRangeSelect(defaultPriceRange);
+        this.handleOrderBy(defaultOrderBy);
     }
 
     toggleFilter(key, value) {
@@ -316,17 +345,27 @@ class HotelsSearchPage extends React.Component {
     onPageChange(page) {
         window.scrollTo(0, 0);
         this.setState({
-            currentPage: page,
-            loading: true
+            currentPage: page - 1,
+            // loading: true
         });
 
-        const searchTerms = this.props.location.search;
-        testSearch(searchTerms, page - 1).then(json => {
-            this.setState({
-                listings: json.content,
-                loading: false
-            });
-        });
+        let searchTerms = this.props.location.search;
+
+        const index = this.props.location.search.indexOf('&page=');
+        if (index != -1) {
+            searchTerms = `${this.props.location.search.substr(0, index)}&page=${page - 1}`;
+        } else {
+            searchTerms = `${this.props.location.search}&page=${page - 1}`;
+        }
+
+        // testSearch(searchTerms, page - 1, localStorage.getItem('uuid')).then(json => {
+        //     this.setState({
+        //         listings: json.content,
+        //         loading: false
+        //     });
+        // });
+
+        // this.props.history.push(`/hotels/listings/${searchTerms}`);
     }
 
     getSearchTerms(searchParams) {
@@ -376,7 +415,7 @@ class HotelsSearchPage extends React.Component {
         } else if (rooms.length > value) {
             rooms = rooms.slice(0, value);
         }
-        
+
         this.setState({ rooms: rooms });
     }
 
@@ -401,7 +440,7 @@ class HotelsSearchPage extends React.Component {
         } else if (children.length > value) {
             children = children.slice(0, value);
         }
-        
+
         rooms[roomIndex].children = children;
         this.setState({ rooms: rooms });
     }
@@ -417,10 +456,10 @@ class HotelsSearchPage extends React.Component {
         if (this.state.loading) {
             this.setState({ loading: false });
         }
-        
+
         if (response.hasOwnProperty('totalElements')) {
             this.setState({ totalElements: response.totalElements, allElements: response.allElements });
-            if (response.allElements) {
+            if (response.allElements && this.clientRef) {
                 this.clientRef.disconnect();
             }
         } else {
@@ -444,18 +483,70 @@ class HotelsSearchPage extends React.Component {
         };
 
         console.log(msg);
-        
+
         const searchParams = this.getSearchParams(query);
         function addElement(value, key) {
             msg[key] = value;
         }
 
+        console.log(`/app/all/${localStorage.getItem('uuid')}`);
+
         searchParams.forEach(addElement);
-        this.clientRef.sendMessage('/app/all', JSON.stringify(msg));
+        if (this.clientRef) {
+            this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`, JSON.stringify(msg));
+        }
     }
- 
+
+    handleStopSearch() {
+        this.setState({ allElements: true });
+        this.clientRef.disconnect();
+    }
+
+    handleOrderBy(event) {
+        const orderBy = event.target.value;
+        this.setState({ orderBy }, () => {
+            this.applyFilters();
+        });
+    }
+
+    handlePriceRangeSelect(event) {
+        const priceRange = event.target.value;
+        this.setState({ priceRange }, () => {
+            this.applyFilters();
+        });
+    }
+
+    applyFilters() {
+        const currentPage = 0;
+        const { priceRange, orderBy } = this.state;
+        const userCurrencyRate = this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency];
+        const stars = this.state.stars.filter(x => x).length > 0 ? this.state.stars.slice(0) : [ true, true, true, true, true ];
+        const filteredListings = this.state.listings
+            .slice(0)
+            .filter(x => (priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]) && stars[x.stars - 1] );
+        
+        if (orderBy === 'asc') {
+            filteredListings.sort((x, y) => x.price > y.price ? 1 : -1);
+        } else if (orderBy === 'desc') {
+            filteredListings.sort((x, y) => x.price > y.price ? -1 : 1);
+        }
+
+        this.setState({ filteredListings, currentPage });
+    }
+
+    handleToggleStar(star) {
+        const stars = this.state.stars;
+        stars[star] = !stars[star]; 
+        this.setState({ stars }, () => {
+            this.applyFilters();
+        });
+    }
+
     render() {
-        const listings = this.state.listings;
+        const listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
+
+        const totalElements = listings.length;
+        const startElement = this.state.currentPage * 20;
 
         let hotelItems;
 
@@ -464,8 +555,8 @@ class HotelsSearchPage extends React.Component {
         } else if (listings.length === 0) {
             hotelItems = <div className="text-center"><h2 style={{ marginBottom: '80px' }}>No Results</h2></div>;
         } else {
-            hotelItems = listings.map((item, i) => {
-                return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights}/>;
+            hotelItems = listings.slice(startElement, startElement + 20).map((item, i) => {
+                return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} />;
             });
         }
 
@@ -492,15 +583,16 @@ class HotelsSearchPage extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                {/* <FilterPanel 
-                                    cities={this.state.cities}
-                                    citiesToggled={this.state.citiesToggled}
-                                    priceValue={this.state.priceValue}
-                                    setPriceValue={this.setPriceValue}
-                                    countryId={this.state.countryId}
-                                    handleSearch={this.handleFilter} 
-                                    toggleFilter={this.toggleFilter}
-                                    clearFilters={this.clearFilters} /> */}
+                                <FilterPanel
+                                    stars={this.state.stars}
+                                    orderBy={this.state.orderBy}
+                                    isSearchReady={this.state.allElements}
+                                    priceRange={this.state.priceRange}
+                                    handlePriceRangeSelect={this.handlePriceRangeSelect}
+                                    clearFilters={this.clearFilters}
+                                    handleStopSearch={this.handleStopSearch}
+                                    handleOrderBy={this.handleOrderBy}
+                                    handleToggleStar={this.handleToggleStar} />
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
@@ -526,12 +618,12 @@ class HotelsSearchPage extends React.Component {
                                     <LPagination
                                         loading={this.state.loading}
                                         onPageChange={this.onPageChange}
-                                        currentPage={this.state.currentPage}
-                                        totalElements={this.state.totalElements}
+                                        currentPage={this.state.currentPage + 1}
+                                        totalElements={totalElements}
                                     />
 
                                     {!this.state.loading && !this.state.allElements &&
-                                            <div className="loader" style={{ marginBottom: '40px' }}></div>
+                                        <div className="loader" style={{ marginBottom: '40px' }}></div>
                                     }
                                 </div>
                             </div>
@@ -549,10 +641,10 @@ class HotelsSearchPage extends React.Component {
                     handleSubmit={this.redirectToSearchPage}
                 />
 
-                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={['/user/topic/all']}
+                <SockJsClient url={Config.getValue('apiHost') + 'handler'} topics={[`/topic/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`]}
                     onMessage={this.handleReceiveSingleHotel} ref={(client) => { this.clientRef = client; }}
                     onConnect={this.sendInitialWebsocketRequest}
-                    onDisconnect={() => { this.setState({ clientConnected: false }); }}
+                    getRetryInterval={() => { return 3000; }}
                     debug={false} />
             </div>
         );
@@ -570,7 +662,7 @@ function mapStateToProps(state) {
 
 HotelsSearchPage.propTypes = {
     countries: PropTypes.array,
-    
+
     // start Router props
     location: PropTypes.object,
     history: PropTypes.object,
