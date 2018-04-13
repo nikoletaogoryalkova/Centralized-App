@@ -237,14 +237,14 @@ class HotelsSearchPage extends React.Component {
         this.props.history.push('/hotels/listings' + queryString);
 
         this.clearFilters();
-        this.setState({ 
-            loading: true, 
-            childrenModal: false, 
-            currentPage: 0, 
-            listings: [], 
-            filteredListings: undefined, 
-            totalElements: 0, 
-            allElements: false 
+        this.setState({
+            loading: true,
+            childrenModal: false,
+            currentPage: 0,
+            listings: [],
+            filteredListings: undefined,
+            totalElements: 0,
+            allElements: false
         }, () => {
             if (this.clientRef) {
                 this.clientRef.connect();
@@ -305,14 +305,6 @@ class HotelsSearchPage extends React.Component {
         });
         let url = `/hotels/listings/?${searchTerms}`;
         this.props.history.push(url);
-    }
-
-    clearFilters() {
-        const defaultPriceRange = { target: { value: [0, 5000] } };
-        const defaultOrderBy = { target: { value: '' } };
-
-        this.handlePriceRangeSelect(defaultPriceRange);
-        this.handleOrderBy(defaultOrderBy);
     }
 
     toggleFilter(key, value) {
@@ -516,15 +508,23 @@ class HotelsSearchPage extends React.Component {
         });
     }
 
+    handleToggleStar(star) {
+        const stars = this.state.stars;
+        stars[star] = !stars[star];
+        this.setState({ stars }, () => {
+            this.applyFilters();
+        });
+    }
+
     applyFilters() {
         const currentPage = 0;
         const { priceRange, orderBy } = this.state;
         const userCurrencyRate = this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency];
-        const stars = this.state.stars.filter(x => x).length > 0 ? this.state.stars.slice(0) : [ true, true, true, true, true ];
+        const stars = this.state.stars.filter(x => x).length > 0 ? this.state.stars.slice(0) : [true, true, true, true, true];
         const filteredListings = this.state.listings
             .slice(0)
-            .filter(x => (priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]) && stars[x.stars - 1] );
-        
+            .filter(x => (priceRange[0] <= x.price * userCurrencyRate && x.price * userCurrencyRate <= priceRange[1]) && stars[x.stars - 1]);
+
         if (orderBy === 'asc') {
             filteredListings.sort((x, y) => x.price > y.price ? 1 : -1);
         } else if (orderBy === 'desc') {
@@ -534,12 +534,12 @@ class HotelsSearchPage extends React.Component {
         this.setState({ filteredListings, currentPage });
     }
 
-    handleToggleStar(star) {
-        const stars = this.state.stars;
-        stars[star] = !stars[star]; 
-        this.setState({ stars }, () => {
-            this.applyFilters();
-        });
+    clearFilters() {
+        const defaultPriceRange = { target: { value: [0, 5000] } };
+        const defaultOrderBy = { target: { value: '' } };
+        this.handlePriceRangeSelect(defaultPriceRange);
+        this.handleOrderBy(defaultOrderBy);
+        this.setState({ stars: [false, false, false, false, false] });
     }
 
     render() {
