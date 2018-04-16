@@ -457,7 +457,11 @@ class HotelDetailsPage extends React.Component {
             }
         }
 
-        this.checkNextRoom(allRooms, 0, booking);
+        try {
+            this.checkNextRoom(allRooms, 0, booking);
+        } catch (e) {
+            NotificationManager.error('Something went wrong...');
+        }
     }
     
     checkNextRoom(allRooms, index, booking) {
@@ -483,6 +487,8 @@ class HotelDetailsPage extends React.Component {
             } else {
                 this.checkNextRoom(allRooms, index + 1, booking);
             }
+        }).catch(() => {
+            NotificationManager.error('Something went wrong...');
         });
     }
 
