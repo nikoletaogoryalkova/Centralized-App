@@ -79,8 +79,8 @@ const FilterPanel = (props) => (
             : (
                 <div>
                     <div className="form-group">
-                        <h3 className="filter-info">To filter results, wait for all or stop the search</h3>
-                        <button type="submit" onClick={props.handleStopSearch} className="btn btn">Stop Search</button>
+                        <h3 className="filter-info">Search in progress, filtering will be possible after it is completed</h3>
+                        {/* <button type="submit" onClick={props.handleStopSearch} className="btn btn">Stop Search</button> */}
                     </div>
                 </div>
             )

@@ -72,7 +72,6 @@ class HotelsSearchPage extends React.Component {
         this.handleReceiveSingleHotel = this.handleReceiveSingleHotel.bind(this);
         this.sendInitialWebsocketRequest = this.sendInitialWebsocketRequest.bind(this);
         this.handlePriceRangeSelect = this.handlePriceRangeSelect.bind(this);
-        this.handleStopSearch = this.handleStopSearch.bind(this);
         this.handleOrderBy = this.handleOrderBy.bind(this);
         this.applyFilters = this.applyFilters.bind(this);
         this.handleToggleStar = this.handleToggleStar.bind(this);
@@ -489,10 +488,10 @@ class HotelsSearchPage extends React.Component {
         }
     }
 
-    handleStopSearch() {
-        this.setState({ allElements: true });
-        this.clientRef.disconnect();
-    }
+    // handleStopSearch() {
+    //     this.setState({ allElements: true });
+    //     this.clientRef.disconnect();
+    // }
 
     handleOrderBy(event) {
         const orderBy = event.target.value;
