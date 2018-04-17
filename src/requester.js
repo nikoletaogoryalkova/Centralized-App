@@ -421,14 +421,14 @@ export async function getCalendarByListingIdAndDateRange(listingId, startDate, e
 
 // Test routes
 export async function getTestHotels(searchTerms) {
-    return sendRequest(`${host}api/test/hotels?${searchTerms}`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}api/hotels?${searchTerms}`, RequestMethod.GET).then(res => {
         
         return res.response.json();
     });
 }
 
 export async function getTestHotelById(id, search) {
-    return sendRequest(`${host}api/test/hotels/${id}${search}`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}api/hotels/${id}${search}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
@@ -440,20 +440,20 @@ export async function getRegionsBySearchParameter(param) {
 }
 
 export async function testSearch(query, page = 0, uuid) {
-    return sendRequest(`${host}api/test/hotels/search${query}&uuid=${uuid}`, RequestMethod.GET).then(res => {
+    return sendRequest(`${host}api/hotels/search${query}&uuid=${uuid}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
 
 export async function testBook(bookingObj) {
-    return sendRequest(`${host}api/test/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
+    return sendRequest(`${host}api/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
         return res.response;
         // console.log(res.response)
     });
 }
 
 export async function confirmBooking(bookingObj) {
-    return sendRequest(`${host}api/test/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
+    return sendRequest(`${host}api/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
         return res.response.json();
     });
 }
