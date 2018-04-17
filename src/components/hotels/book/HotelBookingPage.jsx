@@ -8,7 +8,7 @@ import moment from 'moment';
 import validator from 'validator';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
-import { getHotelById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
+import { getHotelById, getHotelRooms, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 
 class HotelBookingPage extends React.Component {
     constructor(props) {
@@ -34,17 +34,23 @@ class HotelBookingPage extends React.Component {
         const nights = this.getNights(searchParams);
         search = search.substr(0, search.indexOf('&quoteId='));
         getHotelById(id, search).then((data) => {
-            const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
-            const totalPrice = this.getTotalPrice(roomResults);
             this.setState({
                 hotel: data,
                 nights: nights,
-                roomResults: roomResults,
-                totalPrice: totalPrice,
                 rooms: rooms, 
                 pictures: data.hotelPhotos, 
                 loading: false, 
                 quoteId: quoteId 
+            });
+        });
+
+        getHotelRooms(id, search).then((data) => {
+            const roomResults = data.filter(x => x.quoteId === quoteId)[0].roomsResults;
+            const totalPrice = this.getTotalPrice(roomResults);
+            this.setState({
+                roomResults: roomResults,
+                totalPrice: totalPrice,
+                loading: false, 
             });
         });
 
