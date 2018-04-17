@@ -65,30 +65,32 @@ function HomeDetailsInfoSection(props) {
     const street = props.data.additionalInfo.mainAddress;
     const city = props.data.city.name;
     const country = props.data.region.country.name;
-    const rooms = props.data.rooms;
-    const usedRoomsByTypeAndMeal = {};
-    for (let room of rooms) {
-        let key = '';
-        let price = 0;
-        for (let result of room.roomsResults) {
-            key += result.name + '|' + result.mealType + '%';
-            price += result.price;
-        }
-        if (!usedRoomsByTypeAndMeal.hasOwnProperty(key)) {
-            usedRoomsByTypeAndMeal[key] = [];
-        }
-        usedRoomsByTypeAndMeal[key].push({
-            totalPrice: price,
-            quoteId: room.quoteId,
-            roomsResults: room.roomsResults,
-            key: key
-        });
-    }
+    const rooms = props.hotelRooms;
     let roomsResults = [];
-    for (let key in usedRoomsByTypeAndMeal) {
-        roomsResults.push(usedRoomsByTypeAndMeal[key].sort((x, y) => x.totalPrice > y.totalPrice ? 1 : -1)); 
+    if (rooms) {
+        const usedRoomsByTypeAndMeal = {};
+        for (let room of rooms) {
+            let key = '';
+            let price = 0;
+            for (let result of room.roomsResults) {
+                key += result.name + '|' + result.mealType + '%';
+                price += result.price;
+            }
+            if (!usedRoomsByTypeAndMeal.hasOwnProperty(key)) {
+                usedRoomsByTypeAndMeal[key] = [];
+            }
+            usedRoomsByTypeAndMeal[key].push({
+                totalPrice: price,
+                quoteId: room.quoteId,
+                roomsResults: room.roomsResults,
+                key: key
+            });
+        }
+        for (let key in usedRoomsByTypeAndMeal) {
+            roomsResults.push(usedRoomsByTypeAndMeal[key].sort((x, y) => x.totalPrice > y.totalPrice ? 1 : -1)); 
+        }
+        roomsResults = roomsResults.sort((x, y) => getTotalPrice(x[0].roomsResults) > getTotalPrice(y[0].roomsResults) ? 1 : -1);
     }
-    roomsResults = roomsResults.sort((x, y) => getTotalPrice(x[0].roomsResults) > getTotalPrice(y[0].roomsResults) ? 1 : -1);
 
     return (
         <div className="hotel-content" id="hotel-section">
@@ -217,6 +219,7 @@ function HomeDetailsInfoSection(props) {
 
 HomeDetailsInfoSection.propTypes = {
     data: PropTypes.object,
+    hotelRooms: PropTypes.array,
     locRate: PropTypes.number,
     showLoginModal: PropTypes.bool,
     isLogged: PropTypes.bool,

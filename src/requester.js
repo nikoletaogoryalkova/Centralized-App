@@ -427,8 +427,14 @@ export async function getTestHotels(searchTerms) {
     });
 }
 
-export async function getTestHotelById(id, search) {
+export async function getHotelById(id, search) {
     return sendRequest(`${host}api/hotels/${id}${search}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getHotelRooms(id, search) {
+    return sendRequest(`${host}api/hotels/${id}/rooms${search}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }

@@ -12,7 +12,7 @@ import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
-import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
+import { getHotelById, getHotelRooms, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
 class HotelDetailsPage extends React.Component {
     constructor(props) {
@@ -48,7 +48,8 @@ class HotelDetailsPage extends React.Component {
             userInfo: null,
             loading: true,
             isShownContactHostModal: false,
-            roomLoader: undefined,
+            hotelRooms: null,
+            roomLoader: null,
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -76,13 +77,17 @@ class HotelDetailsPage extends React.Component {
     componentDidMount() {
         const id = this.props.match.params.id;
         const search = this.props.location.search;
-        getTestHotelById(id, search).then((data) => {
+        getHotelById(id, search).then((data) => {
             this.setState({ data: data, loading: false });
             const searchParams = this.getSearchParams(this.props.location.search);
             const regionId = searchParams.get('region') || data.region.externalId;
             getRegionNameById(regionId).then((json) => {
                 this.setState({ region: json });
             });
+        });
+
+        getHotelRooms(id, search).then((data) => {
+            this.setState({ hotelRooms: data, roomLoader: false });
         });
 
         this.getLocRate();
@@ -582,6 +587,7 @@ class HotelDetailsPage extends React.Component {
                                     startDate={this.state.calendarStartDate}
                                     endDate={this.state.calendarEndDate}
                                     data={this.state.data}
+                                    hotelRooms={this.state.hotelRooms}
                                     locRate={this.state.locRate}
                                     rates={this.state.rates}
                                     loading={this.state.loading}
