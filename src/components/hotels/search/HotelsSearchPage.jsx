@@ -47,6 +47,7 @@ class HotelsSearchPage extends React.Component {
             totalElements: 0,
             currentPage: 0,
             messages: [],
+            showMap: false,
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -75,6 +76,7 @@ class HotelsSearchPage extends React.Component {
         this.handleOrderBy = this.handleOrderBy.bind(this);
         this.applyFilters = this.applyFilters.bind(this);
         this.handleToggleStar = this.handleToggleStar.bind(this);
+        this.toggleMap = this.toggleMap.bind(this);
     }
 
     componentDidMount() {
@@ -541,6 +543,12 @@ class HotelsSearchPage extends React.Component {
         this.setState({ stars: [false, false, false, false, false] });
     }
 
+    toggleMap() {
+        this.setState(prev => {
+            return { showMap: !prev.showMap };
+        });
+    }
+
     render() {
         const listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
 
@@ -591,35 +599,25 @@ class HotelsSearchPage extends React.Component {
                                     clearFilters={this.clearFilters}
                                     handleStopSearch={this.handleStopSearch}
                                     handleOrderBy={this.handleOrderBy}
-                                    handleToggleStar={this.handleToggleStar} />
+                                    handleToggleStar={this.handleToggleStar}
+                                />
+                                <button onClick={this.toggleMap} className="btn btn-primary">Show on map</button>
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
-                                    {/* <ReactCSSTransitionGroup
-                                        transitionName="example"
-                                        transitionEnterTimeout={500}
-                                        transitionLeaveTimeout={0}>
-                                        {hotelItems}
-                                    </ReactCSSTransitionGroup> */}
-                                    {hotelItems}
-                                    {/* {!this.state.loading && 
-                                        (this.state.totalElements <= 20 && !this.state.allElements
-                                            ? <div className="loader" style={{ margin: '20px' }}></div>
-                                            : <LPagination
+                                    {this.state.showMap
+                                        ? <div>
+                                        </div>
+                                        : <div>
+                                            {hotelItems}
+                                            <LPagination
                                                 loading={this.state.loading}
                                                 onPageChange={this.onPageChange}
-                                                currentPage={this.state.currentPage}
-                                                totalElements={this.state.totalElements}
+                                                currentPage={this.state.currentPage + 1}
+                                                totalElements={totalElements}
                                             />
-                                        )
-                                    } */}
-
-                                    <LPagination
-                                        loading={this.state.loading}
-                                        onPageChange={this.onPageChange}
-                                        currentPage={this.state.currentPage + 1}
-                                        totalElements={totalElements}
-                                    />
+                                        </div>
+                                    }
 
                                     {!this.state.loading && !this.state.allElements &&
                                         <div className="loader" style={{ marginBottom: '40px' }}></div>
