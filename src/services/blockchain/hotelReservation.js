@@ -134,4 +134,39 @@ export class HotelReservation {
 		const reservation = await hotelReservationContract.getHotelReservation();
 		return reservation;
 	}
+
+	static async disputeReservation(jsonObj,
+		password,
+		hotelReservationId) {
+
+		if (!jsonObj || !password || !hotelReservationId) {
+			throw new Error(errors.INVALID_PARAMS);
+		}
+
+
+
+		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
+		const gasPrice = await getGasPrice();
+
+		// await fundTransactionAmountIfNeeded(
+		// 	wallet.address,
+		// 	wallet.privateKey,
+		// 	gasConfig.hotelReservation.cancel
+		// );
+
+		const hotelReservationIdBytes = ethers.utils.toUtf8Bytes(hotelReservationId);
+
+		const reservation = await this.getReservation(hotelReservationId);
+		// validateDispute(wallet.address, reservation._customerAddress, reservation._reservationEndDate);
+		// let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
+		// const overrideOptions = {
+		// 	gasLimit: gasConfig.hotelReservation.cancel,
+		// 	gasPrice: gasPrice
+		// };
+
+		// const openDisputeTxHash = await HotelReservationFactoryContractWithWalletInstance.dispute(hotelReservationIdBytes, overrideOptions);
+		const estimate = await HotelReservationFactoryContractWithWalletInstance.estimate.dispute(hotelReservationIdBytes);
+		console.log(estimate)
+		return estimate;
+	}
 }
