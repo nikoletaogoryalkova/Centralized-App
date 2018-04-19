@@ -68,7 +68,7 @@ export class HotelReservation {
 		);
 
 
-		let approve = await approveContract(wallet, reservationCostLOC, HotelReservationFactoryContract.address, gasPrice);
+		await approveContract(wallet, reservationCostLOC, HotelReservationFactoryContract.address, gasPrice);
 
 		let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
 
