@@ -470,7 +470,7 @@ class HotelDetailsPage extends React.Component {
     }
     
     checkNextRoom(allRooms, index, booking) {
-        if (index > allRooms.length) {
+        if (index >= allRooms.length) {
             NotificationManager.warning('Unfortunatelly all rooms in that hotel were already taken, please try another one.', '', 5000);
             const search = this.props.location.search;
             const URL = `/hotels/listings/${search}`;

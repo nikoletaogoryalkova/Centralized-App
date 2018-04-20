@@ -86,7 +86,7 @@ class MultiMarkerGoogleMap extends Component {
 
     render() {
         return (
-            <div ref={(map) => this.map = map} id='hotels-search-map' style={{ height: '470px', marginBottom: '40px' }}></div>
+            <div ref={(map) => this.map = map} id='hotels-search-map' style={{ height: '470px', marginBottom: '80px' }}></div>
         );
     }
 }

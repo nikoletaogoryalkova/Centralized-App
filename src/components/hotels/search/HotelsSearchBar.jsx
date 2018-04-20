@@ -9,6 +9,7 @@ import Select from 'react-select';
 import { getRegionsBySearchParameter } from '../../../requester';
 
 function SearchBar(props) {
+    
 
     // const getAddressComponents = (place) => {
     //     let components = place.address_components;
@@ -58,13 +59,13 @@ function SearchBar(props) {
             });
     };
 
-    // const onInputKeyDown = (event) => {
+    // function onInputKeyDown(event) {
     //     switch (event.keyCode) {
-    //         case 13:
-    //             document.getElementById("btn-search").click();
+    //     case 9:   // TAB
+    //         document.getElementsByName('stay')[0].click();
     //         break;
     //     }
-    // };
+    // }
 
     const { rooms } = props;
 
@@ -72,11 +73,6 @@ function SearchBar(props) {
         <section id="search-bar">
             <form id="search" onSubmit={props.handleSearch}>
                 <div className="form-group has-feedback has-feedback-left search-region" id="location">
-                    {/* <Autocomplete
-                        className="form-control"
-                        onPlaceSelected={handlePlaceSelect}
-                    /> */}
-
                     <Select.Async
                         className="form-control"
                         placeholder="Region..."
@@ -89,12 +85,13 @@ function SearchBar(props) {
                         loadOptions={getRegions}
                         backspaceRemoves={true}
                         arrowRenderer={null}
-                        // onInputKeyDown={onInputKeyDown}
+                        onSelectResetsInput={false}
                     />
 
                 </div>
 
                 <HotelsSearchBarDatePicker
+                    id='search-bar-date-picker'
                     startDate={props.startDate}
                     endDate={props.endDate}
                     onApply={props.handleDatePick}
