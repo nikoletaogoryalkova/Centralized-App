@@ -247,6 +247,8 @@ class HotelsSearchPage extends React.Component {
         queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
         this.props.history.push('/hotels/listings' + queryString);
 
+        const nights = this.calculateNights(this.state.startDate, this.state.endDate);
+
         this.clearFilters();
         this.setState({
             loading: true,
@@ -255,7 +257,8 @@ class HotelsSearchPage extends React.Component {
             listings: [],
             filteredListings: null,
             isFiltered: false,
-            allElements: false
+            allElements: false,
+            nights: nights
         }, () => {
             if (this.clientRef) {
                 this.clientRef.connect();
