@@ -2559,6 +2559,37 @@ input[type="checkbox"].tick:checked+label:after {
     background-position: center;
 }
 
+.marker-hotel {
+    width: 250px;
+    margin-left: 20px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.marker-hotel-thumbnail {
+    width: 250px;
+    height: 140px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+.marker-hotel-title {
+    margin-bottom: 5px;
+}
+
+.marker-hotel-rating {
+    color: #898c8d;
+    font-size: 14px;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.marker-hotel-price {
+    font-weight: bold;
+}
+
 .list-hotel .list-content {
     height: 190px;
     overflow: hidden;

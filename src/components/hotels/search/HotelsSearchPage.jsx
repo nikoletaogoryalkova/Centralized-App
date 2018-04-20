@@ -589,6 +589,11 @@ class HotelsSearchPage extends React.Component {
                                                 lon={this.state.lon}
                                                 hotels={listings}
                                                 isFiltered={this.state.isFiltered}
+                                                locRate={this.state.locRate}
+                                                rates={this.state.rates}
+                                                paymentInfo={this.props.paymentInfo}
+                                                isLogged={this.props.userInfo.isLogged}
+                                                nights={this.state.nights}
                                             />
                                         </div>
                                         : <div>
@@ -630,9 +635,10 @@ class HotelsSearchPage extends React.Component {
 export default withRouter(connect(mapStateToProps)(HotelsSearchPage));
 
 function mapStateToProps(state) {
-    const { paymentInfo } = state;
+    const { paymentInfo, userInfo } = state;
     return {
-        paymentInfo
+        paymentInfo,
+        userInfo
     };
 }
 

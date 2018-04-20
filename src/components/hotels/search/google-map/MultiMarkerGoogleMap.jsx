@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import ReactDOMServer from 'react-dom/server';
+import MarkerInfoWindow from './MarkerInfoWindow';
+import { withRouter } from 'react-router-dom';
+import { ROOMS_XML_CURRENCY } from '../../../../constants/currencies.js';
 
 class MultiMarkerGoogleMap extends Component {
     componentDidMount() {
@@ -78,7 +82,23 @@ class MultiMarkerGoogleMap extends Component {
     }
 
     createInfoWindow(hotel) {
-        const content = `<div class="content">${hotel.name}</div>`;
+        // console.log(hotel);
+        const { locRate, rates, isLogged, nights } = this.props;
+        const { currency, currencySign } = this.props.paymentInfo;
+        const locPrice = ((hotel.price / locRate) / this.props.nights).toFixed(2);
+        const fiatPrice = rates && ((hotel.price * (rates[ROOMS_XML_CURRENCY][currency])) / nights).toFixed(2);
+        
+        const content = ReactDOMServer.renderToString(
+            <MarkerInfoWindow 
+                hotel={hotel}
+                currencySign={currencySign}
+                locPrice={locPrice} 
+                fiatPrice={fiatPrice} 
+                isLogged={isLogged} 
+                search={this.props.location.search}
+            />
+        );
+        
         return new window.google.maps.InfoWindow({
             content: content,
         });
@@ -91,4 +111,4 @@ class MultiMarkerGoogleMap extends Component {
     }
 }
 
-export default MultiMarkerGoogleMap;
+export default withRouter(MultiMarkerGoogleMap);
