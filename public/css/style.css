@@ -399,7 +399,7 @@ button.disabled:hover {
 
 .breadcrumb {
     padding: 30px 15px 30px 0;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     list-style: none;
     background-color: transparent;
     border-radius: 0;
@@ -2494,7 +2494,7 @@ input[type="checkbox"].tick:checked+label:after {
     display: block;
 }
 .list-hotel .carousel-fade {
-    max-height: 185px;
+    max-height: 190px;
     overflow: hidden;
 }
 
@@ -2554,13 +2554,44 @@ input[type="checkbox"].tick:checked+label:after {
 
 .carousel .hotels-item {
     width: 250px;
-    height: 185px;
+    height: 190px;
     background-size: cover;
     background-position: center;
 }
 
+.marker-hotel {
+    width: 250px;
+    margin-left: 20px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.marker-hotel-thumbnail {
+    width: 250px;
+    height: 140px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+.marker-hotel-title {
+    margin-bottom: 5px;
+}
+
+.marker-hotel-rating {
+    color: #898c8d;
+    font-size: 14px;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.marker-hotel-price {
+    font-weight: bold;
+}
+
 .list-hotel .list-content {
-    height: 185px;
+    height: 190px;
     overflow: hidden;
 }
 

@@ -1,6 +1,6 @@
 import Breadcrumb from '../../Breadcrumb';
 // import FilterPanel from './filter/FilterPanel';
-import LPagination from '../../common/LPagination';
+import LPagination, { DEFAULT_PAGE_SIZE } from '../../common/LPagination';
 import HotelItem from './HotelItem';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,12 +10,13 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
+import MultiMarkerGoogleMap from './google-map/MultiMarkerGoogleMap';
 import HotelsSearchBar from './HotelsSearchBar';
 import FilterPanel from './filter/FilterPanel';
 import ChildrenModal from '../modals/ChildrenModal';
 import SockJsClient from 'react-stomp';
 import uuid from 'uuid';
-import _ from 'lodash';
+
 
 import { Config } from '../../../config.js';
 
@@ -40,13 +41,13 @@ class HotelsSearchPage extends React.Component {
             stars: new Array(false, false, false, false, false),
             city: '',
             state: '',
-            searchParams: undefined,
+            searchParams: null,
             listings: [],
-            filteredListings: undefined,
+            filteredListings: null,
+            isFiltered: false,
             loading: true,
-            totalElements: 0,
             currentPage: 0,
-            messages: [],
+            showMap: false,
         };
 
         this.updateParamsMap = this.updateParamsMap.bind(this);
@@ -56,7 +57,6 @@ class HotelsSearchPage extends React.Component {
         this.handleChildrenChange = this.handleChildrenChange.bind(this);
         this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
-        this.handleFilter = this.handleFilter.bind(this);
         this.handleDatePick = this.handleDatePick.bind(this);
         this.toggleFilter = this.toggleFilter.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
@@ -75,18 +75,10 @@ class HotelsSearchPage extends React.Component {
         this.handleOrderBy = this.handleOrderBy.bind(this);
         this.applyFilters = this.applyFilters.bind(this);
         this.handleToggleStar = this.handleToggleStar.bind(this);
+        this.toggleMap = this.toggleMap.bind(this);
     }
 
     componentDidMount() {
-        // testSearch(this.props.location.search).then((json) => {
-        //     console.log(json);
-        //     this.setState({
-        //         listings: json.content, 
-        //         loading: false,
-        //         totalElements: json.totalElements
-        //     });
-        // });
-
         this.getLocRate();
         getCurrencyRates().then((json) => {
             this.setState({ rates: json });
@@ -120,8 +112,19 @@ class HotelsSearchPage extends React.Component {
                 currentPage: page ? Number(page) : 0,
             });
 
+            this.geocoder = new window.google.maps.Geocoder();
             getRegionNameById(regionId).then((json) => {
                 this.setState({ region: json });
+                const address = json.query;
+
+                this.geocoder.geocode({ 'address': address }, (results, status) => {
+                    if (status == window.google.maps.GeocoderStatus.OK) {
+                        this.setState({
+                            lat: results[0].geometry.location.lat(),
+                            lon: results[0].geometry.location.lng(),
+                        });
+                    }
+                });
             });
         }
     }
@@ -131,7 +134,6 @@ class HotelsSearchPage extends React.Component {
             listings: null,
             loading: true,
             currentPage: 0,
-            totalElements: 0
         });
 
         this.clientRef.disconnect();
@@ -213,6 +215,16 @@ class HotelsSearchPage extends React.Component {
             event.preventDefault();
         }
 
+        const address = this.state.region.query;
+        this.geocoder.geocode({ 'address': address }, (results, status) => {
+            if (status == window.google.maps.GeocoderStatus.OK) {
+                this.setState({
+                    lat: results[0].geometry.location.lat(),
+                    lon: results[0].geometry.location.lng(),
+                });
+            }
+        });
+
         this.distributeAdults().then(() => {
             if (this.state.hasChildren) {
                 this.distributeChildren();
@@ -241,8 +253,8 @@ class HotelsSearchPage extends React.Component {
             childrenModal: false,
             currentPage: 0,
             listings: [],
-            filteredListings: undefined,
-            totalElements: 0,
+            filteredListings: null,
+            isFiltered: false,
             allElements: false
         }, () => {
             if (this.clientRef) {
@@ -272,38 +284,6 @@ class HotelsSearchPage extends React.Component {
 
     distributeChildren() {
         this.openModal('childrenModal');
-    }
-
-    // getRooms() {
-    //     return this.state.rooms.map((room) => {
-    //         return {
-    //             adults: room.adults,
-    //             children: room.children.map((age) => { return { age: age}; })
-    //         };
-    //     });
-    // }
-
-    handleFilter(e) {
-        if (e && e.preventDefault) {
-            e.preventDefault();
-        }
-
-        this.setState({
-            listings: null,
-            loading: true
-        });
-
-        let searchTerms = this.getSearchTerms(this.state.searchParams);
-        getListingsByFilter(searchTerms).then(data => {
-            this.setState({
-                listings: data.filteredListings.content,
-                loading: false,
-                totalElements: data.filteredListings.totalElements,
-                countryId: this.getSearchParams().get('countryId'),
-            });
-        });
-        let url = `/hotels/listings/?${searchTerms}`;
-        this.props.history.push(url);
     }
 
     toggleFilter(key, value) {
@@ -444,12 +424,8 @@ class HotelsSearchPage extends React.Component {
     }
 
     handleReceiveSingleHotel(response) {
-        if (this.state.loading) {
-            this.setState({ loading: false });
-        }
-
-        if (response.hasOwnProperty('totalElements')) {
-            this.setState({ totalElements: response.totalElements, allElements: response.allElements });
+        if (response.hasOwnProperty('allElements')) {
+            this.setState({ allElements: response.allElements, loading: !response.allElements });
             if (response.allElements && this.clientRef) {
                 this.clientRef.disconnect();
             }
@@ -473,14 +449,10 @@ class HotelsSearchPage extends React.Component {
             uuid: localStorage.getItem('uuid')
         };
 
-        console.log(msg);
-
         const searchParams = this.getSearchParams(query);
         function addElement(value, key) {
             msg[key] = value;
         }
-
-        console.log(`/app/all/${localStorage.getItem('uuid')}`);
 
         searchParams.forEach(addElement);
         if (this.clientRef) {
@@ -530,7 +502,7 @@ class HotelsSearchPage extends React.Component {
             filteredListings.sort((x, y) => x.price > y.price ? -1 : 1);
         }
 
-        this.setState({ filteredListings, currentPage });
+        this.setState({ filteredListings, currentPage, isFiltered: true });
     }
 
     clearFilters() {
@@ -538,23 +510,29 @@ class HotelsSearchPage extends React.Component {
         const defaultOrderBy = { target: { value: '' } };
         this.handlePriceRangeSelect(defaultPriceRange);
         this.handleOrderBy(defaultOrderBy);
-        this.setState({ stars: [false, false, false, false, false] });
+        this.setState({ stars: [false, false, false, false, false], isFiltered: false });
+    }
+
+    toggleMap() {
+        this.setState(prev => {
+            return { showMap: !prev.showMap };
+        });
     }
 
     render() {
         const listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
 
         const totalElements = listings.length;
-        const startElement = this.state.currentPage * 20;
+        const startElement = this.state.currentPage * DEFAULT_PAGE_SIZE;
 
         let hotelItems;
 
-        if (!listings || this.state.loading === true) {
-            hotelItems = <div className="text-center"><div className="loader"></div><h2 style={{ marginBottom: '80px' }}>Looking for the best rates for your trip...</h2></div>;
-        } else if (listings.length === 0) {
-            hotelItems = <div className="text-center"><h2 style={{ marginBottom: '80px' }}>No Results</h2></div>;
+        if (listings.length === 0 && this.state.loading) {
+            hotelItems = <div className="text-center"><h2 style={{ margin: '80px 0' }}>Looking for the best rates for your trip...</h2></div>;
+        } else if (listings.length === 0 && !this.state.loading) {
+            hotelItems = <div className="text-center"><h2 style={{ margin: '80px 0' }}>No Results</h2></div>;
         } else {
-            hotelItems = listings.slice(startElement, startElement + 20).map((item, i) => {
+            hotelItems = listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE).map((item, i) => {
                 return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} />;
             });
         }
@@ -591,38 +569,42 @@ class HotelsSearchPage extends React.Component {
                                     clearFilters={this.clearFilters}
                                     handleStopSearch={this.handleStopSearch}
                                     handleOrderBy={this.handleOrderBy}
-                                    handleToggleStar={this.handleToggleStar} />
+                                    handleToggleStar={this.handleToggleStar}
+                                />
+                                {this.state.showMap 
+                                    ? <button onClick={this.toggleMap} className="btn btn-primary" style={{ width: '100%', marginBottom: '20px' }}>Show list</button>
+                                    : <button onClick={this.toggleMap} className="btn btn-primary" style={{ width: '100%', marginBottom: '20px' }}>Show on map</button>
+                                }
+                                
+                                {this.state.loading && !this.state.allElements &&
+                                    <div className="loader" style={{ marginBottom: '40px' }}></div>
+                                }
                             </div>
                             <div className="col-md-9">
                                 <div className="list-hotel-box" id="list-hotel-box">
-                                    {/* <ReactCSSTransitionGroup
-                                        transitionName="example"
-                                        transitionEnterTimeout={500}
-                                        transitionLeaveTimeout={0}>
-                                        {hotelItems}
-                                    </ReactCSSTransitionGroup> */}
-                                    {hotelItems}
-                                    {/* {!this.state.loading && 
-                                        (this.state.totalElements <= 20 && !this.state.allElements
-                                            ? <div className="loader" style={{ margin: '20px' }}></div>
-                                            : <LPagination
+                                    {this.state.showMap
+                                        ? <div>
+                                            <MultiMarkerGoogleMap
+                                                lat={this.state.lat}
+                                                lon={this.state.lon}
+                                                hotels={listings}
+                                                isFiltered={this.state.isFiltered}
+                                                locRate={this.state.locRate}
+                                                rates={this.state.rates}
+                                                paymentInfo={this.props.paymentInfo}
+                                                isLogged={this.props.userInfo.isLogged}
+                                                nights={this.state.nights}
+                                            />
+                                        </div>
+                                        : <div>
+                                            {hotelItems}
+                                            <LPagination
                                                 loading={this.state.loading}
                                                 onPageChange={this.onPageChange}
-                                                currentPage={this.state.currentPage}
-                                                totalElements={this.state.totalElements}
+                                                currentPage={this.state.currentPage + 1}
+                                                totalElements={totalElements}
                                             />
-                                        )
-                                    } */}
-
-                                    <LPagination
-                                        loading={this.state.loading}
-                                        onPageChange={this.onPageChange}
-                                        currentPage={this.state.currentPage + 1}
-                                        totalElements={totalElements}
-                                    />
-
-                                    {!this.state.loading && !this.state.allElements &&
-                                        <div className="loader" style={{ marginBottom: '40px' }}></div>
+                                        </div>
                                     }
                                 </div>
                             </div>
@@ -653,9 +635,10 @@ class HotelsSearchPage extends React.Component {
 export default withRouter(connect(mapStateToProps)(HotelsSearchPage));
 
 function mapStateToProps(state) {
-    const { paymentInfo } = state;
+    const { paymentInfo, userInfo } = state;
     return {
-        paymentInfo
+        paymentInfo,
+        userInfo
     };
 }
 
