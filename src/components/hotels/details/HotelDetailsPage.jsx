@@ -49,7 +49,7 @@ class HotelDetailsPage extends React.Component {
             loading: true,
             isShownContactHostModal: false,
             hotelRooms: null,
-            roomLoader: null,
+            loadingRooms: true,
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -87,7 +87,7 @@ class HotelDetailsPage extends React.Component {
         });
 
         getHotelRooms(id, search).then((data) => {
-            this.setState({ hotelRooms: data, roomLoader: false });
+            this.setState({ hotelRooms: data, loadingRooms: false });
         });
 
         this.getLocRate();
@@ -424,7 +424,7 @@ class HotelDetailsPage extends React.Component {
     }
     
     handleBookRoom (roomsResults) {
-        this.setState({ roomLoader: true });
+        this.setState({ loadingRooms: true });
         NotificationManager.info('Checking room availability...');
         const rooms = this.state.rooms.map((room) => {
             const adults = [];
@@ -594,7 +594,7 @@ class HotelDetailsPage extends React.Component {
                                     currencySign={this.props.paymentInfo.currencySign}
                                     handleBookRoom={this.handleBookRoom}
                                     checkAvailability={this.checkAvailability}
-                                    roomLoader={this.state.roomLoader}
+                                    loadingRooms={this.state.loadingRooms}
                                 />
                             </div>
                             <ChildrenModal
