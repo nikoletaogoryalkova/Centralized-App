@@ -6,7 +6,8 @@ import {
 import {
 	validateBookingExists,
 	validateCancellation,
-	validateReservationParams
+	validateReservationParams,
+	validateDispute
 } from "./validators/reservation-validators";
 import {
 	formatEndDateTimestamp,
@@ -143,30 +144,27 @@ export class HotelReservation {
 			throw new Error(errors.INVALID_PARAMS);
 		}
 
-
-
 		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
-		const gasPrice = await getGasPrice();
-
-		// await fundTransactionAmountIfNeeded(
-		// 	wallet.address,
-		// 	wallet.privateKey,
-		// 	gasConfig.hotelReservation.cancel
-		// );
-
 		const hotelReservationIdBytes = ethers.utils.toUtf8Bytes(hotelReservationId);
-
+		const gasPrice = await getGasPrice();
 		const reservation = await this.getReservation(hotelReservationId);
-		// validateDispute(wallet.address, reservation._customerAddress, reservation._reservationEndDate);
-		// let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
-		// const overrideOptions = {
-		// 	gasLimit: gasConfig.hotelReservation.cancel,
-		// 	gasPrice: gasPrice
-		// };
 
-		// const openDisputeTxHash = await HotelReservationFactoryContractWithWalletInstance.dispute(hotelReservationIdBytes, overrideOptions);
-		const estimate = await HotelReservationFactoryContractWithWalletInstance.estimate.dispute(hotelReservationIdBytes);
-		console.log(estimate)
-		return estimate;
+		validateDispute(wallet.address, reservation._customerAddress, reservation._reservationEndDate, reservation._isDisputeOpen);
+
+		await fundTransactionAmountIfNeeded(
+			wallet.address,
+			wallet.privateKey,
+			gasConfig.hotelReservation.dispute
+		);
+
+		let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
+		const overrideOptions = {
+			gasLimit: gasConfig.hotelReservation.dispute,
+			gasPrice: gasPrice
+		};
+
+		const openDisputeTxHash = await HotelReservationFactoryContractWithWalletInstance.dispute(hotelReservationIdBytes, overrideOptions);
+
+		return openDisputeTxHash;
 	}
 }

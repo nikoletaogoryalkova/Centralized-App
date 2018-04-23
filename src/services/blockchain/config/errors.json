@@ -50,5 +50,6 @@
   "INVALID_REFUND_PARAMS_LENGTH": "Refund arrays are with different length",
   "INVALID_REFUND_DAYS_ARRAY": "Refund days array is not sorted right",
   "INVALID_REFUND_PARAMS": "Refund parameters are not correct",
-  "INVALID_DISPUTE": "Its not allowed to open a dispute"
+  "INVALID_DISPUTE": "Its not allowed to open a dispute",
+  "ALREADY_OPENED_DISPUTE": "Dispute for this reservation is already opened"
 }

@@ -146,14 +146,17 @@ export function validateCancellation(refundPercentages,
 	return true;
 }
 
-export function validateDispute(senderAddress, customerAddress, reservationEndDate) {
+export function validateDispute(senderAddress, customerAddress, reservationEndDate, isDisputeOpen) {
 
 	customerAddress = customerAddress.toLowerCase();
 	senderAddress = senderAddress.toLowerCase();
 	const currentTimestamp = Date.now() / 1000 | 0;
+	if (customerAddress !== senderAddress || currentTimestamp <= reservationEndDate) {
+		throw new Error(ERROR.INVALID_DISPUTE);
+	}
 
-	if (customerAddress !== senderAddress || currentTimestamp < reservationEndDate) {
-		throw new Error(ERROR.INVALID_DISPUTE)
+	if (isDisputeOpen == true) {
+		throw new Error(ERROR.ALREADY_OPENED_DISPUTE);
 	}
 	return true;
 }
