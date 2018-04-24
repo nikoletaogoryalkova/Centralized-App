@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import DeletionModal from "../../common/modals/DeletionModal";
+import DeletionModal from '../../common/modals/DeletionModal';
 import filterListings from '../../../actions/filterListings';
 
 export default class ListingRow extends React.Component {
@@ -58,7 +58,7 @@ export default class ListingRow extends React.Component {
                     <div className="col-md-1">
                         <div className="reservation-image-box">
                             <span className="session-nav-user-thumb"><img src={this.props.listing.thumbnail}
-                                                                          alt="listing-thumbnail"/></span>
+                                alt="listing-thumbnail" /></span>
                         </div>
                     </div>
                     <div className="col-md-4">
@@ -68,20 +68,21 @@ export default class ListingRow extends React.Component {
                         <span>{this.props.listing.defaultDailyPrice}</span>
                     </div>
                     <div className="col-md-3">
-                        { this.state.isPublishing ?
+                        {this.state.isPublishing ?
                             <div className="loader" style={{ width: 110 }}></div> :
                             <div><a className={this.props.actionClass}
                                 onClick={() => {
                                     this.setState({ isPublishing: true });
                                     this.props.updateListingStatus(this.props.listing.id);
                                 }}>{this.props.action}</a>
-                            &nbsp;
+                                &nbsp;
                             {this.props.canDelete &&
-                                <a className="btn btn-danger"
-                                    onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
-                                    Delete
-                                </a>
-                            }</div>
+                                    <a className="btn btn-danger"
+                                        onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
+                                        Delete
+                                    </a>
+                            }
+                            </div>
                         }
                     </div>
                     <div className="col-md-2">
