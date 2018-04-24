@@ -1,6 +1,6 @@
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
+import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap/lib';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import ChangePasswordModal from './modals/ChangePasswordModal';
 import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
@@ -382,8 +382,8 @@ class MainNav extends React.Component {
                         </Navbar.Header>
 
                         <Navbar.Collapse>
-                            {localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] ?
-                                <Nav>
+                            {localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] 
+                                ? <Nav>
                                     <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                     <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
                                     <NavItem componentClass={Link} href="/profile/wallet" to="/profile/wallet">Wallet</NavItem>
@@ -398,10 +398,10 @@ class MainNav extends React.Component {
                                         <MenuItem componentClass={Link} href="/profile/dashboard/#profile-dashboard-reviews" to="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
                                         <MenuItem componentClass={Link} className="header" href="/" to="/" onClick={this.logout}>Logout<img src={Config.getValue('basePath') + 'images/icon-dropdown/icon-logout.png'} style={{ top: 25 + 'px' }} alt="logout" /></MenuItem>
                                     </NavDropdown>
-                                </Nav> :
-                                <Nav pullRight>
-                                    <MenuItem componentClass={Link} to="/login" onClick={() => this.openModal(LOGIN)}>Login</MenuItem>
-                                    <MenuItem componentClass={Link} to="/signup" onClick={() => this.openModal(REGISTER)}>Register</MenuItem>
+                                </Nav> 
+                                : <Nav pullRight={true}>
+                                    <NavItem componentClass={Link} to="/login" onClick={() => this.openModal(LOGIN)}>Login</NavItem>
+                                    <NavItem componentClass={Link} to="/signup" onClick={() => this.openModal(REGISTER)}>Register</NavItem>
                                 </Nav>
                             }
                         </Navbar.Collapse>

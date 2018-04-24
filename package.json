@@ -57,6 +57,7 @@
     "redux": "^3.7.2",
     "scrypt": "^6.0.3",
     "searchkit": "^2.3.0",
+    "source-map-explorer": "^1.5.0",
     "superagent": "^3.8.2",
     "toggle-selection": "^1.0.6",
     "uuid": "^3.2.1",
@@ -64,6 +65,7 @@
     "web3": "^1.0.0-beta.30"
   },
   "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
     "start": "sh -ac '. ./.env; react-scripts start'",
     "start-dev": "sh -ac '. ./.env.development; react-scripts start'",
     "build": "react-scripts build",
