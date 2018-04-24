@@ -46,6 +46,8 @@ export default class ListingRow extends React.Component {
     render() {
         return (
             <div key={this.props.listing.id} className="row reservation-box">
+                
+                {/* TODO: Extract modal to parent page, as it now creates modal for each row (performance hit) */}
                 <DeletionModal
                     deletingName={this.state.deletingName}
                     filterListings={this.filterListings}

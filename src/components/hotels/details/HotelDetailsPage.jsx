@@ -505,7 +505,7 @@ class HotelDetailsPage extends React.Component {
             images = null;
             if (this.state.data.hotelPhotos !== undefined) {
                 images = this.state.data.hotelPhotos.map(x => {
-                    return { src: Config.getValue('imgHost') + x.externalUrl };
+                    return { src: Config.getValue('imgHost') + x.url };
                 });
             }
         }
