@@ -489,7 +489,7 @@ export async function getRegionNameById(id) {
 }
 
 export async function getEmailFreeResponse(email) {
-    email = email || 'info@lockchain.co';
+    email = email || 'info@locktrip.com';
     return sendRequest(`${host}users/email/${encodeURIComponent(email.replace(/\./g, '&#46;')).replace(/%26%2346%3B/g, '.')}/`, RequestMethod.GET).then(res => {
         return res.response.json();
     });

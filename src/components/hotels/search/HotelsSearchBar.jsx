@@ -145,7 +145,7 @@ function SearchBar(props) {
                         </select> */}
                     </div>
                 </div>
-                <button className="btn btn-primary" id="btn-search">Search</button>
+                <button type="submit" className="btn btn-primary" id="btn-search">Search</button>
             </form>
         </section>
     );

@@ -93,11 +93,7 @@ class HotelsHomePage extends React.Component {
         });
     }
 
-    redirectToSearchPage(event) {
-        if (event) {
-            event.preventDefault();
-        }
-
+    redirectToSearchPage() {
         let queryString = '?';
         queryString += 'region=' + this.state.region.id;
         queryString += '&currency=' + this.props.paymentInfo.currency;
