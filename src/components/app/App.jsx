@@ -29,7 +29,7 @@ class App extends React.Component {
     }
 
     isAuthenticated() {
-        let token = localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+        let token = localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip');
         if (token) {
             return true;
         }

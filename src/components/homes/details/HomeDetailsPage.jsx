@@ -115,7 +115,7 @@ class HomeDetailsPage extends React.Component {
     }
 
     getUserInfo() {
-        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
             getCurrentLoggedInUserInfo()
                 .then(res => {
                     this.setState({

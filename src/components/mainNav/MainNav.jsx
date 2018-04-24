@@ -90,7 +90,7 @@ class MainNav extends React.Component {
     componentDidMount() {
         // if localStorage data shows that user is logged in, then setIsLogged(true) in Redux
         if (
-            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] &&
+            localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] &&
             localStorage[Config.getValue('domainPrefix') + '.auth.username']
         ) this.setUserInfo();
 
@@ -159,7 +159,7 @@ class MainNav extends React.Component {
             if (res.success) {
                 res.response.json().then((data) => {
 
-                    localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = data.Authorization;
+                    localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
                     localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
@@ -173,7 +173,7 @@ class MainNav extends React.Component {
         
                             this.closeModal(LOGIN);
                         } else {
-                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
                             this.openModal(CREATE_WALLET);
                             this.closeModal(LOGIN);
@@ -196,7 +196,7 @@ class MainNav extends React.Component {
     }
 
     setUserInfo() {
-        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
             try {
                 getCurrentLoggedInUserInfo().then(res => {
                     Wallet.getBalance(res.locAddress).then(x => {
@@ -218,7 +218,7 @@ class MainNav extends React.Component {
     logout(e) {
         e.preventDefault();
 
-        localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+        localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
 
         // reflect that the user is logged out, both in Redux and in the local component state
@@ -253,7 +253,7 @@ class MainNav extends React.Component {
     }
 
     getCountOfMessages() {
-        if (localStorage[Config.getValue('domainPrefix') + '.auth.lockchain']) {
+        if (localStorage[Config.getValue('domainPrefix') + '.auth.locktrip']) {
             getCountOfUnreadMessages().then(data => {
                 this.setState({ unreadMessages: data.count });
             });
@@ -319,7 +319,7 @@ class MainNav extends React.Component {
         if (this.state.userName !== '' && this.state.userToken !== '') {
             if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
                 // Set user token in localstorage se getCurrentLoggedInUserInfo can fetch user info 
-                localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = this.state.userToken;
                 localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
                 getCurrentLoggedInUserInfo().then(info => {
                     let userInfo = {
@@ -339,10 +339,10 @@ class MainNav extends React.Component {
                     updateUserInfo(userInfo, token).then((res) => {
                         if (res.success) {
                             NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
-                            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                            localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = this.state.userToken;
                             localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
                         } else {
-                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
                             NotificationManager.error(PROFILE_UPDATE_ERROR);
                         }
@@ -382,7 +382,7 @@ class MainNav extends React.Component {
                         </Navbar.Header>
 
                         <Navbar.Collapse>
-                            {localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] ?
+                            {localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] ?
                                 <Nav>
                                     <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                     <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>

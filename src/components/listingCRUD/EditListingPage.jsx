@@ -32,7 +32,7 @@ import request from 'superagent';
 import update from 'react-addons-update';
 
 const host = Config.getValue('apiHost');
-const LOCKCHAIN_UPLOAD_URL = `${host}images/upload`;
+const LOCKTRIP_UPLOAD_URL = `${host}images/upload`;
 
 const steps = {
     '1': 'landing',
@@ -513,7 +513,7 @@ class EditListingPage extends React.Component {
 
     handleImageUpload(files) {
         files.forEach((file) => {
-            let upload = request.post(LOCKCHAIN_UPLOAD_URL)
+            let upload = request.post(LOCKTRIP_UPLOAD_URL)
                 .field('image', file);
 
 

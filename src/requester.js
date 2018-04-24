@@ -13,8 +13,8 @@ const RequestMethod = {
 function getHeaders(headers = null) {
 
     headers = headers || {};
-    if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-        headers['Authorization'] = localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'];
+    if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
+        headers['Authorization'] = localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'];
     }
     return headers;
 }
@@ -63,7 +63,7 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
                 return {
                     response: res.json().then(r => {
                         if (r.errors && r.errors['ExpiredJwt']) {
-                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
                             window.location.reload();
                         }
