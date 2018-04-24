@@ -11,10 +11,8 @@ function ListingItemPictureCarousel(props) {
     if (!pictures) {
         return <div className="loader"></div>;
     }
-    
-    if (typeof props.pictures === 'string') {
-        pictures = JSON.parse(props.pictures);
-    }
+
+    console.log(pictures)
 
     const getCarouselItem = (item, i) => {
         if (listingsType === 'homes') {
