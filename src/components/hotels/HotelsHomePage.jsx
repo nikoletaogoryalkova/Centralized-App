@@ -81,7 +81,7 @@ class HotelsHomePage extends React.Component {
     
     handleSearch(event) {
         if (event) {
-            event.persist();
+            event.preventDefault();
         }
 
         this.distributeAdults().then(() => {
