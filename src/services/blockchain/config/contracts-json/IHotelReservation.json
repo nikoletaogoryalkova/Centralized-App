@@ -362,7 +362,7 @@
       "absolutePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/HotelReservation/IHotelReservation.sol",
       "exportedSymbols": {
         "IHotelReservation": [
-          2155
+          1609
         ]
       }
     },
@@ -375,41 +375,41 @@
             ".17"
           ]
         },
-        "id": 2018,
+        "id": 1472,
         "name": "PragmaDirective",
-        "src": "0:24:8"
+        "src": "0:24:4"
       },
       {
         "attributes": {
-          "SourceUnit": 6727,
+          "SourceUnit": 2124,
           "absolutePath": "/Users/martingrigorov/Work/Projects/LockChain/DApp/contracts/Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol",
           "file": "./../Upgradeability/OwnableUpgradeableImplementation/IOwnableUpgradeableImplementation.sol",
-          "scope": 2156,
+          "scope": 1610,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 2019,
+        "id": 1473,
         "name": "ImportDirective",
-        "src": "26:100:8"
+        "src": "26:100:4"
       },
       {
         "attributes": {
           "contractDependencies": [
-            3490,
-            6726
+            1620,
+            2123
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": false,
           "linearizedBaseContracts": [
-            2155,
-            6726,
-            3490
+            1609,
+            2123,
+            1620
           ],
           "name": "IHotelReservation",
-          "scope": 2156
+          "scope": 1610
         },
         "children": [{
             "attributes": {
@@ -421,16 +421,16 @@
               "attributes": {
                 "contractScope": null,
                 "name": "IOwnableUpgradeableImplementation",
-                "referencedDeclaration": 6726,
+                "referencedDeclaration": 2123,
                 "type": "contract IOwnableUpgradeableImplementation"
               },
-              "id": 2020,
+              "id": 1474,
               "name": "UserDefinedTypeName",
-              "src": "158:33:8"
+              "src": "158:33:4"
             }],
-            "id": 2021,
+            "id": 1475,
             "name": "InheritanceSpecifier",
-            "src": "158:33:8"
+            "src": "158:33:4"
           },
           {
             "attributes": {
@@ -443,7 +443,7 @@
                     "constant": false,
                     "indexed": false,
                     "name": "_hotelReservationId",
-                    "scope": 2031,
+                    "scope": 1485,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "bytes32",
@@ -455,20 +455,20 @@
                       "name": "bytes32",
                       "type": "bytes32"
                     },
-                    "id": 2022,
+                    "id": 1476,
                     "name": "ElementaryTypeName",
-                    "src": "227:7:8"
+                    "src": "227:7:4"
                   }],
-                  "id": 2023,
+                  "id": 1477,
                   "name": "VariableDeclaration",
-                  "src": "227:27:8"
+                  "src": "227:27:4"
                 },
                 {
                   "attributes": {
                     "constant": false,
                     "indexed": false,
                     "name": "_customerAddress",
-                    "scope": 2031,
+                    "scope": 1485,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "address",
@@ -480,20 +480,20 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 2024,
+                    "id": 1478,
                     "name": "ElementaryTypeName",
-                    "src": "256:7:8"
+                    "src": "256:7:4"
                   }],
-                  "id": 2025,
+                  "id": 1479,
                   "name": "VariableDeclaration",
-                  "src": "256:24:8"
+                  "src": "256:24:4"
                 },
                 {
                   "attributes": {
                     "constant": false,
                     "indexed": false,
                     "name": "_reservationStartDate",
-                    "scope": 2031,
+                    "scope": 1485,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "uint256",
@@ -505,20 +505,20 @@
                       "name": "uint",
                       "type": "uint256"
                     },
-                    "id": 2026,
+                    "id": 1480,
                     "name": "ElementaryTypeName",
-                    "src": "282:4:8"
+                    "src": "282:4:4"
                   }],
-                  "id": 2027,
+                  "id": 1481,
                   "name": "VariableDeclaration",
-                  "src": "282:26:8"
+                  "src": "282:26:4"
                 },
                 {
                   "attributes": {
                     "constant": false,
                     "indexed": false,
                     "name": "_reservationEndDate",
-                    "scope": 2031,
+                    "scope": 1485,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "uint256",
@@ -530,22 +530,22 @@
                       "name": "uint",
                       "type": "uint256"
                     },
-                    "id": 2028,
+                    "id": 1482,
                     "name": "ElementaryTypeName",
-                    "src": "310:4:8"
+                    "src": "310:4:4"
                   }],
-                  "id": 2029,
+                  "id": 1483,
                   "name": "VariableDeclaration",
-                  "src": "310:24:8"
+                  "src": "310:24:4"
                 }
               ],
-              "id": 2030,
+              "id": 1484,
               "name": "ParameterList",
-              "src": "226:109:8"
+              "src": "226:109:4"
             }],
-            "id": 2031,
+            "id": 1485,
             "name": "EventDefinition",
-            "src": "195:141:8"
+            "src": "195:141:4"
           },
           {
             "attributes": {
@@ -558,7 +558,7 @@
                     "constant": false,
                     "indexed": false,
                     "name": "_hotelReservationId",
-                    "scope": 2037,
+                    "scope": 1491,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "bytes32",
@@ -570,20 +570,20 @@
                       "name": "bytes32",
                       "type": "bytes32"
                     },
-                    "id": 2032,
+                    "id": 1486,
                     "name": "ElementaryTypeName",
-                    "src": "369:7:8"
+                    "src": "369:7:4"
                   }],
-                  "id": 2033,
+                  "id": 1487,
                   "name": "VariableDeclaration",
-                  "src": "369:27:8"
+                  "src": "369:27:4"
                 },
                 {
                   "attributes": {
                     "constant": false,
                     "indexed": false,
                     "name": "_customerAddress",
-                    "scope": 2037,
+                    "scope": 1491,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "address",
@@ -595,22 +595,22 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 2034,
+                    "id": 1488,
                     "name": "ElementaryTypeName",
-                    "src": "398:7:8"
+                    "src": "398:7:4"
                   }],
-                  "id": 2035,
+                  "id": 1489,
                   "name": "VariableDeclaration",
-                  "src": "398:24:8"
+                  "src": "398:24:4"
                 }
               ],
-              "id": 2036,
+              "id": 1490,
               "name": "ParameterList",
-              "src": "368:55:8"
+              "src": "368:55:4"
             }],
-            "id": 2037,
+            "id": 1491,
             "name": "EventDefinition",
-            "src": "337:87:8"
+            "src": "337:87:4"
           },
           {
             "attributes": {
@@ -623,7 +623,7 @@
               ],
               "name": "createHotelReservation",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -633,7 +633,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_hotelReservationId",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -645,19 +645,19 @@
                         "name": "bytes32",
                         "type": "bytes32"
                       },
-                      "id": 2038,
+                      "id": 1492,
                       "name": "ElementaryTypeName",
-                      "src": "462:7:8"
+                      "src": "462:7:4"
                     }],
-                    "id": 2039,
+                    "id": 1493,
                     "name": "VariableDeclaration",
-                    "src": "462:27:8"
+                    "src": "462:27:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "customerAddress",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -669,19 +669,19 @@
                         "name": "address",
                         "type": "address"
                       },
-                      "id": 2040,
+                      "id": 1494,
                       "name": "ElementaryTypeName",
-                      "src": "493:7:8"
+                      "src": "493:7:4"
                     }],
-                    "id": 2041,
+                    "id": 1495,
                     "name": "VariableDeclaration",
-                    "src": "493:23:8"
+                    "src": "493:23:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationCostLOC",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -693,19 +693,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2042,
+                      "id": 1496,
                       "name": "ElementaryTypeName",
-                      "src": "520:4:8"
+                      "src": "520:4:4"
                     }],
-                    "id": 2043,
+                    "id": 1497,
                     "name": "VariableDeclaration",
-                    "src": "520:24:8"
+                    "src": "520:24:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationStartDate",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -717,19 +717,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2044,
+                      "id": 1498,
                       "name": "ElementaryTypeName",
-                      "src": "548:4:8"
+                      "src": "548:4:4"
                     }],
-                    "id": 2045,
+                    "id": 1499,
                     "name": "VariableDeclaration",
-                    "src": "548:26:8"
+                    "src": "548:26:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationEndDate",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -741,19 +741,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2046,
+                      "id": 1500,
                       "name": "ElementaryTypeName",
-                      "src": "578:4:8"
+                      "src": "578:4:4"
                     }],
-                    "id": 2047,
+                    "id": 1501,
                     "name": "VariableDeclaration",
-                    "src": "578:24:8"
+                    "src": "578:24:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_daysBeforeStartForRefund",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256[] memory",
@@ -770,23 +770,23 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 2048,
+                        "id": 1502,
                         "name": "ElementaryTypeName",
-                        "src": "606:4:8"
+                        "src": "606:4:4"
                       }],
-                      "id": 2049,
+                      "id": 1503,
                       "name": "ArrayTypeName",
-                      "src": "606:6:8"
+                      "src": "606:6:4"
                     }],
-                    "id": 2050,
+                    "id": 1504,
                     "name": "VariableDeclaration",
-                    "src": "606:32:8"
+                    "src": "606:32:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_refundPercentages",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256[] memory",
@@ -803,23 +803,23 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 2051,
+                        "id": 1505,
                         "name": "ElementaryTypeName",
-                        "src": "642:4:8"
+                        "src": "642:4:4"
                       }],
-                      "id": 2052,
+                      "id": 1506,
                       "name": "ArrayTypeName",
-                      "src": "642:6:8"
+                      "src": "642:6:4"
                     }],
-                    "id": 2053,
+                    "id": 1507,
                     "name": "VariableDeclaration",
-                    "src": "642:25:8"
+                    "src": "642:25:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_hotelId",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -831,19 +831,19 @@
                         "name": "bytes32",
                         "type": "bytes32"
                       },
-                      "id": 2054,
+                      "id": 1508,
                       "name": "ElementaryTypeName",
-                      "src": "671:7:8"
+                      "src": "671:7:4"
                     }],
-                    "id": 2055,
+                    "id": 1509,
                     "name": "VariableDeclaration",
-                    "src": "671:16:8"
+                    "src": "671:16:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_roomId",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -855,19 +855,19 @@
                         "name": "bytes32",
                         "type": "bytes32"
                       },
-                      "id": 2056,
+                      "id": 1510,
                       "name": "ElementaryTypeName",
-                      "src": "691:7:8"
+                      "src": "691:7:4"
                     }],
-                    "id": 2057,
+                    "id": 1511,
                     "name": "VariableDeclaration",
-                    "src": "691:15:8"
+                    "src": "691:15:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_numberOfTravelers",
-                      "scope": 2064,
+                      "scope": 1518,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -879,25 +879,25 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2058,
+                      "id": 1512,
                       "name": "ElementaryTypeName",
-                      "src": "710:4:8"
+                      "src": "710:4:4"
                     }],
-                    "id": 2059,
+                    "id": 1513,
                     "name": "VariableDeclaration",
-                    "src": "710:23:8"
+                    "src": "710:23:4"
                   }
                 ],
-                "id": 2060,
+                "id": 1514,
                 "name": "ParameterList",
-                "src": "458:278:8"
+                "src": "458:278:4"
               },
               {
                 "children": [{
                   "attributes": {
                     "constant": false,
                     "name": "success",
-                    "scope": 2064,
+                    "scope": 1518,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "bool",
@@ -909,22 +909,22 @@
                       "name": "bool",
                       "type": "bool"
                     },
-                    "id": 2061,
+                    "id": 1515,
                     "name": "ElementaryTypeName",
-                    "src": "753:4:8"
+                    "src": "753:4:4"
                   }],
-                  "id": 2062,
+                  "id": 1516,
                   "name": "VariableDeclaration",
-                  "src": "753:12:8"
+                  "src": "753:12:4"
                 }],
-                "id": 2063,
+                "id": 1517,
                 "name": "ParameterList",
-                "src": "752:14:8"
+                "src": "752:14:4"
               }
             ],
-            "id": 2064,
+            "id": 1518,
             "name": "FunctionDefinition",
-            "src": "427:340:8"
+            "src": "427:340:4"
           },
           {
             "attributes": {
@@ -937,7 +937,7 @@
               ],
               "name": "getHotelReservation",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -949,16 +949,16 @@
                   ]
                 },
                 "children": [],
-                "id": 2065,
+                "id": 1519,
                 "name": "ParameterList",
-                "src": "798:2:8"
+                "src": "798:2:4"
               },
               {
                 "children": [{
                     "attributes": {
                       "constant": false,
                       "name": "_hotelReservationId",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -970,19 +970,19 @@
                         "name": "bytes32",
                         "type": "bytes32"
                       },
-                      "id": 2066,
+                      "id": 1520,
                       "name": "ElementaryTypeName",
-                      "src": "826:7:8"
+                      "src": "826:7:4"
                     }],
-                    "id": 2067,
+                    "id": 1521,
                     "name": "VariableDeclaration",
-                    "src": "826:27:8"
+                    "src": "826:27:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_customerAddress",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -994,19 +994,19 @@
                         "name": "address",
                         "type": "address"
                       },
-                      "id": 2068,
+                      "id": 1522,
                       "name": "ElementaryTypeName",
-                      "src": "857:7:8"
+                      "src": "857:7:4"
                     }],
-                    "id": 2069,
+                    "id": 1523,
                     "name": "VariableDeclaration",
-                    "src": "857:24:8"
+                    "src": "857:24:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationCostLOC",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1018,19 +1018,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2070,
+                      "id": 1524,
                       "name": "ElementaryTypeName",
-                      "src": "885:4:8"
+                      "src": "885:4:4"
                     }],
-                    "id": 2071,
+                    "id": 1525,
                     "name": "VariableDeclaration",
-                    "src": "885:24:8"
+                    "src": "885:24:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationStartDate",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1042,19 +1042,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2072,
+                      "id": 1526,
                       "name": "ElementaryTypeName",
-                      "src": "913:4:8"
+                      "src": "913:4:4"
                     }],
-                    "id": 2073,
+                    "id": 1527,
                     "name": "VariableDeclaration",
-                    "src": "913:26:8"
+                    "src": "913:26:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_reservationEndDate",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1066,19 +1066,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2074,
+                      "id": 1528,
                       "name": "ElementaryTypeName",
-                      "src": "943:4:8"
+                      "src": "943:4:4"
                     }],
-                    "id": 2075,
+                    "id": 1529,
                     "name": "VariableDeclaration",
-                    "src": "943:24:8"
+                    "src": "943:24:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_daysBeforeStartForRefund",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256[] memory",
@@ -1095,23 +1095,23 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 2076,
+                        "id": 1530,
                         "name": "ElementaryTypeName",
-                        "src": "971:4:8"
+                        "src": "971:4:4"
                       }],
-                      "id": 2077,
+                      "id": 1531,
                       "name": "ArrayTypeName",
-                      "src": "971:6:8"
+                      "src": "971:6:4"
                     }],
-                    "id": 2078,
+                    "id": 1532,
                     "name": "VariableDeclaration",
-                    "src": "971:32:8"
+                    "src": "971:32:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_refundPercentages",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256[] memory",
@@ -1128,23 +1128,23 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 2079,
+                        "id": 1533,
                         "name": "ElementaryTypeName",
-                        "src": "1007:4:8"
+                        "src": "1007:4:4"
                       }],
-                      "id": 2080,
+                      "id": 1534,
                       "name": "ArrayTypeName",
-                      "src": "1007:6:8"
+                      "src": "1007:6:4"
                     }],
-                    "id": 2081,
+                    "id": 1535,
                     "name": "VariableDeclaration",
-                    "src": "1007:25:8"
+                    "src": "1007:25:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_hotelId",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -1156,19 +1156,19 @@
                         "name": "bytes32",
                         "type": "bytes32"
                       },
-                      "id": 2082,
+                      "id": 1536,
                       "name": "ElementaryTypeName",
-                      "src": "1036:7:8"
+                      "src": "1036:7:4"
                     }],
-                    "id": 2083,
+                    "id": 1537,
                     "name": "VariableDeclaration",
-                    "src": "1036:16:8"
+                    "src": "1036:16:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_roomId",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -1180,19 +1180,19 @@
                         "name": "bytes32",
                         "type": "bytes32"
                       },
-                      "id": 2084,
+                      "id": 1538,
                       "name": "ElementaryTypeName",
-                      "src": "1056:7:8"
+                      "src": "1056:7:4"
                     }],
-                    "id": 2085,
+                    "id": 1539,
                     "name": "VariableDeclaration",
-                    "src": "1056:15:8"
+                    "src": "1056:15:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_numberOfTravelers",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1204,19 +1204,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2086,
+                      "id": 1540,
                       "name": "ElementaryTypeName",
-                      "src": "1076:4:8"
+                      "src": "1076:4:4"
                     }],
-                    "id": 2087,
+                    "id": 1541,
                     "name": "VariableDeclaration",
-                    "src": "1076:23:8"
+                    "src": "1076:23:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_isDisputeOpen",
-                      "scope": 2091,
+                      "scope": 1545,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bool",
@@ -1228,23 +1228,23 @@
                         "name": "bool",
                         "type": "bool"
                       },
-                      "id": 2088,
+                      "id": 1542,
                       "name": "ElementaryTypeName",
-                      "src": "1103:4:8"
+                      "src": "1103:4:4"
                     }],
-                    "id": 2089,
+                    "id": 1543,
                     "name": "VariableDeclaration",
-                    "src": "1103:19:8"
+                    "src": "1103:19:4"
                   }
                 ],
-                "id": 2090,
+                "id": 1544,
                 "name": "ParameterList",
-                "src": "822:301:8"
+                "src": "822:301:4"
               }
             ],
-            "id": 2091,
+            "id": 1545,
             "name": "FunctionDefinition",
-            "src": "770:354:8"
+            "src": "770:354:4"
           },
           {
             "attributes": {
@@ -1257,7 +1257,7 @@
               ],
               "name": "validateCancelation",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1267,7 +1267,7 @@
                   "attributes": {
                     "constant": false,
                     "name": "_customerAddress",
-                    "scope": 2098,
+                    "scope": 1552,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "address",
@@ -1279,24 +1279,24 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 2092,
+                    "id": 1546,
                     "name": "ElementaryTypeName",
-                    "src": "1156:7:8"
+                    "src": "1156:7:4"
                   }],
-                  "id": 2093,
+                  "id": 1547,
                   "name": "VariableDeclaration",
-                  "src": "1156:24:8"
+                  "src": "1156:24:4"
                 }],
-                "id": 2094,
+                "id": 1548,
                 "name": "ParameterList",
-                "src": "1155:26:8"
+                "src": "1155:26:4"
               },
               {
                 "children": [{
                   "attributes": {
                     "constant": false,
                     "name": "success",
-                    "scope": 2098,
+                    "scope": 1552,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "bool",
@@ -1308,22 +1308,22 @@
                       "name": "bool",
                       "type": "bool"
                     },
-                    "id": 2095,
+                    "id": 1549,
                     "name": "ElementaryTypeName",
-                    "src": "1203:4:8"
+                    "src": "1203:4:4"
                   }],
-                  "id": 2096,
+                  "id": 1550,
                   "name": "VariableDeclaration",
-                  "src": "1203:12:8"
+                  "src": "1203:12:4"
                 }],
-                "id": 2097,
+                "id": 1551,
                 "name": "ParameterList",
-                "src": "1202:14:8"
+                "src": "1202:14:4"
               }
             ],
-            "id": 2098,
+            "id": 1552,
             "name": "FunctionDefinition",
-            "src": "1127:90:8"
+            "src": "1127:90:4"
           },
           {
             "attributes": {
@@ -1336,7 +1336,7 @@
               ],
               "name": "validateRefundForCreation",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1346,7 +1346,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_daysBeforeStartForRefund",
-                      "scope": 2109,
+                      "scope": 1563,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256[] memory",
@@ -1363,23 +1363,23 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 2099,
+                        "id": 1553,
                         "name": "ElementaryTypeName",
-                        "src": "1254:4:8"
+                        "src": "1254:4:4"
                       }],
-                      "id": 2100,
+                      "id": 1554,
                       "name": "ArrayTypeName",
-                      "src": "1254:6:8"
+                      "src": "1254:6:4"
                     }],
-                    "id": 2101,
+                    "id": 1555,
                     "name": "VariableDeclaration",
-                    "src": "1254:32:8"
+                    "src": "1254:32:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_refundPercentages",
-                      "scope": 2109,
+                      "scope": 1563,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256[] memory",
@@ -1396,23 +1396,23 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 2102,
+                        "id": 1556,
                         "name": "ElementaryTypeName",
-                        "src": "1288:4:8"
+                        "src": "1288:4:4"
                       }],
-                      "id": 2103,
+                      "id": 1557,
                       "name": "ArrayTypeName",
-                      "src": "1288:6:8"
+                      "src": "1288:6:4"
                     }],
-                    "id": 2104,
+                    "id": 1558,
                     "name": "VariableDeclaration",
-                    "src": "1288:25:8"
+                    "src": "1288:25:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_startDate",
-                      "scope": 2109,
+                      "scope": 1563,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1424,18 +1424,18 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2105,
+                      "id": 1559,
                       "name": "ElementaryTypeName",
-                      "src": "1315:4:8"
+                      "src": "1315:4:4"
                     }],
-                    "id": 2106,
+                    "id": 1560,
                     "name": "VariableDeclaration",
-                    "src": "1315:15:8"
+                    "src": "1315:15:4"
                   }
                 ],
-                "id": 2107,
+                "id": 1561,
                 "name": "ParameterList",
-                "src": "1253:78:8"
+                "src": "1253:78:4"
               },
               {
                 "attributes": {
@@ -1444,14 +1444,14 @@
                   ]
                 },
                 "children": [],
-                "id": 2108,
+                "id": 1562,
                 "name": "ParameterList",
-                "src": "1343:0:8"
+                "src": "1343:0:4"
               }
             ],
-            "id": 2109,
+            "id": 1563,
             "name": "FunctionDefinition",
-            "src": "1219:125:8"
+            "src": "1219:125:4"
           },
           {
             "attributes": {
@@ -1464,7 +1464,7 @@
               ],
               "name": "getLocToBeRefunded",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1476,16 +1476,16 @@
                   ]
                 },
                 "children": [],
-                "id": 2110,
+                "id": 1564,
                 "name": "ParameterList",
-                "src": "1373:2:8"
+                "src": "1373:2:4"
               },
               {
                 "children": [{
                     "attributes": {
                       "constant": false,
                       "name": "_locToBeRefunded",
-                      "scope": 2116,
+                      "scope": 1570,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1497,19 +1497,19 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2111,
+                      "id": 1565,
                       "name": "ElementaryTypeName",
-                      "src": "1397:4:8"
+                      "src": "1397:4:4"
                     }],
-                    "id": 2112,
+                    "id": 1566,
                     "name": "VariableDeclaration",
-                    "src": "1397:21:8"
+                    "src": "1397:21:4"
                   },
                   {
                     "attributes": {
                       "constant": false,
                       "name": "_locRemainder",
-                      "scope": 2116,
+                      "scope": 1570,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1521,23 +1521,23 @@
                         "name": "uint",
                         "type": "uint256"
                       },
-                      "id": 2113,
+                      "id": 1567,
                       "name": "ElementaryTypeName",
-                      "src": "1420:4:8"
+                      "src": "1420:4:4"
                     }],
-                    "id": 2114,
+                    "id": 1568,
                     "name": "VariableDeclaration",
-                    "src": "1420:18:8"
+                    "src": "1420:18:4"
                   }
                 ],
-                "id": 2115,
+                "id": 1569,
                 "name": "ParameterList",
-                "src": "1396:43:8"
+                "src": "1396:43:4"
               }
             ],
-            "id": 2116,
+            "id": 1570,
             "name": "FunctionDefinition",
-            "src": "1346:94:8"
+            "src": "1346:94:4"
           },
           {
             "attributes": {
@@ -1550,7 +1550,7 @@
               ],
               "name": "getCustomerAddress",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1562,16 +1562,16 @@
                   ]
                 },
                 "children": [],
-                "id": 2117,
+                "id": 1571,
                 "name": "ParameterList",
-                "src": "1469:2:8"
+                "src": "1469:2:4"
               },
               {
                 "children": [{
                   "attributes": {
                     "constant": false,
                     "name": "_customerAddress",
-                    "scope": 2121,
+                    "scope": 1575,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "address",
@@ -1583,22 +1583,22 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 2118,
+                    "id": 1572,
                     "name": "ElementaryTypeName",
-                    "src": "1493:7:8"
+                    "src": "1493:7:4"
                   }],
-                  "id": 2119,
+                  "id": 1573,
                   "name": "VariableDeclaration",
-                  "src": "1493:24:8"
+                  "src": "1493:24:4"
                 }],
-                "id": 2120,
+                "id": 1574,
                 "name": "ParameterList",
-                "src": "1492:26:8"
+                "src": "1492:26:4"
               }
             ],
-            "id": 2121,
+            "id": 1575,
             "name": "FunctionDefinition",
-            "src": "1442:77:8"
+            "src": "1442:77:4"
           },
           {
             "attributes": {
@@ -1611,7 +1611,7 @@
               ],
               "name": "validateReservationForWithdraw",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1623,9 +1623,9 @@
                   ]
                 },
                 "children": [],
-                "id": 2122,
+                "id": 1576,
                 "name": "ParameterList",
-                "src": "1560:2:8"
+                "src": "1560:2:4"
               },
               {
                 "attributes": {
@@ -1634,14 +1634,14 @@
                   ]
                 },
                 "children": [],
-                "id": 2123,
+                "id": 1577,
                 "name": "ParameterList",
-                "src": "1574:0:8"
+                "src": "1574:0:4"
               }
             ],
-            "id": 2124,
+            "id": 1578,
             "name": "FunctionDefinition",
-            "src": "1521:54:8"
+            "src": "1521:54:4"
           },
           {
             "attributes": {
@@ -1654,7 +1654,7 @@
               ],
               "name": "getLocForWithdraw",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1666,16 +1666,16 @@
                   ]
                 },
                 "children": [],
-                "id": 2125,
+                "id": 1579,
                 "name": "ParameterList",
-                "src": "1603:2:8"
+                "src": "1603:2:4"
               },
               {
                 "children": [{
                   "attributes": {
                     "constant": false,
                     "name": "_locAmountForWithdraw",
-                    "scope": 2129,
+                    "scope": 1583,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "uint256",
@@ -1687,22 +1687,22 @@
                       "name": "uint",
                       "type": "uint256"
                     },
-                    "id": 2126,
+                    "id": 1580,
                     "name": "ElementaryTypeName",
-                    "src": "1628:4:8"
+                    "src": "1628:4:4"
                   }],
-                  "id": 2127,
+                  "id": 1581,
                   "name": "VariableDeclaration",
-                  "src": "1628:26:8"
+                  "src": "1628:26:4"
                 }],
-                "id": 2128,
+                "id": 1582,
                 "name": "ParameterList",
-                "src": "1627:28:8"
+                "src": "1627:28:4"
               }
             ],
-            "id": 2129,
+            "id": 1583,
             "name": "FunctionDefinition",
-            "src": "1577:79:8"
+            "src": "1577:79:4"
           },
           {
             "attributes": {
@@ -1715,7 +1715,7 @@
               ],
               "name": "getHotelReservationId",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1727,16 +1727,16 @@
                   ]
                 },
                 "children": [],
-                "id": 2130,
+                "id": 1584,
                 "name": "ParameterList",
-                "src": "1688:2:8"
+                "src": "1688:2:4"
               },
               {
                 "children": [{
                   "attributes": {
                     "constant": false,
                     "name": "_hotelReservationId",
-                    "scope": 2134,
+                    "scope": 1588,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "bytes32",
@@ -1748,22 +1748,22 @@
                       "name": "bytes32",
                       "type": "bytes32"
                     },
-                    "id": 2131,
+                    "id": 1585,
                     "name": "ElementaryTypeName",
-                    "src": "1712:7:8"
+                    "src": "1712:7:4"
                   }],
-                  "id": 2132,
+                  "id": 1586,
                   "name": "VariableDeclaration",
-                  "src": "1712:27:8"
+                  "src": "1712:27:4"
                 }],
-                "id": 2133,
+                "id": 1587,
                 "name": "ParameterList",
-                "src": "1711:29:8"
+                "src": "1711:29:4"
               }
             ],
-            "id": 2134,
+            "id": 1588,
             "name": "FunctionDefinition",
-            "src": "1658:83:8"
+            "src": "1658:83:4"
           },
           {
             "attributes": {
@@ -1776,7 +1776,7 @@
               ],
               "name": "getHotelReservationCost",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1788,16 +1788,16 @@
                   ]
                 },
                 "children": [],
-                "id": 2135,
+                "id": 1589,
                 "name": "ParameterList",
-                "src": "1775:2:8"
+                "src": "1775:2:4"
               },
               {
                 "children": [{
                   "attributes": {
                     "constant": false,
                     "name": "_hotelReservationCostLOC",
-                    "scope": 2139,
+                    "scope": 1593,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "uint256",
@@ -1809,22 +1809,22 @@
                       "name": "uint",
                       "type": "uint256"
                     },
-                    "id": 2136,
+                    "id": 1590,
                     "name": "ElementaryTypeName",
-                    "src": "1799:4:8"
+                    "src": "1799:4:4"
                   }],
-                  "id": 2137,
+                  "id": 1591,
                   "name": "VariableDeclaration",
-                  "src": "1799:29:8"
+                  "src": "1799:29:4"
                 }],
-                "id": 2138,
+                "id": 1592,
                 "name": "ParameterList",
-                "src": "1798:31:8"
+                "src": "1798:31:4"
               }
             ],
-            "id": 2139,
+            "id": 1593,
             "name": "FunctionDefinition",
-            "src": "1743:87:8"
+            "src": "1743:87:4"
           },
           {
             "attributes": {
@@ -1837,7 +1837,7 @@
               ],
               "name": "validateDispute",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1847,7 +1847,7 @@
                   "attributes": {
                     "constant": false,
                     "name": "_customerAddress",
-                    "scope": 2144,
+                    "scope": 1598,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "address",
@@ -1859,17 +1859,17 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 2140,
+                    "id": 1594,
                     "name": "ElementaryTypeName",
-                    "src": "1857:7:8"
+                    "src": "1857:7:4"
                   }],
-                  "id": 2141,
+                  "id": 1595,
                   "name": "VariableDeclaration",
-                  "src": "1857:24:8"
+                  "src": "1857:24:4"
                 }],
-                "id": 2142,
+                "id": 1596,
                 "name": "ParameterList",
-                "src": "1856:26:8"
+                "src": "1856:26:4"
               },
               {
                 "attributes": {
@@ -1878,14 +1878,14 @@
                   ]
                 },
                 "children": [],
-                "id": 2143,
+                "id": 1597,
                 "name": "ParameterList",
-                "src": "1894:0:8"
+                "src": "1894:0:4"
               }
             ],
-            "id": 2144,
+            "id": 1598,
             "name": "FunctionDefinition",
-            "src": "1832:63:8"
+            "src": "1832:63:4"
           },
           {
             "attributes": {
@@ -1898,7 +1898,7 @@
               ],
               "name": "getReservationDisputeStatus",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "view",
               "superFunction": null,
               "visibility": "public"
@@ -1910,16 +1910,16 @@
                   ]
                 },
                 "children": [],
-                "id": 2145,
+                "id": 1599,
                 "name": "ParameterList",
-                "src": "1933:2:8"
+                "src": "1933:2:4"
               },
               {
                 "children": [{
                   "attributes": {
                     "constant": false,
                     "name": "_isDisputeOpen",
-                    "scope": 2149,
+                    "scope": 1603,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "bool",
@@ -1931,22 +1931,22 @@
                       "name": "bool",
                       "type": "bool"
                     },
-                    "id": 2146,
+                    "id": 1600,
                     "name": "ElementaryTypeName",
-                    "src": "1957:4:8"
+                    "src": "1957:4:4"
                   }],
-                  "id": 2147,
+                  "id": 1601,
                   "name": "VariableDeclaration",
-                  "src": "1957:19:8"
+                  "src": "1957:19:4"
                 }],
-                "id": 2148,
+                "id": 1602,
                 "name": "ParameterList",
-                "src": "1956:21:8"
+                "src": "1956:21:4"
               }
             ],
-            "id": 2149,
+            "id": 1603,
             "name": "FunctionDefinition",
-            "src": "1897:81:8"
+            "src": "1897:81:4"
           },
           {
             "attributes": {
@@ -1959,7 +1959,7 @@
               ],
               "name": "setReservationDisputeStatus",
               "payable": false,
-              "scope": 2155,
+              "scope": 1609,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "public"
@@ -1969,7 +1969,7 @@
                   "attributes": {
                     "constant": false,
                     "name": "_isDisputeOpen",
-                    "scope": 2154,
+                    "scope": 1608,
                     "stateVariable": false,
                     "storageLocation": "default",
                     "type": "bool",
@@ -1981,17 +1981,17 @@
                       "name": "bool",
                       "type": "bool"
                     },
-                    "id": 2150,
+                    "id": 1604,
                     "name": "ElementaryTypeName",
-                    "src": "2017:4:8"
+                    "src": "2017:4:4"
                   }],
-                  "id": 2151,
+                  "id": 1605,
                   "name": "VariableDeclaration",
-                  "src": "2017:19:8"
+                  "src": "2017:19:4"
                 }],
-                "id": 2152,
+                "id": 1606,
                 "name": "ParameterList",
-                "src": "2016:21:8"
+                "src": "2016:21:4"
               },
               {
                 "attributes": {
@@ -2000,24 +2000,24 @@
                   ]
                 },
                 "children": [],
-                "id": 2153,
+                "id": 1607,
                 "name": "ParameterList",
-                "src": "2045:0:8"
+                "src": "2045:0:4"
               }
             ],
-            "id": 2154,
+            "id": 1608,
             "name": "FunctionDefinition",
-            "src": "1980:66:8"
+            "src": "1980:66:4"
           }
         ],
-        "id": 2155,
+        "id": 1609,
         "name": "ContractDefinition",
-        "src": "128:1920:8"
+        "src": "128:1920:4"
       }
     ],
-    "id": 2156,
+    "id": 1610,
     "name": "SourceUnit",
-    "src": "0:2048:8"
+    "src": "0:2048:4"
   },
   "compiler": {
     "name": "solc",
@@ -2025,5 +2025,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-04-23T06:38:47.130Z"
+  "updatedAt": "2018-04-24T11:30:54.119Z"
 }
