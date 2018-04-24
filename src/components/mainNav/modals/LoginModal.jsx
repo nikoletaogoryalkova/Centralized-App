@@ -17,7 +17,7 @@ export default function LoginModal(props) {
                     <button type="button" className="close" onClick={() => props.closeModal(LOGIN)}>&times;</button>
                 </Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={(e) => { e.preventDefault(); console.log(e); captcha.execute(); }}>
+                    <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
                         <div className="form-group" style={{ marginTop: '10px' }}>
                             <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="mail" />
                             <input type="email" name="loginEmail" value={props.loginEmail} onChange={props.onChange} className="form-control" placeholder="Email address" autoFocus/>

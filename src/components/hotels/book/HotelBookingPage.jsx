@@ -178,9 +178,9 @@ class HotelBookingPage extends React.Component {
             for (let j = 0; j < adults.length; j++) {
                 const first = adults[j].firstName;
                 const last = adults[j].lastName;
-                console.log(adults[j]);
-                console.log(validator.matches(first, regexp));
-                console.log(validator.matches(last, regexp));
+                // console.log(adults[j]);
+                // console.log(validator.matches(first, regexp));
+                // console.log(validator.matches(last, regexp));
                 if (!(validator.matches(first, regexp) && validator.matches(last, regexp))) {
                     return false;
                 }

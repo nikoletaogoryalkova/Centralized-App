@@ -30,7 +30,7 @@ export default class WalletIndexPage extends React.Component {
     }
 
     sendTokens() {
-        console.log('amount : ' + this.state.locAmount * Math.pow(10, 18));
+        // console.log('amount : ' + this.state.locAmount * Math.pow(10, 18));
         NotificationManager.info('We are processing your transaction through the ethereum network. It might freeze your screen for about 10 seconds...', 'Transactions');
         setTimeout(() => {
             TokenTransactions.sendTokens(
@@ -38,14 +38,14 @@ export default class WalletIndexPage extends React.Component {
                 this.state.password,
                 this.state.recipientAddress,
                 (this.state.locAmount * Math.pow(10, 18)).toString()
-            ).then((x) => {
+            ).then(() => {
                 NotificationManager.success('Transaction made successfully', 'Send Tokens');
                 this.setState({ 
                     recipientAddress: '',
                     locAmount: 0,
                     password: ''
                 });
-                console.log(x); 
+                // console.log(x); 
             }).catch(x => {
                 if (x.hasOwnProperty('message')) {
                     NotificationManager.warning(x.message, 'Send Tokens');

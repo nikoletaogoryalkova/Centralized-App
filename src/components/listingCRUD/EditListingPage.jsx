@@ -252,8 +252,8 @@ class EditListingPage extends React.Component {
             newBedrooms = newBedrooms.slice(0, value);
         }
 
-        console.log(value + ' ' + event.target.value.split(' ')[1]);
-        console.log(newBedrooms);
+        // console.log(value + ' ' + event.target.value.split(' ')[1]);
+        // console.log(newBedrooms);
 
         this.setState({
             bedroomsCount: value + ' ' + event.target.value.split(' ')[1],

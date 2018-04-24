@@ -232,10 +232,10 @@ class HotelDetailsPage extends React.Component {
 
     handleApply(event, picker) {
         const { startDate, endDate } = picker;
-        const today = moment();
+        // const today = moment();
         const prices = this.state.prices;
         const range = prices.filter(x => x.start >= startDate && x.end < endDate);
-        console.log(startDate, today);
+        // console.log(startDate, today);
         const isInvalidRange = range.filter(x => !x.available).length > 0;
         if (isInvalidRange) {
             NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
