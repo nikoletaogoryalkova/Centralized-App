@@ -1,3 +1,4 @@
+import { Config } from '../../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -24,7 +25,7 @@ export default function CredentialsModal(props) {
                         <ReCAPTCHA
                             ref={el => captcha = el}
                             size="invisible"
-                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            sitekey={Config.getValue('recaptchaKey')}
                             onChange={(token) => {props.handleSubmit(token); captcha.reset();}}
                         />
                     </form>

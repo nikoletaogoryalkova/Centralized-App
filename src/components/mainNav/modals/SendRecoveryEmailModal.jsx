@@ -36,7 +36,7 @@ export default function SendRecoveryEmailModal(props) {
             <ReCAPTCHA
                 ref={el => captcha = el}
                 size="invisible"
-                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                sitekey={Config.getValue('recaptchaKey')}
                 onChange={token => { props.handleSubmitRecoveryEmail(token); captcha.reset(); }}
             />
         </div>

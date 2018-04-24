@@ -1,3 +1,4 @@
+import { Config } from '../../../config';
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import PropTypes from 'prop-types';
@@ -55,7 +56,7 @@ export default class DeletionModal extends React.Component {
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                sitekey={Config.getValue('recaptchaKey')}
                                 onChange={token => this.deleteSelected(token)}
                             />
 

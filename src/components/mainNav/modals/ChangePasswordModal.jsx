@@ -37,7 +37,7 @@ export default function ChangePasswordModal(props) {
             <ReCAPTCHA
                 ref={el => captcha = el}
                 size="invisible"
-                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                sitekey={Config.getValue('recaptchaKey')}
                 onChange={(token) => { props.handlePasswordChange(token); captcha.reset(); }}
             />
         </div>

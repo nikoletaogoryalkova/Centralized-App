@@ -1,5 +1,5 @@
 import { cancelTrip, getMyHotelBookings } from '../../../requester';
-
+import { Config } from '../../../config';
 import CancellationModal from '../../common/modals/CancellationModal';
 import LPagination from '../../common/LPagination';
 import { Link } from 'react-router-dom';
@@ -125,7 +125,7 @@ class HotelTripsPage extends React.Component {
                 <ReCAPTCHA
                     ref={el => this.cancelCaptcha = el}
                     size="invisible"
-                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    sitekey={Config.getValue('recaptchaKey')}
                     onChange={token => { this.cancelTrip(token); this.cancelCaptcha.reset(); }} />
 
                 <CancellationModal
