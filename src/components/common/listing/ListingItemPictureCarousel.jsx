@@ -55,7 +55,7 @@ function ListingItemPictureCarousel(props) {
 export default withRouter(ListingItemPictureCarousel);
 
 ListingItemPictureCarousel.propTypes = {
-    pictures: PropTypes.array,
+    pictures: PropTypes.string,
     id: PropTypes.number,
     listingsType: PropTypes.string,
 };

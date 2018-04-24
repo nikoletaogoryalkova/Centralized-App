@@ -4,7 +4,6 @@ import LPagination, { DEFAULT_PAGE_SIZE } from '../../common/LPagination';
 import HotelItem from './HotelItem';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { getListingsByFilter } from '../../../requester';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -20,7 +19,7 @@ import uuid from 'uuid';
 
 import { Config } from '../../../config.js';
 
-import { testSearch, getRegionNameById, getCurrencyRates, getLocRateInUserSelectedCurrency } from '../../../requester';
+import { getRegionNameById, getCurrencyRates, getLocRateInUserSelectedCurrency } from '../../../requester';
 
 class HotelsSearchPage extends React.Component {
     constructor(props) {
@@ -38,7 +37,7 @@ class HotelsSearchPage extends React.Component {
             rooms: [{ adults: 1, children: [] }],
             priceRange: [0, 5000],
             orderBy: '',
-            stars: new Array(false, false, false, false, false),
+            stars: [false, false, false, false, false],
             city: '',
             state: '',
             searchParams: null,
@@ -118,7 +117,7 @@ class HotelsSearchPage extends React.Component {
                 const address = json.query;
 
                 this.geocoder.geocode({ 'address': address }, (results, status) => {
-                    if (status == window.google.maps.GeocoderStatus.OK) {
+                    if (status === window.google.maps.GeocoderStatus.OK) {
                         this.setState({
                             lat: results[0].geometry.location.lat(),
                             lon: results[0].geometry.location.lng(),
@@ -217,7 +216,7 @@ class HotelsSearchPage extends React.Component {
 
         const address = this.state.region.query;
         this.geocoder.geocode({ 'address': address }, (results, status) => {
-            if (status == window.google.maps.GeocoderStatus.OK) {
+            if (status === window.google.maps.GeocoderStatus.OK) {
                 this.setState({
                     lat: results[0].geometry.location.lat(),
                     lon: results[0].geometry.location.lng(),
@@ -323,14 +322,14 @@ class HotelsSearchPage extends React.Component {
             // loading: true
         });
 
-        let searchTerms = this.props.location.search;
+        // let searchTerms = this.props.location.search;
 
-        const index = this.props.location.search.indexOf('&page=');
-        if (index != -1) {
-            searchTerms = `${this.props.location.search.substr(0, index)}&page=${page - 1}`;
-        } else {
-            searchTerms = `${this.props.location.search}&page=${page - 1}`;
-        }
+        // const index = this.props.location.search.indexOf('&page=');
+        // if (index != -1) {
+        //     searchTerms = `${this.props.location.search.substr(0, index)}&page=${page - 1}`;
+        // } else {
+        //     searchTerms = `${this.props.location.search}&page=${page - 1}`;
+        // }
 
         // testSearch(searchTerms, page - 1, localStorage.getItem('uuid')).then(json => {
         //     this.setState({
