@@ -375,7 +375,7 @@ class MainNav extends React.Component {
                         <Navbar.Header>
                             <Navbar.Brand>
                                 <Link className="navbar-brand" to="/">
-                                    <img src={Config.getValue('basePath') + 'images/logo.png'} alt='logo' />
+                                    <img src={Config.getValue('basePath') + 'images/locktrip_logo.svg'} alt='logo' />
                                 </Link>
                             </Navbar.Brand>
                             <Navbar.Toggle />
