@@ -12,6 +12,9 @@ import {
 import ethers from 'ethers';
 
 const ERROR = require('./../config/errors.json');
+const {
+	maxRefundPeriods
+} = require('../config/constants.json');
 
 export async function validateReservationParams(jsonObj,
 	password,
@@ -20,7 +23,7 @@ export async function validateReservationParams(jsonObj,
 	reservationStartDate,
 	reservationEndDate,
 	daysBeforeStartForRefund,
-	refundPercentage,
+	refundPercentages,
 	hotelId,
 	roomId,
 	numberOfTravelers) {
@@ -33,17 +36,36 @@ export async function validateReservationParams(jsonObj,
 		!reservationEndDate ||
 		!daysBeforeStartForRefund ||
 		daysBeforeStartForRefund * 1 < 0 ||
-		!refundPercentage ||
+		!refundPercentages ||
 		!hotelId ||
 		!roomId ||
 		!numberOfTravelers
 	) {
 		throw new Error(ERROR.INVALID_PARAMS);
 	}
-
-	if (refundPercentage * 1 > 100 || refundPercentage * 1 < 0) {
-		throw new Error(ERROR.INVALID_REFUND_AMOUNT);
+	if (daysBeforeStartForRefund.length != refundPercentages.length) {
+		throw new Error(ERROR.INVALID_REFUND_PARAMS_LENGTH);
 	}
+	if ((daysBeforeStartForRefund.length > maxRefundPeriods) ||
+		(daysBeforeStartForRefund.length < 0) ||
+		(refundPercentages.length > maxRefundPeriods) ||
+		(refundPercentages.length < 0)) {
+		throw new Error(ERROR.INVALID_REFUND_PARAMS)
+	}
+
+	for (let i = 0; i < daysBeforeStartForRefund.length - 1; i++) {
+		if ((daysBeforeStartForRefund[i] * 1) < (daysBeforeStartForRefund[i + 1] * 1)) {
+			throw new Error(ERROR.INVALID_REFUND_DAYS_ARRAY);
+		}
+	}
+
+	for (let i = 0; i < refundPercentages.length; i++) {
+		if (refundPercentages[i] * 1 > 100 || refundPercentages[i] * 1 < 0) {
+			throw new Error(ERROR.INVALID_REFUND_AMOUNT);
+		}
+	}
+
+
 
 	await validateBookingDoNotExists(hotelReservationId);
 
@@ -94,28 +116,32 @@ export function validateReservationDates(reservationStartDate, reservationEndDat
 	}
 	let day = 60 * 60 * 24;
 
-	if ((nowUnixFormatted + (daysBeforeStartForRefund * day)) > reservationStartDate) {
-		throw new Error(ERROR.INVALID_REFUND_DAYS);
-	}
+	for (let i = 0; i < daysBeforeStartForRefund.length; i++)
+		if ((nowUnixFormatted + (daysBeforeStartForRefund[i] * day)) > reservationStartDate) {
+			throw new Error(ERROR.INVALID_REFUND_DAYS);
+		}
 
 	return true;
 }
 
-export function validateCancellation(refundPercentage,
+export function validateCancellation(refundPercentages,
 	daysBeforeStartForRefund,
 	reservationStartDate,
 	customerAddress,
 	senderAddress) {
-	const daysBeforeStartForRefundAddedToNow = addDaysToNow(+daysBeforeStartForRefund).getTime() / 1000 | 0;
-	refundPercentage = +refundPercentage;
+
+	refundPercentages = +refundPercentages;
 	reservationStartDate = +reservationStartDate;
 	customerAddress = customerAddress.toLowerCase();
 	senderAddress = senderAddress.toLowerCase();
-	if (refundPercentage <= 0 ||
-		daysBeforeStartForRefundAddedToNow > reservationStartDate ||
-		customerAddress !== senderAddress) {
-		throw new Error(ERROR.INVALID_CANCELLATION);
-	}
 
+	for (let i = 0; i < daysBeforeStartForRefund.length; i++) {
+		let daysBeforeStartForRefundAddedToNow = addDaysToNow(+daysBeforeStartForRefund[i]).getTime() / 1000 | 0;
+		if (refundPercentages[i] <= 0 ||
+			daysBeforeStartForRefundAddedToNow > reservationStartDate ||
+			customerAddress !== senderAddress) {
+			throw new Error(ERROR.INVALID_CANCELLATION);
+		}
+	}
 	return true;
 }

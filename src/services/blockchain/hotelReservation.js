@@ -35,7 +35,7 @@ export class HotelReservation {
 		reservationStartDate,
 		reservationEndDate,
 		daysBeforeStartForRefund,
-		refundPercentage,
+		refundPercentages,
 		hotelId,
 		roomId,
 		numberOfTravelers) {
@@ -55,7 +55,7 @@ export class HotelReservation {
 			reservationStartDateFormatted,
 			reservationEndDateFormatted,
 			daysBeforeStartForRefund,
-			refundPercentage,
+			refundPercentages,
 			hotelIdBytes,
 			roomIdBytes,
 			numberOfTravelers);
@@ -71,6 +71,7 @@ export class HotelReservation {
 		await approveContract(wallet, reservationCostLOC, HotelReservationFactoryContract.address, gasPrice);
 
 		let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
+
 		const overrideOptions = {
 			gasLimit: gasConfig.hotelReservation.create,
 			gasPrice: gasPrice
@@ -81,7 +82,7 @@ export class HotelReservation {
 			reservationStartDateFormatted,
 			reservationEndDateFormatted,
 			daysBeforeStartForRefund,
-			refundPercentage,
+			refundPercentages,
 			hotelIdBytes,
 			roomIdBytes,
 			numberOfTravelers,
@@ -110,7 +111,7 @@ export class HotelReservation {
 
 		const reservation = await this.getReservation(hotelReservationId);
 
-		validateCancellation(reservation._refundPercentage,
+		validateCancellation(reservation._refundPercentages,
 			reservation._daysBeforeStartForRefund,
 			reservation._reservationStartDate,
 			reservation._customerAddress,
