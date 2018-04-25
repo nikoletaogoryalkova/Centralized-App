@@ -454,7 +454,6 @@ export async function testSearch(query, page = 0, uuid) {
 export async function testBook(bookingObj) {
   return sendRequest(`${host}api/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
     return res.response;
-    // console.log(res.response)
   });
 }
 
