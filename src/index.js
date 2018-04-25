@@ -12,10 +12,10 @@ import reducers from './reducers';
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 
 render(
-    <Provider store={createStoreWithMiddleware(reducers)}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    </Provider>
-    , document.getElementById('app')
+  <Provider store={createStoreWithMiddleware(reducers)}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
+  , document.getElementById('app')
 );
