@@ -1,10 +1,10 @@
-import Pagination from 'rc-pagination';
+import RCPagination from 'rc-pagination';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 export const DEFAULT_PAGE_SIZE = 10;
 
-export default class LPagination extends React.Component {
+export default class Pagination extends React.Component {
   render() {
     const textItemRender = (current, type, element) => {
       if (type === 'prev') {
@@ -26,7 +26,7 @@ export default class LPagination extends React.Component {
       <div className="pagination-box">
         <div className="pagination-box">
           {DEFAULT_PAGE_SIZE < this.props.totalElements &&
-            <Pagination
+            <RCPagination
               itemRender={textItemRender}
               className="pagination"
               defaultPageSize={DEFAULT_PAGE_SIZE}
@@ -42,7 +42,7 @@ export default class LPagination extends React.Component {
   }
 }
 
-LPagination.propTypes = {
+Pagination.propTypes = {
   loading: PropTypes.bool,
   onPageChange: PropTypes.func,
   currentPage: PropTypes.number,
