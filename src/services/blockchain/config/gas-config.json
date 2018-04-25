@@ -27,7 +27,8 @@
   },
   "hotelReservation": {
     "create": 950000,
-    "cancel": 140000
+    "cancel": 140000,
+    "dispute": 120000
   },
   "owner": {
     "setMaxBookingPeriod": 57000

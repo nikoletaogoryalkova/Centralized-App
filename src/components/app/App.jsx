@@ -26,6 +26,7 @@ class App extends React.Component {
         BigCalendar.setLocalizer(
             BigCalendar.momentLocalizer(moment)
         );
+
     }
 
     isAuthenticated() {

@@ -4,9 +4,8 @@ import bip39 from 'bip39';
 import hdkey from 'ethereumjs-wallet/hdkey';
 import ethers from 'ethers';
 import {
-    validateAddress,
-    validatePassword
-} from './validators/base-validators';
+    BaseValidators
+} from './validators/baseValidators';
 import {
     LOCTokenContract,
     getNodeProvider
@@ -34,7 +33,7 @@ class Wallet {
     }
 
     static async createFromPassword(password) {
-        validatePassword(password);
+        BaseValidators.validatePassword(password);
 
         const mnemonic = bip39.generateMnemonic();
         const hdWallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
@@ -51,8 +50,8 @@ class Wallet {
     }
 
     static recoverFromMnemonic(mnemonic, password, address) {
-        validatePassword(password);
-        validateAddress(address, ERROR.INVALID_RECOVERED_ADDRESS);
+        BaseValidators.validatePassword(password);
+        BaseValidators.validateAddress(address, ERROR.INVALID_RECOVERED_ADDRESS);
         this.validateMnemonic(mnemonic);
 
         const hdWallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));

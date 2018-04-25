@@ -4,17 +4,15 @@ import {
 	HotelReservationFactoryContractWithWallet
 } from "./config/contracts-config";
 import {
-	validateBookingExists,
-	validateCancellation,
-	validateReservationParams
-} from "./validators/reservation-validators";
+	ReservationValidators
+} from "./validators/reservationValidators";
 import {
 	formatEndDateTimestamp,
 	formatStartDateTimestamp,
 } from "./utils/timeHelper";
 import {
-	validateLocBalance
-} from "./validators/token-validators";
+	TokenValidators
+} from "./validators/tokenValidators";
 import {
 	approveContract
 } from "./utils/approveContract";
@@ -48,7 +46,7 @@ export class HotelReservation {
 		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
 		const gasPrice = await getGasPrice();
 
-		await validateReservationParams(jsonObj,
+		await ReservationValidators.validateReservationParams(jsonObj,
 			password,
 			hotelReservationIdBytes,
 			reservationCostLOC,
@@ -59,7 +57,7 @@ export class HotelReservation {
 			hotelIdBytes,
 			roomIdBytes,
 			numberOfTravelers);
-		await validateLocBalance(wallet.address, reservationCostLOC, wallet, gasConfig.hotelReservation.create);
+		await TokenValidators.validateLocBalance(wallet.address, reservationCostLOC, wallet, gasConfig.hotelReservation.create);
 
 		await fundTransactionAmountIfNeeded(
 			wallet.address,
@@ -111,7 +109,7 @@ export class HotelReservation {
 
 		const reservation = await this.getReservation(hotelReservationId);
 
-		validateCancellation(reservation._refundPercentages,
+		ReservationValidators.validateCancellation(reservation._refundPercentages,
 			reservation._daysBeforeStartForRefund,
 			reservation._reservationStartDate,
 			reservation._customerAddress,
@@ -129,9 +127,41 @@ export class HotelReservation {
 	}
 
 	static async getReservation(hotelReservationId) {
-		const hotelReservationContractAddress = await validateBookingExists(hotelReservationId);
+		const hotelReservationContractAddress = await ReservationValidators.validateBookingExists(hotelReservationId);
 		const hotelReservationContract = initHotelReservationContract(hotelReservationContractAddress);
 		const reservation = await hotelReservationContract.getHotelReservation();
 		return reservation;
+	}
+
+	static async disputeReservation(jsonObj,
+		password,
+		hotelReservationId) {
+
+		if (!jsonObj || !password || !hotelReservationId) {
+			throw new Error(errors.INVALID_PARAMS);
+		}
+
+		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
+		const hotelReservationIdBytes = ethers.utils.toUtf8Bytes(hotelReservationId);
+		const gasPrice = await getGasPrice();
+		const reservation = await this.getReservation(hotelReservationId);
+
+		ReservationValidators.validateDispute(wallet.address, reservation._customerAddress, reservation._reservationEndDate, reservation._isDisputeOpen);
+
+		await fundTransactionAmountIfNeeded(
+			wallet.address,
+			wallet.privateKey,
+			gasConfig.hotelReservation.dispute
+		);
+
+		let HotelReservationFactoryContractWithWalletInstance = HotelReservationFactoryContractWithWallet(wallet);
+		const overrideOptions = {
+			gasLimit: gasConfig.hotelReservation.dispute,
+			gasPrice: gasPrice
+		};
+
+		const openDisputeTxHash = await HotelReservationFactoryContractWithWalletInstance.dispute(hotelReservationIdBytes, overrideOptions);
+
+		return openDisputeTxHash;
 	}
 }

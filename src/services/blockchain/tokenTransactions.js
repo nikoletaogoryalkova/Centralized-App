@@ -1,10 +1,10 @@
 import ethers from 'ethers';
 import {
-	validateAddress
-} from './validators/base-validators';
+	BaseValidators
+} from './validators/baseValidators';
 import {
-	validateLocBalance
-} from './validators/token-validators';
+	TokenValidators
+} from './validators/tokenValidators';
 import {
 	LOCTokenContract,
 	LOCTokenContractWithWallet,
@@ -22,7 +22,7 @@ const errors = require('./config/errors.json');
 export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
-		validateAddress(recipient, errors.INVALID_ADDRESS);
+		BaseValidators.validateAddress(recipient, errors.INVALID_ADDRESS);
 
 		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
 
@@ -31,7 +31,7 @@ export class TokenTransactions {
 			wallet.privateKey,
 			gasConfig.transferTokens
 		);
-		await validateLocBalance(wallet.address, amount, wallet, gasConfig.transferTokens);
+		await TokenValidators.validateLocBalance(wallet.address, amount, wallet, gasConfig.transferTokens);
 
 		const LOCTokenContractWallet = LOCTokenContractWithWallet(wallet);
 		var overrideOptions = {

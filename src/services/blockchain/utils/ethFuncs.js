@@ -6,8 +6,8 @@ import {
 } from '../config/contracts-config.js';
 
 import {
-	validateContractBalance
-} from '../validators/exchange-validators.js'
+	ExchangeValidators
+} from '../validators/exchangeValidators'
 import {
 	approveContract
 } from "../utils/approveContract";
@@ -49,7 +49,7 @@ export async function exchangeLocForEth(walletAddress, walletPrivateKey, amount)
 	let wallet = new ethers.Wallet(walletPrivateKey);
 	const gasPrice = await getGasPrice();
 
-	await validateContractBalance(amount);
+	await ExchangeValidators.validateContractBalance(amount);
 	const locWeiAmount = await LOCExchangeContract.weiToLocWei(amount);
 
 	result.ApproveContractTxn = await approveContract(
