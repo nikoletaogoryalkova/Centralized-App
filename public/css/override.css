@@ -24,9 +24,9 @@ a.dropdown-toggle {
   width: 180px;
   height: 100%;
 }
-.form-control {
+/* .form-control {
   background-image: auto;
-}
+} */
 .pac-logo:after {
   background: none;
   height: auto;

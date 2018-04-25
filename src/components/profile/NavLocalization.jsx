@@ -58,12 +58,14 @@ class NavLocalization extends Component {
                 <div className="balance-info">
                   <div className="balance">
                     <div className="value">
-                      <span>LOC Balance: {locBalance}</span>
+                      <span>LOC Balance:&nbsp;</span>
+                      <span>{locBalance}</span>
                     </div>
                   </div>
                   <div className="balance">
                     <div className="value">
-                      <span>ETH Balance: {ethBalance}</span>
+                      <span>ETH Balance:&nbsp;</span>
+                      <span>{ethBalance}</span>
                     </div>
                   </div>
                   {/* <a href="#" className="icon-plus"></a> */}
