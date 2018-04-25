@@ -7,7 +7,7 @@ class Footer extends React.Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-3">
-                            <h3>LockChain</h3>
+                            <h3>LockTrip</h3>
                             <ul>
                                 <li><a >Help</a></li>
                                 <li><a >Terms and Conditions</a></li>
@@ -33,7 +33,7 @@ class Footer extends React.Component {
 
                         <div className="clearfix"></div>
                     </div>
-                    <div className="copyright col-md-6">Copyright 2017-2018 LockChain | All rights reserved.</div>
+                    <div className="copyright col-md-6">Copyright 2017-2018 LockTrip | All rights reserved.</div>
 
                 </div>
             </footer>

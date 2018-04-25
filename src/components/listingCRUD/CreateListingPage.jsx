@@ -32,7 +32,7 @@ import request from 'superagent';
 import update from 'react-addons-update';
 
 const host = Config.getValue('apiHost');
-const LOCKCHAIN_UPLOAD_URL = `${host}images/upload`;
+const LOCKTRIP_UPLOAD_URL = `${host}images/upload`;
 
 class CreateListingPage extends React.Component {
     constructor(props) {
@@ -163,8 +163,8 @@ class CreateListingPage extends React.Component {
             newBedrooms = newBedrooms.slice(0, value);
         }
 
-        console.log(value + ' ' + event.target.value.split(' ')[1]);
-        console.log(newBedrooms);
+        // console.log(value + ' ' + event.target.value.split(' ')[1]);
+        // console.log(newBedrooms);
 
         this.setState({
             bedroomsCount: value + ' ' + event.target.value.split(' ')[1],
@@ -400,7 +400,7 @@ class CreateListingPage extends React.Component {
 
     handleImageUpload(files) {
         files.forEach((file) => {
-            let upload = request.post(LOCKCHAIN_UPLOAD_URL)
+            let upload = request.post(LOCKTRIP_UPLOAD_URL)
                 .field('image', file);
 
             upload.end((err, response) => {

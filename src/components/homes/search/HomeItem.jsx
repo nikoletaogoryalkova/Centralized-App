@@ -1,5 +1,6 @@
 import { Link, withRouter } from 'react-router-dom';
 
+import { Config } from '../../../config';
 import ListingItemPictureCarousel from '../../common/listing/ListingItemPictureCarousel';
 import ListingItemRatingBox from '../../common/listing/ListingItemRatingBox';
 import PropTypes from 'prop-types';
@@ -8,8 +9,12 @@ import { connect } from 'react-redux';
 
 function HomeItem(props) {
     const { currency, currencySign, locRate } = props.paymentInfo;
-    const { cityName, countryName, prices, currency_code, defaultDailyPrice, pictures, id, name, reviewsCount, averageRating, description } = props.listing;
+    const { cityName, countryName, prices, currency_code, defaultDailyPrice, id, name, reviewsCount, averageRating, description } = props.listing;
+    let { pictures } = props.listing;
     const listingPrice = (prices) && currency === currency_code ? parseInt(defaultDailyPrice, 10).toFixed() : parseInt(prices[currency], 10).toFixed(2);
+    if (typeof pictures === 'string') {
+        pictures = JSON.parse(pictures).map(img => { return  { thumbnail: Config.getValue('imgHost') + img.thumbnail }; });
+    }
     return (
         <div className="list-hotel">
             <div className="list-image">

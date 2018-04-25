@@ -1,5 +1,6 @@
 // import '../../../public/css/calendar.css';
 
+import { Config } from '../../../config';
 import DatePicker from '../../DatePicker';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -174,7 +175,7 @@ class HomeReservationPanel extends React.Component {
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                sitekey={Config.getValue('recaptchaKey')}
                                 onChange={token => this.onSubmit(token)}
                             />
                             <br />
@@ -184,7 +185,7 @@ class HomeReservationPanel extends React.Component {
                             </div>
 
                             <div className="hotel-second-price">total <span className="total-price">{this.props.paymentInfo.currencySign}{(listingPrice + cleaningFee).toFixed(2)}</span> / for&nbsp;
-                            <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
+                                <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div>
                                 <p style={{ color: 'white' }}><b>or</b></p>

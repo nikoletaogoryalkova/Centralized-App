@@ -37,6 +37,8 @@ module.exports = {
             "error",
             "always"
         ],
-        "react/jsx-pascal-case": 0
+        "react/jsx-pascal-case": 0,
+        "jsx-a11y/anchor-is-valid": 0,
+        "jsx-a11y/href-no-hash": "off"
     }
 }

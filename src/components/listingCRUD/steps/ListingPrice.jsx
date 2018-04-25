@@ -1,3 +1,4 @@
+import { Config } from '../../../config';
 import GuestSettingsAside from '../aside/GuestSettingsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
 import { NavLink } from 'react-router-dom';
@@ -86,7 +87,7 @@ export default function CreateListingPrice(props) {
                     <ReCAPTCHA
                         ref={(el) => captcha = el}
                         size="invisible"
-                        sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                        sitekey={Config.getValue('recaptchaKey')}
                         onChange={token => { props.finish(token); captcha.reset(); }}
                     />
                 </div>

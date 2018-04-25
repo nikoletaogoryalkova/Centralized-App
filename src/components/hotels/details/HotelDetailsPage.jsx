@@ -12,7 +12,7 @@ import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
-import { getTestHotelById, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
+import { getHotelById, getHotelRooms, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
 class HotelDetailsPage extends React.Component {
     constructor(props) {
@@ -48,7 +48,8 @@ class HotelDetailsPage extends React.Component {
             userInfo: null,
             loading: true,
             isShownContactHostModal: false,
-            roomLoader: undefined,
+            hotelRooms: null,
+            loadingRooms: true,
         };
 
         this.handleApply = this.handleApply.bind(this);
@@ -76,13 +77,17 @@ class HotelDetailsPage extends React.Component {
     componentDidMount() {
         const id = this.props.match.params.id;
         const search = this.props.location.search;
-        getTestHotelById(id, search).then((data) => {
+        getHotelById(id, search).then((data) => {
             this.setState({ data: data, loading: false });
             const searchParams = this.getSearchParams(this.props.location.search);
             const regionId = searchParams.get('region') || data.region.externalId;
             getRegionNameById(regionId).then((json) => {
                 this.setState({ region: json });
             });
+        });
+
+        getHotelRooms(id, search).then((data) => {
+            this.setState({ hotelRooms: data, loadingRooms: false });
         });
 
         this.getLocRate();
@@ -227,10 +232,10 @@ class HotelDetailsPage extends React.Component {
 
     handleApply(event, picker) {
         const { startDate, endDate } = picker;
-        const today = moment();
+        // const today = moment();
         const prices = this.state.prices;
         const range = prices.filter(x => x.start >= startDate && x.end < endDate);
-        console.log(startDate, today);
+        // console.log(startDate, today);
         const isInvalidRange = range.filter(x => !x.available).length > 0;
         if (isInvalidRange) {
             NotificationManager.warning('There is a unavailable day in your select range', 'Calendar Operations');
@@ -419,7 +424,7 @@ class HotelDetailsPage extends React.Component {
     }
     
     handleBookRoom (roomsResults) {
-        this.setState({ roomLoader: true });
+        this.setState({ loadingRooms: true });
         NotificationManager.info('Checking room availability...');
         const rooms = this.state.rooms.map((room) => {
             const adults = [];
@@ -457,11 +462,15 @@ class HotelDetailsPage extends React.Component {
             }
         }
 
-        this.checkNextRoom(allRooms, 0, booking);
+        try {
+            this.checkNextRoom(allRooms, 0, booking);
+        } catch (e) {
+            NotificationManager.error('Something went wrong...');
+        }
     }
     
     checkNextRoom(allRooms, index, booking) {
-        if (index > allRooms.length) {
+        if (index >= allRooms.length) {
             NotificationManager.warning('Unfortunatelly all rooms in that hotel were already taken, please try another one.', '', 5000);
             const search = this.props.location.search;
             const URL = `/hotels/listings/${search}`;
@@ -483,6 +492,8 @@ class HotelDetailsPage extends React.Component {
             } else {
                 this.checkNextRoom(allRooms, index + 1, booking);
             }
+        }).catch(() => {
+            NotificationManager.error('Something went wrong...');
         });
     }
 
@@ -494,7 +505,7 @@ class HotelDetailsPage extends React.Component {
             images = null;
             if (this.state.data.hotelPhotos !== undefined) {
                 images = this.state.data.hotelPhotos.map(x => {
-                    return { src: Config.getValue('imgHost') + x.externalUrl };
+                    return { src: Config.getValue('imgHost') + x.url };
                 });
             }
         }
@@ -576,13 +587,14 @@ class HotelDetailsPage extends React.Component {
                                     startDate={this.state.calendarStartDate}
                                     endDate={this.state.calendarEndDate}
                                     data={this.state.data}
+                                    hotelRooms={this.state.hotelRooms}
                                     locRate={this.state.locRate}
                                     rates={this.state.rates}
                                     loading={this.state.loading}
                                     currencySign={this.props.paymentInfo.currencySign}
                                     handleBookRoom={this.handleBookRoom}
                                     checkAvailability={this.checkAvailability}
-                                    roomLoader={this.state.roomLoader}
+                                    loadingRooms={this.state.loadingRooms}
                                 />
                             </div>
                             <ChildrenModal

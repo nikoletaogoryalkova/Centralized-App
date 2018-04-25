@@ -229,15 +229,20 @@ class AllPublishedListings extends React.Component {
                                         <span>Contact host</span>
                                     </div>
                                 </div>
+
+                                {/* TODO: Fix event emmiter warning from this piece of code */}
                                 {this.state.listings.map((item, i) => {
-                                    return <ListingRow
-                                        action="Unpublish"
-                                        canDelete={false}
-                                        updateListingStatus={this.updateListingStatus}
-                                        actionClass="btn btn-danger"
-                                        listing={item}
-                                        key={i}
-                                        openModal={this.openModal} />;
+                                    return (
+                                        <ListingRow
+                                            action="Unpublish"
+                                            canDelete={false}
+                                            updateListingStatus={this.updateListingStatus}
+                                            actionClass="btn btn-danger"
+                                            listing={item}
+                                            key={i}
+                                            openModal={this.openModal}
+                                        />
+                                    );
                                 })}
 
                                 <LPagination

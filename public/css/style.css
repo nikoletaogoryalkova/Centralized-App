@@ -50,7 +50,6 @@
     height: 2em;
 }
 
-
 /* Override bootstrap */
 
 .nav>li>a:focus,
@@ -111,7 +110,6 @@ header form button {
 .text-align-left {
     text-align: left;
 }
-
 
 /* END */
 
@@ -399,7 +397,7 @@ button.disabled:hover {
 
 .breadcrumb {
     padding: 30px 15px 30px 0;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     list-style: none;
     background-color: transparent;
     border-radius: 0;
@@ -2368,7 +2366,6 @@ hr.over-easy-list-box {
     width: 80%;
 }
 
-
 /* Remove input type=number arrows */
 
 input::-webkit-outer-spin-button,
@@ -2420,7 +2417,6 @@ input::-webkit-inner-spin-button {
         margin: 0 auto;
     }
 }
-
 
 /* Checkbox input style */
 
@@ -2477,7 +2473,6 @@ input[type="checkbox"].tick:checked+label:after {
     text-align: center;
 }
 
-
 /* END */
 
 .host-step {
@@ -2493,8 +2488,9 @@ input[type="checkbox"].tick:checked+label:after {
     font-weight: bold;
     display: block;
 }
+
 .list-hotel .carousel-fade {
-    max-height: 185px;
+    max-height: 190px;
     overflow: hidden;
 }
 
@@ -2506,7 +2502,6 @@ input[type="checkbox"].tick:checked+label:after {
     font-weight: normal;
     display: block;
 }
-
 
 /* Override daterangepicker */
 
@@ -2536,7 +2531,6 @@ input[type="checkbox"].tick:checked+label:after {
     display: none;
 }
 
-
 /* Temp solution */
 
 .owl-theme .owl-nav [class*=owl-] {
@@ -2554,13 +2548,44 @@ input[type="checkbox"].tick:checked+label:after {
 
 .carousel .hotels-item {
     width: 250px;
-    height: 185px;
+    height: 190px;
     background-size: cover;
     background-position: center;
 }
 
+.marker-hotel {
+    width: 250px;
+    margin-left: 20px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.marker-hotel-thumbnail {
+    width: 250px;
+    height: 140px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 10px;
+    border-radius: 2px;
+}
+
+.marker-hotel-title {
+    margin-bottom: 5px;
+}
+
+.marker-hotel-rating {
+    color: #898c8d;
+    font-size: 14px;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.marker-hotel-price {
+    font-weight: bold;
+}
+
 .list-hotel .list-content {
-    height: 185px;
+    height: 190px;
     overflow: hidden;
 }
 
@@ -2637,7 +2662,6 @@ h2+hr {
 .calendar-price {
     color: #D87A61;
 }
-
 
 /* FIX FOR MAC OS */
 
@@ -2719,6 +2743,7 @@ select {
 }
 
 /* Hotel Info Section */
+
 #room-book .title-select {
     font-size: 16px;
     padding: 15px 39px 15px 15px;
@@ -2771,7 +2796,9 @@ select {
     border-radius: 3px;
 }
 
-#room-book .hotel-info h1, h2, h3 {
+#room-book .hotel-info h1,
+h2,
+h3 {
     font-family: inherit;
 }
 
@@ -2799,11 +2826,12 @@ select {
     float: none;
     display: inline-block;
     color: #fff;
-    font-size: 18px; 
+    font-size: 18px;
     margin: 15px 30px 15px 0;
 }
 
 /* Hotel Details Rooms */
+
 .hotel-content .room-group {
     margin: 10px 0;
     padding: 5px;
@@ -2882,7 +2910,8 @@ select {
     outline: none;
 }
 
-#room-book-confirm table th, td {
+#room-book-confirm table th,
+td {
     padding: 10px;
 }
 
@@ -2891,7 +2920,8 @@ select {
     border-bottom: 1px solid #ccc;
 }
 
-#room-book-confirm .booking-price, .booking-for {
+#room-book-confirm .booking-price,
+.booking-for {
     font-weight: bold;
 }
 
@@ -2904,7 +2934,8 @@ select {
     color: #d87a61;
 }
 
-#room-book-confirm .order-total, .order-name p {
+#room-book-confirm .order-total,
+.order-name p {
     text-align: right;
     padding-right: 20px;
 }
@@ -3037,26 +3068,34 @@ select {
     display: flex;
     flex-direction: column;
     justify-content: center;
-  }
+}
 
-  .room-cancellation-hidden {
-      display: none;
-  }
+.room-cancellation-hidden {
+    display: none;
+}
 
-  .example-enter {
+.example-enter {
     opacity: 0.01;
-  }
-  
-  .example-enter.example-enter-active {
+}
+
+.example-enter.example-enter-active {
     opacity: 1;
     transition: opacity 500ms ease-in;
-  }
-  
-  .example-leave {
+}
+
+.example-leave {
     opacity: 1;
-  }
-  
-  .example-leave.example-leave-active {
+}
+
+.example-leave.example-leave-active {
     opacity: 0.01;
     transition: opacity 0ms ease-in;
-  }
+}
+
+.filter-box .filter-select {
+    border: 1px solid #ccc;
+}
+
+.filter-box .filter-info {
+    text-align: center;
+}

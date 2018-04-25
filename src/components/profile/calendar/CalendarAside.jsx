@@ -1,3 +1,4 @@
+import { Config } from '../../../config';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
@@ -41,7 +42,7 @@ export default class CalendarAside extends React.Component {
                         <ReCAPTCHA
                             ref={el => this.captcha = el}
                             size="invisible"
-                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            sitekey={Config.getValue('recaptchaKey')}
                             onChange={token => this.props.onSubmit(token)}
                         />
 

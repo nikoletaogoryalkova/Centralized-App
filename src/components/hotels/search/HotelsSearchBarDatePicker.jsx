@@ -33,7 +33,8 @@ function HotelsSearchBarDatePicker(props) {
                         minDate={moment().format('DD/MM/YYYY')}
                         maxDate={moment().add(12, 'months').format('DD/MM/YYYY')}
                         locale={{ format: 'DD/MM/YYYY' }}
-                        {...pickerProps}>
+                        {...pickerProps}
+                        {...props}>
                         <input
                             readOnly
                             className="form-control"
@@ -41,7 +42,8 @@ function HotelsSearchBarDatePicker(props) {
                             autoComplete="off"
                             placeholder="Select date"
                             name="stay"
-                            value={label} />
+                            value={label}
+                             />
                     </DateRangePicker>
                 </div>
             </div>

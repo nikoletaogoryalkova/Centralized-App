@@ -1,6 +1,6 @@
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap';
+import { MenuItem, Nav, NavDropdown, NavItem, Navbar } from 'react-bootstrap/lib';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import ChangePasswordModal from './modals/ChangePasswordModal';
 import EnterRecoveryTokenModal from './modals/EnterRecoveryTokenModal';
@@ -18,20 +18,20 @@ import { Wallet } from '../../services/blockchain/wallet.js';
 import { setIsLogged, setUserInfo } from '../../actions/userInfo';
 import { openModal, closeModal } from '../../actions/modalsInfo';
 
-import { 
+import {
     getCountOfUnreadMessages,
     postNewPassword,
     postRecoveryEmail,
-    login, 
-    register, 
+    login,
+    register,
     getCurrentLoggedInUserInfo,
     sendRecoveryToken,
     updateUserInfo,
 } from '../../requester';
 
-import { 
-    LOGIN, 
-    REGISTER, 
+import {
+    LOGIN,
+    REGISTER,
     CREATE_WALLET,
     SEND_RECOVERY_EMAIL,
     ENTER_RECOVERY_TOKEN,
@@ -74,10 +74,10 @@ class MainNav extends React.Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.setUserInfo = this.setUserInfo.bind(this);
-        
+
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        
+
         this.messageListener = this.messageListener.bind(this);
         this.getCountOfMessages = this.getCountOfMessages.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -90,7 +90,7 @@ class MainNav extends React.Component {
     componentDidMount() {
         // if localStorage data shows that user is logged in, then setIsLogged(true) in Redux
         if (
-            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] &&
+            localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] &&
             localStorage[Config.getValue('domainPrefix') + '.auth.username']
         ) this.setUserInfo();
 
@@ -115,7 +115,7 @@ class MainNav extends React.Component {
         const value = e.target.value.replace(/\n/g, '');
         this.setState({ [e.target.name]: value });
     }
- 
+
     register(captchaToken) {
         let user = {
             email: this.state.signUpEmail,
@@ -159,7 +159,7 @@ class MainNav extends React.Component {
             if (res.success) {
                 res.response.json().then((data) => {
 
-                    localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = data.Authorization;
+                    localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = data.Authorization;
                     // TODO Get first name + last name from response included with Authorization token (Backend)
 
                     localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
@@ -170,17 +170,17 @@ class MainNav extends React.Component {
                             if (this.state.recoveryToken !== '') {
                                 this.props.history.push('/');
                             }
-        
+
                             this.closeModal(LOGIN);
                         } else {
-                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
                             this.openModal(CREATE_WALLET);
                             this.closeModal(LOGIN);
                         }
                     });
                     // reflect that the user is logged in, both in Redux and in the local component state
-                    
+
                 });
             } else {
                 res.response.then(res => {
@@ -196,7 +196,7 @@ class MainNav extends React.Component {
     }
 
     setUserInfo() {
-        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
             try {
                 getCurrentLoggedInUserInfo().then(res => {
                     Wallet.getBalance(res.locAddress).then(x => {
@@ -218,7 +218,7 @@ class MainNav extends React.Component {
     logout(e) {
         e.preventDefault();
 
-        localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+        localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
         localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
 
         // reflect that the user is logged out, both in Redux and in the local component state
@@ -253,7 +253,7 @@ class MainNav extends React.Component {
     }
 
     getCountOfMessages() {
-        if (localStorage[Config.getValue('domainPrefix') + '.auth.lockchain']) {
+        if (localStorage[Config.getValue('domainPrefix') + '.auth.locktrip']) {
             getCountOfUnreadMessages().then(data => {
                 this.setState({ unreadMessages: data.count });
             });
@@ -301,7 +301,7 @@ class MainNav extends React.Component {
             }
         });
     }
-    
+
     handleSubmitRecoveryEmail(token) {
         const email = { email: this.state.recoveryEmail };
         postRecoveryEmail(email, token).then((res) => {
@@ -314,12 +314,12 @@ class MainNav extends React.Component {
             }
         });
     }
-    
+
     handleUpdateUserWallet(token) {
         if (this.state.userName !== '' && this.state.userToken !== '') {
             if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
                 // Set user token in localstorage se getCurrentLoggedInUserInfo can fetch user info 
-                localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = this.state.userToken;
                 localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
                 getCurrentLoggedInUserInfo().then(info => {
                     let userInfo = {
@@ -333,16 +333,16 @@ class MainNav extends React.Component {
                         city: info.city != null ? info.city.id : null,
                         birthday: info.birthday,
                         locAddress: localStorage.getItem('walletAddress'),
-                        jsonFile:  localStorage.getItem('walletJson')
+                        jsonFile: localStorage.getItem('walletJson')
                     };
 
                     updateUserInfo(userInfo, token).then((res) => {
                         if (res.success) {
                             NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
-                            localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] = this.state.userToken;
+                            localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = this.state.userToken;
                             localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
                         } else {
-                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
                             NotificationManager.error(PROFILE_UPDATE_ERROR);
                         }
@@ -351,8 +351,8 @@ class MainNav extends React.Component {
                     });
                 });
             }
-        } else { 
-            this.register(token); 
+        } else {
+            this.register(token);
         }
     }
 
@@ -375,15 +375,15 @@ class MainNav extends React.Component {
                         <Navbar.Header>
                             <Navbar.Brand>
                                 <Link className="navbar-brand" to="/">
-                                    <img src={Config.getValue('basePath') + 'images/logo.png'} alt='logo' />
+                                    <img src={Config.getValue('basePath') + 'images/locktrip_logo.svg'} alt='logo' />
                                 </Link>
                             </Navbar.Brand>
                             <Navbar.Toggle />
                         </Navbar.Header>
 
                         <Navbar.Collapse>
-                            {localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'] ?
-                                <Nav>
+                            {localStorage[Config.getValue('domainPrefix') + '.auth.locktrip']
+                                ? <Nav>
                                     <NavItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">Hosting</NavItem>
                                     <NavItem componentClass={Link} href="/profile/trips" to="/profile/trips">Traveling</NavItem>
                                     <NavItem componentClass={Link} href="/profile/wallet" to="/profile/wallet">Wallet</NavItem>
@@ -398,10 +398,10 @@ class MainNav extends React.Component {
                                         <MenuItem componentClass={Link} href="/profile/dashboard/#profile-dashboard-reviews" to="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
                                         <MenuItem componentClass={Link} className="header" href="/" to="/" onClick={this.logout}>Logout<img src={Config.getValue('basePath') + 'images/icon-dropdown/icon-logout.png'} style={{ top: 25 + 'px' }} alt="logout" /></MenuItem>
                                     </NavDropdown>
-                                </Nav> :
-                                <Nav pullRight>
-                                    <MenuItem componentClass={Link} to="/login" onClick={() => this.openModal(LOGIN)}>Login</MenuItem>
-                                    <MenuItem componentClass={Link} to="/signup" onClick={() => this.openModal(REGISTER)}>Register</MenuItem>
+                                </Nav>
+                                : <Nav pullRight={true}>
+                                    <NavItem componentClass={Link} to="/login" onClick={() => this.openModal(LOGIN)}>Login</NavItem>
+                                    <NavItem componentClass={Link} to="/signup" onClick={() => this.openModal(REGISTER)}>Register</NavItem>
                                 </Nav>
                             }
                         </Navbar.Collapse>

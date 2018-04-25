@@ -54,7 +54,7 @@ function DatePicker(props) {
 }
 
 DatePicker.propTypes = {
-    search: PropTypes.string,
+    search: PropTypes.bool,
     startDate: PropTypes.any,
     endDate: PropTypes.any,
     isInvalidDate: PropTypes.bool,

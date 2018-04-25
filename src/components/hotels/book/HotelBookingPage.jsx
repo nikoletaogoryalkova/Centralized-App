@@ -8,12 +8,12 @@ import moment from 'moment';
 import validator from 'validator';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
-import { getTestHotelById, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
+import { getHotelById, getHotelRooms, getLocRateInUserSelectedCurrency, getCurrencyRates } from '../../../requester';
 
 class HotelBookingPage extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             // rooms: [{ adults: [{ title: '', firstName: '', lastName: '' }], children: [] }],
             data: null,
@@ -33,18 +33,24 @@ class HotelBookingPage extends React.Component {
         const rooms = this.getRooms(searchParams);
         const nights = this.getNights(searchParams);
         search = search.substr(0, search.indexOf('&quoteId='));
-        getTestHotelById(id, search).then((data) => {
-            const roomResults = data.rooms.filter(x => x.quoteId === quoteId)[0].roomsResults;
-            const totalPrice = this.getTotalPrice(roomResults);
+        getHotelById(id, search).then((data) => {
             this.setState({
                 hotel: data,
                 nights: nights,
+                rooms: rooms,
+                pictures: data.hotelPhotos,
+                loading: false,
+                quoteId: quoteId
+            });
+        });
+
+        getHotelRooms(id, search).then((data) => {
+            const roomResults = data.filter(x => x.quoteId === quoteId)[0].roomsResults;
+            const totalPrice = this.getTotalPrice(roomResults);
+            this.setState({
                 roomResults: roomResults,
                 totalPrice: totalPrice,
-                rooms: rooms, 
-                pictures: data.hotelPhotos, 
-                loading: false, 
-                quoteId: quoteId 
+                loading: false,
             });
         });
 
@@ -102,14 +108,14 @@ class HotelBookingPage extends React.Component {
         const end = moment(searchParams.get('endDate'), 'DD/MM/YYYY');
         return end.diff(start, 'days');
     }
-    
+
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
         if (this.updateParamsMap) {
             this.updateParamsMap(e.target.name, e.target.value);
         }
     }
-    
+
     getSearchParams() {
         const map = new Map();
         const pairs = this.props.location.search.substr(1).split('&');
@@ -155,7 +161,7 @@ class HotelBookingPage extends React.Component {
                 rooms: rooms,
                 currency: currency
             };
-    
+
             const encodedBooking = encodeURI(JSON.stringify(booking));
             const id = this.props.match.params.id;
             const query = `?booking=${encodedBooking}`;
@@ -172,9 +178,9 @@ class HotelBookingPage extends React.Component {
             for (let j = 0; j < adults.length; j++) {
                 const first = adults[j].firstName;
                 const last = adults[j].lastName;
-                console.log(adults[j]);
-                console.log(validator.matches(first, regexp));
-                console.log(validator.matches(last, regexp));
+                // console.log(adults[j]);
+                // console.log(validator.matches(first, regexp));
+                // console.log(validator.matches(last, regexp));
                 if (!(validator.matches(first, regexp) && validator.matches(last, regexp))) {
                     return false;
                 }
@@ -219,8 +225,8 @@ class HotelBookingPage extends React.Component {
                         <p>3. Confirm and Pay</p>
                     </div>
                 </div>
-                
-                {!this.state.hotel ? 
+
+                {!this.state.hotel ?
                     <div className="loader"></div> :
                     <div>
                         <section id="room-book">
@@ -228,11 +234,11 @@ class HotelBookingPage extends React.Component {
                                 <div className="col-md-5">
                                     <div className="hotel-info">
                                         <div className="hotel-picture">
-                                            <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel"/>
+                                            <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel" />
                                         </div>
                                         <h2>{hotelName}</h2>
                                         <h3>{hotelMainAddress}, {hotelCityName}</h3>
-                                        <hr/>
+                                        <hr />
                                         {this.state.roomResults && this.state.roomResults.map((room, index) => {
                                             if (!this.props.userInfo.isLogged) {
                                                 return (
@@ -248,9 +254,9 @@ class HotelBookingPage extends React.Component {
                                                 );
                                             }
                                         })}
-                                        <hr/>
-                                        {this.props.userInfo.isLogged ? 
-                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{priceInSelectedCurrency} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2) })</h2> :
+                                        <hr />
+                                        {this.props.userInfo.isLogged ?
+                                            <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{priceInSelectedCurrency} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)})</h2> :
                                             <h2 className="total-price">Total: LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)}</h2>
                                         }
                                         <div className="clearfix"></div>
@@ -261,18 +267,18 @@ class HotelBookingPage extends React.Component {
                                         return (
                                             <div className="form-group" key={roomIndex}>
                                                 <h2>Room</h2>
-                                                <hr/>
+                                                <hr />
                                                 {room && room.adults.map((adult, adultIndex) => {
                                                     return (
                                                         <div className="form-row" key={adultIndex}>
                                                             <label htmlFor="title">Guest</label>
-                                                            <select className="title-select" name="title" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} >
+                                                            <select className="title-select" name="title" onChange={(e) => { this.handleAdultChange(e, roomIndex, adultIndex); }} >
                                                                 <option value="Mr">Mr</option>
                                                                 <option value="Mrs">Mrs</option>
                                                             </select>
 
-                                                            <input className="guest-name" type="text" placeholder="First Name" name="firstName" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} />
-                                                            <input className="guest-name" type="text" placeholder="Last Name" name="lastName" onChange={(e) => {this.handleAdultChange(e, roomIndex, adultIndex); }} />
+                                                            <input className="guest-name" type="text" placeholder="First Name" name="firstName" onChange={(e) => { this.handleAdultChange(e, roomIndex, adultIndex); }} />
+                                                            <input className="guest-name" type="text" placeholder="Last Name" name="lastName" onChange={(e) => { this.handleAdultChange(e, roomIndex, adultIndex); }} />
                                                         </div>
                                                     );
                                                 })}
@@ -281,7 +287,7 @@ class HotelBookingPage extends React.Component {
                                                     return (
                                                         <div className="form-row" key={childIndex}>
                                                             <label htmlFor="age">Child (age)</label>
-                                                            <input className="child-age" type="number" value={this.state.rooms[roomIndex].children[childIndex].age} placeholder="Age" name="age" onChange={(e) => {this.handleChildAgeChange(e, roomIndex, childIndex); }} />
+                                                            <input className="child-age" type="number" value={this.state.rooms[roomIndex].children[childIndex].age} placeholder="Age" name="age" onChange={(e) => { this.handleChildAgeChange(e, roomIndex, childIndex); }} />
                                                         </div>
                                                     );
                                                 })}

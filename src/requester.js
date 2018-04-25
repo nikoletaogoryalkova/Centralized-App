@@ -13,8 +13,8 @@ const RequestMethod = {
 function getHeaders(headers = null) {
 
     headers = headers || {};
-    if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
-        headers['Authorization'] = localStorage[Config.getValue('domainPrefix') + '.auth.lockchain'];
+    if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
+        headers['Authorization'] = localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'];
     }
     return headers;
 }
@@ -44,17 +44,17 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
     let requestHeaders = {};
 
     switch (method) {
-    case RequestMethod.GET:
-        requestHeaders = getParams;
-        break;
-    case RequestMethod.POST:
-        requestHeaders = postParams;
-        break;
-    case RequestMethod.DELETE:
-        requestHeaders = deleteParams;
-        break;
-    default:
-        break;
+        case RequestMethod.GET:
+            requestHeaders = getParams;
+            break;
+        case RequestMethod.POST:
+            requestHeaders = postParams;
+            break;
+        case RequestMethod.DELETE:
+            requestHeaders = deleteParams;
+            break;
+        default:
+            break;
     }
 
     return fetch(endpoint, requestHeaders)
@@ -63,7 +63,7 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
                 return {
                     response: res.json().then(r => {
                         if (r.errors && r.errors['ExpiredJwt']) {
-                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.lockchain');
+                            localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
                             localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
                             window.location.reload();
                         }
@@ -421,14 +421,20 @@ export async function getCalendarByListingIdAndDateRange(listingId, startDate, e
 
 // Test routes
 export async function getTestHotels(searchTerms) {
-    return sendRequest(`${host}api/test/hotels?${searchTerms}`, RequestMethod.GET).then(res => {
-        
+    return sendRequest(`${host}api/hotels?${searchTerms}`, RequestMethod.GET).then(res => {
+
         return res.response.json();
     });
 }
 
-export async function getTestHotelById(id, search) {
-    return sendRequest(`${host}api/test/hotels/${id}${search}`, RequestMethod.GET).then(res => {
+export async function getHotelById(id, search) {
+    return sendRequest(`${host}api/hotels/${id}${search}`, RequestMethod.GET).then(res => {
+        return res.response.json();
+    });
+}
+
+export async function getHotelRooms(id, search) {
+    return sendRequest(`${host}api/hotels/${id}/rooms${search}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
@@ -439,29 +445,27 @@ export async function getRegionsBySearchParameter(param) {
     });
 }
 
-export async function testSearch(query, page = 0) {
-    return sendRequest(`${host}api/test/hotels/search${query}&page=${page}`, RequestMethod.GET).then(res => {
+export async function testSearch(query, page = 0, uuid) {
+    return sendRequest(`${host}api/hotels/search${query}&uuid=${uuid}`, RequestMethod.GET).then(res => {
         return res.response.json();
     });
 }
 
 export async function testBook(bookingObj) {
-    return sendRequest(`${host}api/test/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
+    return sendRequest(`${host}api/hotels/booking`, RequestMethod.POST, bookingObj).then(res => {
         return res.response;
         // console.log(res.response)
     });
 }
 
 export async function confirmBooking(bookingObj) {
-    return sendRequest(`${host}api/test/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
+    return sendRequest(`${host}api/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
         return res.response.json();
     });
 }
 
 export async function getLocRateFromCoinMarketCap(currency) {
-    console.log(currency);
     return sendRequest(`https://api.coinmarketcap.com/v1/ticker/lockchain/?convert=${currency}`, RequestMethod.GET).then(res => {
-        console.log(res);
         return res.response.json();
     });
 }
@@ -485,7 +489,7 @@ export async function getRegionNameById(id) {
 }
 
 export async function getEmailFreeResponse(email) {
-    email = email || 'info@lockchain.co';
+    email = email || 'info@locktrip.com';
     return sendRequest(`${host}users/email/${encodeURIComponent(email.replace(/\./g, '&#46;')).replace(/%26%2346%3B/g, '.')}/`, RequestMethod.GET).then(res => {
         return res.response.json();
     });

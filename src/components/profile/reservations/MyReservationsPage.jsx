@@ -1,5 +1,5 @@
 import { acceptReservation, cancelReservation, cancelTrip, getMyReservations } from '../../../requester';
-
+import { Config } from '../../../config';
 import CancellationModal from '../../common/modals/CancellationModal';
 import LPagination from '../../common/LPagination';
 import { Link } from 'react-router-dom';
@@ -149,17 +149,17 @@ export default class MyReservationsPage extends React.Component {
                 <ReCAPTCHA
                     ref={el => this.acceptCaptcha = el}
                     size="invisible"
-                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    sitekey={Config.getValue('recaptchaKey')}
                     onChange={token => { this.acceptReservation(token); this.acceptCaptcha.reset(); }} />
                 <ReCAPTCHA
                     ref={el => this.cancelCaptcha = el}
                     size="invisible"
-                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    sitekey={Config.getValue('recaptchaKey')}
                     onChange={token => { this.cancelReservation(token); this.cancelCaptcha.reset(); }} />
                 <ReCAPTCHA
                     ref={el => this.rejectCaptcha = el}
                     size="invisible"
-                    sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                    sitekey={Config.getValue('recaptchaKey')}
                     onChange={token => { this.rejectReservation(token); this.rejectCaptcha.reset(); }} />
 
                 <CancellationModal
