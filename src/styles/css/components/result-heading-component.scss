@@ -1,0 +1,81 @@
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'widescreen': 1200px
+);
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+// ligatured operators ≥ ≤
+
+@import '../vendors/include-media';
+
+@import '../base/functions';
+@import '../base/variables';
+@import '../base/mixins';
+@import '../base/helpers';
+
+.overview-heading {
+	margin-bottom: 45px;
+	.hotel-name {
+		display: block;
+		font-size: 36px;
+		margin-bottom: 8px;
+		letter-spacing: 0.002em;
+	}
+	.rating {
+		display: flex;
+		color: #898c8d;
+		margin-bottom: 33px;
+		font-size: 20px;
+		.rating-holder {
+			font-size: 16px;
+			margin: 0 10px 0 15px;
+		}
+	}
+	ul {
+		@extend %listreset;
+		display: flex;
+		flex-wrap: wrap;
+		@include media(">=desktop") {
+			flex-wrap: nowrap;
+		}
+		li {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			font-size: 14px;
+			border: 1px solid $gray;
+			border-radius: 3px;
+			padding: 13px;
+			margin-right: 10px;
+			min-width: 98px;
+			margin-bottom: 10px;
+			&:last-child {
+				margin-right: 0;
+			}
+			@include media(">=desktop") {
+				margin-bottom: 0;
+			}
+			span {
+				color: $dark-gray;
+				&:first-child {
+					font-size: 26px;
+					margin-bottom: 19px;
+				}
+			}
+		}
+	}
+}

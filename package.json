@@ -17,6 +17,8 @@
     "less": "^2.7.3",
     "lodash": "^4.17.4",
     "moment": "^2.19.3",
+    "node-sass-chokidar": "^1.2.2",
+    "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
     "rc-pagination": "^1.12.11",
@@ -66,16 +68,20 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
-    "start": "sh -ac '. ./.env; react-scripts start'",
+    "start-js": "react-scripts start",
+    "start": "sh -ac '. ./.env; npm-run-all -p watch-css start-js'",
     "start-dev": "sh -ac '. ./.env.development; react-scripts start'",
-    "build": "react-scripts build",
+    "build-js": "react-scripts build",
+    "build": "npm-run-all build-css build-js",
     "build/stage": "sh -ac '. ./.env.staging; react-scripts build'",
     "build/prod": "sh -ac '. ./.env.production; react-scripts build'",
     "build/dev": "sh -ac '. ./.env.development; react-scripts build'",
     "build/local": "sh -ac '. ./.env; react-scripts build'",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "bundle-css": "lessc src/app.less"
+    "bundle-css": "lessc src/app.less",
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

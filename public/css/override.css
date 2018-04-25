@@ -35,6 +35,10 @@ a.dropdown-toggle {
 .Select-menu-outer {
   z-index: 999 !important;
 }
+/* TODO: this should be deleted */
+#search-bar [class^="icon-"], [class*=" icon-"] {
+  font-family: 'FuturaStd-Light', sans-serif !important;
+}
 @media screen and (min-width: 768px) {
   .navbar-collapse.collapse {
     display: flex!important;

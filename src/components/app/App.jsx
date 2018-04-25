@@ -20,6 +20,8 @@ import NavLocalization from '../profile/NavLocalization';
 import ProfilePage from '../profile/ProfilePage';
 import PropTypes from 'prop-types';
 
+import '../../styles/css/main.css';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -54,7 +56,6 @@ class App extends React.Component {
           <Route render={() => <HomeRouterPage />} />
         </Switch>
         <Footer />
-        <AttachedFooter />
       </div>
     );
   }
