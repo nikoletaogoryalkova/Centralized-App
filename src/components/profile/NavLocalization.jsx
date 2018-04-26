@@ -108,8 +108,6 @@ NavLocalization.propTypes = {
   userInfo: PropTypes.object
 };
 
-export default withRouter(connect(mapStateToProps)(NavLocalization));
-
 function mapStateToProps(state) {
   const { paymentInfo, userInfo } = state;
   return {
@@ -117,3 +115,6 @@ function mapStateToProps(state) {
     userInfo
   };
 }
+
+export default withRouter(connect(mapStateToProps)(NavLocalization));
+

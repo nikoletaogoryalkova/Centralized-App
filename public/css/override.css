@@ -39,6 +39,11 @@ a.dropdown-toggle {
 #search-bar [class^="icon-"], [class*=" icon-"] {
   font-family: 'FuturaStd-Light', sans-serif !important;
 }
+.container>h2,
+.hotel-content>h2 {
+  padding-top: 30px;
+}
+
 @media screen and (min-width: 768px) {
   .navbar-collapse.collapse {
     display: flex!important;

@@ -94,7 +94,7 @@ function HomeDetailsInfoSection(props) {
 
   return (
     <div className="hotel-content" id="hotel-section">
-      <h1> {props.data.name} </h1>
+      <h2> {props.data.name} </h2>
       <div className="list-hotel-rating">
         <div className="list-hotel-rating-stars">
           {calculateStars(props.data.star)}
@@ -242,7 +242,7 @@ HomeDetailsInfoSection.propTypes = {
   handleBookRoom: PropTypes.func,
   loadingRooms: PropTypes.bool,
   currencySign: PropTypes.string,
-  rates: PropTypes.array,
+  rates: PropTypes.object,
   
   // Redux props
   paymentInfo: PropTypes.object,

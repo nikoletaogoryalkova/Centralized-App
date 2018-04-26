@@ -14,7 +14,6 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import MainNav from '../mainNav/MainNav';
 import Footer from '../footer/Footer';
-import AttachedFooter from '../footer/AttachedFooter';
 import NavLocalization from '../profile/NavLocalization';
 
 import ProfilePage from '../profile/ProfilePage';

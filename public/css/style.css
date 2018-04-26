@@ -688,10 +688,10 @@ button.disabled:hover {
     display: inline-block;
 }
 
-footer {
+/* footer {
     background: #223843;
     color: #fff;
-}
+} */
 
 footer a {
     color: #fff;
@@ -2212,7 +2212,7 @@ li.dropdown {
 }
 
 #popular-hotels-box .list-property-price {
-    font-size: 30px;
+    font-size: 20px;
     font-family: 'FuturaStd-Medium', sans-serif;
     padding-left: 20px;
     padding-top: 15px;
@@ -2797,7 +2797,7 @@ select {
 
 #room-book .hotel-info {
     background-color: #fff;
-    margin: 30px;
+    margin: 0 30px 30px 30px;
     padding: 10px;
     border-radius: 3px;
 }
@@ -2810,7 +2810,7 @@ select {
     width: 100%;
     max-height: 200px;
     border-radius: 3px;
-    margin: 0px auto;
+    margin: 0 auto 20px auto;
     overflow: hidden;
 }
 
@@ -2824,6 +2824,7 @@ select {
 
 .booking-steps {
     background-color: rgb(34, 56, 67);
+    margin-bottom: 20px;
 }
 
 .booking-steps p {
