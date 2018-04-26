@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { setCurrency, setLocRate } from '../../actions/paymentInfo';
 import { getLocRateInUserSelectedCurrency } from '../../requester';
 
-import '../../styles/css/components/footer-component.css';
+import '../../styles/css/components/footer/footer-component.css';
 
 class Footer extends React.Component {
   componentDidMount() {

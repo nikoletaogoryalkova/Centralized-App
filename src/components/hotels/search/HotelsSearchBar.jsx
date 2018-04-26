@@ -75,7 +75,7 @@ function SearchBar(props) {
         <div className="form-group has-feedback has-feedback-left search-region" id="location">
           <Select.Async
             className="form-control"
-            placeholder="Region..."
+            placeholder="Choose a location"
             required
             style={{ boxShadow: 'none', border: 'none', fontSize: '15px', top: '5px' }}
             value={props.region}

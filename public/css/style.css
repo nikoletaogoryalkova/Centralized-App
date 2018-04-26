@@ -203,9 +203,9 @@ header form button {
 }
 
 #search-bar {
-    background: #223843;
-    padding-top: 32px;
-    padding-bottom: 16px;
+    /* background: #223843; */
+    /* padding-top: 32px; */
+    /* padding-bottom: 16px; */
 }
 
 .second-nav-text ul {
@@ -358,10 +358,11 @@ header form button {
     background: url(../images/icon-moon.png) center 5px no-repeat;
     text-align: center;
     padding-top: 35px;
+    background-color: #fff;
 }
 
 #search-nights span {
-    color: #fff;
+    color: #555;
     font-size: 11px;
     text-align: center;
 }
@@ -375,6 +376,8 @@ header form button {
 
 #search #guests input {
     padding-left: 46px;
+    border-radius: 4px;
+    border: none;
 }
 
 #search button {
@@ -825,14 +828,14 @@ footer .currency-switcher {
 
 #main-nav .absolute_box {
     bottom: 0;
-    margin-bottom: -46px;
+    margin-bottom: 100px;
     position: absolute;
 }
 
 #main-nav #search-bar {
-    background: #223843;
-    padding: 16px 15px;
-    min-height: 92px;
+    background: #fff;
+    padding: 5px 5px;
+    /* min-height: 92px; */
     border-radius: 5px;
     box-shadow: 0 0 40px #223843;
 }
@@ -3031,6 +3034,7 @@ select {
     box-shadow: none;
     position: relative;
     text-align: center;
+    color: #555;
 }
 
 .searchbar-children-select.active {

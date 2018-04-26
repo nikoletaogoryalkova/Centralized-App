@@ -39,9 +39,18 @@ a.dropdown-toggle {
 #search-bar [class^="icon-"], [class*=" icon-"] {
   font-family: 'FuturaStd-Light', sans-serif !important;
 }
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: #fff;
+}
 .container>h2,
 .hotel-content>h2 {
   padding-top: 30px;
+}
+.Select-placeholder, .Select--single > .Select-control .Select-value {
+  color: #555 !important;
+  padding-left: 28px !important;
+  top: 2px !important;
+  font-size: 14px !important;
 }
 
 @media screen and (min-width: 768px) {

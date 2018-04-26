@@ -7,7 +7,7 @@ const SearchBar = (props) => (
   <section id="search-bar">
     <form id="search" onSubmit={props.handleSearch}>
       <div className="form-group has-feedback has-feedback-left" id="location">
-        <i className="icon icon-map form-control-feedback"></i>
+        {/* <i className="icon icon-map form-control-feedback"></i> */}
         {props.countries &&
           <select onChange={props.onChange}
             value={props.countryId}
@@ -15,7 +15,7 @@ const SearchBar = (props) => (
             id="location-select"
             name="countryId"
             required="required">
-            <option disabled value="">Location</option>
+            <option disabled value="">Choose a location</option>
             {props.countries.map((item, i) => {
               return <option key={i} value={item.id}>{item.name}</option>;
             })}
