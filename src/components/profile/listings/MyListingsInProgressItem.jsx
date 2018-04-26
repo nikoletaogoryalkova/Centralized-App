@@ -8,6 +8,8 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { deleteListing } from '../../../requester';
 
+import '../../../styles/css/components/profile/my-listings__progress-item.css';
+
 export default class MyListingsInProgressItem extends React.Component {
   constructor(props) {
     super(props);
@@ -52,30 +54,30 @@ export default class MyListingsInProgressItem extends React.Component {
       ]
     };
 
-    this.onHide = this.onHide.bind(this);
-    this.onOpen = this.onOpen.bind(this);
+    // this.onHide = this.onHide.bind(this);
+    // this.onOpen = this.onOpen.bind(this);
     this.deleteSelected = this.deleteSelected.bind(this);
   }
 
-  onHide() {
-    this.setState(
-      {
-        isDeleting: false,
-        deletingId: -1,
-        deletingName: ''
-      }
-    );
-  }
+  // onHide() {
+  //   this.setState(
+  //     {
+  //       isDeleting: false,
+  //       deletingId: -1,
+  //       deletingName: ''
+  //     }
+  //   );
+  // }
 
-  onOpen(id, name) {
-    this.setState(
-      {
-        isDeleting: true,
-        deletingId: id,
-        deletingName: name
-      }
-    );
-  }
+  // onOpen(id, name) {
+  //   this.setState(
+  //     {
+  //       isDeleting: true,
+  //       deletingId: id,
+  //       deletingName: name
+  //     }
+  //   );
+  // }
 
   deleteSelected(token) {
     if (!this.state.isDeleting) {
@@ -92,7 +94,7 @@ export default class MyListingsInProgressItem extends React.Component {
           NotificationManager.error('Cannot delete this property. It might have reservations or other irrevocable actions.', 'Deleting Listing');
         }
         this.setState({ sending: false });
-        this.onHide();
+        // this.onHide();
       });
   }
 
@@ -128,86 +130,59 @@ export default class MyListingsInProgressItem extends React.Component {
 
   render() {
     return (
-      <div style={{ background: 'rgba(255,255,255, 0.8)' }}>
-        <NotificationContainer />
-        <Modal show={this.state.isDeleting} onHide={this.onHide} className="modal fade myModal">
-          <Modal.Header>
-            <button type="button" className="close" onClick={this.onHide}>&times;</button>
-            <h2>Delete <b>{this.state.deletingName.substring(0, 20)}</b>?</h2>
-            {this.state.sending &&
-              <div className="loader"></div>
-            }
-          </Modal.Header>
-          <Modal.Body>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              this.captcha.execute();
-            }}>
-
-              <ReCAPTCHA
-                ref={el => this.captcha = el}
-                size="invisible"
-                sitekey={Config.getValue('recaptchaKey')}
-                onChange={token => this.deleteSelected(token)}
-              />
-
-              <button type="submit" className="btn btn-danger">Yes, delete it!</button>
-            </form>
-            <button onClick={this.onHide} className="btn btn-info">No, go back!</button>
-          </Modal.Body>
-        </Modal>
-        <div className="row my-listing-box">
-          <div className="col-md-2">
-            <div className={(this.props.listing.pictures[0] ? '' : 'not ') + 'my-listing-image-box'}>
-              {this.props.listing.pictures[0] && <img src={this.props.listing.pictures[0].thumbnail} alt="listing-thumbnail" />}
-            </div>
-          </div>
-          <div className="col-md-7 listing-name">
-            <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>{this.props.listing.name}</Link>
-          </div>
-          <div className="col-md-2">
-            <Link className="btn btn-primary btn-block bold" to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
-          </div>
-          <div className="col-md-1">
+      <div className="my-listings__progress-item">
+        <div className="my-listings__progress-item__toggle"></div>
+        <div className="my-listings__progress-item__picture">
+          {this.props.listing.pictures[0] && <img src={this.props.listing.pictures[0].thumbnail} alt="Thumbnail" />}
+        </div>
+        <div className="my-listings__progress-item__content">
+          <div className="my-listings__progress-item__content__row">
+            <h3>
+              <Link to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>{this.props.listing.name}</Link>
+            </h3>
             <button className="close" onClick={() => this.props.deleteInProgressListing(this.props.id)}>×</button>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-2">
-          </div>
-          <div className="col-md-6">
-            {this.state.progress.map((item, i) => {
-              return (
-                <div key={i} className="progress-box">
-                  <div className="col-md-1 progress-number">
-                    <p className={item.completed ? 'completed' : 'bold'}>{item.completed ? <i className="fa fa-check" aria-hidden="true"></i>
-                      : item.number}</p>
+          {this.state.progress.map((item, i) => {
+            return (
+              <div key={i} className="my-listings__progress-item__content__row ">
+                <div className="progress-step">
+                  <div className="step-number">
+                    {item.completed
+                      ? <i className="fa fa-check" aria-hidden="true"></i>
+                      : <span>{item.number}</span>
+                    }
                   </div>
-                  <div className="col-md-11">
-                    <div className="progress-name">
-                      <span>{item.name}</span>
-                    </div>
-                    <div className="progress-steps">
-                      <span>{item.steps.map(function (element) { return element.text; }).join(', ')}</span>
-                    </div>
 
-                    {item.steps.filter(s => s.stepNumber === this.props.step).length > 0 &&
-                      <div className="progress-bar-outline" style={{ marginBottom: '10px', width: '100%', background: '#E1E1E1', height: '3px' }}>
-                        <div className="progress-bar" style={{ height: '3px', width: `${this.calculateProgressPercentage(this.props.step)}%`, background: '#A0C5BE' }}></div>
-                      </div>}
-
-                    {item.steps.filter(s => s.stepNumber === this.props.step).length > 0 &&
-                      <div className="progress-continue">
-                        <Link className="btn btn-primary bold" to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
-                      </div>}
+                  <div className="progress-name">{item.name}</div>
+                  <div className="progress-steps">
+                    {item.steps.map(function (element) { return element.text; }).join(', ')}
                   </div>
-                </div>);
-            })}
-          </div>
-          <div className="col-md-4 progress-image">
-            <img src={Config.getValue('basePath') + 'images/' + this.calculateProgressImage(this.props.step)} alt="progress-thumbnail" />
-          </div>
+
+                  {item.steps.filter(s => s.stepNumber === this.props.step).length > 0 &&
+                    <div className="progress-bar-outline">
+                      <div className="progress-bar" style={{ height: '3px', width: `${this.calculateProgressPercentage(this.props.step)}%`, background: '#A0C5BE' }}></div>
+                    </div>
+                  }
+
+                  {item.steps.filter(s => s.stepNumber === this.props.step).length > 0 &&
+                    <div className="progress-continue">
+                      <Link className="btn btn-primary" to={`/profile/listings/edit/landing/${this.props.id}?progress=${this.props.step}`}>Continue</Link>
+                    </div>
+                  }
+                </div>
+              </div>
+            );
+          })}
         </div>
+        <div className="progress-image">
+          <img src={Config.getValue('basePath') + 'images/' + this.calculateProgressImage(this.props.step)} alt="progress-thumbnail" />
+        </div>
+        <ReCAPTCHA
+          ref={el => this.captcha = el}
+          size="invisible"
+          sitekey={Config.getValue('recaptchaKey')}
+          onChange={token => this.deleteSelected(token)}
+        />
       </div>
     );
   }

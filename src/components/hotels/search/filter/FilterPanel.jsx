@@ -57,7 +57,7 @@ const FilterPanel = (props) => (
 
             <label>Pricing</label>
 
-            <div className="filter-price-box">
+            <div className="filter-slider">
               <ReactBootstrapSlider
                 value={props.priceRange}
                 slideStop={(e) => { props.handlePriceRangeSelect(e); }}

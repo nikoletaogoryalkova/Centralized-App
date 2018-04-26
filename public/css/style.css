@@ -3070,37 +3070,46 @@ select {
 }
 
 .vertical-block-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  .room-cancellation-hidden {
-      display: none;
-  }
+.room-cancellation-hidden {
+    display: none;
+}
 
-  .example-enter {
-    opacity: 0.01;
-  }
-  
-  .example-enter.example-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
-  }
-  
-  .example-leave {
-    opacity: 1;
-  }
-  
-  .example-leave.example-leave-active {
-    opacity: 0.01;
-    transition: opacity 0ms ease-in;
-  }
+.example-enter {
+  opacity: 0.01;
+}
 
-  .filter-box .filter-select {
-      border: 1px solid #ccc;
-  }
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
 
-  .filter-box .filter-info {
-      text-align: center;
-  }
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 0ms ease-in;
+}
+
+.filter-box .filter-select {
+    border: 1px solid #ccc;
+}
+
+.filter-box .filter-info {
+    text-align: center;
+}
+
+.filter-box .filter-slider {
+  margin-bottom: 15px;
+}
+
+.step-by-step {
+  background-color: #223843;
+  margin-bottom: 30px;
+}
