@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
-import { NotificationManager, NotificationContainer } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 
 import ListingCrudNav from '../navigation/ListingCrudNav';
@@ -13,7 +13,6 @@ function ListingLandingPage(props) {
     <div>
       <ListingCrudNav progress='33%' />
       <div className="container">
-        <NotificationContainer />
         <div className="row">
           <div className="listings create landing">
             <div className="col-md-6">

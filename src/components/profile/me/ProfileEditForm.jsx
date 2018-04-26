@@ -1,6 +1,6 @@
 import 'react-notifications/lib/notifications.css';
 
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import { getCities, getCountries, getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
 
 import { Config } from '../../../config';
@@ -274,7 +274,6 @@ export default class ProfileEditPage extends React.Component {
 
           <input type="submit" className="button save" value="Save" />
         </form>
-        <NotificationContainer />
       </div>
     );
   }

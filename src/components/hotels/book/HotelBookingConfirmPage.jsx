@@ -1,5 +1,5 @@
 import { withRouter } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import CredentialsModal from './modals/CredentialsModal';
 
 import PropTypes from 'prop-types';
@@ -222,10 +222,6 @@ class HotelBookingConfirmPage extends React.Component {
     return (
       <div>
         <div>
-          <div>
-            <NotificationContainer />
-          </div>
-
           <div className="booking-steps">
             <div className="container">
               <p>1. Provide Guest Information</p>

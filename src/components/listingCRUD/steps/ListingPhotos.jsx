@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { NotificationManager, NotificationContainer } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import PlaceDescriptionAside from '../aside/PlaceDescriptionAside';
@@ -33,7 +33,6 @@ export default function CreateListingPhotos(props) {
   return (
     <div>
       <ListingCrudNav progress='66%' />
-      <NotificationContainer />
       <div className="container">
         <div className="row">
           <div className="listings create">

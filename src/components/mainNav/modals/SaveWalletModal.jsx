@@ -1,5 +1,3 @@
-import { NotificationContainer } from 'react-notifications';
-
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -35,7 +33,6 @@ export default function SaveWalletModal(props) {
           <button className="btn btn-primary" onClick={handleSubmit}>Continue</button>
         </Modal.Body>
       </Modal>
-      <NotificationContainer />
     </div>
   );
 }

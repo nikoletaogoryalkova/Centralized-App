@@ -1,6 +1,6 @@
 import 'react-select/dist/react-select.css';
 
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 import Autocomplete from 'react-google-autocomplete';
 import BasicsAside from '../aside/BasicsAside';
@@ -62,7 +62,6 @@ export default function CreateListingLocation(props) {
   return (
     <div>
       <ListingCrudNav progress='33%' />
-      <NotificationContainer />
       <div className="container">
         <div className="row">
           <div className="listings create">

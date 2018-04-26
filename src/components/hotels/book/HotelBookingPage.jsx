@@ -1,5 +1,5 @@
 import { withRouter } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -214,10 +214,6 @@ class HotelBookingPage extends React.Component {
     const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2);
     return (
       <div>
-        <div>
-          <NotificationContainer />
-        </div>
-
         <div className="booking-steps">
           <div className="container">
             <p>1. Provide Guest Information</p>

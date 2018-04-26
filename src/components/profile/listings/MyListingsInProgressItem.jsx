@@ -1,4 +1,4 @@
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 import { Config } from '../../../config';
 import { Link } from 'react-router-dom';

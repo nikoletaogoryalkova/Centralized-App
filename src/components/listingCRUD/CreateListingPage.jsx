@@ -1,4 +1,4 @@
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import {
   createListing,
@@ -485,7 +485,6 @@ class CreateListingPage extends React.Component {
     if (this.state.userHasLocAddress === false) {
       return <div>
         <ListingLocAddress values={this.state} onChange={this.onChange} updateLocAddress={this.updateLocAddress} />
-        <NotificationContainer />
       </div>;
     }
 
@@ -585,7 +584,6 @@ class CreateListingPage extends React.Component {
             routes={routes}
             prev={routes.checking} />} />
         </Switch>
-        <NotificationContainer />
       </div>
     );
   }
