@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,7 @@ import FooterNav from '../navigation/FooterNav';
 
 function listingDescription(props) {
   const { text, interaction } = props.values;  
-  const next = validateInput(props.values) ? props.next : props.location;
+  const next = validateInput(props.values) ? props.next : props.location.pathname;
   const handleClickNext = validateInput(props.values) 
     ? () => { props.updateProgress(1); }
     : () => { showErrors(props.values); };
@@ -105,7 +105,7 @@ listingDescription.propTypes = {
   updateProgress: PropTypes.func,
   prev: PropTypes.string,
   next: PropTypes.string,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
 
   // Router props
   location: PropTypes.object,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import GuestSettingsAside from '../aside/GuestSettingsAside';
@@ -133,5 +132,5 @@ CreateListingChecking.propTypes = {
   updateProgress: PropTypes.func.isRequired,
   prev: PropTypes.string,
   next: PropTypes.string,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
 };

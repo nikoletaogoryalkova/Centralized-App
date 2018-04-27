@@ -33,7 +33,6 @@ function ListingPrice(props) {
                         value={currency}
                         required="required"
                         id="currency">
-                        <option disabled value="">Currency</option>
                         {currencies.map((item, i) => {
                           return <option key={i} value={item.id}>{item.code}</option>;
                         })}
@@ -80,7 +79,7 @@ ListingPrice.propTypes = {
   onChange: PropTypes.func,
   finish: PropTypes.func,
   prev: PropTypes.string,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
 
   // Router props
   location: PropTypes.object,

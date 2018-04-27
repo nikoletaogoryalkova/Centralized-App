@@ -3,7 +3,6 @@ import Counter from '../counter/Counter';
 import Dropdown from '../dropdown/Dropdown';
 import LabeledBedroomCounter from '../counter/LabeledBedroomCounter';
 import ListingCrudNav from '../navigation/ListingCrudNav';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import FooterNav from '../navigation/FooterNav';
@@ -125,5 +124,5 @@ CreateListingAccommodation.propTypes = {
   updateCounter: PropTypes.func,
   prev: PropTypes.string,
   next: PropTypes.string,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
 };

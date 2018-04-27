@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 import FooterNav from '../navigation/FooterNav';
@@ -10,7 +10,7 @@ import { Config } from '../../../config';
 
 function ListingLandingPage(props) {
   const { listingType, name } = props.values;
-  const next = validateInput(props.values) ? props.next : props.location;
+  const next = validateInput(props.values) ? props.next : props.location.pathname;
   const handleClickNext = validateInput(props.values) 
     ? () => { props.updateProgress(1); }
     : () => { showErrors(props.values); };

@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FilterCheckbox from '../../common/filter/FilterCheckbox';
@@ -61,5 +60,5 @@ CreateListingSafetyAmenities.propTypes = {
   updateProgress: PropTypes.func,
   prev: PropTypes.string,
   next: PropTypes.string,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
 };

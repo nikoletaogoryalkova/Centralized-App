@@ -6,7 +6,6 @@ import { NotificationManager } from 'react-notifications';
 import Autocomplete from 'react-google-autocomplete';
 import BasicsAside from '../aside/BasicsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import FooterNav from '../navigation/FooterNav';
@@ -61,7 +60,7 @@ function CreateListingLocation(props) {
   };
 
   const { country, city, street, state } = props.values;
-  const next = validateInput(props.values) ? props.next : props.location;
+  const next = validateInput(props.values) ? props.next : props.location.pathname;
   const handleClickNext = validateInput(props.values) 
     ? () => { props.updateProgress(1); }
     : () => { showErrors(props.values); };
@@ -192,7 +191,7 @@ CreateListingLocation.propTypes = {
   prev: PropTypes.string,
   next: PropTypes.string,
   convertGoogleApiAddressComponents: PropTypes.func,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
 
   // Router props
   location: PropTypes.object,

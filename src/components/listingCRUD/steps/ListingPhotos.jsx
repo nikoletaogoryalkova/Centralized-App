@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
@@ -31,7 +31,7 @@ function ListingPhotos(props) {
     );
   });
 
-  const next = validateInput(props.values) ? props.next : props.location;
+  const next = validateInput(props.values) ? props.next : props.location.pathname;
   const handleClickNext = validateInput(props.values)
     ? () => { props.updateProgress(1); }
     : () => { showErrors(props.values); };
@@ -100,7 +100,7 @@ ListingPhotos.propTypes = {
   updateProgress: PropTypes.func,
   prev: PropTypes.string,
   next: PropTypes.string,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
   onSortEnd: PropTypes.any,
 
   // Router props

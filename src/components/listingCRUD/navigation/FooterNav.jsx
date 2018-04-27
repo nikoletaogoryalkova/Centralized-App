@@ -24,8 +24,8 @@ export default function FooterNav(props) {
 }
 
 FooterNav.propTypes = {
-  prev: PropTypes.any,
-  next: PropTypes.func,
-  step: PropTypes.func,
+  prev: PropTypes.string,
+  next: PropTypes.string,
+  step: PropTypes.number,
   handleClickNext: PropTypes.func
 };

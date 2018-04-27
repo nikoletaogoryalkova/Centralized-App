@@ -2,7 +2,6 @@ import { NotificationManager } from 'react-notifications';
 
 import { Config } from '../../../config';
 import { Link } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
