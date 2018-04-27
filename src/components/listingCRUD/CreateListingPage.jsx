@@ -24,6 +24,7 @@ import ListingPhotos from './steps/ListingPhotos';
 import ListingPlaceType from './steps/ListingPlaceType';
 import ListingPrice from './steps/ListingPrice';
 import ListingSafetyFacilities from './steps/ListingSafetyFacilities';
+import ReCAPTCHA from 'react-google-recaptcha';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { arrayMove } from 'react-sortable-hoc';
@@ -109,6 +110,7 @@ class CreateListingPage extends React.Component {
     this.createProgress = this.createProgress.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
+    this.finish = this.finish.bind(this);
   }
 
   componentDidMount() {
@@ -284,9 +286,10 @@ class CreateListingPage extends React.Component {
   }
 
   createListing(captchaToken) {
-    this.setState({ loading: true });
+
     let listing = this.createListingObject();
-    console.log(listing);
+    this.setState({ loading: true });
+
     createListing(listing, captchaToken).then((res) => {
       if (res.success) {
         this.setState({ loading: false });
@@ -475,6 +478,34 @@ class CreateListingPage extends React.Component {
     return addressComponentsArr;
   }
 
+  finish() {
+    const { name, street, city, country, isAddressSelected, text, uploadedFilesUrls } = this.state;
+    if (name.length < 2) {
+      NotificationManager.warning('Title should be at least 2 characters');
+      this.props.history.push('/profile/listings/create/landing/');
+    } else if (!isAddressSelected) {
+      NotificationManager.warning('Select a valid address');
+      this.props.history.push('/profile/listings/create/location/');
+    } else if (street.length < 6) {
+      NotificationManager.warning('Address should be at least 6 characters long');
+      this.props.history.push('/profile/listings/create/location/');
+    } else if (!city || city.trim() === '') {
+      NotificationManager.warning('City is required');
+      this.props.history.push('/profile/listings/create/location/');
+    } else if (!country || country.trim() === '') {
+      NotificationManager.warning('Country is required');
+      this.props.history.push('/profile/listings/create/location/');
+    } else if (text.length < 6) {
+      NotificationManager.warning('Summary should be at least 6 characters long');
+      this.props.history.push('/profile/listings/create/description/');
+    } else if (uploadedFilesUrls.length < 6) {
+      NotificationManager.warning('At least 1 picture is required');
+      this.props.history.push('/profile/listings/create/photos/');
+    } else {
+      this.captcha.execute();
+    }
+  }
+
   render() {
     if (this.state.countries === [] || this.state.currencies === [] ||
       this.state.propertyTypes === [] || this.state.categories === [] ||
@@ -580,10 +611,17 @@ class CreateListingPage extends React.Component {
           <Route exact path={routes.price} render={() => <ListingPrice
             values={this.state}
             onChange={this.onChange}
-            finish={this.createListing}
+            finish={this.finish}
             routes={routes}
             prev={routes.checking} />} />
         </Switch>
+
+        <ReCAPTCHA
+          ref={(el) => this.captcha = el}
+          size="invisible"
+          sitekey={Config.getValue('recaptchaKey')}
+          onChange={token => { this.createListing(token); }}
+        />
       </div>
     );
   }
@@ -607,5 +645,6 @@ const routes = {
 };
 
 CreateListingPage.propTypes = {
+  location: PropTypes.object,
   history: PropTypes.object
 };

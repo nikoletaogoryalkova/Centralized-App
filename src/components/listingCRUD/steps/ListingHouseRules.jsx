@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import GuestSettingsAside from '../aside/GuestSettingsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
+import FooterNav from '../navigation/FooterNav';
 
 export default function CreateListingHouseRules(props) {
   const { suitableForChildren, suitableForInfants, suitableForPets, smokingAllowed, eventsAllowed, otherHouseRules, otherRuleText } = props.values;
@@ -170,7 +171,7 @@ export default function CreateListingHouseRules(props) {
           </div>
         </div>
       </div>
-      <div className="navigation col-md-12">
+      {/* <div className="navigation col-md-12">
         <div className="col-md-3">
         </div>
         <div className="col-md-7">
@@ -179,7 +180,8 @@ export default function CreateListingHouseRules(props) {
             &nbsp;Back</NavLink>
           <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(8); }}>Next</NavLink>
         </div>
-      </div>
+      </div> */}
+      <FooterNav next={props.next} prev={props.prev} handleClickNext={props.updateProgress} step={8} />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import 'react-select/dist/react-select.css';
+import { withRouter } from 'react-router-dom';
 
 import { NotificationManager } from 'react-notifications';
 
@@ -8,8 +9,9 @@ import ListingCrudNav from '../navigation/ListingCrudNav';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
+import FooterNav from '../navigation/FooterNav';
 
-export default function CreateListingLocation(props) {
+function CreateListingLocation(props) {
 
   const handleOnPlaceSelected = (place) => {
     if (place.address_components !== undefined) {
@@ -59,6 +61,11 @@ export default function CreateListingLocation(props) {
   };
 
   const { country, city, street, state } = props.values;
+  const next = validateInput(props.values) ? props.next : props.location;
+  const handleClickNext = validateInput(props.values) 
+    ? () => { props.updateProgress(1); }
+    : () => { showErrors(props.values); };
+
   return (
     <div>
       <ListingCrudNav progress='33%' />
@@ -131,20 +138,7 @@ export default function CreateListingLocation(props) {
           </div>
         </div>
       </div>
-      <div className="navigation col-md-12">
-        <div className="col-md-3">
-        </div>
-        <div className="col-md-7">
-          <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
-            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
-            &nbsp;Back</NavLink>
-
-          {validateInput(props.values)
-            ? <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(5); }}>Next</NavLink>
-            : <button className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
-          }
-        </div>
-      </div>
+      <FooterNav next={next} prev={props.prev} handleClickNext={handleClickNext} step={5} />
     </div>
   );
 }
@@ -199,4 +193,9 @@ CreateListingLocation.propTypes = {
   next: PropTypes.string,
   convertGoogleApiAddressComponents: PropTypes.func,
   routes: PropTypes.array,
+
+  // Router props
+  location: PropTypes.object,
 };
+
+export default withRouter(CreateListingLocation);

@@ -1,16 +1,17 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import PlaceDescriptionAside from '../aside/PlaceDescriptionAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
+import FooterNav from '../navigation/FooterNav';
 
 import Dropzone from 'react-dropzone';
 
 import { Config } from '../../../config';
 
-export default function CreateListingPhotos(props) {
+function ListingPhotos(props) {
   const SortableItem = SortableElement(({ value, i }) =>
     <div className="uploaded-small-picture col-md-4" >
       <button onClick={props.removePhoto} className="close">
@@ -29,6 +30,11 @@ export default function CreateListingPhotos(props) {
       </div>
     );
   });
+
+  const next = validateInput(props.values) ? props.next : props.location;
+  const handleClickNext = validateInput(props.values)
+    ? () => { props.updateProgress(1); }
+    : () => { showErrors(props.values); };
 
   return (
     <div>
@@ -61,19 +67,7 @@ export default function CreateListingPhotos(props) {
           </div>
         </div>
       </div>
-      <div className="navigation col-md-12">
-        <div className="col-md-3">
-        </div>
-        <div className="col-md-7">
-          <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
-            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
-            &nbsp;Back</NavLink>
-          {validateInput(props.values)
-            ? <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => { props.updateProgress(7); }}>Next</NavLink>
-            : <button className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
-          }
-        </div>
-      </div>
+      <FooterNav next={next} prev={props.prev} handleClickNext={handleClickNext} step={7} />
     </div>
   );
 }
@@ -98,7 +92,7 @@ function showErrors(values) {
   }
 }
 
-CreateListingPhotos.propTypes = {
+ListingPhotos.propTypes = {
   values: PropTypes.any,
   onChange: PropTypes.func,
   onImageDrop: PropTypes.func,
@@ -108,4 +102,9 @@ CreateListingPhotos.propTypes = {
   next: PropTypes.string,
   routes: PropTypes.array,
   onSortEnd: PropTypes.any,
+
+  // Router props
+  location: PropTypes.object,
 };
+
+export default withRouter(ListingPhotos);

@@ -2644,8 +2644,8 @@ h2+hr {
 
 .pictures-preview .close {
     position: absolute;
-    top: 180px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
     background-color: #213844;
     border-radius: 5px;
     color: white;

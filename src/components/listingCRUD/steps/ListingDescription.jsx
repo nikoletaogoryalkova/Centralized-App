@@ -1,14 +1,19 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 
 import PlaceDescriptionAside from '../aside/PlaceDescriptionAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
 import Textarea from '../textbox/Textarea';
+import FooterNav from '../navigation/FooterNav';
 
-export default function CreateListingDescription(props) {
-  const { text, interaction } = props.values;
+function listingDescription(props) {
+  const { text, interaction } = props.values;  
+  const next = validateInput(props.values) ? props.next : props.location;
+  const handleClickNext = validateInput(props.values) 
+    ? () => { props.updateProgress(1); }
+    : () => { showErrors(props.values); };
   return (
     <div>
       <ListingCrudNav progress='66%' />
@@ -60,7 +65,7 @@ export default function CreateListingDescription(props) {
           </div>
         </div>
       </div>
-      <div className="navigation col-md-12">
+      {/* <div className="navigation col-md-12">
         <div className="col-md-3">
         </div>
         <div className="col-md-7">
@@ -72,7 +77,8 @@ export default function CreateListingDescription(props) {
             : <button className="btn btn-primary btn-next disabled" onClick={() => showErrors(props.values)}>Next</button>
           }
         </div>
-      </div>
+      </div> */}
+      <FooterNav next={next} prev={props.prev} handleClickNext={handleClickNext} step={6} />
     </div>
   );
 }
@@ -93,11 +99,16 @@ function showErrors(values) {
   }
 }
 
-CreateListingDescription.propTypes = {
+listingDescription.propTypes = {
   values: PropTypes.any,
   onChange: PropTypes.func,
   updateProgress: PropTypes.func,
   prev: PropTypes.string,
   next: PropTypes.string,
   routes: PropTypes.array,
+
+  // Router props
+  location: PropTypes.object,
 };
+
+export default withRouter(listingDescription);

@@ -1,15 +1,13 @@
-import { Config } from '../../../config';
 import GuestSettingsAside from '../aside/GuestSettingsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
-import { NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
+import FooterNav from '../navigation/FooterNav';
 
-let captcha;
-
-export default function CreateListingPrice(props) {
+function ListingPrice(props) {
   const { currency, defaultDailyPrice, cleaningFee, depositRate, currencies } = props.values;
+
   return (
     <div>
       <ListingCrudNav progress='100%' />
@@ -72,34 +70,20 @@ export default function CreateListingPrice(props) {
           </div>
         </div>
       </div>
-      <div className="navigation col-md-12">
-        <div className="col-md-3">
-        </div>
-        <div className="col-md-7">
-          <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
-            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
-            &nbsp;Back</NavLink>
-          <NavLink to='#' className="btn btn-primary btn-next" onClick={(e) => {
-            e.preventDefault();
-            captcha.execute();
-          }} id="btn-continue">Finish</NavLink>
-
-          <ReCAPTCHA
-            ref={(el) => captcha = el}
-            size="invisible"
-            sitekey={Config.getValue('recaptchaKey')}
-            onChange={token => { props.finish(token); captcha.reset(); }}
-          />
-        </div>
-      </div>
+      <FooterNav next={'#'} prev={props.prev} handleClickNext={props.finish} step={10} />
     </div>
   );
 }
 
-CreateListingPrice.propTypes = {
+ListingPrice.propTypes = {
   values: PropTypes.object,
   onChange: PropTypes.func,
   finish: PropTypes.func,
   prev: PropTypes.string,
   routes: PropTypes.array,
+
+  // Router props
+  location: PropTypes.object,
 };
+
+export default withRouter(ListingPrice);
