@@ -31,23 +31,6 @@ function ListingItemPictureCarousel(props) {
         }
     };
 
-    const getCarouselItem = (item, i) => {
-        if (listingsType === 'homes') {
-            return (
-                <div className={listingsType + '-item'} key={i}>
-                    <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`}><img src={item.thumbnail} alt="" /></Link>
-                </div>
-            );
-        } else {
-            return (
-                <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`} key={i}>
-                    <div className={listingsType + '-item'} style={{ backgroundImage: 'url(' + item.thumbnail + ')' }}>
-                    </div>
-                </Link>
-            );
-        }
-    };
-
     return (
         <div>
             {pictures &&
