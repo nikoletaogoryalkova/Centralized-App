@@ -1,3 +1,4 @@
+import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import { NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
@@ -42,7 +43,7 @@ class ContactHostModal extends React.Component {
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                sitekey={Config.getValue('recaptchaKey')}
                                 onChange={token => { this.props.sendMessageToHost(this.props.id, this.state.message, token); }}
                             />
 

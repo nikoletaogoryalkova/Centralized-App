@@ -2,7 +2,6 @@ import 'babel-polyfill';
 
 import App from './components/app/App.jsx';
 import { BrowserRouter } from 'react-router-dom';
-import { Config } from './config';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -14,7 +13,7 @@ const createStoreWithMiddleware = applyMiddleware()(createStore);
 
 render(
     <Provider store={createStoreWithMiddleware(reducers)}>
-        <BrowserRouter basename = {Config.getValue('routerPrefix')}>
+        <BrowserRouter>
             <App />
         </BrowserRouter>
     </Provider>

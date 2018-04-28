@@ -28,18 +28,18 @@ export default function ChangePasswordModal(props) {
                             <input type="password" name="confirmNewPassword" value={props.confirmNewPassword} onChange={props.onChange} className="form-control" placeholder="Confirm password" />
                         </div>
 
-                        <ReCAPTCHA
-                            ref={el => captcha = el}
-                            size="invisible"
-                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                            onChange={(token) => {props.handlePasswordChange(token); captcha.reset();}}
-                        />
-
                         <button type="submit" className="btn btn-primary">Save Password</button>
                         <div className="clearfix"></div>
                     </form>
                 </Modal.Body>
             </Modal>
+            
+            <ReCAPTCHA
+                ref={el => captcha = el}
+                size="invisible"
+                sitekey={Config.getValue('recaptchaKey')}
+                onChange={(token) => { props.handlePasswordChange(token); captcha.reset(); }}
+            />
         </div>
     );
 }

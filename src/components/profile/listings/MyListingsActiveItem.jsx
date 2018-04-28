@@ -83,6 +83,6 @@ export default class MyListingsActiveItem extends React.Component {
 
 MyListingsActiveItem.propTypes = {
     listing: PropTypes.object,
-    state: PropTypes.bool,
+    state: PropTypes.string,
     filterListings: PropTypes.func
 };

@@ -1,11 +1,10 @@
 // import '../../../public/css/calendar.css';
 
-import DatePicker from '../../DatePicker';
+import { Config } from '../../../config';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { parse } from 'query-string';
 import { requestBooking } from '../../../requester';
 import { withRouter } from 'react-router-dom';
@@ -125,19 +124,19 @@ class HomeReservationPanel extends React.Component {
                             <ReCAPTCHA
                                 ref={el => this.captcha = el}
                                 size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                                sitekey={Config.getValue('recaptchaKey')}
                                 onChange={token => this.onSubmit(token)}
                             />
                             <br />
 
                             <div className="hotel-second-price">total <span className="total-price">Price</span> / for&nbsp;
-                            <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
+                                <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div>
                                 <p style={{ color: 'white' }}><b>or</b></p>
                             </div>
                             <div className="hotel-second-price">total <span className="total-price">LOC</span> / for&nbsp;
-                            <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
+                                <div className="hotel-search-nights"><span>{this.props.nights} nights</span></div>
                             </div>
                             <div className="nonev"></div>
 
@@ -151,7 +150,8 @@ class HomeReservationPanel extends React.Component {
                             }
                             {this.props.isLogged &&
                                 <label htmlFor="agree-terms" style={{ marginTop: 10 + 'px', color: '#FFFFFF' }}>I agree to the&nbsp;
-                                <a>Terms &amp; Conditions</a></label>
+                                    <a>Terms &amp; Conditions</a>
+                                </label>
                             }
                             {this.props.isLogged === false &&
                                 <div className="hotel-second-price" style={{ textAlign: 'center' }}>

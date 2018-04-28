@@ -1,9 +1,10 @@
+import { Config } from '../../../config';
 import React from 'react';
-import {Modal} from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import {deleteListing} from '../../../requester';
+import { deleteListing } from '../../../requester';
 import ReCAPTCHA from 'react-google-recaptcha';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 export default class DeletionModal extends React.Component {
     constructor(props) {
@@ -19,7 +20,7 @@ export default class DeletionModal extends React.Component {
             return;
         }
 
-        this.setState({sending: true});
+        this.setState({ sending: true });
 
         deleteListing(this.props.deletingId, token)
             .then(res => {
@@ -29,7 +30,7 @@ export default class DeletionModal extends React.Component {
                 } else {
                     NotificationManager.error('Cannot delete this property. It might have reservations or other irrevocable actions.', 'Deleting Listing');
                 }
-                this.setState({sending: false});
+                this.setState({ sending: false });
                 this.props.onHide();
             });
     }
@@ -37,13 +38,12 @@ export default class DeletionModal extends React.Component {
     render() {
         return (
             <div>
-                <NotificationContainer />
                 <Modal show={this.props.isDeleting} onHide={this.props.onHide} className="modal fade myModal">
                     <Modal.Header>
                         <button type="button" className="close" onClick={this.props.onHide}>&times;</button>
                         <h2>Delete <b>{this.props.deletingName.substring(0, 20)}</b>?</h2>
                         {this.state.sending &&
-                        <div className="loader"></div>
+                            <div className="loader"></div>
                         }
                     </Modal.Header>
                     <Modal.Body>
@@ -52,18 +52,19 @@ export default class DeletionModal extends React.Component {
                             this.captcha.execute();
                         }}>
 
-                            <ReCAPTCHA
-                                ref={el => this.captcha = el}
-                                size="invisible"
-                                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                                onChange={token => this.deleteSelected(token)}
-                            />
-
                             <button type="submit" className="btn btn-danger">Yes, delete it!</button>
                         </form>
                         <button onClick={this.props.onHide} className="btn btn-info">No, go back!</button>
                     </Modal.Body>
                 </Modal>
+
+
+                <ReCAPTCHA
+                    ref={el => this.captcha = el}
+                    size="invisible"
+                    sitekey={Config.getValue('recaptchaKey')}
+                    onChange={token => this.deleteSelected(token)}
+                />
             </div>
         );
     }

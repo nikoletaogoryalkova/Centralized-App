@@ -38,7 +38,7 @@ export default class CalendarAsideStatic extends React.Component {
                         <ReCAPTCHA
                             ref={el => this.captcha = el}
                             size="invisible"
-                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                            sitekey={Config.getValue('recaptchaKey')}
                             onChange={token => this.props.updateDailyPrice(token)}
                         />
                     </form>

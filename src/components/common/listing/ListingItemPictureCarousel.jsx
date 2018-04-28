@@ -11,10 +11,8 @@ function ListingItemPictureCarousel(props) {
     if (!pictures) {
         return <div className="loader"></div>;
     }
-    
-    if (typeof props.pictures === 'string') {
-        pictures = JSON.parse(props.pictures);
-    }
+
+    console.log(pictures)
 
     const getCarouselItem = (item, i) => {
         if (listingsType === 'homes') {
@@ -26,7 +24,7 @@ function ListingItemPictureCarousel(props) {
         } else {
             return (
                 <Link to={`/${listingsType}/listings/${props.id}${props.location.search}`} key={i}>
-                    <div className={listingsType + '-item'} style={{ backgroundImage: 'url(' + item.thumbnail + ')'}}>
+                    <div className={listingsType + '-item'} style={{ backgroundImage: 'url(' + item.thumbnail + ')' }}>
                     </div>
                 </Link>
             );
@@ -35,7 +33,7 @@ function ListingItemPictureCarousel(props) {
 
     return (
         <div>
-            {pictures && 
+            {pictures &&
                 <ReactBootstrapCarousel
                     animation={true}
                     autoplay={false}
@@ -55,7 +53,7 @@ function ListingItemPictureCarousel(props) {
 export default withRouter(ListingItemPictureCarousel);
 
 ListingItemPictureCarousel.propTypes = {
-    pictures: PropTypes.array,
+    pictures: PropTypes.any,
     id: PropTypes.number,
     listingsType: PropTypes.string,
 };

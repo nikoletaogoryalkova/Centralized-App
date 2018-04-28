@@ -5,7 +5,7 @@ import { getCurrentLoggedInUserInfo } from '../../../requester';
 import request from 'superagent';
 
 const host = Config.getValue('apiHost');
-const LOCKCHAIN_UPLOAD_URL = `${host}users/me/images/upload`;
+const LOCKTRIP_UPLOAD_URL = `${host}users/me/images/upload`;
 
 export default class ProfilePhotosPage extends React.Component {
     constructor(props) {
@@ -43,9 +43,9 @@ export default class ProfilePhotosPage extends React.Component {
 
     handleImageUpload(files) {
         files.forEach((file) => {
-            let upload = request.post(LOCKCHAIN_UPLOAD_URL)
+            let upload = request.post(LOCKTRIP_UPLOAD_URL)
                 .field('image', file)
-                .set('Authorization', localStorage[Config.getValue('domainPrefix') + '.auth.lockchain']);
+                .set('Authorization', localStorage[Config.getValue('domainPrefix') + '.auth.locktrip']);
 
 
             upload.end((err, response) => {

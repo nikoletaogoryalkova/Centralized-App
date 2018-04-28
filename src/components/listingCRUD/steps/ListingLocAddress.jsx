@@ -2,6 +2,7 @@ import 'react-select/dist/react-select.css';
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
+import { Config } from '../../../config';
 import BasicsAside from '../aside/BasicsAside';
 import ListingCrudNav from '../navigation/ListingCrudNav';
 import PropTypes from 'prop-types';
@@ -51,7 +52,7 @@ export default function ListingLocAddress(props) {
                     <ReCAPTCHA
                         ref={el => captcha = el}
                         size="invisible"
-                        sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                        sitekey={Config.getValue('recaptchaKey')}
                         onChange={token => { props.updateLocAddress(token); captcha.reset(); }}
                     />
                 </form>

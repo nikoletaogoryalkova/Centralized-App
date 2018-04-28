@@ -1,3 +1,4 @@
+import { Config } from '../../../config.js';
 import { Link } from 'react-router-dom';
 import ListingItemPictureCarousel from './ListingItemPictureCarousel';
 import ListingItemRatingBox from './ListingItemRatingBox';
@@ -15,6 +16,12 @@ class PopularListingItem extends React.Component {
         if (listingsType === 'homes') {
             listingPrice = (this.props.listing.prices) && this.props.paymentInfo.currency === this.props.listing.currencyCode ? parseInt(this.props.listing.defaultDailyPrice, 10).toFixed(2) : parseInt(this.props.listing.prices[this.props.paymentInfo.currency], 10).toFixed(2);
             pictures = this.props.listing.pictures;
+            
+            if (typeof pictures === 'string') {
+                pictures = JSON.parse(pictures);
+            }
+
+            pictures = pictures.map(x => { return {thumbnail: Config.getValue('imgHost') + x.thumbnail}; });
             rating = this.props.listing.averageRating;
         } else if (listingsType === 'hotels') {
             listingPrice = 0.0;

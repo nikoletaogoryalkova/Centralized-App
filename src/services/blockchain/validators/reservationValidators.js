@@ -91,7 +91,7 @@ export class ReservationValidators {
 		return bookingContractAddress;
 	}
 
-	isHotelReservationIdEmpty(hotelReservationId) {
+	static isHotelReservationIdEmpty(hotelReservationId) {
 		if (hotelReservationId === '') {
 			throw ERROR.MISSING_RESERVATION_ID;
 		}

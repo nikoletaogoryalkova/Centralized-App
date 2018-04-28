@@ -30,7 +30,6 @@ class HomePage extends React.Component {
 
     componentDidMount() {
         getListings().then(data => {
-            console.log(data.content);
             this.setState({ listings: data.content });
         });
 

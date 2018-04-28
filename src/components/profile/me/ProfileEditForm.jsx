@@ -219,7 +219,7 @@ export default class ProfileEditPage extends React.Component {
                         <label htmlFor="phone">Phone number <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>
                         <input id="phone" name="phoneNumber" value={this.state.phoneNumber} onChange={this.onChange} type="text" />
                     </div>
-                    <div className="text"><span>We won&#39;t share your phone number with other LockChain users.</span></div>
+                    <div className="text"><span>We won&#39;t share your phone number with other LockTrip users.</span></div>
 
                     <div className="loc-address">
                         <label htmlFor="loc-address">ETH/LOC address <img src={Config.getValue('basePath') + 'images/icon-lock.png'} className="lock" alt="lock-o" /></label>
@@ -268,7 +268,7 @@ export default class ProfileEditPage extends React.Component {
                     <ReCAPTCHA
                         ref={el => this.captcha = el}
                         size="invisible"
-                        sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                        sitekey={Config.getValue('recaptchaKey')}
                         onChange={token => { this.updateUser(token); this.captcha.reset(); }}
                     />
 

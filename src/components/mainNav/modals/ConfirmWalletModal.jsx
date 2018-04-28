@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-
+import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -29,7 +29,7 @@ export default function CreateWalletModal(props) {
     };
 
     const handleEnterKeyPress = (event) => {
-        if(event.key === 'Enter'){
+        if (event.key === 'Enter') {
             handleSubmit();
         }
     };
@@ -44,18 +44,18 @@ export default function CreateWalletModal(props) {
                 <Modal.Body>
                     <p>Enter your wallet mnemonic words:</p>
                     <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-                        <textarea name="mnemonicWords" className="form-control" onChange={props.handleMnemonicWordsChange} value={props.mnemonicWords} autoFocus onKeyPress={handleEnterKeyPress}/>
-                        <br/>
+                        <textarea name="mnemonicWords" className="form-control" onChange={props.handleMnemonicWordsChange} value={props.mnemonicWords} autoFocus onKeyPress={handleEnterKeyPress} />
+                        <br />
                         <button type="submit" className="btn btn-primary">Confirm Wallet</button>
                     </form>
                     <button className="btn btn-primary" onClick={onWordsForget}>Sorry, I did not save them</button>
                 </Modal.Body>
             </Modal>
-            
+
             <ReCAPTCHA
                 ref={el => captcha = el}
                 size="invisible"
-                sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
+                sitekey={Config.getValue('recaptchaKey')}
                 onChange={(token) => { props.handleUpdateUserWallet(token); captcha.reset(); }}
             />
         </div>

@@ -18,9 +18,10 @@ export default function LoginModal(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
-                        <div className="form-group">
+                        <div className="form-group" style={{ marginTop: '10px' }}>
                             <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="mail" />
                             <input type="email" name="loginEmail" value={props.loginEmail} onChange={props.onChange} className="form-control" placeholder="Email address" autoFocus/>
+                            {/* <p style={{ marginTop: '10px', textAlign: 'right', color: 'red' }}>Please enter a valid email address</p> */}
                         </div>
                         <div className="form-group">
                             <img src={Config.getValue('basePath') + 'images/login-pass.png'} alt="pass" />
@@ -29,13 +30,6 @@ export default function LoginModal(props) {
                         <div className="checkbox login-checkbox pull-left">
                             <label><input type="checkbox" value="" id="login-remember" />Remember me</label>
                         </div>
-
-                        <ReCAPTCHA
-                            ref={el => captcha = el}
-                            size="invisible"
-                            sitekey="6LdCpD4UAAAAAPzGUG9u2jDWziQUSSUWRXxJF0PR"
-                            onChange={(token) => {props.login(token); captcha.reset();}}
-                        />
 
                         <button type="submit" className="btn btn-primary">Login</button>
                         <div className="clearfix"></div>
@@ -48,6 +42,13 @@ export default function LoginModal(props) {
                     </div>
                 </Modal.Body>
             </Modal>
+
+            <ReCAPTCHA
+                ref={el => captcha = el}
+                size="invisible"
+                sitekey={Config.getValue('recaptchaKey')}
+                onChange={(token) => {props.login(token); captcha.reset();}}
+            />
         </div>
     );
 }

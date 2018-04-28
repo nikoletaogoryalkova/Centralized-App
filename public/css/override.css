@@ -19,6 +19,11 @@ a.dropdown-toggle {
 .navbar-brand {
   height: auto;
 }
+.navbar-brand {
+  padding: 15px 20px;
+  width: 180px;
+  height: 100%;
+}
 .form-control {
   background-image: auto;
 }

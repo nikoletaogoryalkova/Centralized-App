@@ -115,7 +115,7 @@ class HomeDetailsPage extends React.Component {
     }
 
     getUserInfo() {
-        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.lockchain')) {
+        if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
             getCurrentLoggedInUserInfo()
                 .then(res => {
                     this.setState({
@@ -272,7 +272,7 @@ class HomeDetailsPage extends React.Component {
             images = null;
             if (this.state.data.pictures !== undefined) {
                 images = this.state.data.pictures.map(x => {
-                    return { src: x.original };
+                    return { src: Config.getValue('imgHost') + x.original };
                 });
             }
     
@@ -300,7 +300,7 @@ class HomeDetailsPage extends React.Component {
                     <div className="loader"></div> :
                     <div>
                         <section className="hotel-gallery">
-                            <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url("' + this.state.data.pictures[0].original + '")' } : { backgroundColor: '#AAA' }}>
+                            <div className="hotel-gallery-bgr" style={(this.state.data.pictures !== undefined && this.state.data.pictures.length > 0) ? { 'backgroundImage': 'url("' + Config.getValue('imgHost') + this.state.data.pictures[0].original + '")' } : { backgroundColor: '#AAA' }}>
                                 <div className="container">
                                     <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
                                     {images !== null && <Lightbox
