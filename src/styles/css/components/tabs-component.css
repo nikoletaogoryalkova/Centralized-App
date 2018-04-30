@@ -69,7 +69,7 @@
         .info .balance .value {
           min-width: 211px; } }
       .info .balance .value span:last-child {
-        font-weight: bold; }
+        font-weight: 400; }
     .info .balance .icon-plus {
       width: 38px;
       height: 38px;

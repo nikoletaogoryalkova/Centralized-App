@@ -529,6 +529,31 @@ th {
   /* 2 */
   overflow: hidden; }
 
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+* {
+  max-height: 1000000px; }
+
+body {
+  color: #1f2427;
+  background: #f0f1f3;
+  font: 16px/1.2 "Futura", "Arial", "Helvetica Neue", "Helvetica", sans-serif;
+  min-width: 320px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: top; }
+
+.gm-style img {
+  max-width: none; }
+
 h1, .h1,
 h2, .h2,
 h3, .h3,
@@ -537,7 +562,7 @@ h5, .h5,
 h6, .h6,
 .h {
   font-family: inherit;
-  font-weight: bold;
+  font-weight: 300;
   margin: 0 0 0.5em;
   color: inherit; }
 

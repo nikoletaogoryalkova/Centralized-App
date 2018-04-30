@@ -3,7 +3,6 @@
 }
 
 .bold {
-    font-weight: bold;
     font-family: 'FuturaStd-Medium', sans-serif;
 }
 
@@ -418,7 +417,6 @@ button.disabled:hover {
 }
 
 .search-term {
-    font-weight: bold;
     float: left;
     padding: 30px 10px;
 }
@@ -468,13 +466,14 @@ button.disabled:hover {
 
 .rc-pagination-next,
 .rc-pagination-jump-next {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .hotel-gallery-bgr {
-    background-size: cover;
-    min-height: 600px;
-    background-position: center;
+  margin-top: 20px;
+  background-size: cover;
+  min-height: 600px;
+  background-position: center;
 }
 
 .hotel-gallery-bgr .container {
@@ -819,7 +818,7 @@ footer .currency-switcher {
 #main-nav #second-nav .navbar-nav li a.active {
     font-size: 18px;
     border-radius: 0;
-    font-weight: 400;
+    /* font-weight: 400; */
     color: #fff;
     border-bottom: 4px solid #d87a61 !important;
     background-color: transparent;
@@ -832,12 +831,14 @@ footer .currency-switcher {
     position: absolute;
 }
 
-#main-nav #search-bar {
-    background: #fff;
-    padding: 5px 5px;
-    /* min-height: 92px; */
-    border-radius: 5px;
-    box-shadow: 0 0 40px #223843;
+#search-bar {
+  max-width: 1170px;
+  background: #fff;
+  padding: 5px 5px;
+  /* min-height: 92px; */
+  border-radius: 5px;
+  margin: 0 auto;
+  /* box-shadow: 0 0 40px #223843; */
 }
 
 #main-nav #search-bar .form-group {
@@ -978,7 +979,6 @@ ul.navbar-profile>li>a:hover {
 }
 
 ul.navbar-profile>li>a.active {
-    font-weight: bold;
     color: #d87a61;
 }
 
@@ -1041,10 +1041,6 @@ ul.profile-pending-header {
 
 ul.profile-pending-header>li {
     padding: 10px 0;
-}
-
-ul.profile-pending-header>li>span {
-    font-size: 18px;
 }
 
 ul.profile-pending-item {
@@ -2122,10 +2118,6 @@ li.dropdown {
     align-items: center;
 }
 
-.my-reservations .table-header span {
-    font-weight: bold;
-}
-
 #profile-mylistings::after {
     clear: both;
     display: block;
@@ -2484,16 +2476,16 @@ input[type="checkbox"].tick:checked+label:after {
 /* END */
 
 .host-step {
-    padding: 10px 10px 10px 20px;
+    /* padding: 10px 10px 10px 20px; */
+    margin-bottom: 10px;
     font-size: 16px;
-    font-weight: bold;
     display: block;
 }
 
 .host-step a {
     padding: 10px 10px 10px 20px;
     font-size: 16px;
-    font-weight: bold;
+    /* font-weight: bold; */
     display: block;
 }
 .list-hotel .carousel-fade {
