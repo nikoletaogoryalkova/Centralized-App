@@ -97,10 +97,11 @@ class MainNav extends React.Component {
     const search = this.props.location.search;
     const searchParams = search.split('=');
     if (searchParams[0] === '?token') {
-      this.setState({
-        recoveryToken: searchParams[1],
-        enterRecoveryToken: true,
-      });
+      this.openModal(ENTER_RECOVERY_TOKEN);
+      // this.setState({
+      //   recoveryToken: searchParams[1],
+      //   enterRecoveryToken: true,
+      // });
     }
 
 
