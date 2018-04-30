@@ -1,0 +1,296 @@
+.facilities ul, .hotel-rules .rules-list, .hotel-arrangements ul {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.heading-underline {
+  font-weight: 400;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 27px;
+  letter-spacing: -0.03em; }
+
+.overview p {
+  line-height: 1.4;
+  margin-bottom: 21px;
+  color: #54585b; }
+
+.overview h5 {
+  font-weight: 400;
+  margin-bottom: 0;
+  color: #54585b; }
+
+.space {
+  margin-bottom: 25px; }
+  @media (min-width: 1024px) {
+    .space {
+      margin-bottom: 45px; } }
+
+.facilities {
+  margin-bottom: 50px; }
+  .facilities ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; }
+    @media (min-width: 1024px) {
+      .facilities ul {
+        flex-wrap: nowrap; } }
+    .facilities ul li {
+      margin-bottom: 10px;
+      margin-right: 29px; }
+      .facilities ul li:last-child {
+        margin-right: 0; }
+      @media (min-width: 1024px) {
+        .facilities ul li {
+          margin-bottom: 0; } }
+    .facilities ul .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 69px;
+      height: 69px;
+      border: 1px solid #cccccc;
+      font-size: 32px;
+      background: #fff;
+      border-radius: 2px;
+      color: #1f2427; }
+      .facilities ul .icon:hover {
+        color: #fff;
+        background: #a2c5bf; }
+    .facilities ul .more {
+      color: #d87a61;
+      font-size: 26px; }
+      .facilities ul .more:hover {
+        color: #a2c5bf; }
+
+.room-types {
+  margin-bottom: 25px; }
+  @media (min-width: 1024px) {
+    .room-types {
+      margin-bottom: 52px; } }
+  .room-types .flex {
+    justify-content: flex-start; }
+  .room-types .carousel-holder {
+    position: relative; }
+    .room-types .carousel-holder button {
+      transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+      position: absolute;
+      top: 75px;
+      right: 0;
+      background: #fff;
+      border-radius: 100%;
+      padding: 0;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #cccccc;
+      box-shadow: 2px 2px 5px 0px rgba(14, 23, 27, 0.1); }
+      .room-types .carousel-holder button:hover {
+        background: #a2c5bf;
+        color: #fff; }
+  .room-types .hotel-card {
+    border: 1px solid #cccccc;
+    max-width: 290px; }
+    @media (min-width: 620px) {
+      .room-types .hotel-card {
+        margin-right: 20px; }
+        .room-types .hotel-card:last-child {
+          margin-right: 0; } }
+
+.hotel-rules .rules-list {
+  margin-bottom: 37px; }
+  .hotel-rules .rules-list li {
+    margin-bottom: 9px; }
+    .hotel-rules .rules-list li:last-child {
+      margin-bottom: 0; }
+
+.check-in-and-out {
+  font-size: 18px;
+  margin-bottom: 45px; }
+  @media (min-width: 1024px) {
+    .check-in-and-out {
+      margin-bottom: 75px; } }
+  .check-in-and-out .bubble {
+    position: relative;
+    display: block;
+    background: #a2c5bf;
+    color: #fff;
+    padding: 7px 9px 5px;
+    font-size: 12px;
+    top: calc(100% + 10px);
+    bottom: auto;
+    left: -15px;
+    max-width: 110px;
+    text-align: center; }
+    .check-in-and-out .bubble:before {
+      position: absolute;
+      content: '';
+      bottom: 100%;
+      left: 10px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 5.5px 4px 5.5px;
+      border-color: transparent transparent #a2c5bf transparent; }
+    .check-in-and-out .bubble-reverse:before {
+      left: auto;
+      right: 10px; }
+  .check-in-and-out .check-in {
+    margin-bottom: 68px; }
+    @media (min-width: 1024px) {
+      .check-in-and-out .check-in {
+        display: flex;
+        align-items: center; } }
+    .check-in-and-out .check-in > span {
+      margin-right: 35px; }
+    .check-in-and-out .check-in .progress-bar .time {
+      font-size: 14px;
+      position: absolute;
+      display: block;
+      right: 0;
+      bottom: calc(100% + 5px); }
+    .check-in-and-out .check-in .progress-bar .bubble {
+      position: relative; }
+  .check-in-and-out .progress {
+    display: flex; }
+    @media (min-width: 1024px) {
+      .check-in-and-out .progress {
+        min-width: 430px; } }
+    .check-in-and-out .progress .progress-bar {
+      position: relative;
+      height: 3px;
+      background: #e1e1e1; }
+      .check-in-and-out .progress .progress-bar.filled {
+        background: #223843; }
+  @media (min-width: 1024px) {
+    .check-in-and-out .check-out {
+      display: flex;
+      align-items: center; } }
+  .check-in-and-out .check-out > span {
+    margin-right: 27px; }
+  .check-in-and-out .check-out .bubble {
+    position: absolute;
+    left: auto;
+    right: -15px; }
+  .check-in-and-out .check-out .progress-bar .time {
+    position: absolute;
+    display: block;
+    left: 0;
+    bottom: 100%; }
+
+.blockquote {
+  margin: 0 0 30px 0;
+  border-bottom: 1px solid #cccccc; }
+
+.blockquote-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; }
+  .blockquote-header .avatar {
+    border-radius: 100%;
+    overflow: hidden;
+    margin-right: 19px; }
+    .blockquote-header .avatar img {
+      display: block;
+      width: 100%; }
+  .blockquote-header .author {
+    display: flex;
+    align-items: flex-start; }
+    .blockquote-header .author .author-details {
+      padding-top: 15px;
+      letter-spacing: 0.03em; }
+      .blockquote-header .author .author-details span {
+        display: block;
+        margin-bottom: 11px; }
+    .blockquote-header .author .rating-holder {
+      margin-bottom: 0; }
+
+.host strong {
+  font-size: 32px; }
+
+.host p a {
+  color: #d87a61; }
+  .host p a:hover {
+    color: #a2c5bf; }
+
+.reply-holder {
+  text-align: right;
+  margin-bottom: 10px; }
+  .reply-holder a {
+    font-size: 12px;
+    color: #54575a; }
+    .reply-holder a span {
+      font-size: 10px;
+      margin-right: 12px; }
+    .reply-holder a:hover {
+      color: #a2c5bf; }
+
+.like-btn {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 12px;
+  color: #888c8d;
+  background: #fff;
+  padding: 9px 10px;
+  border: 1px solid #cccccc;
+  border-radius: 3px; }
+  .like-btn:hover {
+    color: #fff;
+    background: #a2c5bf; }
+  .like-btn > span {
+    margin-right: 12px; }
+
+.hotel-arrangements {
+  margin-bottom: 57px; }
+  .hotel-arrangements ul li {
+    margin-bottom: 45px; }
+    .hotel-arrangements ul li:last-child {
+      margin-bottom: 0; }
+    .hotel-arrangements ul li span {
+      font-weight: 400; }
+    .hotel-arrangements ul li .icon {
+      font-size: 28px;
+      margin-left: 20px; }
+
+.user-rating {
+  margin-bottom: 50px; }
+  .user-rating .btn {
+    min-width: 130px; }
+    .user-rating .btn-dark {
+      margin-bottom: 15px; }
+      @media (min-width: 1024px) {
+        .user-rating .btn-dark {
+          margin-bottom: 0; } }
+
+.location-section {
+  padding-bottom: 25px; }
+  @media (min-width: 1024px) {
+    .location-section {
+      padding-bottom: 50px; } }
+
+.similar {
+  margin-bottom: 35px; }
+  @media (min-width: 1024px) {
+    .similar {
+      margin-bottom: 75px; } }
+  @media (min-width: 480px) {
+    .similar .hotel-card {
+      margin-right: 10px; } }
+  @media (min-width: 1024px) {
+    .similar .hotel-card {
+      min-width: 330px; } }

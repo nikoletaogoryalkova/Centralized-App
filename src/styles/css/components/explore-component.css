@@ -1,0 +1,97 @@
+.explore .categories {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.explore {
+  margin-bottom: 25px; }
+  @media (min-width: 1024px) {
+    .explore {
+      margin-bottom: 82px; } }
+  .explore .container {
+    text-align: center; }
+  .explore h3 {
+    font-weight: 400;
+    margin-bottom: 5px; }
+  .explore .subtitle {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    margin-bottom: 42px; }
+  .explore .categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    @media (min-width: 1024px) {
+      .explore .categories {
+        flex-direction: row;
+        justify-content: center; } }
+    .explore .categories li {
+      margin-bottom: 30px; }
+      @media (min-width: 1024px) {
+        .explore .categories li {
+          margin-right: 30px;
+          margin-bottom: 0; } }
+      .explore .categories li:first-child h3 {
+        color: #1f2427; }
+        .explore .categories li:first-child h3:after {
+          background-image: url("../../images/underline-white.svg"); }
+      .explore .categories li:last-child {
+        margin-right: 0; }
+        .explore .categories li:last-child h3 {
+          color: #fff; }
+          .explore .categories li:last-child h3:after {
+            background-image: url("../../images/underline-red.svg"); }
+    .explore .categories a {
+      display: block;
+      position: relative;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.1); }
+      .explore .categories a h3 {
+        position: absolute;
+        bottom: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 44px;
+        font-family: "Nothing You Could Do", "Arial", "Helvetica Neue", "Helvetica", sans-serif; }
+        .explore .categories a h3:after {
+          position: absolute;
+          content: '';
+          bottom: -7px;
+          left: 50%;
+          transform: translateX(-50%);
+          height: 25px;
+          width: 290px;
+          background-size: auto;
+          background-repeat: no-repeat;
+          z-index: -1; }
+      .explore .categories a img {
+        transition: transform 0.5s linear; }
+      .explore .categories a:hover img {
+        transform: scale(1.01); }
+
+.top-destinations.carousel-holder {
+  margin-bottom: 25px; }
+  @media (min-width: 1024px) {
+    .top-destinations.carousel-holder {
+      margin-bottom: 68px; } }
+
+.get-started {
+  padding-top: 20px;
+  border-top: 1px solid #cccccc; }
+  @media (min-width: 1024px) {
+    .get-started {
+      padding-top: 80px; } }

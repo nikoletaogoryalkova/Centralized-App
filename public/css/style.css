@@ -617,28 +617,32 @@ button.disabled:hover {
     margin: 10px 0 30px 0;
 }
 
+.hotel-content .facilities {
+  margin-bottom: 10px;
+}
+
+.hotel-content .facilities .icons {
+  margin-bottom: 20px;
+}
+
+.hotel-content .hotel-extras-list {
+    font-size: 16px;
+    margin: 7px 0;
+}
+
 .icon-facilities {
     display: block;
-    width: 100px;
     float: left;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 .icon-facilities .icon-image {
     display: block;
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
+    background-color: #fff;
     border: 1px solid #cccccc;
     border-radius: 2px;
-}
-
-.hotel-extras {
-    margin-top: 30px;
-}
-
-.hotel-extras .hotel-extras-list {
-    font-size: 16px;
-    margin: 7px 0;
 }
 
 .hotel-chekin-box .has-feedback-left .form-control-feedback {

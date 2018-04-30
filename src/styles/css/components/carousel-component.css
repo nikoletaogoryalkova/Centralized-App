@@ -1,0 +1,164 @@
+.carousel-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.carousel-holder {
+  text-align: center;
+  margin-bottom: 25px; }
+  @media (min-width: 1024px) {
+    .carousel-holder {
+      margin-bottom: 67px; } }
+  .carousel-holder .container {
+    max-width: 1600px; }
+  .carousel-holder h3 {
+    margin-bottom: 8px; }
+  .carousel-holder .carousel {
+    padding-top: 22px;
+    border-top: 1px solid #cccccc; }
+  .carousel-holder .subtitle {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    margin-bottom: 13px; }
+  .carousel-holder .no-button {
+    position: relative; }
+    .carousel-holder .no-button .carousel-wrap {
+      margin-bottom: 0; }
+    .carousel-holder .no-button .btn {
+      display: none; }
+    .carousel-holder .no-button .carousel-nav .icon-arrow-right,
+    .carousel-holder .no-button .carousel-nav .icon-arrow-left {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fff; }
+      .carousel-holder .no-button .carousel-nav .icon-arrow-right:hover,
+      .carousel-holder .no-button .carousel-nav .icon-arrow-left:hover {
+        background: #a2c5bf; }
+    .carousel-holder .no-button .carousel-nav .icon-arrow-right {
+      right: 0; }
+      @media (min-width: 1920px) {
+        .carousel-holder .no-button .carousel-nav .icon-arrow-right {
+          right: -40px; } }
+    .carousel-holder .no-button .carousel-nav .icon-arrow-left {
+      left: 0; }
+      @media (min-width: 1920px) {
+        .carousel-holder .no-button .carousel-nav .icon-arrow-left {
+          left: -40px; } }
+
+.carousel-wrap {
+  margin-bottom: 50px; }
+  .carousel-wrap.flex {
+    flex-wrap: wrap;
+    justify-content: flex-start; }
+    @media (min-width: 1440px) {
+      .carousel-wrap.flex {
+        flex-wrap: nowrap;
+        justify-content: space-between; } }
+    .carousel-wrap.flex .hotel-card,
+    .carousel-wrap.flex .city-card {
+      margin-right: 15px;
+      margin-bottom: 15px; }
+      .carousel-wrap.flex .hotel-card:last-child,
+      .carousel-wrap.flex .city-card:last-child {
+        margin-right: 0; }
+      @media (min-width: 1440px) {
+        .carousel-wrap.flex .hotel-card,
+        .carousel-wrap.flex .city-card {
+          margin-right: 0;
+          margin-bottom: 0; } }
+
+.carousel-nav ul {
+  text-align: center; }
+  .carousel-nav ul li {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 11px; }
+    .carousel-nav ul li:last-child {
+      margin-right: 0; }
+  .carousel-nav ul button {
+    transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
+    height: 40px;
+    min-width: 80px; }
+  .carousel-nav ul .btn {
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; }
+  .carousel-nav ul .icon-arrow-right,
+  .carousel-nav ul .icon-arrow-left {
+    border-radius: 3px;
+    border: 1px solid #cccccc;
+    background: transparent; }
+    .carousel-nav ul .icon-arrow-right:hover,
+    .carousel-nav ul .icon-arrow-left:hover {
+      background: #a2c5bf; }
+
+.main-carousel {
+  display: flex;
+  position: relative; }
+  .main-carousel .carousel-nav {
+    position: absolute;
+    bottom: 15px;
+    left: 52%;
+    display: flex; }
+    @media (min-width: 1024px) {
+      .main-carousel .carousel-nav {
+        bottom: 30px;
+        left: 63%; } }
+    .main-carousel .carousel-nav:before {
+      display: none; }
+    .main-carousel .carousel-nav button {
+      transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+      background: #fff;
+      border-radius: 100%;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+      @media (min-width: 1024px) {
+        .main-carousel .carousel-nav button {
+          font-size: 16px;
+          width: 50px;
+          height: 50px; } }
+      .main-carousel .carousel-nav button:hover {
+        background: #a2c5bf;
+        color: #fff; }
+      .main-carousel .carousel-nav button:first-child {
+        margin-right: 16px; }
+  .main-carousel div {
+    position: relative;
+    margin-right: 10px;
+    flex: 0 1 auto; }
+    .main-carousel div:last-child {
+      margin-right: 0; }
+    .main-carousel div:before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #1f2427;
+      opacity: 0.4; }
+    .main-carousel div.current {
+      flex: 1 1 auto; }
+      .main-carousel div.current:before {
+        display: none; }

@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { LOGIN } from '../../../constants/modals.js';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 import { openModal } from '../../../actions/modalsInfo.js';
+import { Config } from '../../../config';
 
 function HomeDetailsInfoSection(props) {
   const getAmenities = (amenities) => {
@@ -60,8 +61,8 @@ function HomeDetailsInfoSection(props) {
   };
 
   const allAmenities = props.data.amenities;
-  const mostPopularFacilities = allAmenities.slice(0, 5);
-  const amenities = getAmenities(allAmenities.slice(5));
+  const mostPopularFacilities = allAmenities.filter(a => a.picture != null).slice(0, 5);
+  const amenities = getAmenities(allAmenities);
   const street = props.data.additionalInfo.mainAddress;
   const city = props.data.city.name;
   const country = props.data.region.country.name;
@@ -107,28 +108,38 @@ function HomeDetailsInfoSection(props) {
         <span dangerouslySetInnerHTML={{ __html: props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0] ? props.data.descriptions.filter(x => x.type === 'PropertyInformation')[0].text : (props.data.descriptions.filter(x => x.type === 'General')[0] ? props.data.descriptions.filter(x => x.type === 'General')[0].text : '') }}></span>
       </div>
 
-      <div id="facilities">
-        <h2>Facilities</h2>
-        <hr />
-        <h3>Most Popular Facilities</h3>
-        {mostPopularFacilities.map((item, i) => {
-          return (
-            <div key={i} className="icon-facilities">
-              <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><b>{item.text}</b></span>
-            </div>
-          );
-        })}
-        <div className="clearfix" />
-      </div>
+
+      {mostPopularFacilities.length > 0 && amenities[0].length > 0 &&
+      
+        <div className="facilities">      
+          <h2>Facilities</h2>
+          <hr />
+          <div className="icons">
+            {mostPopularFacilities.map((item, i) => {
+              return (
+                item.picture != null && (
+                  <div key={i} className="icon-facilities">
+                    <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <img src={Config.getValue('imgHost') + item.picture} style={{ width:'60%', height:'60%' }}/>
+                      {/* <b>{item.picture}</b> */}
+                    </span>
+                  </div>
+                )
+              );
+            })}
+            <div className="clearfix" />
+          </div>
+          <div className="row">
+            <HotelDetailsAmenityColumn amenities={amenities[0]} />
+            <HotelDetailsAmenityColumn amenities={amenities[1]} />
+            <HotelDetailsAmenityColumn amenities={amenities[2]} />
+          </div>
+          <div className="clearfix" />
+        </div>
+      }
       <div className="clearfix" />
 
       <div className="hotel-extras">
-        <div className="row">
-          <HotelDetailsAmenityColumn amenities={amenities[0]} />
-          <HotelDetailsAmenityColumn amenities={amenities[1]} />
-          <HotelDetailsAmenityColumn amenities={amenities[2]} />
-        </div>
-        <div className="clearfix" />
 
         {props.descriptionsAccessInfo &&
           <div id="hotel-rules">
@@ -243,7 +254,7 @@ HomeDetailsInfoSection.propTypes = {
   loadingRooms: PropTypes.bool,
   currencySign: PropTypes.string,
   rates: PropTypes.array,
-  
+
   // Redux props
   paymentInfo: PropTypes.object,
   dispatch: PropTypes.func,

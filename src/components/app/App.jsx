@@ -46,7 +46,7 @@ class App extends React.Component {
           <Route exact path="/profile/listings/edit/:step/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <EditListingPage />} />
           <Route exact path="/profile/listings/calendar/:id" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CalendarPage />} />
           <Route exact path="/profile/account/notifications" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <AccountNotificationsPage />} />
-          <Route path="/users/resetPassword" render={() => <HomeRouterPage />} />
+          <Route exact path="/users/resetPassword/:confirm" render={() => <HomeRouterPage />} />
           <Route path="/homes" render={() => <HomesRouterPage />} />
           <Route path="/hotels" render={() => <HotelsRouterPage />} />
           <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />

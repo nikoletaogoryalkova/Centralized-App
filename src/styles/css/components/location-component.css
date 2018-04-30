@@ -1,0 +1,41 @@
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.map-placeholder {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  overflow: hidden;
+  min-height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px; }
+  .map-placeholder div {
+    background: #fff;
+    box-shadow: 5px 5px 10px 0px rgba(34, 56, 67, 0.15);
+    border-radius: 3px;
+    padding: 15px; }
+    @media (min-width: 1024px) {
+      .map-placeholder div {
+        padding: 18px 75px 13px 30px; } }
+    .map-placeholder div span {
+      display: block; }
+      .map-placeholder div span:first-child {
+        font-size: 24px;
+        font-weight: 400;
+        margin-bottom: 5px; }
+      .map-placeholder div span:last-child {
+        letter-spacing: 0.04em;
+        font-size: 14px; }
