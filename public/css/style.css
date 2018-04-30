@@ -280,6 +280,8 @@ header form button {
     border-radius: 0;
     border: 0;
     margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 0.1px solid #ccc;
 }
 
 .navbar-brand {

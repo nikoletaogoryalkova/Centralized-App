@@ -17,10 +17,10 @@ export default function LoginModal(props) {
           <button type="button" className="close" onClick={() => props.closeModal(LOGIN)}>&times;</button>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
+          <form onSubmit={(e) => { e.preventDefault(); props.login(); }}>
             <div className="form-group" style={{ marginTop: '10px' }}>
               <img src={Config.getValue('basePath') + 'images/login-mail.png'} alt="mail" />
-              <input type="email" name="loginEmail" value={props.loginEmail} onChange={props.onChange} className="form-control" placeholder="Email address" autoFocus />
+              <input type="email" name="loginEmail" value={props.loginEmail} onChange={props.onChange} className="form-control" placeholder="Email address" required autoFocus />
               {/* <p style={{ marginTop: '10px', textAlign: 'right', color: 'red' }}>Please enter a valid email address</p> */}
             </div>
             <div className="form-group">
@@ -43,12 +43,12 @@ export default function LoginModal(props) {
         </Modal.Body>
       </Modal>
 
-      <ReCAPTCHA
+      {/* <ReCAPTCHA
         ref={el => captcha = el}
         size="invisible"
         sitekey={Config.getValue('recaptchaKey')}
         onChange={(token) => { props.login(token); captcha.reset(); }}
-      />
+      /> */}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 label {
-  font-weight: 200;
+  font-weight: 200 !important;
 }
 .dropdown-menu>li>a {
   font-weight: 200;

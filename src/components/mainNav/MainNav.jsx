@@ -12,6 +12,7 @@ import SaveWalletModal from './modals/SaveWalletModal';
 import ConfirmWalletModal from './modals/ConfirmWalletModal';
 import LoginModal from './modals/LoginModal';
 import RegisterModal from './modals/RegisterModal';
+import validator from 'validator';
 
 import { Config } from '../../config';
 import { Wallet } from '../../services/blockchain/wallet.js';
@@ -41,7 +42,14 @@ import {
 } from '../../constants/modals.js';
 
 import { PROFILE_SUCCESSFULLY_CREATED, PROFILE_SUCCESSFULLY_UPDATED, PASSWORD_SUCCESSFULLY_CHANGED } from '../../constants/successMessages.js';
-import { PASSWORDS_DONT_MATCH, INVALID_PASSWORD, INVALID_TOKEN, INVALID_EMAIL } from '../../constants/warningMessages';
+import { 
+  PASSWORDS_DONT_MATCH, 
+  INVALID_PASSWORD, 
+  INVALID_TOKEN, 
+  INVALID_EMAIL, 
+  PROFILE_INVALID_PASSWORD_LENGTH,
+  PROFILE_PASSWORD_REQUIREMENTS 
+} from '../../constants/warningMessages';
 import { NOT_FOUND, PROFILE_UPDATE_ERROR } from '../../constants/errorMessages';
 
 
@@ -155,6 +163,17 @@ class MainNav extends React.Component {
       password: this.state.loginPassword
     };
 
+    if (!validator.isEmail(user.email)) {
+      NotificationManager.warning(INVALID_EMAIL);
+      return;
+    } else if (user.password.length < 6) {
+      NotificationManager.warning(PROFILE_INVALID_PASSWORD_LENGTH);
+      return;
+    } else if (!user.password.match('^([^\\s]*[a-zA-Z]+.*?[0-9]+[^\\s]*|[^\\s]*[0-9]+.*?[a-zA-Z]+[^\\s]*)$')) {
+      NotificationManager.warning(PROFILE_PASSWORD_REQUIREMENTS);
+      return;
+    }
+
     login(user, captchaToken).then((res) => {
       if (res.success) {
         res.response.json().then((data) => {
@@ -180,10 +199,10 @@ class MainNav extends React.Component {
             }
           });
           // reflect that the user is logged in, both in Redux and in the local component state
-
         });
       } else {
         res.response.then(res => {
+          console.log(res);
           const errors = res.errors;
           for (let key in errors) {
             if (typeof errors[key] !== 'function') {
