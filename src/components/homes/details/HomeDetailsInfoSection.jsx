@@ -67,12 +67,14 @@ function HomeDetailsInfoSection(props) {
               <div className="icons">
                 {mostPopularFacilities.map((item, i) => {
                   return (
-                    <div key={i} className="icon-facilities">
-                      <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <img src={Config.getValue('imgHost') + item.picture} style={{ width: '60%', height: '60%' }} />
-                        {/* <b>{item.picture}</b> */}
-                      </span>
-                    </div>
+                    item.picture != null && (
+                      <div key={i} className="icon-facilities" tooltip={item.name}>
+                        <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <img src={Config.getValue('imgHost') + item.picture} style={{ width: '60%', height: '60%' }} />
+                          {/* <b>{item.picture}</b> */}
+                        </span>
+                      </div>
+                    )
                   );
                 })}
                 <div className="clearfix" />

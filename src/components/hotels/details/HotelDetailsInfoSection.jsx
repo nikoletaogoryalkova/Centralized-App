@@ -110,23 +110,28 @@ function HomeDetailsInfoSection(props) {
 
 
       {mostPopularFacilities.length > 0 && amenities[0].length > 0 &&
-      
-        <div className="facilities">      
+
+        <div className="facilities">
           <h2>Facilities</h2>
           <hr />
           <div className="icons">
             {mostPopularFacilities.map((item, i) => {
               return (
                 item.picture != null && (
-                  <div key={i} className="icon-facilities">
+                  <div key={i} className="icon-facilities" tooltip={item.text}>
                     <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <img src={Config.getValue('imgHost') + item.picture} style={{ width:'60%', height:'60%' }}/>
+                      <img src={Config.getValue('imgHost') + item.picture} style={{ width: '60%', height: '60%' }} />
                       {/* <b>{item.picture}</b> */}
                     </span>
                   </div>
                 )
               );
             })}
+            {/* <div className="icon-facilities">
+              <a href='#' className="icon-extend" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                +23
+              </a>
+            </div> */}
             <div className="clearfix" />
           </div>
           <div className="row">
