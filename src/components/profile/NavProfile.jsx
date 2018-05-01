@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import React from 'react';
-import { getCurrentLoggedInUserInfo } from '../../requester';
+import { getUserInfo } from '../../requester';
 
 export default class NavProfile extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class NavProfile extends React.Component {
   }
 
   componentDidMount() {
-    getCurrentLoggedInUserInfo().then((data) => {
+    getUserInfo().then((data) => {
       this.setState({ roles: data.roles, loading: false });
     });
   }

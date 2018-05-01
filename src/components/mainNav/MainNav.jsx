@@ -25,7 +25,7 @@ import {
   postRecoveryEmail,
   login,
   register,
-  getCurrentLoggedInUserInfo,
+  getUserInfo,
   sendRecoveryToken,
   updateUserInfo,
 } from '../../requester';
@@ -42,13 +42,13 @@ import {
 } from '../../constants/modals.js';
 
 import { PROFILE_SUCCESSFULLY_CREATED, PROFILE_SUCCESSFULLY_UPDATED, PASSWORD_SUCCESSFULLY_CHANGED } from '../../constants/successMessages.js';
-import { 
-  PASSWORDS_DONT_MATCH, 
-  INVALID_PASSWORD, 
-  INVALID_TOKEN, 
-  INVALID_EMAIL, 
+import {
+  PASSWORDS_DONT_MATCH,
+  INVALID_PASSWORD,
+  INVALID_TOKEN,
+  INVALID_EMAIL,
   PROFILE_INVALID_PASSWORD_LENGTH,
-  PROFILE_PASSWORD_REQUIREMENTS 
+  PROFILE_PASSWORD_REQUIREMENTS
 } from '../../constants/warningMessages';
 import { NOT_FOUND, PROFILE_UPDATE_ERROR } from '../../constants/errorMessages';
 
@@ -75,11 +75,12 @@ class MainNav extends React.Component {
       recoveryToken: '',
       recoveryEmail: '',
       unreadMessages: '',
+      isUpdatingWallet: false,
     };
 
     this.onChange = this.onChange.bind(this);
-    this.register = this.register.bind(this);
-    this.login = this.login.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
     this.logout = this.logout.bind(this);
     this.setUserInfo = this.setUserInfo.bind(this);
 
@@ -92,7 +93,7 @@ class MainNav extends React.Component {
     this.handleMnemonicWordsChange = this.handleMnemonicWordsChange.bind(this);
     this.handleSubmitRecoveryToken = this.handleSubmitRecoveryToken.bind(this);
     this.handleSubmitRecoveryEmail = this.handleSubmitRecoveryEmail.bind(this);
-    this.handleUpdateUserWallet = this.handleUpdateUserWallet.bind(this);
+    this.handleConfirmWallet = this.handleConfirmWallet.bind(this);
   }
 
   componentDidMount() {
@@ -100,7 +101,9 @@ class MainNav extends React.Component {
     if (
       localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] &&
       localStorage[Config.getValue('domainPrefix') + '.auth.username']
-    ) this.setUserInfo();
+    ) {
+      this.setUserInfo();
+    }
 
     const search = this.props.location.search;
     const searchParams = search.split('=');
@@ -124,7 +127,16 @@ class MainNav extends React.Component {
     this.setState({ [e.target.name]: value });
   }
 
-  register(captchaToken) {
+  updateJsonFile(captchaToken) {
+    let user = {
+      email: this.state.signUpEmail,
+      password: this.state.signUpPassword,
+      locAddress: localStorage.walletAddress,
+      jsonFile: localStorage.walletJson,
+    };
+  }
+
+  handleRegister(captchaToken) {
     let user = {
       email: this.state.signUpEmail,
       firstName: this.state.signUpFirstName,
@@ -157,56 +169,43 @@ class MainNav extends React.Component {
     });
   }
 
-  login(captchaToken) {
+  handleLogin(captchaToken) {
     let user = {
       email: this.state.loginEmail,
       password: this.state.loginPassword
     };
 
-    if (!validator.isEmail(user.email)) {
-      NotificationManager.warning(INVALID_EMAIL);
-      return;
-    } else if (user.password.length < 6) {
-      NotificationManager.warning(PROFILE_INVALID_PASSWORD_LENGTH);
-      return;
-    } else if (!user.password.match('^([^\\s]*[a-zA-Z]+.*?[0-9]+[^\\s]*|[^\\s]*[0-9]+.*?[a-zA-Z]+[^\\s]*)$')) {
-      NotificationManager.warning(PROFILE_PASSWORD_REQUIREMENTS);
-      return;
+    if (this.state.isUpdatingWallet) {
+      user.locAddress = localStorage.walletAddress;
+      user.jsonFile = localStorage.walletJson;
     }
 
     login(user, captchaToken).then((res) => {
       if (res.success) {
         res.response.json().then((data) => {
+          console.log(data);
 
           localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = data.Authorization;
-          // TODO Get first name + last name from response included with Authorization token (Backend)
-
           localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
-          getCurrentLoggedInUserInfo().then(info => {
-            this.setState({ userName: user.email, userToken: data.Authorization });
-            if (info.jsonFile != null && info.jsonFile.length > 1) {
-              this.setUserInfo();
-              if (this.state.recoveryToken !== '') {
-                this.props.history.push('/');
-              }
 
-              this.closeModal(LOGIN);
-            } else {
-              localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
-              localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
-              this.openModal(CREATE_WALLET);
-              this.closeModal(LOGIN);
-            }
-          });
-          // reflect that the user is logged in, both in Redux and in the local component state
+          this.setUserInfo();
+          this.closeModal(LOGIN);
         });
       } else {
         res.response.then(res => {
-          console.log(res);
           const errors = res.errors;
-          for (let key in errors) {
-            if (typeof errors[key] !== 'function') {
-              NotificationManager.warning(errors[key].message);
+          console.log(errors);
+          if (errors.hasOwnProperty('JsonFileNull')) {
+            NotificationManager.warning(errors['JsonFileNull'].message);
+            this.setState({ isUpdatingWallet: true }, () => {
+              this.closeModal(LOGIN);
+              this.openModal(CREATE_WALLET);
+            });
+          } else {
+            for (let key in errors) {
+              if (typeof errors[key] !== 'function') {
+                NotificationManager.warning(errors[key].message);
+              }
             }
           }
         });
@@ -215,23 +214,17 @@ class MainNav extends React.Component {
   }
 
   setUserInfo() {
-    if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
-      try {
-        getCurrentLoggedInUserInfo().then(res => {
-          Wallet.getBalance(res.locAddress).then(x => {
-            const ethBalance = x / (Math.pow(10, 18));
-            Wallet.getTokenBalance(res.locAddress).then(y => {
-              const locBalance = y / (Math.pow(10, 18));
-              const { firstName, lastName, phoneNumber, email, locAddress } = res;
-              this.props.dispatch(setIsLogged(true));
-              this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
-            });
-          });
+    getUserInfo().then(res => {
+      Wallet.getBalance(res.locAddress).then(eth => {
+        const ethBalance = eth / (Math.pow(10, 18));
+        Wallet.getTokenBalance(res.locAddress).then(loc => {
+          const locBalance = loc / (Math.pow(10, 18));
+          const { firstName, lastName, phoneNumber, email, locAddress } = res;
+          this.props.dispatch(setIsLogged(true));
+          this.props.dispatch(setUserInfo(firstName, lastName, phoneNumber, email, locAddress, ethBalance, locBalance));
         });
-      } catch (e) {
-        console.log(e);
-      }
-    }
+      });
+    });
   }
 
   logout(e) {
@@ -334,44 +327,11 @@ class MainNav extends React.Component {
     });
   }
 
-  handleUpdateUserWallet(token) {
-    if (this.state.userName !== '' && this.state.userToken !== '') {
-      if (localStorage.getItem('walletAddress') && localStorage.getItem('walletJson')) {
-        // Set user token in localstorage se getCurrentLoggedInUserInfo can fetch user info 
-        localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = this.state.userToken;
-        localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
-        getCurrentLoggedInUserInfo().then(info => {
-          let userInfo = {
-            firstName: info.firstName,
-            lastName: info.lastName,
-            phoneNumber: info.phoneNumber,
-            preferredLanguage: info.preferredLanguage,
-            preferredCurrency: info.preferredCurrency != null ? info.preferredCurrency.id : null,
-            gender: info.gender,
-            country: info.country != null ? info.country.id : null,
-            city: info.city != null ? info.city.id : null,
-            birthday: info.birthday,
-            locAddress: localStorage.getItem('walletAddress'),
-            jsonFile: localStorage.getItem('walletJson')
-          };
-
-          updateUserInfo(userInfo, token).then((res) => {
-            if (res.success) {
-              NotificationManager.success(PROFILE_SUCCESSFULLY_UPDATED);
-              localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = this.state.userToken;
-              localStorage[Config.getValue('domainPrefix') + '.auth.username'] = this.state.userName;
-            } else {
-              localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.locktrip');
-              localStorage.removeItem(Config.getValue('domainPrefix') + '.auth.username');
-              NotificationManager.error(PROFILE_UPDATE_ERROR);
-            }
-
-            this.setUserInfo();
-          });
-        });
-      }
+  handleConfirmWallet(token) {
+    if (this.state.isUpdatingWallet) {
+      this.handleLogin(token);
     } else {
-      this.register(token);
+      this.handleRegister(token);
     }
   }
 
@@ -382,11 +342,11 @@ class MainNav extends React.Component {
           <NotificationContainer />
           <CreateWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} walletPassword={this.state.walletPassword} isActive={this.props.modalsInfo.modals.get(CREATE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
           <SaveWalletModal setUserInfo={this.setUserInfo} userToken={this.state.userToken} userName={this.state.userName} isActive={this.props.modalsInfo.modals.get(SAVE_WALLET)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} />
-          <ConfirmWalletModal isActive={this.props.modalsInfo.modals.get(CONFIRM_WALLET)} openModal={this.openModal} closeModal={this.closeModal} handleMnemonicWordsChange={this.handleMnemonicWordsChange} mnemonicWords={this.state.mnemonicWords} handleUpdateUserWallet={this.handleUpdateUserWallet} />
+          <ConfirmWalletModal isActive={this.props.modalsInfo.modals.get(CONFIRM_WALLET)} openModal={this.openModal} closeModal={this.closeModal} handleMnemonicWordsChange={this.handleMnemonicWordsChange} mnemonicWords={this.state.mnemonicWords} handleConfirmWallet={this.handleConfirmWallet} />
           <SendRecoveryEmailModal isActive={this.props.modalsInfo.modals.get(SEND_RECOVERY_EMAIL)} openModal={this.openModal} closeModal={this.closeModal} recoveryEmail={this.state.recoveryEmail} handleSubmitRecoveryEmail={this.handleSubmitRecoveryEmail} onChange={this.onChange} />
           <EnterRecoveryTokenModal isActive={this.props.modalsInfo.modals.get(ENTER_RECOVERY_TOKEN)} openModal={this.openModal} closeModal={this.closeModal} onChange={this.onChange} recoveryToken={this.state.recoveryToken} handleSubmitRecoveryToken={this.handleSubmitRecoveryToken} />
           <ChangePasswordModal isActive={this.props.modalsInfo.modals.get(CHANGE_PASSWORD)} openModal={this.openModal} closeModal={this.closeModal} newPassword={this.state.newPassword} confirmNewPassword={this.state.confirmNewPassword} onChange={this.onChange} handlePasswordChange={this.handlePasswordChange} />
-          <LoginModal isActive={this.props.modalsInfo.modals.get(LOGIN)} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} login={this.login} />
+          <LoginModal isActive={this.props.modalsInfo.modals.get(LOGIN)} openModal={this.openModal} closeModal={this.closeModal} loginEmail={this.state.loginEmail} loginPassword={this.state.loginPassword} onChange={this.onChange} handleLogin={this.handleLogin} />
           <RegisterModal isActive={this.props.modalsInfo.modals.get(REGISTER)} openModal={this.openModal} closeModal={this.closeModal} signUpEmail={this.state.signUpEmail} signUpFirstName={this.state.signUpFirstName} signUpLastName={this.state.signUpLastName} signUpPassword={this.state.signUpPassword} onChange={this.onChange} />
 
           <Navbar>

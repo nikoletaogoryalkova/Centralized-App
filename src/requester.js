@@ -203,7 +203,7 @@ export async function getMyJsonFile() {
   });
 }
 
-export async function getCurrentLoggedInUserInfo() {
+export async function getUserInfo() {
   return sendRequest(`${host}users/me/edit`, RequestMethod.GET).then(res => {
     return res.response.json();
   });

@@ -5,7 +5,7 @@ import {
   createListingProgress,
   getAmenitiesByCategory,
   getCurrencies,
-  getCurrentLoggedInUserInfo,
+  getUserInfo,
   getPropertyTypes,
   updateListingProgress,
   updateUserInfo
@@ -126,7 +126,7 @@ class CreateListingPage extends React.Component {
       this.setState({ currencies: data.content });
     });
 
-    getCurrentLoggedInUserInfo().then(data => {
+    getUserInfo().then(data => {
       this.setState({ userHasLocAddress: data.locAddress !== null });
     });
   }
@@ -441,7 +441,7 @@ class CreateListingPage extends React.Component {
 
 
   updateLocAddress(captchaToken) {
-    getCurrentLoggedInUserInfo().then(data => {
+    getUserInfo().then(data => {
       let userInfo = {
         firstName: data.firstName,
         lastName: data.lastName,

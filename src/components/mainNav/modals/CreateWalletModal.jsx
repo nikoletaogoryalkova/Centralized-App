@@ -47,7 +47,7 @@ export default function CreateWalletModal(props) {
             </div>
 
             <div className="login-sign">
-              <p><b>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</b></p>
+              <p>This password will be used to encrypt and decrypt your newly created ETH/LOC wallet. Save it carefully or remember it, because it is irrecoverable.</p>
             </div>
 
             <button type="submit" className="btn btn-primary">Submit password</button>

@@ -1,7 +1,7 @@
 import 'react-notifications/lib/notifications.css';
 
 import { NotificationManager } from 'react-notifications';
-import { getCities, getCountries, getCurrentLoggedInUserInfo, updateUserInfo } from '../../../requester';
+import { getCities, getCountries, getUserInfo, updateUserInfo } from '../../../requester';
 
 import { Config } from '../../../config';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -45,7 +45,7 @@ export default class ProfileEditPage extends React.Component {
       this.setState({ countries: data.content });
     });
 
-    getCurrentLoggedInUserInfo().then((data) => {
+    getUserInfo().then((data) => {
       let day = '';
       let month = '';
       let year = '';

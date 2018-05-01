@@ -3,7 +3,7 @@ import { NotificationManager } from 'react-notifications';
 import {
   contactHost,
   getCalendarByListingIdAndDateRange,
-  getCurrentLoggedInUserInfo,
+  getUserInfo,
   getPropertyById
 } from '../../../requester';
 
@@ -116,7 +116,7 @@ class HomeDetailsPage extends React.Component {
 
   getUserInfo() {
     if (localStorage.getItem(Config.getValue('domainPrefix') + '.auth.locktrip')) {
-      getCurrentLoggedInUserInfo()
+      getUserInfo()
         .then(res => {
           this.setState({
             loaded: true,
