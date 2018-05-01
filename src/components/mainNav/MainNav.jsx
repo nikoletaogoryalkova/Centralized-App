@@ -12,7 +12,6 @@ import SaveWalletModal from './modals/SaveWalletModal';
 import ConfirmWalletModal from './modals/ConfirmWalletModal';
 import LoginModal from './modals/LoginModal';
 import RegisterModal from './modals/RegisterModal';
-import validator from 'validator';
 
 import { Config } from '../../config';
 import { Wallet } from '../../services/blockchain/wallet.js';
@@ -27,7 +26,6 @@ import {
   register,
   getUserInfo,
   sendRecoveryToken,
-  updateUserInfo,
 } from '../../requester';
 
 import {
@@ -127,15 +125,6 @@ class MainNav extends React.Component {
     this.setState({ [e.target.name]: value });
   }
 
-  updateJsonFile(captchaToken) {
-    let user = {
-      email: this.state.signUpEmail,
-      password: this.state.signUpPassword,
-      locAddress: localStorage.walletAddress,
-      jsonFile: localStorage.walletJson,
-    };
-  }
-
   handleRegister(captchaToken) {
     let user = {
       email: this.state.signUpEmail,
@@ -146,10 +135,8 @@ class MainNav extends React.Component {
       jsonFile: localStorage.walletJson,
       image: Config.getValue('basePath') + 'images/default.png'
     };
-
-    localStorage.walletAddress = '';
-    localStorage.walletMnemonic = '';
-    localStorage.walletJson = '';
+    
+    this.clearLocalStorage();
 
     register(user, captchaToken).then((res) => {
       if (res.success) {
@@ -178,13 +165,13 @@ class MainNav extends React.Component {
     if (this.state.isUpdatingWallet) {
       user.locAddress = localStorage.walletAddress;
       user.jsonFile = localStorage.walletJson;
+      this.clearLocalStorage();
+      this.setState({ isUpdatingWallet: false });
     }
 
     login(user, captchaToken).then((res) => {
       if (res.success) {
         res.response.json().then((data) => {
-          console.log(data);
-
           localStorage[Config.getValue('domainPrefix') + '.auth.locktrip'] = data.Authorization;
           localStorage[Config.getValue('domainPrefix') + '.auth.username'] = user.email;
 
@@ -211,6 +198,12 @@ class MainNav extends React.Component {
         });
       }
     });
+  }
+
+  clearLocalStorage() {
+    localStorage['walletAddress'] = '';
+    localStorage['walletMnemonic'] = '';
+    localStorage['walletJson'] = '';
   }
 
   setUserInfo() {

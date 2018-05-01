@@ -131,6 +131,7 @@ class HotelsSearchPage extends React.Component {
   componentWillUnmount() {
     this.setState({
       listings: null,
+      filteredListings: null,
       loading: true,
       currentPage: 0,
     });
