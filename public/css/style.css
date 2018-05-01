@@ -156,7 +156,7 @@ header form button {
 }
 
 #main-nav .navbar-nav a {
-    font-size: 16px;
+    font-size: 20px;
     border-radius: 0;
 }
 
@@ -3019,8 +3019,9 @@ select {
 
 .searchbar-children-select {
     min-height: 60px;
+    min-width: 90px;
     line-height: 60px;
-    padding: 0 10px;
+    /* padding: 0 10px; */
     border: 0;
     border-radius: 3px;
     background-color: #fff;

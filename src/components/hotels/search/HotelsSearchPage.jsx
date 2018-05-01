@@ -1,6 +1,7 @@
 import Breadcrumb from '../../Breadcrumb';
 // import FilterPanel from './filter/FilterPanel';
 import Pagination, { DEFAULT_PAGE_SIZE } from '../../common/pagination/Pagination';
+import ResultsHolder from './ResultsHolder';
 import HotelItem from './HotelItem';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -523,11 +524,13 @@ class HotelsSearchPage extends React.Component {
   }
 
   render() {
-    const listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
-
+    let listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
+    
     const totalElements = listings.length;
     const startElement = this.state.currentPage * DEFAULT_PAGE_SIZE;
-
+    
+    listings = listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE);
+    
     let hotelItems;
 
     if (listings.length === 0 && this.state.loading) {
@@ -600,7 +603,8 @@ class HotelsSearchPage extends React.Component {
                       />
                     </div>
                     : <div>
-                      {hotelItems}
+                      {/* {hotelItems} */}
+                      <ResultsHolder hotels={listings} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} />
                       <Pagination
                         loading={this.state.loading}
                         onPageChange={this.onPageChange}

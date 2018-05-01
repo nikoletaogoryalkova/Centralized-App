@@ -56,7 +56,10 @@ $media-expressions: (
 	justify-content: space-between;
 	@include media(">=tablet") {
 		flex-direction: row;
-	}
+  }
+  @include media(">=desktop") {
+    max-height: 200px;
+  }
 	> div {
 		width: 100%;
 		margin-bottom: 10px;
@@ -73,10 +76,11 @@ $media-expressions: (
 	}
 	&-images {
 		position: relative;
-		height: 190px;
+    height: 190px;
 		display: flex;
 		@include media(">=desktop") {
 			margin-right: 25px;
+      width: 240px !important;
 		}
 		button {
 			@include animate(opacity background);
@@ -183,9 +187,11 @@ $media-expressions: (
 		}
 	}
 	&-content {
+    overflow: hidden;
 		@include media(">=desktop") {
 			padding-top: 11px;
-			margin-right: 33px;
+      margin-right: 33px;
+      min-width: 367px;
 		}
 	}
 	&-pricing {
