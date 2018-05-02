@@ -204,7 +204,7 @@ export async function getMyJsonFile() {
 }
 
 export async function getUserInfo() {
-  return sendRequest(`${host}users/me/userInfo`, RequestMethod.GET).then(res => {
+  return sendRequest(`${host}users/me/info`, RequestMethod.GET).then(res => {
     return res.response.json();
   });
 }
