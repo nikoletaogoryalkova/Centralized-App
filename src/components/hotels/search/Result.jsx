@@ -71,7 +71,7 @@ function Result(props) {
             <label htmlFor="star16" title="1 star"><span className="fa"></span></label> */}
             {calculateStars(stars)}
           </div>
-          <span>73 Reviews</span>
+          {/* <span>73 Reviews</span> */}
         </div>
         {/* <div className="result-homes-features">
           <ul>

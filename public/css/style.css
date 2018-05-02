@@ -318,7 +318,7 @@ header form button {
 }
 
 .icon.icon-calendar {
-    background: url(../images/icon-calendar.png) left no-repeat;
+    /* background: url(../images/icon-calendar.png) left no-repeat; */
 }
 
 .icon.icon-guest {
@@ -2240,11 +2240,6 @@ li.dropdown {
 
 #popular-hotels-box .carousel-inner img {
     width: 100%;
-}
-
-.carousel-control.left,
-.carousel-control.right {
-    background-image: none;
 }
 
 .list-hotel-rating {

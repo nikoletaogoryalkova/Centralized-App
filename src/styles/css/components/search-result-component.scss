@@ -81,7 +81,7 @@ $media-expressions: (
 		@include media(">=desktop") {
 			margin-right: 25px;
       width: 240px !important;
-		}
+    }
 		button {
 			@include animate(opacity background);
 			position: absolute;
@@ -134,7 +134,12 @@ $media-expressions: (
 			padding: 7px 15px;
 			border-radius: 2px;
 			font-size: 14px;
-		}
+    }
+    .carousel-control.left,
+    .carousel-control.right {
+        background-image: none;
+        width: 31px;
+    }
 	}
 	h4 {
 		letter-spacing: -0.04em;
