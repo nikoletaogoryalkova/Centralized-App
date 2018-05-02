@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import DeletionModal from '../../common/modals/DeletionModal';
 import filterListings from '../../../actions/filterListings';
 
 export default class ListingRow extends React.Component {
@@ -8,14 +7,9 @@ export default class ListingRow extends React.Component {
     super(props);
 
     this.state = {
-      isDeleting: false,
-      deletingId: -1,
-      deletingName: '',
       isPublishing: false
     };
 
-    this.onHide = this.onHide.bind(this);
-    this.onOpen = this.onOpen.bind(this);
     this.filterListings = filterListings.bind(this);
   }
 
@@ -23,39 +17,9 @@ export default class ListingRow extends React.Component {
     this.setState({ isPublishing: false });
   }
 
-  onHide() {
-    this.setState(
-      {
-        isDeleting: false,
-        deletingId: -1,
-        deletingName: ''
-      }
-    );
-  }
-
-  onOpen(id, name) {
-    this.setState(
-      {
-        isDeleting: true,
-        deletingId: id,
-        deletingName: name
-      }
-    );
-  }
-
   render() {
     return (
       <div key={this.props.listing.id} className="row reservation-box">
-
-        {/* TODO: Extract modal to parent page, as it now creates modal for each row (performance hit) */}
-        <DeletionModal
-          deletingName={this.state.deletingName}
-          filterListings={this.filterListings}
-          isDeleting={this.state.isDeleting}
-          deletingId={this.state.deletingId}
-          onHide={this.onHide}
-          onOpen={this.onOpen}
-        />
         <div className="col-md-12">
           <div className="col-md-1">
             <div className="reservation-image-box">
@@ -80,7 +44,7 @@ export default class ListingRow extends React.Component {
                 &nbsp;
               {this.props.canDelete &&
                   <a className="btn btn-danger"
-                    onClick={() => this.onOpen(this.props.listing.id, this.props.listing.name)}>
+                    onClick={() => this.props.handleDeleteListing(this.props.listing.id, this.props.listing.name)}>
                     Delete
                   </a>
               }

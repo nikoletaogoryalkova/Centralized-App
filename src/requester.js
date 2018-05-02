@@ -315,13 +315,13 @@ export async function getAllMyListings() {
   });
 }
 
-export async function getMyReservations(searchTerm, size = 20) {
+export async function getMyReservations(searchTerm, size = 10) {
   return sendRequest(`${host}users/me/reservations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, RequestMethod.GET).then(res => {
     return res.response.json();
   });
 }
 
-export async function getMyTrips(searchTerm, size = 20) {
+export async function getMyTrips(searchTerm, size = 10) {
   return sendRequest(`${host}users/me/trips${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, RequestMethod.GET).then(res => {
     return res.response.json();
   });
@@ -494,8 +494,8 @@ export async function getEmailFreeResponse(email) {
   });
 }
 
-export async function getMyHotelBookings(page) {
-  return sendRequest(`${host}users/me/bookings${page}`, RequestMethod.GET).then(res => {
+export async function getMyHotelBookings(searchTerm, size = 10) {
+  return sendRequest(`${host}users/me/bookings${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc&size=${size}`, RequestMethod.GET).then(res => {
     return res.response.json();
   });
 }

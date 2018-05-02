@@ -16,10 +16,6 @@ export default class DeletionModal extends React.Component {
   }
 
   deleteSelected(token) {
-    if (!this.props.isDeleting) {
-      return;
-    }
-
     this.setState({ sending: true });
 
     deleteListing(this.props.deletingId, token)
@@ -32,29 +28,32 @@ export default class DeletionModal extends React.Component {
         }
         this.setState({ sending: false });
         this.props.onHide();
+      }).catch(e => {
+        console.log(e);
+        this.props.onHide();
       });
   }
 
   render() {
     return (
       <div>
-        <Modal show={this.props.isDeleting} onHide={this.props.onHide} className="modal fade myModal">
+        <Modal show={this.props.isActive} onHide={this.props.onHide} className="modal fade myModal">
           <Modal.Header>
             <button type="button" className="close" onClick={this.props.onHide}>&times;</button>
             <h2>Delete <b>{this.props.deletingName.substring(0, 20)}</b>?</h2>
-            {this.state.sending &&
-              <div className="loader"></div>
-            }
+
           </Modal.Header>
           <Modal.Body>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              this.captcha.execute();
-            }}>
-
-              <button type="submit" className="btn btn-danger">Yes, delete it!</button>
-            </form>
-            <button onClick={this.props.onHide} className="btn btn-info">No, go back!</button>
+            {this.state.sending
+              ? <div className="loader"></div>
+              : <form onSubmit={(e) => {
+                e.preventDefault();
+                this.captcha.execute();
+              }}>
+                <button type="submit" className="btn btn-danger">Yes, delete it!</button>
+                <button onClick={(e) => {e.preventDefault(); this.props.onHide(); }} className="btn btn-info">No, go back!</button>
+              </form>
+            }
           </Modal.Body>
         </Modal>
 

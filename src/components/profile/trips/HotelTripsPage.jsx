@@ -85,16 +85,14 @@ class HotelTripsPage extends React.Component {
   }
 
   onPageChange(page) {
-    this.setState({
-      currentPage: page,
-      loadingListing: true
-    });
-
-    getMyHotelBookings(`?page=${page - 1}`).then(data => {
-      this.setState({
-        trips: data.content,
-        totalTrips: data.totalElements,
-        loadingListing: false
+    window.scrollTo(0, 0);
+    this.setState({ currentPage: page, loading: true }, () => {
+      getMyHotelBookings(`?page=${page - 1}`).then(data => {
+        this.setState({
+          trips: data.content,
+          totalTrips: data.totalElements,
+          loading: false
+        });
       });
     });
   }
@@ -142,11 +140,14 @@ class HotelTripsPage extends React.Component {
           <div>
             <h2>Upcoming Trips ({this.state.totalTrips})</h2>
             <hr />
+
             <HotelTripsTable
               trips={this.state.trips}
               currentTripId={this.state.currentTripId}
               onTripSelect={this.onTripSelect}
-              onTripCancel={() => this.openModal('showCancelTripModal')} />
+              onTripCancel={() => this.openModal('showCancelTripModal')}
+              loading={this.state.loading}
+            />
 
             <Pagination
               loading={this.state.totalListings === 0}

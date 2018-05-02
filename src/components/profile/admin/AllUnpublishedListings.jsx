@@ -3,12 +3,14 @@ import { changeListingStatus, contactHost, getAllUnpublishedListings, getCities,
 
 import AllListingsFilter from './AllListingsFilter';
 import ContactHostModal from '../../common/modals/ContactHostModal';
+import DeletionModal from '../../common/modals/DeletionModal';
 import Pagination from '../../common/pagination/Pagination';
 import ListingRow from './ListingRow';
 import PropTypes from 'prop-types';
 import React from 'react';
 import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
+import filterListings from '../../../actions/filterListings';
 
 class AllUnpublishedListings extends React.Component {
   constructor(props) {
@@ -26,7 +28,10 @@ class AllUnpublishedListings extends React.Component {
       countries: [],
       name: searchMap.listingName === undefined ? '' : searchMap.listingName,
       hostEmail: searchMap.host === undefined ? '' : searchMap.host,
-      isShownContactHostModal: false
+      isShownContactHostModal: false,
+      isShownDeleteListingModal: false,
+      deletingId: -1,
+      deletingName: '',
     };
 
     this.onPageChange = this.onPageChange.bind(this);
@@ -40,6 +45,9 @@ class AllUnpublishedListings extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.sendMessageToHost = this.sendMessageToHost.bind(this);
+    this.handleDeleteListing = this.handleDeleteListing.bind(this);
+    this.handleCloseDeleteListing = this.handleCloseDeleteListing.bind(this);
+    this.filterListings = filterListings.bind(this);
   }
 
   componentDidMount() {
@@ -190,6 +198,26 @@ class AllUnpublishedListings extends React.Component {
     this.setState({ isShownContactHostModal: false });
   }
 
+  handleDeleteListing(id, name) {
+    this.setState(
+      {
+        isShownDeleteListingModal: true,
+        deletingId: id,
+        deletingName: name
+      }
+    );
+  }
+
+  handleCloseDeleteListing() {
+    this.setState(
+      {
+        isShownDeleteListingModal: false,
+        deletingId: -1,
+        deletingName: ''
+      }
+    );
+  }
+
   render() {
     if (this.state.loading) {
       return <div className="loader"></div>;
@@ -212,8 +240,20 @@ class AllUnpublishedListings extends React.Component {
               loading={this.state.countries === [] || this.state.countries.length === 0}
               onChange={this.onChange} />
 
-            <ContactHostModal id={this.state.selectedListing} isActive={this.state.isShownContactHostModal} closeModal={this.closeModal} sendMessageToHost={this.sendMessageToHost} />
+            <ContactHostModal
+              id={this.state.selectedListing}
+              isActive={this.state.isShownContactHostModal}
+              closeModal={this.closeModal}
+              sendMessageToHost={this.sendMessageToHost}
+            />
 
+            <DeletionModal
+              isActive={this.state.isShownDeleteListingModal}
+              deletingName={this.state.deletingName}
+              filterListings={this.filterListings}
+              deletingId={this.state.deletingId}
+              onHide={this.handleCloseDeleteListing}
+            />
 
             {this.state.listings.length === 0 ? <div className="text-center p20"><h3>There isn&#39;t any unpublished listings</h3></div> :
               <div className="container">
@@ -238,6 +278,7 @@ class AllUnpublishedListings extends React.Component {
                     action="Publish"
                     canDelete={true}
                     updateListingStatus={this.updateListingStatus}
+                    handleDeleteListing={this.handleDeleteListing}
                     actionClass="btn btn-success"
                     listing={item}
                     key={i}

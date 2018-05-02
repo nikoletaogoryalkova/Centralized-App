@@ -85,16 +85,18 @@ class HomeTripsPage extends React.Component {
   }
 
   onPageChange(page) {
+    window.scrollTo(0, 0);
+
     this.setState({
       currentPage: page,
-      loadingListing: true
+      loading: true
     });
 
     getMyTrips(`?page=${page - 1}`).then(data => {
       this.setState({
         trips: data.content,
         totalTrips: data.totalElements,
-        loadingListing: false
+        loading: false
       });
     });
   }
