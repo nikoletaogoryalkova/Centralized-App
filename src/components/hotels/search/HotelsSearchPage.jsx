@@ -137,7 +137,9 @@ class HotelsSearchPage extends React.Component {
       currentPage: 0,
     });
 
-    this.clientRef.disconnect();
+    if (this.clientRef) {
+      this.clientRef.disconnect();
+    }
   }
 
   getAdults(rooms) {
@@ -246,11 +248,12 @@ class HotelsSearchPage extends React.Component {
     queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
     queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
     queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
-    this.props.history.push('/hotels/listings' + queryString);
+    
 
     const nights = this.calculateNights(this.state.startDate, this.state.endDate);
+    this.props.history.push('/hotels/listings' + queryString);
 
-    this.clearFilters();
+    // this.clearFilters();
     this.setState({
       loading: true,
       childrenModal: false,
@@ -259,7 +262,8 @@ class HotelsSearchPage extends React.Component {
       filteredListings: null,
       isFiltered: false,
       allElements: false,
-      nights: nights
+      nights: nights,
+      stars: [false, false, false, false, false]
     }, () => {
       if (this.clientRef) {
         this.clientRef.connect();
@@ -524,20 +528,12 @@ class HotelsSearchPage extends React.Component {
   }
 
   render() {
-    let listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
+    let listings = this.state.isFiltered ? this.state.filteredListings : this.state.listings;
     
     const totalElements = listings.length;
     const startElement = this.state.currentPage * DEFAULT_PAGE_SIZE;
     
     listings = listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE);
-    
-    let infoMessage;
-
-    if (listings.length === 0 && this.state.loading) {
-      infoMessage = <div className="text-center"><h2 style={{ margin: '80px 0' }}>Looking for the best rates for your trip...</h2></div>;
-    } else if (listings.length === 0 && !this.state.loading) {
-      infoMessage = <div className="text-center"><h2 style={{ margin: '80px 0' }}>No Results</h2></div>;
-    }
 
     return (
       <div>
@@ -600,10 +596,12 @@ class HotelsSearchPage extends React.Component {
                     </div>
                     : <div>
                       {/* {hotelItems} */}
-                      {infoMessage !== undefined 
+                      {/* {infoMessage !== undefined 
                         ? infoMessage
-                        : <ResultsHolder hotels={listings} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} />
-                      }
+                        : <ResultsHolder hotels={listings} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} loading={this.state.loading} />
+                      } */}
+
+                      <ResultsHolder hotels={listings} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} loading={this.state.loading} />
                       <Pagination
                         loading={this.state.loading}
                         onPageChange={this.onPageChange}
