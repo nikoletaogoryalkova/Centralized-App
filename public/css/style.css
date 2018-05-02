@@ -3,7 +3,6 @@
 }
 
 .bold {
-    font-weight: bold;
     font-family: 'FuturaStd-Medium', sans-serif;
 }
 
@@ -157,7 +156,7 @@ header form button {
 }
 
 #main-nav .navbar-nav a {
-    font-size: 16px;
+    font-size: 20px;
     border-radius: 0;
 }
 
@@ -203,9 +202,9 @@ header form button {
 }
 
 #search-bar {
-    background: #223843;
-    padding-top: 32px;
-    padding-bottom: 16px;
+    /* background: #223843; */
+    /* padding-top: 32px; */
+    /* padding-bottom: 16px; */
 }
 
 .second-nav-text ul {
@@ -281,6 +280,8 @@ header form button {
     border-radius: 0;
     border: 0;
     margin-bottom: 0;
+    background-color: #fff;
+    border-bottom: 0.1px solid #ccc;
 }
 
 .navbar-brand {
@@ -317,7 +318,7 @@ header form button {
 }
 
 .icon.icon-calendar {
-    background: url(../images/icon-calendar.png) left no-repeat;
+    /* background: url(../images/icon-calendar.png) left no-repeat; */
 }
 
 .icon.icon-guest {
@@ -358,10 +359,11 @@ header form button {
     background: url(../images/icon-moon.png) center 5px no-repeat;
     text-align: center;
     padding-top: 35px;
+    background-color: #fff;
 }
 
 #search-nights span {
-    color: #fff;
+    color: #555;
     font-size: 11px;
     text-align: center;
 }
@@ -375,6 +377,8 @@ header form button {
 
 #search #guests input {
     padding-left: 46px;
+    border-radius: 4px;
+    border: none;
 }
 
 #search button {
@@ -415,7 +419,6 @@ button.disabled:hover {
 }
 
 .search-term {
-    font-weight: bold;
     float: left;
     padding: 30px 10px;
 }
@@ -465,13 +468,14 @@ button.disabled:hover {
 
 .rc-pagination-next,
 .rc-pagination-jump-next {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .hotel-gallery-bgr {
-    background-size: cover;
-    min-height: 600px;
-    background-position: center;
+  margin-top: 20px;
+  background-size: cover;
+  min-height: 600px;
+  background-position: center;
 }
 
 .hotel-gallery-bgr .container {
@@ -704,10 +708,10 @@ button.disabled:hover {
     display: inline-block;
 }
 
-footer {
+/* footer {
     background: #223843;
     color: #fff;
-}
+} */
 
 footer a {
     color: #fff;
@@ -832,7 +836,7 @@ footer .currency-switcher {
 #main-nav #second-nav .navbar-nav li a.active {
     font-size: 18px;
     border-radius: 0;
-    font-weight: 400;
+    /* font-weight: 400; */
     color: #fff;
     border-bottom: 4px solid #d87a61 !important;
     background-color: transparent;
@@ -841,16 +845,18 @@ footer .currency-switcher {
 
 #main-nav .absolute_box {
     bottom: 0;
-    margin-bottom: -46px;
+    margin-bottom: 100px;
     position: absolute;
 }
 
-#main-nav #search-bar {
-    background: #223843;
-    padding: 16px 15px;
-    min-height: 92px;
-    border-radius: 5px;
-    box-shadow: 0 0 40px #223843;
+#search-bar {
+  max-width: 1170px;
+  background: #fff;
+  padding: 5px 5px;
+  /* min-height: 92px; */
+  border-radius: 5px;
+  margin: 0 auto;
+  /* box-shadow: 0 0 40px #223843; */
 }
 
 #main-nav #search-bar .form-group {
@@ -991,7 +997,6 @@ ul.navbar-profile>li>a:hover {
 }
 
 ul.navbar-profile>li>a.active {
-    font-weight: bold;
     color: #d87a61;
 }
 
@@ -1054,10 +1059,6 @@ ul.profile-pending-header {
 
 ul.profile-pending-header>li {
     padding: 10px 0;
-}
-
-ul.profile-pending-header>li>span {
-    font-size: 18px;
 }
 
 ul.profile-pending-item {
@@ -2135,10 +2136,6 @@ li.dropdown {
     align-items: center;
 }
 
-.my-reservations .table-header span {
-    font-weight: bold;
-}
-
 #profile-mylistings::after {
     clear: both;
     display: block;
@@ -2228,7 +2225,7 @@ li.dropdown {
 }
 
 #popular-hotels-box .list-property-price {
-    font-size: 30px;
+    font-size: 20px;
     font-family: 'FuturaStd-Medium', sans-serif;
     padding-left: 20px;
     padding-top: 15px;
@@ -2259,11 +2256,6 @@ li.dropdown {
 
 #popular-hotels-box .carousel-inner img {
     width: 100%;
-}
-
-.carousel-control.left,
-.carousel-control.right {
-    background-image: none;
 }
 
 .list-hotel-rating {
@@ -2497,16 +2489,16 @@ input[type="checkbox"].tick:checked+label:after {
 /* END */
 
 .host-step {
-    padding: 10px 10px 10px 20px;
+    /* padding: 10px 10px 10px 20px; */
+    margin-bottom: 10px;
     font-size: 16px;
-    font-weight: bold;
     display: block;
 }
 
 .host-step a {
     padding: 10px 10px 10px 20px;
     font-size: 16px;
-    font-weight: bold;
+    /* font-weight: bold; */
     display: block;
 }
 .list-hotel .carousel-fade {
@@ -2657,8 +2649,8 @@ h2+hr {
 
 .pictures-preview .close {
     position: absolute;
-    top: 180px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
     background-color: #213844;
     border-radius: 5px;
     color: white;
@@ -2813,7 +2805,7 @@ select {
 
 #room-book .hotel-info {
     background-color: #fff;
-    margin: 30px;
+    margin: 0 30px 30px 30px;
     padding: 10px;
     border-radius: 3px;
 }
@@ -2826,7 +2818,7 @@ select {
     width: 100%;
     max-height: 200px;
     border-radius: 3px;
-    margin: 0px auto;
+    margin: 0 auto 20px auto;
     overflow: hidden;
 }
 
@@ -2840,6 +2832,7 @@ select {
 
 .booking-steps {
     background-color: rgb(34, 56, 67);
+    margin-bottom: 20px;
 }
 
 .booking-steps p {
@@ -3037,8 +3030,9 @@ select {
 
 .searchbar-children-select {
     min-height: 60px;
+    min-width: 90px;
     line-height: 60px;
-    padding: 0 10px;
+    /* padding: 0 10px; */
     border: 0;
     border-radius: 3px;
     background-color: #fff;
@@ -3046,6 +3040,7 @@ select {
     box-shadow: none;
     position: relative;
     text-align: center;
+    color: #555;
 }
 
 .searchbar-children-select.active {
@@ -3081,74 +3076,83 @@ select {
 }
 
 .vertical-block-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  .room-cancellation-hidden {
-      display: none;
-  }
+.room-cancellation-hidden {
+    display: none;
+}
 
-  .example-enter {
-    opacity: 0.01;
-  }
-  
-  .example-enter.example-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
-  }
-  
-  .example-leave {
-    opacity: 1;
-  }
-  
-  .example-leave.example-leave-active {
-    opacity: 0.01;
-    transition: opacity 0ms ease-in;
-  }
+.example-enter {
+  opacity: 0.01;
+}
 
-  .filter-box .filter-select {
-      border: 1px solid #ccc;
-  }
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
 
-  .filter-box .filter-info {
-      text-align: center;
-  }
+.example-leave {
+  opacity: 1;
+}
 
-  /* TOOLTIP */
-  [tooltip]{
-    position:relative;
-  }
-  [tooltip]:hover::after,
-  [tooltip]:hover::before {
-    opacity:1;
-  }
-  [tooltip]::before {
-      content: "";
-      position: absolute;
-      top:6px;
-      left:50%;
-      transform: translateX(-50%);
-      border-width: 4px 6px 0 6px;
-      border-style: solid;
-      border-color: rgba(88, 88, 88, 0.7) transparent transparent     transparent;
-      z-index: 100;
-      opacity:0;
-  }
-  [tooltip]::after {
-      content: attr(tooltip);
-      position: absolute;
-      left:50%;
-      top:6px;
-      transform: translateX(-50%)   translateY(-100%);
-      background: rgba(88, 88, 88, 0.7);
-      text-align: center;
-      color: #fff;
-      padding:4px 2px;
-      font-size: 12px;
-      min-width: 80px;
-      border-radius: 5px;
-      pointer-events: none;
-      opacity:0;
-  }
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 0ms ease-in;
+}
+
+.filter-box .filter-select {
+    border: 1px solid #ccc;
+}
+
+.filter-box .filter-info {
+    text-align: center;
+}
+
+.filter-box .filter-slider {
+  margin-bottom: 15px;
+}
+
+.step-by-step {
+  background-color: #223843;
+  margin-bottom: 30px;
+}
+
+/* TOOLTIP */
+[tooltip]{
+  position:relative;
+}
+[tooltip]:hover::after,
+[tooltip]:hover::before {
+  opacity:1;
+}
+[tooltip]::before {
+    content: "";
+    position: absolute;
+    top:6px;
+    left:50%;
+    transform: translateX(-50%);
+    border-width: 4px 6px 0 6px;
+    border-style: solid;
+    border-color: rgba(88, 88, 88, 0.7) transparent transparent     transparent;
+    z-index: 100;
+    opacity:0;
+}
+[tooltip]::after {
+    content: attr(tooltip);
+    position: absolute;
+    left:50%;
+    top:6px;
+    transform: translateX(-50%)   translateY(-100%);
+    background: rgba(88, 88, 88, 0.7);
+    text-align: center;
+    color: #fff;
+    padding:4px 2px;
+    font-size: 12px;
+    min-width: 80px;
+    border-radius: 5px;
+    pointer-events: none;
+    opacity:0;
+}

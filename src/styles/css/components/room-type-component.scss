@@ -1,0 +1,150 @@
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'widescreen': 1200px
+);
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+// ligatured operators ≥ ≤
+
+@import '../vendors/include-media';
+
+@import '../base/functions';
+@import '../base/variables';
+@import '../base/mixins';
+@import '../base/helpers';
+
+@import '../components/star-rating-component';
+
+
+
+.hotel-card {
+	border-radius: 3px;
+	overflow: hidden;
+	max-width: 270px;
+	color: $text-black;
+	text-align: left;
+	@include media("<desktop") {
+		margin-bottom: 15px;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	@include media(">=1560px") {
+		max-width: 298px;
+	}
+	&-img {
+		overflow: hidden;
+		img {
+			display: block;
+			width: 100%;
+		}
+	}
+	&-description {
+		padding: 12px 21px 17px;
+		background: $white;
+		.fa-star-o{
+			&:before {
+				content: "\e919";
+				color: $light-gray;
+				font-family: 'icomoon' !important;
+			}
+		}
+	}
+	img {
+		transition: transform 0.5s linear;
+	}
+	&:hover {
+		img {
+			transform: scale(1.01);
+		}
+	}
+	.hotel-name {
+		display: block;
+		letter-spacing: 0.03em;
+		font-size: 18px;
+		margin-bottom: 10px;
+	}
+	.rating {
+		display: flex;
+		margin-bottom: 5px;
+		.rating-holder {
+			margin: 0 13px;
+		}
+		span {
+			font-size: 14px;
+			color: #898c8d;
+		}
+	}
+	.location {
+		text-transform: uppercase;
+		font-size: 12px;
+		line-height: 1;
+	}
+	.price {
+		font-size: 18px;
+		letter-spacing: -0.05em;
+	}
+}
+
+
+.location {
+	letter-spacing: -0.03em;
+	.city {
+		position: relative;
+		&:after {
+			display: inline-block;
+			vertical-align: middle;
+			content: '•';
+			margin: 0 0 3px 3px;
+			font-size: 18px;
+		}
+	}
+}
+
+
+.city-card {
+	border-radius: 3px;
+	overflow: hidden;
+	background: {
+		repeat: no-repeat;
+		size: cover;
+	}
+	display: flex;
+	align-items: flex-end;
+	padding-left: 15px;
+	min-width: 290px;
+	max-width: 300px;
+	min-height: 220px;
+	@include media("<desktop") {
+		margin-bottom: 15px;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	@include media(">=1560px") {
+		min-width: 376px;
+	}
+	&:hover {
+		opacity: 0.9;
+	}
+	h3 {
+		font-size: 38px;
+		margin: 0;
+		color: $white;
+		font-family: $base-font-cursive;
+		letter-spacing: 0.03em;
+	}
+}

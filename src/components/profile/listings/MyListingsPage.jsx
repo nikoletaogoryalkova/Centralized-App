@@ -4,7 +4,6 @@ import Pagination from '../../common/pagination/Pagination';
 import { Link } from 'react-router-dom';
 import MyListingsActiveItem from './MyListingsActiveItem';
 import MyListingsInProgressItem from './MyListingsInProgressItem';
-import { NotificationContainer } from 'react-notifications';
 import React from 'react';
 import filterListings from '../../../actions/filterListings';
 
@@ -99,7 +98,6 @@ export default class MyListingsPage extends React.Component {
           </div>
 
         </section>
-        <NotificationContainer />
       </div>
     );
   }

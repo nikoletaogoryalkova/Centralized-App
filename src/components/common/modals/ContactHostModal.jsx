@@ -1,6 +1,5 @@
 import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
-import { NotificationContainer } from 'react-notifications';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
@@ -52,7 +51,6 @@ class ContactHostModal extends React.Component {
             </form>
           </Modal.Body>
         </Modal>
-        <NotificationContainer />
       </div>
     );
   }

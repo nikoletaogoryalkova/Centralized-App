@@ -26,6 +26,6 @@ LabeledBedroomCounter.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
   bedroom: PropTypes.any,
-  value: PropTypes.string,
+  value: PropTypes.any,
   onChange: PropTypes.func,
 };

@@ -70,7 +70,7 @@ function HomeDetailsInfoSection(props) {
                     item.picture != null && (
                       <div key={i} className="icon-facilities" tooltip={item.name}>
                         <span className="icon-image" style={{ textAlign: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                          <img src={Config.getValue('imgHost') + item.picture} style={{ width: '60%', height: '60%' }} />
+                          <img src={Config.getValue('imgHost') + item.picture} style={{ width: '60%', height: '60%' }} alt="Popular home" />
                           {/* <b>{item.picture}</b> */}
                         </span>
                       </div>

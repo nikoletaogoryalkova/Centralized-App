@@ -148,12 +148,12 @@
   font-size: 24px;
   font-weight: bold;
 }
-.progress-box {
+/* .progress-box {
   text-align: center;
   margin: 10px 0;
   display: block;
-}
-.progress-box .progress-number p {
+} */
+/* .progress-box .progress-number p {
   border: 2px solid #d97a61;
   border-radius: 50%;
   width: 25px;
@@ -167,7 +167,7 @@
   background-color: #d97a61;
   color: white;
   font-size: 12px;
-}
+} */
 .progress-box .progress-name {
   text-align: left;
   font-size: 22px;

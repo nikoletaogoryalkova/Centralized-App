@@ -1,6 +1,6 @@
 import 'react-select/dist/react-select.css';
 
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 import { Config } from '../../../config';
 import BasicsAside from '../aside/BasicsAside';
@@ -15,7 +15,6 @@ export default function ListingLocAddress(props) {
   const { locAddress } = props.values;
   return <div>
     <ListingCrudNav progress='0%' />
-    <NotificationContainer />
     <div className="container">
       <div className="row">
         <div className="listings create">

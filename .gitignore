@@ -312,3 +312,6 @@ OpenCover/
 # Azure Stream Analytics local run output 
 ASALocalRun/
 
+# Exclude build tools for SCSS preprocessor
+src/**/*.css
+

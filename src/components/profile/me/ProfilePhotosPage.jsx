@@ -1,7 +1,7 @@
 import { Config } from '../../../config';
 import Dropzone from 'react-dropzone';
 import React from 'react';
-import { getCurrentLoggedInUserInfo } from '../../../requester';
+import { getUserInfo } from '../../../requester';
 import request from 'superagent';
 
 const host = Config.getValue('apiHost');
@@ -24,7 +24,7 @@ export default class ProfilePhotosPage extends React.Component {
   }
 
   componentDidMount() {
-    getCurrentLoggedInUserInfo().then((data) => {
+    getUserInfo().then((data) => {
       this.setState({ uploadedFilesThumbUrls: [data.image], loading: false });
     });
   }

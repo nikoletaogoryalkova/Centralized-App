@@ -1,6 +1,7 @@
 import Breadcrumb from '../../Breadcrumb';
 // import FilterPanel from './filter/FilterPanel';
 import Pagination, { DEFAULT_PAGE_SIZE } from '../../common/pagination/Pagination';
+import ResultsHolder from './ResultsHolder';
 import HotelItem from './HotelItem';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -131,6 +132,7 @@ class HotelsSearchPage extends React.Component {
   componentWillUnmount() {
     this.setState({
       listings: null,
+      filteredListings: null,
       loading: true,
       currentPage: 0,
     });
@@ -522,21 +524,19 @@ class HotelsSearchPage extends React.Component {
   }
 
   render() {
-    const listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
-
+    let listings = this.state.filteredListings ? this.state.filteredListings : this.state.listings;
+    
     const totalElements = listings.length;
     const startElement = this.state.currentPage * DEFAULT_PAGE_SIZE;
-
-    let hotelItems;
+    
+    listings = listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE);
+    
+    let infoMessage;
 
     if (listings.length === 0 && this.state.loading) {
-      hotelItems = <div className="text-center"><h2 style={{ margin: '80px 0' }}>Looking for the best rates for your trip...</h2></div>;
+      infoMessage = <div className="text-center"><h2 style={{ margin: '80px 0' }}>Looking for the best rates for your trip...</h2></div>;
     } else if (listings.length === 0 && !this.state.loading) {
-      hotelItems = <div className="text-center"><h2 style={{ margin: '80px 0' }}>No Results</h2></div>;
-    } else {
-      hotelItems = listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE).map((item, i) => {
-        return <HotelItem key={i} listing={item} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} />;
-      });
+      infoMessage = <div className="text-center"><h2 style={{ margin: '80px 0' }}>No Results</h2></div>;
     }
 
     return (
@@ -599,7 +599,11 @@ class HotelsSearchPage extends React.Component {
                       />
                     </div>
                     : <div>
-                      {hotelItems}
+                      {/* {hotelItems} */}
+                      {infoMessage !== undefined 
+                        ? infoMessage
+                        : <ResultsHolder hotels={listings} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} />
+                      }
                       <Pagination
                         loading={this.state.loading}
                         onPageChange={this.onPageChange}

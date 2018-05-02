@@ -3,9 +3,9 @@ import Counter from '../counter/Counter';
 import Dropdown from '../dropdown/Dropdown';
 import LabeledBedroomCounter from '../counter/LabeledBedroomCounter';
 import ListingCrudNav from '../navigation/ListingCrudNav';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
+import FooterNav from '../navigation/FooterNav';
 
 export default function CreateListingAccommodation(props) {
   const { guestsIncluded, bedroomsCount, bedrooms, bathrooms } = props.values;
@@ -110,16 +110,7 @@ export default function CreateListingAccommodation(props) {
           </div>
         </div>
       </div>
-      <div className="navigation col-md-12">
-        <div className="col-md-3">
-        </div>
-        <div className="col-md-7">
-          <NavLink to={props.prev} className="btn btn-default btn-back" id="btn-continue">
-            <i className="fa fa-long-arrow-left" aria-hidden="true"></i>
-            &nbsp;Back</NavLink>
-          <NavLink to={props.next} className="btn btn-primary btn-next" id="btn-continue" onClick={() => props.updateProgress(2)}>Next</NavLink>
-        </div>
-      </div>
+      <FooterNav next={props.next} prev={props.prev} handleClickNext={props.updateProgress} step={2} />
     </div>
   );
 }
@@ -133,5 +124,5 @@ CreateListingAccommodation.propTypes = {
   updateCounter: PropTypes.func,
   prev: PropTypes.string,
   next: PropTypes.string,
-  routes: PropTypes.array,
+  routes: PropTypes.object,
 };

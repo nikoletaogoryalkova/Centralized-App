@@ -1,5 +1,3 @@
-import { NotificationContainer } from 'react-notifications';
-
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -31,11 +29,10 @@ export default function SaveWalletModal(props) {
           <textarea name="mnemonic" className="form-control" onFocus={handleFocus} value={localStorage.walletMnemonic} />
           <br />
           <input type="hidden" name="json" className="form-control" onFocus={handleFocus} value={localStorage.walletJson} />
-          <p><b>You can use the mnemonic phrases to decrypt the wallet from external wallet manager such as MyEtherWallet or MetaMask. Save them carefully, they are irrecoverable.</b></p>
+          <p>You can use the mnemonic phrases to decrypt the wallet from external wallet manager such as MyEtherWallet or MetaMask. Save them carefully, they are irrecoverable.</p>
           <button className="btn btn-primary" onClick={handleSubmit}>Continue</button>
         </Modal.Body>
       </Modal>
-      <NotificationContainer />
     </div>
   );
 }

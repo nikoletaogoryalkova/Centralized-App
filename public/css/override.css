@@ -1,3 +1,9 @@
+label {
+  font-weight: 200 !important;
+}
+.dropdown-menu>li>a {
+  font-weight: 200;
+}
 .checkbox {
   margin-top: 0;
 }
@@ -24,9 +30,9 @@ a.dropdown-toggle {
   width: 180px;
   height: 100%;
 }
-.form-control {
+/* .form-control {
   background-image: auto;
-}
+} */
 .pac-logo:after {
   background: none;
   height: auto;
@@ -51,4 +57,25 @@ a.dropdown-toggle {
   .navbar-brand {
     flex-basis: 87%;
   }
+}
+
+/* TODO: This block is just for migration purposes. Should be deleted... */
+#search-bar [class^="icon-"], [class*=" icon-"] {
+  font-family: 'FuturaStd-Light', sans-serif !important;
+}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: #fff;
+}
+.container>h2,
+.hotel-content>h2 {
+  padding-top: 30px;
+}
+.Select-placeholder, .Select--single > .Select-control .Select-value {
+  color: #555 !important;
+  padding-left: 28px !important;
+  top: 2px !important;
+  font-size: 14px !important;
+}
+.form-group {
+  margin-bottom: 0 !important;
 }

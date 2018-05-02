@@ -38,7 +38,8 @@ function ListingItemPictureCarousel(props) {
           leftIcon={leftIcon}
           rightIcon={rightIcon}
           indicators={false}
-          className="carousel-fade">
+          className="carousel-fade"
+          onSelect={() => console.log('click')}>
           {pictures.map((item, i) => {
             return getCarouselItem(item, i);
           })}

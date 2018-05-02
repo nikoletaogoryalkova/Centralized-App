@@ -1,4 +1,4 @@
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import {
   createListing,
@@ -606,7 +606,6 @@ class EditListingPage extends React.Component {
   render() {
     return (
       <div>
-        <NotificationContainer />
         <Switch>
           <Route path={routes.landing} render={() => <ListingLandingPage
             values={this.state}

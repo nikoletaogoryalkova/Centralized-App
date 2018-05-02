@@ -1,5 +1,5 @@
 import { withRouter } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -214,10 +214,6 @@ class HotelBookingPage extends React.Component {
     const priceInSelectedCurrency = this.state.rates && Number(this.state.totalPrice * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2);
     return (
       <div>
-        <div>
-          <NotificationContainer />
-        </div>
-
         <div className="booking-steps">
           <div className="container">
             <p>1. Provide Guest Information</p>
@@ -236,28 +232,28 @@ class HotelBookingPage extends React.Component {
                     <div className="hotel-picture">
                       <img src={`http://roomsxml.com${hotelPicUrl}`} alt="Hotel" />
                     </div>
-                    <h2>{hotelName}</h2>
-                    <h3>{hotelMainAddress}, {hotelCityName}</h3>
+                    <h6>{hotelName}</h6>
+                    <h6>{hotelMainAddress}, {hotelCityName}</h6>
                     <hr />
                     {this.state.roomResults && this.state.roomResults.map((room, index) => {
                       if (!this.props.userInfo.isLogged) {
                         return (
-                          <h3 key={index}>
+                          <h6 key={index}>
                             {room.name}, {this.state.nights} nights: LOC {Number(room.price / this.state.locRate).toFixed(2)}
-                          </h3>
+                          </h6>
                         );
                       } else {
                         return (
-                          <h3 key={index}>
+                          <h6 key={index}>
                             {room.name}, {this.state.nights} nights: {this.props.paymentInfo.currencySign}{this.state.rates && (room.price * this.state.rates[ROOMS_XML_CURRENCY][this.props.paymentInfo.currency]).toFixed(2)} (LOC {Number(room.price / this.state.locRate).toFixed(2)})
-                          </h3>
+                          </h6>
                         );
                       }
                     })}
                     <hr />
                     {this.props.userInfo.isLogged ?
-                      <h2 className="total-price">Total: {this.props.paymentInfo.currencySign}{priceInSelectedCurrency} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)})</h2> :
-                      <h2 className="total-price">Total: LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)}</h2>
+                      <h6 className="total-price">Total: {this.props.paymentInfo.currencySign}{priceInSelectedCurrency} (LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)})</h6> :
+                      <h6 className="total-price">Total: LOC {Number(this.state.totalPrice / this.state.locRate).toFixed(2)}</h6>
                     }
                     <div className="clearfix"></div>
                   </div>
@@ -266,7 +262,7 @@ class HotelBookingPage extends React.Component {
                   {rooms && rooms.map((room, roomIndex) => {
                     return (
                       <div className="form-group" key={roomIndex}>
-                        <h2>Room</h2>
+                        <h4>Room</h4>
                         <hr />
                         {room && room.adults.map((adult, adultIndex) => {
                           return (

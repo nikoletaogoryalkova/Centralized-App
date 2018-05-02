@@ -57,7 +57,7 @@ export default function CreateWalletModal(props) {
         ref={el => captcha = el}
         size="invisible"
         sitekey={Config.getValue('recaptchaKey')}
-        onChange={(token) => { props.handleUpdateUserWallet(token); captcha.reset(); }}
+        onChange={(token) => { props.handleConfirmWallet(token); captcha.reset(); }}
       />
     </div>
   );
@@ -66,7 +66,7 @@ export default function CreateWalletModal(props) {
 CreateWalletModal.propTypes = {
   openModal: PropTypes.func,
   closeModal: PropTypes.func,
-  handleUpdateUserWallet: PropTypes.func,
+  handleConfirmWallet: PropTypes.func,
   handleMnemonicWordsChange: PropTypes.func,
   mnemonicWords: PropTypes.string,
   isActive: PropTypes.bool

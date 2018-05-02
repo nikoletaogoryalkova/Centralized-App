@@ -1,4 +1,4 @@
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import { changeListingStatus, contactHost, getAllUnpublishedListings, getCities, getCountries } from '../../../requester';
 
 import AllListingsFilter from './AllListingsFilter';
@@ -197,7 +197,6 @@ class AllUnpublishedListings extends React.Component {
 
     return (
       <div className="my-reservations">
-        <NotificationContainer />
         <section id="profile-my-reservations">
           <div className="container">
             <AllListingsFilter
