@@ -86,6 +86,7 @@ class HomeTripsPage extends React.Component {
 
   onPageChange(page) {
     window.scrollTo(0, 0);
+    console.log("");
 
     this.setState({
       currentPage: page,
