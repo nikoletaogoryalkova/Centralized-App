@@ -532,8 +532,6 @@ class HotelsSearchPage extends React.Component {
     
     const totalElements = listings.length;
     const startElement = this.state.currentPage * DEFAULT_PAGE_SIZE;
-    
-    listings = listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE);
 
     return (
       <div>
@@ -595,13 +593,13 @@ class HotelsSearchPage extends React.Component {
                       />
                     </div>
                     : <div>
-                      {/* {hotelItems} */}
-                      {/* {infoMessage !== undefined 
-                        ? infoMessage
-                        : <ResultsHolder hotels={listings} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} loading={this.state.loading} />
-                      } */}
+                      <ResultsHolder 
+                        hotels={listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE)} 
+                        locRate={this.state.locRate} rates={this.state.rates} 
+                        nights={this.state.nights} 
+                        loading={this.state.loading} 
+                      />
 
-                      <ResultsHolder hotels={listings} locRate={this.state.locRate} rates={this.state.rates} nights={this.state.nights} loading={this.state.loading} />
                       <Pagination
                         loading={this.state.loading}
                         onPageChange={this.onPageChange}
