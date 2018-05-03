@@ -73,7 +73,9 @@ header form button {
 }
 
 #location-select {
-    padding-left: 40px;
+  font-size: 16px;
+  height: 36px;
+  text-align-last: center;
 }
 
 #location-select option {
@@ -175,28 +177,39 @@ header form button {
 }
 
 #second-nav {
-    background: #f0f1f3;
+    background: none;
+    height: 45px;
+    margin-top: 40px;
 }
 
-#second-nav .navbar-nav a {
-    font-size: 18px;
+#second-nav ul {
+  display: flex;
+  background: none;
+  list-style: none;
+}
+
+#second-nav ul li {
+  margin-right: 20px;
+}
+
+#second-nav a {
+    font-size: 22px;
     border-radius: 0;
     font-weight: 300;
-    border-bottom: 4px solid #f0f1f3;
-    background: #f0f1f3;
+    border-bottom: 4px solid transparent;
+    background: none;
+    color: #fff;
 }
 
-#second-nav .navbar-nav a:hover,
-#second-nav .navbar-nav li a.active {
-    font-size: 18px;
+#second-nav a:hover,
+#second-nav li a.active {
+    font-size: 22px;
     border-radius: 0;
-    font-weight: 400;
-    color: #000;
     border-bottom: 4px solid #d87a61;
-    background: #f0f1f3;
+    /* background: #f0f1f3; */
 }
 
-#second-nav .navbar-nav>li>a {
+#second-nav li>a {
     padding-top: 20px;
     padding-bottom: 15px;
 }
@@ -331,6 +344,12 @@ header form button {
     margin: 16px 0 0 12px;
 }
 
+.datepicker-input {
+  width: 100%;
+  border: 0;
+  text-align: center;
+}
+
 .input-daterange {
     flex-grow: 1;
     float: left;
@@ -338,9 +357,14 @@ header form button {
 }
 
 .input-daterange input {
-    padding-left: 46px;
+    /* padding-left: 46px;
     padding-top: 22px;
-    padding-right: 5px;
+    padding-right: 5px; */
+    display: block;
+    text-align: center;
+    border: 0;
+    overflow: visible;
+    width: 100%;
 }
 
 .input-daterange .icon-check-in {
@@ -353,12 +377,12 @@ header form button {
     float: left;
     border: 1px dashed #fff;
     margin-right: 5px;
-    height: 60px;
+    /* height: 60px; */
     min-width: 17.5%;
     border-radius: 4px;
     background: url(../images/icon-moon.png) center 5px no-repeat;
     text-align: center;
-    padding-top: 35px;
+    padding-top: 25px;
     background-color: #fff;
 }
 

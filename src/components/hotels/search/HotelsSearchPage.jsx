@@ -248,7 +248,7 @@ class HotelsSearchPage extends React.Component {
     queryString += '&startDate=' + this.state.startDate.format('DD/MM/YYYY');
     queryString += '&endDate=' + this.state.endDate.format('DD/MM/YYYY');
     queryString += '&rooms=' + encodeURI(JSON.stringify(this.state.rooms));
-    
+
 
     const nights = this.calculateNights(this.state.startDate, this.state.endDate);
     this.props.history.push('/hotels/listings' + queryString);
@@ -529,27 +529,29 @@ class HotelsSearchPage extends React.Component {
 
   render() {
     let listings = this.state.isFiltered ? this.state.filteredListings : this.state.listings;
-    
+
     const totalElements = listings.length;
     const startElement = this.state.currentPage * DEFAULT_PAGE_SIZE;
 
     return (
       <div>
-        <HotelsSearchBar
-          startDate={this.state.startDate}
-          endDate={this.state.endDate}
-          region={this.state.region}
-          rooms={this.state.rooms}
-          adults={this.state.adults}
-          hasChildren={this.state.hasChildren}
-          guests={this.state.guests}
-          onChange={this.onChange}
-          handleRoomsChange={this.handleRoomsChange}
-          handleSearch={this.handleSearch}
-          handleDatePick={this.handleDatePick}
-          handleSelectRegion={this.handleSelectRegion}
-          handleToggleChildren={this.handleToggleChildren}
-        />
+        <div className="container">
+          <HotelsSearchBar
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            region={this.state.region}
+            rooms={this.state.rooms}
+            adults={this.state.adults}
+            hasChildren={this.state.hasChildren}
+            guests={this.state.guests}
+            onChange={this.onChange}
+            handleRoomsChange={this.handleRoomsChange}
+            handleSearch={this.handleSearch}
+            handleDatePick={this.handleDatePick}
+            handleSelectRegion={this.handleSelectRegion}
+            handleToggleChildren={this.handleToggleChildren}
+          />
+        </div>
 
         <Breadcrumb />
         <section id="hotel-box">
@@ -593,11 +595,11 @@ class HotelsSearchPage extends React.Component {
                       />
                     </div>
                     : <div>
-                      <ResultsHolder 
-                        hotels={listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE)} 
-                        locRate={this.state.locRate} rates={this.state.rates} 
-                        nights={this.state.nights} 
-                        loading={this.state.loading} 
+                      <ResultsHolder
+                        hotels={listings.slice(startElement, startElement + DEFAULT_PAGE_SIZE)}
+                        locRate={this.state.locRate} rates={this.state.rates}
+                        nights={this.state.nights}
+                        loading={this.state.loading}
                       />
 
                       <Pagination

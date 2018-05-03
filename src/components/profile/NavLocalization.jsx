@@ -41,7 +41,9 @@ class NavLocalization extends Component {
       <div className="container">
         <div className="source-data">
           <div className="info">
-            {(this.props.location.pathname.indexOf('/hotels/listings/book') === -1
+            {this.props.location.pathname !== '/hotels'
+              && this.props.location.pathname !== '/homes'
+              && (this.props.location.pathname.indexOf('/hotels/listings/book') === -1
               && this.props.location.pathname.indexOf('/profile') === -1)
               ? <ul className="tabset">
                 <li><NavLink to='/hotels' activeClassName="active">HOTELS</NavLink></li>

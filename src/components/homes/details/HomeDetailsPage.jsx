@@ -285,15 +285,17 @@ class HomeDetailsPage extends React.Component {
       <div>
         <div>
           {/* <ListingTypeNav /> */}
-          <HomesSearchBar
-            countryId={this.state.countryId}
-            countries={this.props.countries}
-            startDate={this.state.searchStartDate}
-            endDate={this.state.searchEndDate}
-            guests={this.state.guests}
-            onChange={this.onChange}
-            handleSearch={this.handleSearch}
-            handleDatePick={this.handleDatePick} />
+          <div className="container">
+            <HomesSearchBar
+              countryId={this.state.countryId}
+              countries={this.props.countries}
+              startDate={this.state.searchStartDate}
+              endDate={this.state.searchEndDate}
+              guests={this.state.guests}
+              onChange={this.onChange}
+              handleSearch={this.handleSearch}
+              handleDatePick={this.handleDatePick} />
+          </div>
         </div>
 
         {loading ?

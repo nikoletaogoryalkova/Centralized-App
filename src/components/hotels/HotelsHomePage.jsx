@@ -5,6 +5,7 @@ import HotelsSearchBar from './search/HotelsSearchBar';
 import PopularDestinationsCarousel from './carousel/PopularDestinationsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 import PropTypes from 'prop-types';
+import HeroComponent from './HeroComponent';
 
 import { getTestHotels } from '../../requester';
 import { connect } from 'react-redux';
@@ -200,7 +201,22 @@ class HotelsHomePage extends React.Component {
   render() {
     return (
       <div>
-        <header id='main-nav' className="navbar home_page">
+        <HeroComponent
+          startDate={this.state.startDate}
+          endDate={this.state.endDate}
+          region={this.state.region}
+          adults={this.state.adults}
+          hasChildren={this.state.hasChildren}
+          rooms={this.state.rooms}
+          guests={this.state.guests}
+          onChange={this.onChange}
+          handleRoomsChange={this.handleRoomsChange}
+          handleSearch={this.handleSearch}
+          handleDatePick={this.handleDatePick}
+          handleSelectRegion={this.handleSelectRegion}
+          handleToggleChildren={this.handleToggleChildren} 
+        />
+        {/* <header id='main-nav' className="navbar home_page">
           <div className="container">
             <h1 className="home_title">Discover your next experience</h1>
             <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
@@ -223,7 +239,7 @@ class HotelsHomePage extends React.Component {
               />
             </div>
           </div>
-        </header>
+        </header> */}
 
         <section id="popular-hotels-box">
           <h2>Popular Destinations</h2>

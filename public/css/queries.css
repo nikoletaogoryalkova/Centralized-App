@@ -97,8 +97,40 @@
     }
 
     .list-hotel-box .list-hotel-price-curency {
-        min-height: 10px;
-      }
+      min-height: 10px;
+    }
+
+    .navbar-brand img {
+      height: 40px;
+    }
+
+  #second-nav {
+    height: 33px;
+    margin-top: 50px;
+  }
+  
+  #second-nav ul {
+    display: flex;
+  }
+  
+  #second-nav a {
+      font-size: 14px;
+      color: #000;
+  }
+  
+  #second-nav a:hover,
+  #second-nav li a.active {
+      font-size: 14px;
+  }
+  
+  #second-nav li>a {
+      padding-top: 20px;
+      padding-bottom: 10px;
+  }
+
+  .source-data .info {
+    /* display: none !important; */
+  }
 }
 
 @media (max-width: 768px) {

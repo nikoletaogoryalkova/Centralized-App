@@ -6,7 +6,7 @@ function ListingTypeNav() {
     <div>
       <nav id="second-nav">
         <div className="container">
-          <ul className="nav navbar-nav">
+          <ul>
             <li><NavLink to='/hotels' activeClassName="active">HOTELS</NavLink></li>
             <li><NavLink to='/homes' activeClassName="active">HOMES</NavLink></li>
           </ul>

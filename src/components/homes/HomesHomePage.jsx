@@ -7,6 +7,7 @@ import HomesSearchBar from './search/HomesSearchBar';
 import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
 import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 import PropTypes from 'prop-types';
+import HomesHeroComponent from './HomesHeroComponent';
 
 class HomesHomePage extends React.Component {
   constructor(props) {
@@ -66,25 +67,16 @@ class HomesHomePage extends React.Component {
   render() {
     return (
       <div>
-        <header id='main-nav' className="navbar home_page">
-          <div className="container">
-            <h1 className="home_title">Discover your next experience</h1>
-            <h2 className="home_title">Browse for homes &amp; hotels worldwide</h2>
-            <div className="container absolute_box">
-              <ListingTypeNav />
-              <HomesSearchBar
-                countryId={this.state.countryId}
-                countries={this.state.countries}
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                guests={this.state.guests}
-                onChange={this.onChange}
-                handleSearch={this.handleSearch}
-                handleDatePick={this.handleDatePick}
-              />
-            </div>
-          </div>
-        </header>
+        <HomesHeroComponent
+          countryId={this.state.countryId}
+          countries={this.state.countries}
+          startDate={this.state.startDate}
+          endDate={this.state.endDate}
+          guests={this.state.guests}
+          onChange={this.onChange}
+          handleSearch={this.handleSearch}
+          handleDatePick={this.handleDatePick}
+        />
 
         <section id="popular-hotels-box">
           <h2>Popular Properties</h2>

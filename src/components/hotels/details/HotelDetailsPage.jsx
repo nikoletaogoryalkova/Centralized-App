@@ -512,7 +512,7 @@ class HotelDetailsPage extends React.Component {
 
     return (
       <div>
-        <div>
+        <div className="container">
           <HotelsSearchBar
             startDate={this.state.startDate}
             endDate={this.state.endDate}

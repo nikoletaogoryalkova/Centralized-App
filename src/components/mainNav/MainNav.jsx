@@ -112,7 +112,7 @@ class MainNav extends React.Component {
     }
 
 
-    this.messageListener();
+    // this.messageListener();
   }
 
   onChange(e) {

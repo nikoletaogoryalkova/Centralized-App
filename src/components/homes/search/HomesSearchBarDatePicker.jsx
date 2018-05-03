@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
-function HotelsSearchBarDatePicker(props) {
+function HomesSearchBarDatePicker(props) {
   const { startDate, endDate } = props;
   const start = (startDate && startDate.format('DD/MM/YYYY')) || '';
   const end = (endDate && endDate.format('DD/MM/YYYY')) || '';
@@ -49,7 +49,7 @@ function HotelsSearchBarDatePicker(props) {
   );
 }
 
-HotelsSearchBarDatePicker.propTypes = {
+HomesSearchBarDatePicker.propTypes = {
   startDate: PropTypes.any,
   endDate: PropTypes.any,
   isInvalidDate: PropTypes.bool,
@@ -57,4 +57,4 @@ HotelsSearchBarDatePicker.propTypes = {
   onApply: PropTypes.func,
 };
 
-export default HotelsSearchBarDatePicker;
+export default HomesSearchBarDatePicker;

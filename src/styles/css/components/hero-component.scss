@@ -28,37 +28,43 @@ $media-expressions: (
 
 
 .hero {
-	background: {
-		size: cover;
-		repeat: no-repeat;
-	}
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 40px;
-	padding: 15px 0;
+	padding: 30px 0 15px 0;
 	@include media(">=desktop") {
 		padding: 0;
 		min-height: 555px;
 		margin-bottom: 78px;
+		background: url(../../images/bg01.jpg);
+		size: cover;
+		repeat: no-repeat;
 	}
 	h1 {
 		font-family: $base-font-cursive;
-		color: $white;
 		margin-bottom: 4px;
 		letter-spacing: 0.03em;
+		@include media(">=desktop") {
+			color: $white;
+		}
 	}
 	h2 {
-		color: $white;
 		font-weight: 300;
-		margin-bottom: 85px;
+		font-size: 14px;
+		@include media(">=desktop") {
+			color: $white;
+			font-size: 28px;
+			margin-bottom: 85px;
+		}
 	}
 	.hero-content {
 		text-align: center;
 	}
 	.tabset {
 		a {
-			color: $white;
+			@include media(">=desktop") {
+				color: $white;
+			}
 		}
 	}
 }
