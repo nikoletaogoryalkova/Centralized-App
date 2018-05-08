@@ -30,6 +30,7 @@ import { arrayMove } from 'react-sortable-hoc';
 import moment from 'moment';
 import request from 'superagent';
 import update from 'react-addons-update';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const host = Config.getValue('apiHost');
 const LOCKTRIP_UPLOAD_URL = `${host}images/upload`;
@@ -122,6 +123,7 @@ class EditListingPage extends React.Component {
     this.populateFileThumbUrls = this.populateFileThumbUrls.bind(this);
     this.updateProgress = this.updateProgress.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
+    this.finish = this.finish.bind(this);
   }
 
   componentWillMount() {
@@ -158,11 +160,17 @@ class EditListingPage extends React.Component {
   }
 
   setListingData(data) {
+    const city = data.location.split(', ')[0];
+    const state = data.location.split(', ')[1];
+    const country = data.location.split(', ')[2];
+    const isAddressSelected = !!(city && state && country);
+
     this.setState({
       type: data.listingType.toString(),
       city: data.location.split(', ')[0],
       state: data.location.split(', ')[1],
       country: data.location.split(', ')[2],
+      isAddressSelected: isAddressSelected,
       propertyType: data.type.toString(),
       roomType: data.details.roomType ? data.details.roomType : this.getDetailValue(data, 'roomType'),
       dedicatedSpace: data.details.dedicatedSpace ? data.details.dedicatedSpace : this.getDetailValue(data, 'dedicatedSpace'),
@@ -376,6 +384,10 @@ class EditListingPage extends React.Component {
     return fileThumbUrls;
   }
 
+  finish() {
+    this.editCaptcha.execute();
+  }
+
   editListing(captchaToken) {
     this.setState({ loading: true });
     let listing = this.createListingObject();
@@ -406,7 +418,7 @@ class EditListingPage extends React.Component {
         if (res.success) {
           this.setState({ loading: false });
           this.props.history.push('/profile/listings');
-          NotificationManager.success('Successfully updated your profile', 'Edit new listing');
+          NotificationManager.success('Successfully updated your listing');
 
         } else {
           this.setState({ loading: false });
@@ -690,10 +702,17 @@ class EditListingPage extends React.Component {
           <Route exact path={routes.price} render={() => <ListingPrice
             values={this.state}
             onChange={this.onChange}
-            finish={this.editListing}
+            finish={this.finish}
             routes={routes}
             prev={routes.checking} />} />
         </Switch>
+
+        <ReCAPTCHA
+          ref={(el) => this.editCaptcha = el}
+          size="invisible"
+          sitekey={Config.getValue('recaptchaKey')}
+          onChange={token => { this.editListing(token); }}
+        />
       </div>
     );
   }

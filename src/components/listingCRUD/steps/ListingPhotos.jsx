@@ -25,7 +25,7 @@ function ListingPhotos(props) {
     return (
       <div className="col-md-12">
         {items.map((value, index) => (
-          <SortableItem key={`item-${index}`} index={index} value={value} />
+          <SortableItem key={`item-${index}`} index={index} value={Config.getValue('imgHost') + value} />
         ))}
       </div>
     );
@@ -61,7 +61,14 @@ function ListingPhotos(props) {
               </Dropzone>
 
               <div className="pictures-preview col-md-12">
-                {props.values.uploadedFilesUrls.length === 0 ? null : <SortableList axis={'xy'} lockToContainerEdges={true} items={props.values.uploadedFilesUrls} onSortEnd={props.onSortEnd} />}
+                {props.values.uploadedFilesUrls.length === 0 
+                  ? null 
+                  : <SortableList 
+                    axis={'xy'} 
+                    lockToContainerEdges={true} 
+                    items={props.values.uploadedFilesUrls} 
+                    onSortEnd={props.onSortEnd} />
+                }
               </div>
             </div>
           </div>
@@ -87,7 +94,7 @@ function validateInput(values) {
 
 function showErrors(values) {
   const { uploadedFilesUrls } = values;
-  if (uploadedFilesUrls.length < 6) {
+  if (uploadedFilesUrls.length < 1) {
     NotificationManager.warning('At least 1 picture is required');
   }
 }
