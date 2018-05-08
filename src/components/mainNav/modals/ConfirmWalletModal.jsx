@@ -1,5 +1,4 @@
 import { NotificationManager } from 'react-notifications';
-
 import { Config } from '../../../config';
 import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';

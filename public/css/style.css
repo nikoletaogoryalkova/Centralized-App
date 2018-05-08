@@ -49,7 +49,6 @@
     height: 2em;
 }
 
-
 /* Override bootstrap */
 
 .nav>li>a:focus,
@@ -112,7 +111,6 @@ header form button {
 .text-align-left {
     text-align: left;
 }
-
 
 /* END */
 
@@ -2401,7 +2399,6 @@ hr.over-easy-list-box {
     width: 80%;
 }
 
-
 /* Remove input type=number arrows */
 
 input::-webkit-outer-spin-button,
@@ -2453,7 +2450,6 @@ input::-webkit-inner-spin-button {
         margin: 0 auto;
     }
 }
-
 
 /* Checkbox input style */
 
@@ -2510,7 +2506,6 @@ input[type="checkbox"].tick:checked+label:after {
     text-align: center;
 }
 
-
 /* END */
 
 .host-step {
@@ -2526,6 +2521,7 @@ input[type="checkbox"].tick:checked+label:after {
     /* font-weight: bold; */
     display: block;
 }
+
 .list-hotel .carousel-fade {
     max-height: 190px;
     overflow: hidden;
@@ -2539,7 +2535,6 @@ input[type="checkbox"].tick:checked+label:after {
     font-weight: normal;
     display: block;
 }
-
 
 /* Override daterangepicker */
 
@@ -2568,7 +2563,6 @@ input[type="checkbox"].tick:checked+label:after {
 #ba.owl-theme .owl-dots .owl-dot:last-child {
     display: none;
 }
-
 
 /* Temp solution */
 
@@ -2702,7 +2696,6 @@ h2+hr {
     color: #D87A61;
 }
 
-
 /* FIX FOR MAC OS */
 
 select {
@@ -2783,6 +2776,7 @@ select {
 }
 
 /* Hotel Info Section */
+
 #room-book .title-select {
     font-size: 16px;
     padding: 15px 39px 15px 15px;
@@ -2835,7 +2829,9 @@ select {
     border-radius: 3px;
 }
 
-#room-book .hotel-info h1, h2, h3 {
+#room-book .hotel-info h1,
+h2,
+h3 {
     font-family: inherit;
 }
 
@@ -2864,11 +2860,12 @@ select {
     float: none;
     display: inline-block;
     color: #fff;
-    font-size: 18px; 
+    font-size: 18px;
     margin: 15px 30px 15px 0;
 }
 
 /* Hotel Details Rooms */
+
 .hotel-content .room-group {
     margin: 10px 0;
     padding: 5px;
@@ -2947,7 +2944,8 @@ select {
     outline: none;
 }
 
-#room-book-confirm table th, td {
+#room-book-confirm table th,
+td {
     padding: 10px;
 }
 
@@ -2956,7 +2954,8 @@ select {
     border-bottom: 1px solid #ccc;
 }
 
-#room-book-confirm .booking-price, .booking-for {
+#room-book-confirm .booking-price,
+.booking-for {
     font-weight: bold;
 }
 
@@ -2969,7 +2968,8 @@ select {
     color: #d87a61;
 }
 
-#room-book-confirm .order-total, .order-name p {
+#room-book-confirm .order-total,
+.order-name p {
     text-align: right;
     padding-right: 20px;
 }

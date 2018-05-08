@@ -47,7 +47,9 @@
     color: #d87a61; }
     @media (min-width: 1024px) {
       .info .cross-rate {
-        margin-right: 11px; } }
+        margin-right: 11px;
+        padding-top: 10px;
+        padding-bottom: 10px; } }
   .info .balance-info {
     display: flex; }
   .info .balance {

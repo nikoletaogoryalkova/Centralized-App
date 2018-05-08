@@ -4,22 +4,26 @@
   border: 5px solid #fff;
   margin-bottom: 20px;
 }
+
 .list-hotel-box .list-image {
   width: 29%;
   float: left;
   min-height: 190px;
   background-color: #f0f1f3;
 }
+
 .list-hotel-box .list-content {
   float: left;
   width: 49%;
   padding: 5px 10px 0 10px;
 }
+
 .list-hotel-box .list-content h2 {
   margin-top: 0;
   margin-bottom: 4px;
   font-size: 22px;
 }
+
 .list-hotel-box .list-price {
   width: 22%;
   float: left;
@@ -27,6 +31,7 @@
   min-height: 190px;
   text-align: center;
 }
+
 .list-hotel-box .left-carousel {
   bottom: 0;
   position: absolute;
@@ -35,6 +40,7 @@
   width: 31px;
   height: 29px;
 }
+
 .list-hotel-box .right-carousel {
   bottom: 0;
   position: absolute;
@@ -43,13 +49,16 @@
   height: 29px;
   right: 0;
 }
+
 .list-hotel-box .list-hotel-rating {
   color: #898c8d;
 }
+
 .list-hotel-box .list-hotel-rating div {
   float: left;
   margin-right: 15px;
 }
+
 .list-hotel-box .empty-star {
   background: url(../images/empty-star.png) center no-repeat;
   display: block;
@@ -58,6 +67,7 @@
   float: left;
   margin-top: 2px;
 }
+
 .list-hotel-box .full-star {
   background: url(../images/full-star.png) center no-repeat;
   display: block;
@@ -66,12 +76,14 @@
   float: left;
   margin-top: 2px;
 }
+
 .list-hotel-box .list-hotel-text {
   font-size: 12px;
   font-weight: 300;
   color: #54575a;
   margin-top: 0;
 }
+
 .list-hotel-box .list-hotel-price-bgr {
   padding-top: 3px;
   background: url(../images/price-bgr.png) no-repeat;
@@ -82,22 +94,27 @@
   color: #fff;
   font-size: 13px;
 }
+
 .list-hotel-box .list-hotel-price-curency {
   text-align: center;
   font-size: 28px;
   min-height: 40px;
 }
+
 .list-hotel-box .list-hotel-price-loc {
   text-align: center;
   font-size: 18px;
 }
+
 .list-hotel-box .list-hotel-price-button {
   padding: 10px 25px;
   margin: 20px auto 0 auto;
 }
+
 .list-hotel-comfort {
   margin-top: 0;
 }
+
 .list-hotel-comfort div {
   display: block;
   width: 35px;
@@ -106,18 +123,23 @@
   border: 1px solid #e1e2e6;
   margin-right: 5px;
 }
+
 .list-hotel-comfort .icon-hotel-4 {
   background: url(../images/icon-hotel-4.png) center no-repeat;
 }
+
 .list-hotel-comfort .icon-hotel-3 {
   background: url(../images/icon-hotel-3.png) center no-repeat;
 }
+
 .list-hotel-comfort .icon-hotel-2 {
   background: url(../images/icon-hotel-2.png) center no-repeat;
 }
+
 .list-hotel-comfort .icon-hotel-1 {
   background: url(../images/icon-hotel-1.png) center no-repeat;
 }
+
 .my-listing-box {
   border: 1px solid #CCCCCC;
   border-radius: 5px;
@@ -128,6 +150,7 @@
   align-items: center;
   margin: 15px 0;
 }
+
 .my-listing-box .my-listing-image-box {
   width: 95px;
   height: 60px;
@@ -137,13 +160,16 @@
   display: flex;
   border-radius: 3px;
 }
+
 .my-listing-box .my-listing-image-box img {
   width: 100%;
   margin: 70px 0 35px 0;
 }
+
 .my-listing-box .my-listing-image-box.not {
   background-color: #CCCCCC;
 }
+
 .my-listing-box .listing-name a {
   font-size: 24px;
   font-weight: bold;
@@ -163,6 +189,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .progress-box .progress-number .completed {
   background-color: #d97a61;
   color: white;
@@ -173,18 +200,22 @@
   font-size: 22px;
   font-weight: bold;
 }
+
 .progress-box .progress-steps {
   text-align: left;
 }
+
 .progress-box .progress-continue {
   text-align: left;
   margin-bottom: 10px;
 }
+
 .progress-box .progress-continue a {
   background-color: #A2C5BF;
   padding: 6px 12px;
   font-size: 16px;
 }
+
 .progress-image img {
   width: 90%;
 }

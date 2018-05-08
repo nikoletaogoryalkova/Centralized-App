@@ -56,11 +56,13 @@ $media-expressions: (
 		}
 	}
 	.cross-rate {
-		font-size: 14px;
+    font-size: 14px;
 		text-transform: uppercase;
 		color: $moderate-red;
 		@include media(">=desktop") {
-			margin-right: 11px;
+      margin-right: 11px;
+      padding-top: 10px;
+      padding-bottom: 10px;
 		}
   }
   .balance-info {

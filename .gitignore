@@ -315,3 +315,5 @@ ASALocalRun/
 # Exclude build tools for SCSS preprocessor
 src/**/*.css
 
+# Mac OS X files
+.DS_Store

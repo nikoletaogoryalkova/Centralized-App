@@ -2,54 +2,38 @@
 
 import bip39 from 'bip39';
 import hdkey from 'ethereumjs-wallet/hdkey';
+import ethers from 'ethers';
 import {
-    NotificationManager
-} from 'react-notifications';
-
+    BaseValidators
+} from './validators/baseValidators';
 import {
-    validateAddress,
-    validatePassword
-} from './validators/base-validators';
-import { web3 } from './config/contracts-config.js';
-// import { LOCTokenContract } from './config/contracts-config.js';
-import { Config } from '../../config';
+    LOCTokenContract,
+    getNodeProvider
+} from './config/contracts-config.js';
+import {
+    Config
+} from './../../config';
 
 const {
     HD_WALLET_PATH
 } = require('./config/constants.json');
-const {
-    LOC_ABI
-} = require('./config/contracts-json/loc-production.json');
-const errors = require('./config/errors.json');
-
+const ERROR = require('./config/errors.json');
 
 class Wallet {
 
     static async getTokenBalance(address) {
-        const locContract = new web3.eth.Contract( 
-            LOC_ABI,
-            Config.getValue('LOCTokenContract'), 
-            {
-                from: address,
-                gasPrice: '20000000000'
-            }
-        );
-
-        return locContract.methods.balanceOf(address).call().then(balance => balance);
+        let balance = await LOCTokenContract.balanceOf(address);
+        return balance;
     }
 
     static async getBalance(address) {
-        return await web3.eth.getBalance(address);
+        const nodeProvider = getNodeProvider();
+        let balance = await nodeProvider.getBalance(address);
+        return balance;
     }
 
     static async createFromPassword(password) {
-        validatePassword(password);
-
-        if (password === '') {
-            NotificationManager.error(errors.INVALID_PASSWORD);
-            throw new Error(errors.INVALID_PASSWORD);
-        }
-
+        BaseValidators.validatePassword(password);
 
         const mnemonic = bip39.generateMnemonic();
         const hdWallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
@@ -66,8 +50,8 @@ class Wallet {
     }
 
     static recoverFromMnemonic(mnemonic, password, address) {
-        validatePassword(password);
-        validateAddress(address, errors.INVALID_RECOVERED_ADDRESS);
+        BaseValidators.validatePassword(password);
+        BaseValidators.validateAddress(address, ERROR.INVALID_RECOVERED_ADDRESS);
         this.validateMnemonic(mnemonic);
 
         const hdWallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
@@ -77,7 +61,7 @@ class Wallet {
         result.address = wallet.getAddressString();
 
         if (result.address !== address) {
-            throw errors.INVALID_RECOVERED_ADDRESS;
+            throw ERROR.INVALID_RECOVERED_ADDRESS;
         }
 
         result.mnemonic = mnemonic;
@@ -89,7 +73,7 @@ class Wallet {
 
     static validateMnemonic(mnemonic) {
         if (!bip39.validateMnemonic(mnemonic)) {
-            throw errors.INVALID_MNEMONIC;
+            throw ERROR.INVALID_MNEMONIC;
         }
 
         return true;
