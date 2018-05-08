@@ -150,12 +150,12 @@ export class ReservationValidators {
 		return true;
 	}
 
-	static validateDispute(senderAddress, customerAddress, reservationEndDate, isDisputeOpen) {
+	static validateDispute(senderAddress, customerAddress, reservationStartDate, reservationEndDate, isDisputeOpen) {
 
 		customerAddress = customerAddress.toLowerCase();
 		senderAddress = senderAddress.toLowerCase();
 		const currentTimestamp = Date.now() / 1000 | 0;
-		if (customerAddress !== senderAddress || currentTimestamp <= reservationEndDate) {
+		if (customerAddress !== senderAddress || currentTimestamp < reservationStartDate || currentTimestamp > reservationEndDate) {
 			throw new Error(ERROR.INVALID_DISPUTE);
 		}
 
