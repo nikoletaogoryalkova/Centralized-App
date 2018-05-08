@@ -15,6 +15,8 @@ import { TokenTransactions } from '../../../services/blockchain/tokenTransaction
 
 import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile, confirmBooking, getCurrencyRates } from '../../../requester';
 
+import { HotelReservation } from '../../../services/blockchain/hotelReservation';
+
 class HotelBookingConfirmPage extends React.Component {
   constructor(props) {
     super(props);
@@ -100,6 +102,7 @@ class HotelBookingConfirmPage extends React.Component {
     // console.log(password); return;
     getCurrentlyLoggedUserJsonFile().then((json) => {
       setTimeout(() => {
+        HotelReservation.createReservation(json, password)
         TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount.toString()).then((transactionHash) => {
           const bookingConfirmObj = {
             bookingId: preparedBookingId,
