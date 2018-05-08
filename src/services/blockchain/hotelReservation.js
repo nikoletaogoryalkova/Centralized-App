@@ -146,7 +146,7 @@ export class HotelReservation {
 		const gasPrice = await getGasPrice();
 		const reservation = await this.getReservation(hotelReservationId);
 
-		ReservationValidators.validateDispute(wallet.address, reservation._customerAddress, reservation._reservationEndDate, reservation._isDisputeOpen);
+		ReservationValidators.validateDispute(wallet.address, reservation._customerAddress, reservation._reservationStartDate, reservation._reservationEndDate, reservation._isDisputeOpen);
 
 		await fundTransactionAmountIfNeeded(
 			wallet.address,
