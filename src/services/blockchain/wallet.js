@@ -23,11 +23,13 @@ class Wallet {
 
     static async getTokenBalance(address) {
         let balance = await LOCTokenContract.balanceOf(address);
+        console.log(balance);
         return balance;
     }
 
     static async getBalance(address) {
         const nodeProvider = getNodeProvider();
+        console.log(nodeProvider);
         let balance = await nodeProvider.getBalance(address);
         return balance;
     }

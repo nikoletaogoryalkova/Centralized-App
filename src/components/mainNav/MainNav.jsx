@@ -207,7 +207,9 @@ class MainNav extends React.Component {
 
   setUserInfo() {
     getUserInfo().then(res => {
+      console.log(res.locAddress)
       Wallet.getBalance(res.locAddress).then(eth => {
+        console.log(eth)
         const ethBalance = eth / (Math.pow(10, 18));
         Wallet.getTokenBalance(res.locAddress).then(loc => {
           const locBalance = loc / (Math.pow(10, 18));

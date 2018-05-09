@@ -34,7 +34,7 @@ export default class WalletIndexPage extends React.Component {
     NotificationManager.info('We are processing your transaction through the ethereum network. It might freeze your screen for about 10 seconds...', 'Transactions');
     setTimeout(() => {
       TokenTransactions.sendTokens(
-        JSON.parse(this.state.jsonFile),
+        this.state.jsonFile,
         this.state.password,
         this.state.recipientAddress,
         (this.state.locAmount * Math.pow(10, 18)).toString()
