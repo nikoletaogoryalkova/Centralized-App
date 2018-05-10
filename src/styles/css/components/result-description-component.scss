@@ -1,0 +1,393 @@
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'widescreen': 1200px
+);
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+// ligatured operators ≥ ≤
+
+@import '../vendors/include-media';
+
+@import '../base/functions';
+@import '../base/variables';
+@import '../base/mixins';
+@import '../base/helpers';
+
+
+.heading-underline {
+	font-weight: 400;
+	padding-bottom: 12px;
+	border-bottom: 1px solid $gray;
+	margin-bottom: 27px;
+	letter-spacing: -0.03em;
+}
+
+.overview {
+	p {
+		line-height: 1.4;
+		margin-bottom: 21px;
+		color: #54585b;
+	}
+	h5 {
+		font-weight: 400;
+		margin-bottom: 0;
+		color: #54585b;
+	}
+}
+
+.space {
+	margin-bottom: 25px;
+	@include media(">=desktop") {
+		margin-bottom: 45px;
+	}
+}
+
+.facilities {
+	margin-bottom: 50px;
+	ul {
+		@extend %listreset;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		@include media(">=desktop") {
+			flex-wrap: nowrap;
+		}
+		li {
+			margin-bottom: 10px;
+			margin-right: 29px;
+			&:last-child {
+				margin-right: 0;
+			}
+			@include media(">=desktop") {
+				margin-bottom: 0;
+			}
+		}
+		.icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 69px;
+			height: 69px;
+			border: 1px solid $gray;
+			font-size: 32px;
+			background: $white;
+			border-radius: 2px;
+			color: $text-black;
+			&:hover {
+				color: $white;
+				background: $light-cyan;
+			}
+		}
+		.more {
+			color: $moderate-red;
+			font-size: 26px;
+			&:hover {
+				color: $light-cyan;
+			}
+		}
+	}
+}
+
+.room-types {
+	margin-bottom: 25px;
+	@include media(">=desktop") {
+		margin-bottom: 52px;
+	}
+	.flex {
+		justify-content: flex-start;
+	}
+	.carousel-holder {
+		position: relative;
+		button {
+			@include animate(background color);
+			position: absolute;
+			top: 75px;
+			right: 0;
+			background: $white;
+			border-radius: 100%;
+			padding: 0;
+			width: 50px;
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 1px solid $gray;
+			box-shadow: 2px 2px 5px 0px rgba(14,23,27,0.1);
+			&:hover {
+				background: $light-cyan;
+				color: $white;
+			}
+		}
+	}
+	.hotel-card {
+		border: 1px solid $gray;
+		max-width: 290px;
+		@include media(">=620px") {
+			margin-right: 20px;
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+}
+
+.hotel-rules {
+	.rules-list {
+		@extend %listreset;
+		margin-bottom: 37px;
+		li {
+			margin-bottom: 9px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+.check-in-and-out {
+	font-size: 18px;
+	margin-bottom: 45px;
+	@include media(">=desktop") {
+		margin-bottom: 75px;
+	}
+	.bubble {
+		position: relative;
+		display: block;
+		background: $light-cyan;
+		color: $white;
+		padding: 7px 9px 5px;
+		font-size: 12px;
+		top: calc(100% + 10px);
+		bottom: auto;
+		left: -15px;
+		max-width: 110px;
+		text-align: center;
+		&:before {
+			position: absolute;
+			content: '';
+			bottom: 100%;
+			left: 10px;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 5.5px 4px 5.5px;
+			border-color: transparent transparent $light-cyan transparent;
+		}
+		&-reverse {
+			&:before {
+				left: auto;
+				right: 10px;
+			}
+		}
+	}
+	.check-in {
+		margin-bottom: 68px;
+		@include media(">=desktop") {
+			display: flex;
+			align-items: center;
+		}
+		> span {
+			margin-right: 35px;
+		}
+		.progress-bar {
+			.time {
+				font-size: 14px;
+				position: absolute;
+				display: block;
+				right: 0;
+				bottom: calc(100% + 5px);
+			}
+			.bubble {
+				position: relative;
+			}
+		}
+	}
+	.progress {
+		display: flex;
+		@include media(">=desktop") {
+			min-width: 430px;
+		}
+		.progress-bar {
+			position: relative;
+			height: 3px;
+			background: #e1e1e1;
+			&.filled {
+				background: $dark-blue;
+			}
+		}
+	}
+	.check-out {
+		@include media(">=desktop") {
+			display: flex;
+			align-items: center;
+		}
+		> span {
+			margin-right: 27px;
+		}
+		.bubble {
+			position: absolute;
+			left: auto;
+			right: -15px;
+		}
+		.progress-bar {
+			.time {
+				position: absolute;
+				display: block;
+				left: 0;
+				bottom: 100%;
+			}
+		}
+	}
+}
+
+.blockquote {
+	margin: 0 0 30px 0;
+	border-bottom: 1px solid $gray;
+}
+
+.blockquote-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+	.avatar {
+		border-radius: 100%;
+		overflow: hidden;
+		margin-right: 19px;
+		img {
+			display: block;
+			width: 100%;
+		}
+	}
+	.author {
+		display: flex;
+		align-items: flex-start;
+		.author-details {
+			padding-top: 15px;
+			letter-spacing: 0.03em;
+			span {
+				display: block;
+				margin-bottom: 11px;
+			}
+		}
+		.rating-holder {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.host {
+	strong {
+		font-size: 32px;
+	}
+	p {
+		a {
+			color: $moderate-red;
+			&:hover {
+				color: $light-cyan;
+			}
+		}
+	}
+}
+
+.reply-holder {
+	text-align: right;
+	margin-bottom: 10px;
+	a {
+		font-size: 12px;
+		color: $dark-gray;
+		span {
+			font-size: 10px;
+			margin-right: 12px;
+		}
+		&:hover {
+			color: $light-cyan;
+		}
+	}
+}
+
+.like-btn {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 12px;
+	color: #888c8d;
+	background: $white;
+	padding: 9px 10px;
+	border: 1px solid $gray;
+	border-radius: 3px;
+	&:hover {
+		color: $white;
+		background: $light-cyan;
+	}
+	> span {
+		margin-right: 12px;
+	}
+}
+
+.hotel-arrangements {
+	margin-bottom: 57px;
+	ul {
+		@extend %listreset;
+		li {
+			margin-bottom: 45px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+			span {
+				font-weight: 400;
+			}
+			.icon {
+				font-size: 28px;
+				margin-left: 20px;
+			}
+		}
+	}
+}
+
+.user-rating {
+	margin-bottom: 50px;
+	.btn {
+		min-width: 130px;
+		&-dark {
+			margin-bottom: 15px;
+			@include media(">=desktop") {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+.location-section {
+	padding-bottom: 25px;
+	@include media(">=desktop") {
+		padding-bottom: 50px;
+	}
+}
+
+.similar {
+	margin-bottom: 35px;
+	@include media(">=desktop") {
+		margin-bottom: 75px;
+	}
+	.hotel-card {
+		@include media(">=phone") {
+			margin-right: 10px;
+		}
+		@include media(">=desktop") {
+			min-width: 330px;
+		}
+	}
+}

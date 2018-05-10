@@ -23,9 +23,12 @@ export class TokenTransactions {
 
 	static async sendTokens(jsonObj, password, recipient, amount) {
 		BaseValidators.validateAddress(recipient, errors.INVALID_ADDRESS);
+    console.log(recipient);
+    console.log(jsonObj);
+    console.log(amount);
 
-		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
-
+    let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
+    
 		let result = await fundTransactionAmountIfNeeded(
 			wallet.address,
 			wallet.privateKey,

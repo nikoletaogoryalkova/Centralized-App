@@ -1,0 +1,30 @@
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.results-heading {
+  padding-top: 7px;
+  margin-bottom: 25px; }
+  @media (min-width: 1024px) {
+    .results-heading {
+      display: flex;
+      justify-content: space-between; } }
+  .results-heading h4 {
+    letter-spacing: -0.01em;
+    color: #54575a;
+    font-weight: 400; }
+  .results-heading .select {
+    min-width: 198px; }
+    .results-heading .select:after {
+      right: 7px; }
+    .results-heading .select select {
+      border-radius: 3px;
+      padding: 11px 17px; }

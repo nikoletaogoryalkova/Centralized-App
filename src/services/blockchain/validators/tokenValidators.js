@@ -20,14 +20,18 @@ export class TokenValidators {
 		const gasAmountAction = ethers.utils.bigNumberify(actionGas);
 		const totalGas = gasAmountApprove.add(gasAmountAction);
 
-		const totalGasLoc = (await gasToLoc(totalGas));
+    const totalGasLoc = (await gasToLoc(totalGas));
+    console.log('a')
 		const locAmountToValidate = (totalGasLoc
 				.add(TIMES_GAS_AMOUNT))
-			.mul(locAmount);
-
-		let balance = await LOCTokenContract.balanceOf(account);
-		if (locAmountToValidate.gt(balance)) {
-			throw ERROR.INSUFFICIENT_AMOUNT_LOC;
-		}
+      .mul(locAmount);
+      
+      console.log(locAmountToValidate.toString())
+      
+      let balance = await LOCTokenContract.balanceOf(account);
+      console.log(balance.toString())
+      if (locAmountToValidate.gt(balance)) {
+        throw ERROR.INSUFFICIENT_AMOUNT_LOC;
+      }
 	};
 }

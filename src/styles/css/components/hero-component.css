@@ -1,0 +1,45 @@
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0 15px 0; }
+  @media (min-width: 1024px) {
+    .hero {
+      padding: 0;
+      min-height: 555px;
+      margin-bottom: 78px;
+      background: url(../../images/bg01.jpg);
+      size: cover;
+      repeat: no-repeat; } }
+  .hero h1 {
+    font-family: "Nothing You Could Do", "Arial", "Helvetica Neue", "Helvetica", sans-serif;
+    margin-bottom: 4px;
+    letter-spacing: 0.03em; }
+    @media (min-width: 1024px) {
+      .hero h1 {
+        color: #fff; } }
+  .hero h2 {
+    font-weight: 300;
+    font-size: 14px; }
+    @media (min-width: 1024px) {
+      .hero h2 {
+        color: #fff;
+        font-size: 28px;
+        margin-bottom: 85px; } }
+  .hero .hero-content {
+    text-align: center; }
+  @media (min-width: 1024px) {
+    .hero .tabset a {
+      color: #fff; } }

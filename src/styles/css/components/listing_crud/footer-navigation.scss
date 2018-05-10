@@ -1,0 +1,49 @@
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'widescreen': 1200px
+);
+
+@import '../../vendors/include-media';
+
+.footer-navigation{
+  background-color: #fff;
+  box-shadow: 0 -2px 10px #CCCCCC;
+
+  .footer-navigation__content {
+    display: flex;
+    justify-content: space-between;
+
+    .footer-navigation__content__aside {
+      width: 30%;
+    }
+
+    .footer-navigation__content__main {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+      padding: 10px 0;
+      width: 67%;
+
+      .btn-back {
+        min-width: 170px;
+        background: transparent;
+        color: #555;
+      }
+
+      .btn-next{
+        min-width: 170px;
+      }
+
+      @include media("<=phone") {
+        width: 100%;
+      }
+    }
+
+    @include media("<=phone") {
+      display: block;
+    }
+  }
+}

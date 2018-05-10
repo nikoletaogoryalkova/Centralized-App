@@ -1,0 +1,56 @@
+.my-listings__progress-item {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #fff; }
+  .my-listings__progress-item__toggle {
+    width: 2%;
+    padding: 10px; }
+  .my-listings__progress-item__picture {
+    width: 7%;
+    padding: 10px; }
+  .my-listings__progress-item__content {
+    width: 87%;
+    padding: 10px; }
+    .my-listings__progress-item__content__row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      margin-bottom: 5px; }
+      .my-listings__progress-item__content__row .progress-step {
+        width: 50%;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px; }
+      .my-listings__progress-item__content__row .step-number {
+        position: relative;
+        top: -4px;
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        text-align: center;
+        border: 2px solid #d97a61;
+        border-radius: 50%;
+        margin-right: 10px; }
+      .my-listings__progress-item__content__row .progress-name {
+        display: inline-block;
+        font-size: 22px; }
+      .my-listings__progress-item__content__row .progress-continue {
+        text-align: left;
+        margin-bottom: 10px; }
+      .my-listings__progress-item__content__row .progress-continue a {
+        background-color: #A2C5BF;
+        padding: 6px 12px;
+        font-size: 18px; }
+      .my-listings__progress-item__content__row .progress-bar-outline {
+        margin: 5px 0 10px 0;
+        width: 80%;
+        background-color: #E1E1E1;
+        height: 3px; }
+  .my-listings__progress-item .progress-image {
+    position: absolute;
+    top: 55%;
+    left: 63%; }
