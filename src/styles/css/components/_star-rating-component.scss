@@ -1,0 +1,95 @@
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'widescreen': 1200px
+);
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+// ligatured operators ≥ ≤
+
+@import '../vendors/include-media';
+
+@import '../base/functions';
+@import '../base/variables';
+@import '../base/mixins';
+@import '../base/helpers';
+
+
+// inactive star
+.fa-star-o:before {
+		content: "\e919";
+		color: $white;
+		font-family: 'icomoon' !important;
+}
+// active star
+.fa-star:before {
+		content: "\e919";
+		color: $light-cyan;
+		font-family: 'icomoon' !important;
+}
+
+// rating
+.rating {
+	font-size: 16px;
+	display: inline-block;
+	box-sizing: content-box;
+	&[data-state="disabled"]{
+		pointer-events: none;
+	}
+	.rating-holder {
+		display: flex;
+		flex-flow: row-reverse;
+		margin: 0 -0.1em; 
+	}
+	&:hover {
+		input {
+			&:checked + label,
+			&:checked ~ label {
+				span {
+					 @extend .fa-star-o; 
+				}
+			}
+			& + label:hover,
+			& + label:hover ~ label {
+				span.fa {
+					@extend .fa-star; 
+				}
+			}
+		}
+	}
+	input {
+		display: none;
+		&:checked + label,
+		&:checked ~ label {
+			span {
+				@extend .fa-star;
+			}
+		}
+	}
+	label {
+		padding:0 0.1em;
+		width: 1em;
+		span {
+			@extend .fa-star-o;
+		}
+	}
+	&.w-halves {
+		label:nth-of-type(even){
+			position: absolute;
+			width: 0.37em; // ~(0.5 - padding)
+			overflow: hidden;
+		}
+	}
+}

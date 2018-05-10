@@ -1,0 +1,77 @@
+.user-rating .rating-holder ul {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.user-rating .rating-holder {
+  margin-bottom: 35px; }
+  @media (min-width: 1024px) {
+    .user-rating .rating-holder {
+      display: flex; } }
+  .user-rating .rating-holder ul {
+    margin-bottom: 20px;
+    padding-top: 12px; }
+    @media (min-width: 1024px) {
+      .user-rating .rating-holder ul {
+        margin-bottom: 0;
+        margin-right: 30px; }
+        .user-rating .rating-holder ul:last-child {
+          margin-right: 0; } }
+    .user-rating .rating-holder ul li {
+      margin-bottom: 22px; }
+      .user-rating .rating-holder ul li:last-child {
+        margin-bottom: 0; }
+    .user-rating .rating-holder ul .caption {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 7px;
+      font-size: 18px;
+      letter-spacing: -0.02em; }
+    .user-rating .rating-holder ul .progress {
+      background: #cccccc;
+      height: 3px; }
+      @media (min-width: 1024px) {
+        .user-rating .rating-holder ul .progress {
+          min-width: 200px; } }
+      .user-rating .rating-holder ul .progress .progress-bar {
+        background: #223843;
+        height: 3px; }
+
+.user-rating .rate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #a2c5bf;
+  height: 100px;
+  width: 100px;
+  border-radius: 3px;
+  margin-bottom: 15px; }
+  @media (min-width: 1024px) {
+    .user-rating .rate {
+      width: 150px;
+      height: 150px;
+      margin-right: 20px;
+      margin-bottom: 0; } }
+  .user-rating .rate span {
+    color: #fff; }
+    .user-rating .rate span:first-child {
+      font-size: 28px; }
+      @media (min-width: 1024px) {
+        .user-rating .rate span:first-child {
+          font-size: 56px; } }
+    .user-rating .rate span:last-child {
+      text-transform: uppercase;
+      font-size: 14px; }

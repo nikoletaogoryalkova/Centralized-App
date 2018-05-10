@@ -1,0 +1,65 @@
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'widescreen': 1200px
+);
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+// ligatured operators ≥ ≤
+
+@import '../vendors/include-media';
+
+@import '../base/functions';
+@import '../base/variables';
+@import '../base/mixins';
+@import '../base/helpers';
+
+
+.map-placeholder {
+	background: {
+		size: cover;
+		repeat: no-repeat;
+		position: center;
+	}
+	border: 1px solid $gray;
+	border-radius: 3px;
+	overflow: hidden;
+	min-height: 350px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding-top: 40px;
+	div {
+		background: $white;
+		box-shadow: 5px 5px 10px 0px rgba(34,56,67,0.15);
+		border-radius: 3px;
+		padding: 15px;
+		@include media(">=desktop") {
+			padding: 18px 75px 13px 30px;
+		}
+		span {
+			display: block;
+			&:first-child {
+				font-size: 24px;
+				font-weight: 400;
+				margin-bottom: 5px;
+			}
+			&:last-child {
+				letter-spacing: 0.04em;
+				font-size: 14px;
+			}
+		}
+	}
+}

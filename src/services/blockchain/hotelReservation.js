@@ -38,13 +38,17 @@ export class HotelReservation {
 		roomId,
 		numberOfTravelers) {
 
+    console.log(-1);  
+
 		const reservationStartDateFormatted = formatStartDateTimestamp(reservationStartDate);
 		const reservationEndDateFormatted = formatEndDateTimestamp(reservationEndDate);
 		const hotelReservationIdBytes = ethers.utils.toUtf8Bytes(hotelReservationId);
 		const hotelIdBytes = ethers.utils.toUtf8Bytes(hotelId);
 		const roomIdBytes = ethers.utils.toUtf8Bytes(roomId);
 		let wallet = await ethers.Wallet.fromEncryptedWallet(jsonObj, password);
-		const gasPrice = await getGasPrice();
+    const gasPrice = await getGasPrice();
+    
+    console.log(0);  
 
 		await ReservationValidators.validateReservationParams(jsonObj,
 			password,
@@ -57,7 +61,9 @@ export class HotelReservation {
 			hotelIdBytes,
 			roomIdBytes,
 			numberOfTravelers);
+      console.log(1);  
 		await TokenValidators.validateLocBalance(wallet.address, reservationCostLOC, wallet, gasConfig.hotelReservation.create);
+
 
 		await fundTransactionAmountIfNeeded(
 			wallet.address,
@@ -65,6 +71,8 @@ export class HotelReservation {
 			gasConfig.hotelReservation.create
 		);
 
+    console.log(2);  
+    
 
 		await approveContract(wallet, reservationCostLOC, HotelReservationFactoryContract.address, gasPrice);
 
@@ -73,7 +81,10 @@ export class HotelReservation {
 		const overrideOptions = {
 			gasLimit: gasConfig.hotelReservation.create,
 			gasPrice: gasPrice
-		};
+    };
+    
+    console.log(3);  
+    
 
 		const createReservationTxHash = await HotelReservationFactoryContractWithWalletInstance.createHotelReservation(hotelReservationIdBytes,
 			reservationCostLOC,

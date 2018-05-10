@@ -1,0 +1,135 @@
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1024px,
+	'widescreen': 1200px
+);
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+// ligatured operators ≥ ≤
+
+@import '../vendors/include-media';
+
+@import '../base/functions';
+@import '../base/variables';
+@import '../base/mixins';
+@import '../base/helpers';
+
+.explore {
+	margin-bottom: 25px;
+	@include media(">=desktop") {
+		margin-bottom: 82px;
+	}
+	.container {
+		text-align: center;
+	}
+	h3 {
+		font-weight: 400;
+		margin-bottom: 5px;
+	}
+	.subtitle {
+		display: inline-block;
+		vertical-align: middle;
+		font-size: 18px;
+		margin-bottom: 42px;
+	}
+	.categories {
+		@extend %listreset;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		@include media(">=desktop") {
+			flex-direction: row;
+			justify-content: center;
+		}
+		li {
+			margin-bottom: 30px;
+			@include media(">=desktop") {
+				margin-right: 30px;
+				margin-bottom: 0;
+			}
+			&:first-child {
+				h3 {
+					color: $text-black;
+					&:after {
+						background-image: url('../../images/underline-white.svg');
+					}
+				}
+			}
+			&:last-child {
+				margin-right: 0;
+				h3 {
+					color: $white;
+					&:after {
+						background-image: url('../../images/underline-red.svg');
+					}
+				}
+			}
+		}
+		a {
+			display: block;
+			position: relative;
+			border-radius: 3px;
+			overflow: hidden;
+			box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.1);
+			h3 {
+				position: absolute;
+				bottom: 35px;
+				left: 50%;
+				transform: translateX(-50%);
+				font-size: 44px;
+				font-family: $base-font-cursive;
+				&:after {
+					position: absolute;
+					content: '';
+					bottom: -7px;
+					left: 50%;
+					transform: translateX(-50%);
+					height: 25px;
+					width: 290px;
+					background: {
+						size: auto;
+						repeat: no-repeat;
+					}
+					z-index: -1;
+				}
+			}
+			img {
+				transition: transform 0.5s linear;
+			}
+			&:hover {
+				img {
+					transform: scale(1.01);
+				}
+			}
+		}
+	}
+}
+
+.top-destinations {
+	&.carousel-holder {
+		margin-bottom: 25px;
+		@include media(">=desktop") {
+			margin-bottom: 68px;
+		}
+	}
+}
+
+.get-started {
+	padding-top: 20px;
+	border-top: 1px solid $gray;
+	@include media(">=desktop") {
+		padding-top: 80px;
+	}
+}

@@ -1,0 +1,82 @@
+.result-navigation .nav-list, .result-navigation .sharing {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+.clearfix:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.ellipsis {
+  white-space: nowrap;
+  /* 1 */
+  text-overflow: ellipsis;
+  /* 2 */
+  overflow: hidden; }
+
+.result-navigation {
+  padding: 10px 0;
+  background: #fff;
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 30px; }
+  @media (min-width: 1024px) {
+    .result-navigation .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; } }
+  .result-navigation .container div {
+    display: flex;
+    align-items: center; }
+  @media (min-width: 768px) {
+    .result-navigation .nav-list {
+      display: flex;
+      margin-bottom: 15px; } }
+  @media (min-width: 1024px) {
+    .result-navigation .nav-list {
+      margin-bottom: 0; } }
+  @media (min-width: 768px) {
+    .result-navigation .nav-list li {
+      border-right: 1px solid #f0f1f3; } }
+  .result-navigation .nav-list li:last-child {
+    border-right: none; }
+  .result-navigation .nav-list a {
+    transition: font-weight 0.3s ease-in-out;
+    display: inline-block;
+    vertical-align: middle;
+    color: #1f2427;
+    font-size: 18px;
+    text-align: center;
+    font-weight: 300;
+    padding: 5px 14px; }
+    .result-navigation .nav-list a:hover, .result-navigation .nav-list a.active {
+      font-weight: 400; }
+    .result-navigation .nav-list a::after {
+      display: block;
+      content: attr(title);
+      font-weight: 400;
+      height: 0;
+      margin: 0;
+      overflow: hidden;
+      visibility: hidden; }
+  .result-navigation .sharing {
+    margin-right: 30px; }
+    @media (min-width: 1024px) {
+      .result-navigation .sharing {
+        margin-right: 63px; } }
+    .result-navigation .sharing li {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 22px; }
+      .result-navigation .sharing li:last-child {
+        margin-right: 0; }
+    .result-navigation .sharing a {
+      font-size: 18px;
+      color: #1f2427; }
+      .result-navigation .sharing a:hover {
+        color: #a2c5bf; }
+      .result-navigation .sharing a span {
+        margin-right: 9px; }
+  .result-navigation .btn {
+    padding: 12px;
+    min-width: 145px; }
