@@ -18,7 +18,7 @@ export default function CredentialsModal(props) {
           <button type="button" className="close" onClick={(e) => props.closeModal(ENTER_WALLET_PASSWORD, e)}>&times;</button>
         </Modal.Header>
         <Modal.Body>
-          <form onSubmit={(e) => { e.preventDefault(); captcha.execute(); }}>
+          <form onSubmit={(e) => { e.preventDefault(); props.handleSubmit(); }}>
             <input type="password" placeholder="Wallet Password" name="walletPassword" value={props.walletPassword} className="form-control" onChange={props.onChange} />
             <button type="submit" className="btn btn-primary">Confirm</button>
 

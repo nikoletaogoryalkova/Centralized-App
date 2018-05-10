@@ -40,10 +40,11 @@ class HotelBookingConfirmPage extends React.Component {
     const search = this.props.location.search;
     const searchParams = this.getSearchParams(search);
     const booking = JSON.parse(decodeURI(searchParams.get('booking')));
+    console.log(booking);
     testBook(booking).then((res) => {
       if (res.ok) {
         res.json().then((json) => {
-          this.setState({ data: json });
+          this.setState({ data: json, booking: booking });
 
           getLocRateInUserSelectedCurrency(json.currency).then((data) => {
             this.setState({ locRate: data[0]['price_' + json.currency.toLowerCase()] });
@@ -92,30 +93,65 @@ class HotelBookingConfirmPage extends React.Component {
     return end.diff(start, 'days');
   }
 
+  getNumberOfTravelers() {
+    const rooms = this.state.booking.rooms;
+    let numberOfTravelers = 0;
+    for (let i = 0; i < rooms.length; i++) {
+      numberOfTravelers += rooms[i].adults.length;
+      numberOfTravelers += rooms[i].children.length;
+    }
+
+    return numberOfTravelers;
+  }
+
   handleSubmit(token) {
     const password = this.state.walletPassword;
     const preparedBookingId = this.state.data.preparedBookingId;
-    const recipient = '0xa99c523BfC2E1374ac528FE39e4dD7c35F6C1d46';
-    const amount = this.state.data.locPrice * Math.pow(10, 18);
-    // const amount = 1 * Math.pow(10, 18);
+    // const recipient = '0xa99c523BfC2E1374ac528FE39e4dD7c35F6C1d46';
+    const recipient = '0xbba5666645ce005aec830d935043cc6d6b27b060';
+    const amount = (this.state.data.locPrice * Math.pow(10, 18)).toString().replace(/[.,]/g, '');
+    console.log(amount, typeof(amount));
+    // const amount = this.state.data.locPrice;
+    const booking = this.state.data.booking.hotelBooking;
+    const startDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD');
+    const endDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD').add(booking[0].nights, 'days');
+    const daysBeforeStartOfRefund = ['1'];
+    const refundPercentages = ['100'];
+    const hotelId = this.props.match.params.id;
+    const roomId = this.state.booking.quoteId;
+    const numberOfTravelers = this.getNumberOfTravelers();
+
     NotificationManager.info(PROCESSING_TRANSACTION, 'Transactions');
-    // console.log(password); return;
+
     getCurrentlyLoggedUserJsonFile().then((json) => {
+      console.log(json);
       setTimeout(() => {
-        HotelReservation.createReservation(json, password)
-        TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount.toString()).then((transactionHash) => {
+        HotelReservation.createReservation(
+          json.jsonFile, 
+          password,
+          preparedBookingId.toString(),
+          amount.toString(),
+          startDate.valueOf().toString(),
+          endDate.valueOf().toString(),
+          daysBeforeStartOfRefund,
+          refundPercentages,
+          hotelId,
+          roomId,
+          numberOfTravelers.toString()
+        ).then(transaction => {
+          console.log(transaction)
           const bookingConfirmObj = {
             bookingId: preparedBookingId,
-            transactionHash: transactionHash.transactionHash
+            transactionHash: transaction.hash
           };
 
           console.log(bookingConfirmObj);
-          confirmBooking(bookingConfirmObj).then(() => {
-            NotificationManager.success('You will receive a confirmation message');
-            setTimeout(() => {
-              this.props.history.push('/profile/trips/hotels');
-            }, 2000);
-          });
+          // confirmBooking(bookingConfirmObj).then(() => {
+          //   NotificationManager.success('You will receive a confirmation message');
+          //   setTimeout(() => {
+          //     this.props.history.push('/profile/trips/hotels');
+          //   }, 2000);
+          // });
         }).catch(error => {
           if (error.hasOwnProperty('message')) {
             NotificationManager.warning(error.message, 'Send Tokens');
@@ -131,6 +167,35 @@ class HotelBookingConfirmPage extends React.Component {
         });
       }, 1000);
     });
+
+    //     TokenTransactions.sendTokens(json.jsonFile, password, recipient, amount.toString()).then((transactionHash) => {
+    //       const bookingConfirmObj = {
+    //         bookingId: preparedBookingId,
+    //         transactionHash: transactionHash.transactionHash
+    //       };
+
+    //       console.log(bookingConfirmObj);
+    //       confirmBooking(bookingConfirmObj).then(() => {
+    //         NotificationManager.success('You will receive a confirmation message');
+    //         setTimeout(() => {
+    //           this.props.history.push('/profile/trips/hotels');
+    //         }, 2000);
+    //       });
+    //     }).catch(error => {
+    //       if (error.hasOwnProperty('message')) {
+    //         NotificationManager.warning(error.message, 'Send Tokens');
+    //       } else if (error.hasOwnProperty('err') && error.err.hasOwnProperty('message')) {
+    //         NotificationManager.warning(error.err.message, 'Send Tokens');
+    //       } else if (typeof x === 'string') {
+    //         NotificationManager.warning(error, 'Send Tokens');
+    //       } else {
+    //         NotificationManager.warning(error);
+    //       }
+
+    //       this.closeModal(ENTER_WALLET_PASSWORD);
+    //     });
+    //   }, 1000);
+    // });
   }
 
   openModal(modal, e) {
@@ -267,6 +332,7 @@ class HotelBookingConfirmPage extends React.Component {
                   </div>
                 </div>
                 <button className="btn btn-primary btn-book" onClick={() => this.openModal(ENTER_WALLET_PASSWORD)}>Confirm and Pay</button>
+                <button className="btn btn-primary btn-book" onClick={() => this.handleSubmit()}>Check</button>
               </div>
               <CredentialsModal isActive={this.props.modalsInfo.modals.get(ENTER_WALLET_PASSWORD)} handleSubmit={this.handleSubmit} closeModal={this.closeModal} walletPassword={this.state.walletPassword} onChange={this.onChange} />
             </div>
