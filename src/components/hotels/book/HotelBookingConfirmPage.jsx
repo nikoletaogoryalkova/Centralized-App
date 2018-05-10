@@ -17,6 +17,8 @@ import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonF
 
 import { HotelReservation } from '../../../services/blockchain/hotelReservation';
 
+import bigRat from 'big-rational';
+
 class HotelBookingConfirmPage extends React.Component {
   constructor(props) {
     super(props);
@@ -104,14 +106,31 @@ class HotelBookingConfirmPage extends React.Component {
     return numberOfTravelers;
   }
 
+  tokensToWei(tokens) {
+    let index = tokens.indexOf('.');
+    let trailingZeroes = 0;
+    let wei = '';
+    if (index === -1) {
+      trailingZeroes = 18;
+    } else {
+      trailingZeroes = 18 - (tokens.length - 1 - index);
+    }
+
+    wei = tokens.replace(/[.,]/g, '');
+    if (trailingZeroes >= 0) {
+      wei = wei + '0'.repeat(trailingZeroes);
+    } else {
+      wei = wei.substring(0, index + 18);
+    }
+
+    return wei;
+  }
+
   handleSubmit(token) {
     const password = this.state.walletPassword;
     const preparedBookingId = this.state.data.preparedBookingId;
-    // const recipient = '0xa99c523BfC2E1374ac528FE39e4dD7c35F6C1d46';
-    const recipient = '0xbba5666645ce005aec830d935043cc6d6b27b060';
-    const amount = (this.state.data.locPrice * Math.pow(10, 18)).toString().replace(/[.,]/g, '');
-    console.log(amount, typeof(amount));
-    // const amount = this.state.data.locPrice;
+    const wei = (this.tokensToWei(this.state.data.locPrice.toString()));
+    console.log(wei);
     const booking = this.state.data.booking.hotelBooking;
     const startDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD');
     const endDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD').add(booking[0].nights, 'days');
@@ -127,10 +146,10 @@ class HotelBookingConfirmPage extends React.Component {
       console.log(json);
       setTimeout(() => {
         HotelReservation.createReservation(
-          json.jsonFile, 
+          json.jsonFile,
           password,
           preparedBookingId.toString(),
-          amount.toString(),
+          wei,
           startDate.valueOf().toString(),
           endDate.valueOf().toString(),
           daysBeforeStartOfRefund,
@@ -332,7 +351,7 @@ class HotelBookingConfirmPage extends React.Component {
                   </div>
                 </div>
                 <button className="btn btn-primary btn-book" onClick={() => this.openModal(ENTER_WALLET_PASSWORD)}>Confirm and Pay</button>
-                <button className="btn btn-primary btn-book" onClick={() => this.handleSubmit()}>Check</button>
+                {/* <button className="btn btn-primary btn-book" onClick={() => this.pow()}>Check</button> */}
               </div>
               <CredentialsModal isActive={this.props.modalsInfo.modals.get(ENTER_WALLET_PASSWORD)} handleSubmit={this.handleSubmit} closeModal={this.closeModal} walletPassword={this.state.walletPassword} onChange={this.onChange} />
             </div>
