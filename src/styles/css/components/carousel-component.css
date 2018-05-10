@@ -237,3 +237,10 @@
             max-width: 100%; } }
       .main-carousel div.current:before {
         display: none; }
+
+.slide {
+  margin-right: 10px;
+  height: 400px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center; }

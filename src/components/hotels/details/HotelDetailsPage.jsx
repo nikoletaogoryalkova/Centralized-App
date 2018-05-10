@@ -17,6 +17,9 @@ import '../../../styles/css/components/carousel-component.css';
 import left from './main-carousel-img02.jpg';
 import current from './main-carousel-img01.jpg';
 import right from './main-carousel-img03.jpg';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import { getHotelById, getHotelRooms, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
@@ -78,6 +81,8 @@ class HotelDetailsPage extends React.Component {
     this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
     this.handleToggleChildren = this.handleToggleChildren.bind(this);
     this.handleBookRoom = this.handleBookRoom.bind(this);
+    this.next = this.next.bind(this);
+    this.previous = this.previous.bind(this);
   }
 
   componentDidMount() {
@@ -503,6 +508,13 @@ class HotelDetailsPage extends React.Component {
     });
   }
 
+  next() {
+    this.slider.slickNext();
+  }
+  previous() {
+    this.slider.slickPrev();
+  }
+
   render() {
     let loading, images;
     if (!this.state.data) {
@@ -556,7 +568,7 @@ class HotelDetailsPage extends React.Component {
               </div>
             </div>
             {/* </section> */}
-            <div className="mb-none">
+            {/* <div className="mb-none">
               <div className="main-carousel">
                 <div className="mb-none"><img src={left} alt="image description" /></div>
                 <div className="current mb-none">
@@ -572,6 +584,26 @@ class HotelDetailsPage extends React.Component {
                   <button className="prev icon-arrow-left"></button>
                   <button className="next icon-arrow-right"></button>
                 </div>
+              </div>
+            </div> */}
+            <Slider
+              ref={c => (this.slider = c)}
+              // dots={true}
+              infinite={true}
+              speed={500}
+              slidesToShow={3}
+              slidesToScroll={1}>
+              <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
+              <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
+              <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
+              <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
+              <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
+              <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
+            </Slider>
+            <div className="main-carousel">
+              <div className="carousel-nav">
+                <button className="prev icon-arrow-left" onClick={this.previous}></button>
+                <button className="next icon-arrow-right" onClick={this.next}></button>
               </div>
             </div>
             <nav id="hotel-nav">
