@@ -403,6 +403,7 @@ class CreateListingPage extends React.Component {
 
   handleImageUpload(files) {
     files.forEach((file) => {
+      console.log(file)
       let upload = request.post(LOCKTRIP_UPLOAD_URL)
         .field('image', file);
 
@@ -498,7 +499,7 @@ class CreateListingPage extends React.Component {
     } else if (text.length < 6) {
       NotificationManager.warning('Summary should be at least 6 characters long');
       this.props.history.push('/profile/listings/create/description/');
-    } else if (uploadedFilesUrls.length < 6) {
+    } else if (uploadedFilesUrls.length < 1) {
       NotificationManager.warning('At least 1 picture is required');
       this.props.history.push('/profile/listings/create/photos/');
     } else {
