@@ -146,12 +146,12 @@ class HotelBookingConfirmPage extends React.Component {
           };
 
           console.log(bookingConfirmObj);
-          // confirmBooking(bookingConfirmObj).then(() => {
-          //   NotificationManager.success('You will receive a confirmation message');
-          //   setTimeout(() => {
-          //     this.props.history.push('/profile/trips/hotels');
-          //   }, 2000);
-          // });
+          confirmBooking(bookingConfirmObj).then(() => {
+            NotificationManager.success('You will receive a confirmation message');
+            setTimeout(() => {
+              this.props.history.push('/profile/trips/hotels');
+            }, 2000);
+          });
         }).catch(error => {
           if (error.hasOwnProperty('message')) {
             NotificationManager.warning(error.message, 'Send Tokens');
