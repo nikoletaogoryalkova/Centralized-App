@@ -12,6 +12,12 @@ import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
+import '../../../styles/css/main.css';
+import '../../../styles/css/components/carousel-component.css';
+import left from './main-carousel-img02.jpg';
+import current from './main-carousel-img01.jpg';
+import right from './main-carousel-img03.jpg';
+
 import { getHotelById, getHotelRooms, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
 class HotelDetailsPage extends React.Component {
@@ -533,23 +539,41 @@ class HotelDetailsPage extends React.Component {
         {loading ?
           <div className="loader"></div> :
           <div>
-            <section className="hotel-gallery">
-              <div className="hotel-gallery-bgr" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
-                <div className="container">
-                  <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
-                  {images !== null && <Lightbox
-                    currentImage={this.state.currentImage}
-                    images={images}
-                    isOpen={this.state.lightboxIsOpen}
-                    onClickImage={this.handleClickImage}
-                    onClickNext={this.gotoNext}
-                    onClickPrev={this.gotoPrevious}
-                    onClickThumbnail={this.gotoImage}
-                    onClose={this.closeLightbox}
-                  />}
+            {/* <section className="hotel-gallery"> */}
+            <div className="hotel-gallery-bgr lg-none" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
+              <div className="container">
+                <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
+                {images !== null && <Lightbox
+                  currentImage={this.state.currentImage}
+                  images={images}
+                  isOpen={this.state.lightboxIsOpen}
+                  onClickImage={this.handleClickImage}
+                  onClickNext={this.gotoNext}
+                  onClickPrev={this.gotoPrevious}
+                  onClickThumbnail={this.gotoImage}
+                  onClose={this.closeLightbox}
+                />}
+              </div>
+            </div>
+            {/* </section> */}
+            <div className="mb-none">
+              <div className="main-carousel">
+                <div className="mb-none"><img src={left} alt="image description" /></div>
+                <div className="current mb-none">
+                  <img src={current} alt="image description" />
+                  <ul className="sharing">
+                    <li><a href="#"><span className="icon-share"></span></a></li>
+                    <li><a href="#"><span className="icon-heart"></span></a></li>
+                  </ul>
+                  <a href="#" className="btn">View Gallery</a>
+                </div>
+                <div className="mb-none"><img src={right} alt="image description" /></div>
+                <div className="carousel-nav">
+                  <button className="prev icon-arrow-left"></button>
+                  <button className="next icon-arrow-right"></button>
                 </div>
               </div>
-            </section>
+            </div>
             <nav id="hotel-nav">
               <div className="container">
                 <ul className="nav navbar-nav">
