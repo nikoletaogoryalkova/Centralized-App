@@ -184,13 +184,13 @@ function HomeDetailsInfoSection(props) {
                       {results[0].roomsResults && results[0].roomsResults.map((room, roomIndex) => {
                         return (
                           <div key={roomIndex} className="room">
-                            <span><b>{room.name}</b> ({room.mealType}) - </span>
+                            <span>{room.name} ({room.mealType}) - </span>
                             {props.userInfo.isLogged &&
                               <span>{props.currencySign}{props.rates && Number((room.price * props.rates[ROOMS_XML_CURRENCY][props.paymentInfo.currency]) / props.nights).toFixed(2)} </span>
                             }
                             <span>
                               {props.userInfo.isLogged && '('}
-                              <b>{Number((room.price / props.nights) / props.locRate).toFixed(2)} LOC</b>
+                              {Number((room.price / props.nights) / props.locRate).toFixed(2)} LOC
                               {props.userInfo.isLogged && ')'} / night
                             </span>
                           </div>
@@ -201,11 +201,11 @@ function HomeDetailsInfoSection(props) {
                   <div className="col col-md-3">
                     <div className="book-details vertical-block-center">
                       <span className="price-details">
-                        <span><b>{props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</b></span>
+                        <span>{props.nights} {props.nights === 1 ? 'night: ' : 'nights: '}</span>
                         {props.userInfo.isLogged &&
                           <span>{props.currencySign}{props.rates && Number(getTotalPrice(results[0].roomsResults) * props.rates[ROOMS_XML_CURRENCY][props.paymentInfo.currency]).toFixed(2)} (</span>
                         }
-                        <span><b>{Number(getTotalPrice(results[0].roomsResults) / props.locRate).toFixed(2)} LOC{props.userInfo.isLogged ? ')' : ''}</b></span>
+                        <span>{Number(getTotalPrice(results[0].roomsResults) / props.locRate).toFixed(2)} LOC{props.userInfo.isLogged ? ')' : ''}</span>
                       </span>
 
                     </div>

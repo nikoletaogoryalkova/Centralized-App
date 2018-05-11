@@ -528,9 +528,24 @@ class HotelDetailsPage extends React.Component {
       }
     }
 
+    const settings = {
+      infinite: true,
+      speed: 500,
+      slidesToShow:3,
+      slidesToScroll:1,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 1,
+          }
+        }
+      ]
+    };
+
     return (
       <div>
-        <div className="container">
+        <div className="container sm-none">
           <HotelsSearchBar
             startDate={this.state.startDate}
             endDate={this.state.endDate}
@@ -552,7 +567,7 @@ class HotelDetailsPage extends React.Component {
           <div className="loader"></div> :
           <div>
             {/* <section className="hotel-gallery"> */}
-            <div className="hotel-gallery-bgr lg-none" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
+            {/* <div className="hotel-gallery-bgr lg-none" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
               <div className="container">
                 <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
                 {images !== null && <Lightbox
@@ -566,7 +581,7 @@ class HotelDetailsPage extends React.Component {
                   onClose={this.closeLightbox}
                 />}
               </div>
-            </div>
+            </div> */}
             {/* </section> */}
             {/* <div className="mb-none">
               <div className="main-carousel">
@@ -586,21 +601,19 @@ class HotelDetailsPage extends React.Component {
                 </div>
               </div>
             </div> */}
-            <Slider
-              ref={c => (this.slider = c)}
-              // dots={true}
-              infinite={true}
-              speed={500}
-              slidesToShow={3}
-              slidesToScroll={1}>
-              <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
-              <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
-              <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
-              <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
-              <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
-              <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
-            </Slider>
-            <div className="main-carousel">
+            <div className='sm-nonee'>
+              <Slider
+                ref={c => (this.slider = c)}
+                {...settings}>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
+              </Slider>
+            </div>
+            <div className="main-carousel sm-nonee">
               <div className="carousel-nav">
                 <button className="prev icon-arrow-left" onClick={this.previous}></button>
                 <button className="next icon-arrow-right" onClick={this.next}></button>

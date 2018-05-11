@@ -889,6 +889,10 @@ select {
 .d-none {
   display: none !important; }
 
+@media (max-width: 1023px) {
+  .sm-none {
+    display: none; } }
+
 .mb-none {
   display: none !important; }
   @media (min-width: 1024px) {

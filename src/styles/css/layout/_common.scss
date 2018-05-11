@@ -244,6 +244,12 @@ select {
 	display: none !important;
 }
 
+.sm-none {
+  @include media("<desktop") {
+    display: none;
+  }
+}
+
 .mb-none {
 	display: none !important;
 	@include media(">=desktop") {

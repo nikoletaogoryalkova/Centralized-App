@@ -17,8 +17,7 @@
 
 .info {
   display: flex;
-  flex-direction: column-reverse;
-  padding-top: 10px; }
+  flex-direction: column-reverse; }
   @media (min-width: 1024px) {
     .info {
       padding-top: 0;

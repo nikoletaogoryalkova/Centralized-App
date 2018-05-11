@@ -30,7 +30,7 @@ $media-expressions: (
 .info {
 	display: flex;
 	flex-direction: column-reverse;
-	padding-top: 10px;
+	// padding-top: 10px;
 	@include media(">=desktop") {
 		padding-top: 0;
 		flex-direction: row;
