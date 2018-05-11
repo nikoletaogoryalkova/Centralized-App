@@ -132,10 +132,12 @@ function SearchBar(props) {
         </select>
 
         <div className="select-children" onClick={props.handleToggleChildren}>
-          {!props.hasChildren ?
-            <span>No children</span> :
-            <span>With children</span>
-          }
+          <div>
+            {!props.hasChildren
+              ? 'No children'
+              : 'With children'
+            }
+          </div>
         </div>
       </div>
       <button type="submit" className="btn btn-primary btn-search" onClick={props.handleSearch}>Search</button>

@@ -187,11 +187,11 @@
     .source-panel .guest-wrap .select-children {
       display: flex;
       flex-direction: column;
-      justify-content: center; }
+      justify-content: center;
+      width: 55px;
+      margin-right: 10px; }
     .source-panel .guest-wrap .select-children:hover {
-      display: flex;
-      flex-direction: column;
-      justify-content: center; }
+      cursor: pointer; }
   .source-panel .check {
     display: flex;
     align-items: center;

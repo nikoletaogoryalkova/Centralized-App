@@ -235,11 +235,11 @@ $media-expressions: (
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 55px;
+      margin-right: 10px;
     }
     .select-children:hover {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      cursor: pointer;
     }
 	}
 	.check {
