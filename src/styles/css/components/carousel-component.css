@@ -145,10 +145,16 @@
   .main-carousel .carousel-nav {
     position: absolute;
     bottom: 15px;
-    left: 52%;
-    display: flex;
-    bottom: 30px;
-    left: 63%; }
+    left: 60%;
+    display: flex; }
+    @media (min-width: 768px) {
+      .main-carousel .carousel-nav {
+        bottom: 30px;
+        left: 75%; } }
+    @media (min-width: 1024px) {
+      .main-carousel .carousel-nav {
+        bottom: 30px;
+        left: 58%; } }
     .main-carousel .carousel-nav:before {
       display: none; }
     .main-carousel .carousel-nav button {

@@ -147,6 +147,10 @@
     .home_page h1.home_title {
         margin-top: 35px;
     }
+
+    .navbar-brand img {
+      height: 40px;
+    }
 }
 
 @media (max-width: 992px) {

@@ -180,13 +180,17 @@ $media-expressions: (
 	.carousel-nav {
 		position: absolute;
 		bottom: 15px;
-		left: 52%;
-		// display: none;
-		// @include media(">=desktop") {
-			display: flex;
+		left: 60%;
+    display: flex;
+    // display: none;
+    @include media(">=tablet") {
 			bottom: 30px;
-			left: 63%;
-		// }
+			left: 75%;
+		}
+		@include media(">=desktop") {
+			bottom: 30px;
+			left: 58%;
+		}
 		&:before {
 			display: none;
 		}
