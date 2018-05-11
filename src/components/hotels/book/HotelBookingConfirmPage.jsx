@@ -332,7 +332,7 @@ class HotelBookingConfirmPage extends React.Component {
                   </div>
                 </div>
                 <button className="btn btn-primary btn-book" onClick={() => this.openModal(ENTER_WALLET_PASSWORD)}>Confirm and Pay</button>
-                <button className="btn btn-primary btn-book" onClick={() => this.handleSubmit()}>Check</button>
+                {/* <button className="btn btn-primary btn-book" onClick={() => this.handleSubmit()}>Check</button> */}
               </div>
               <CredentialsModal isActive={this.props.modalsInfo.modals.get(ENTER_WALLET_PASSWORD)} handleSubmit={this.handleSubmit} closeModal={this.closeModal} walletPassword={this.state.walletPassword} onChange={this.onChange} />
             </div>

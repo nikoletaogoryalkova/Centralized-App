@@ -2953,11 +2953,6 @@ td {
     border-bottom: 1px solid #ccc;
 }
 
-#room-book-confirm .booking-price,
-.booking-for {
-    font-weight: bold;
-}
-
 #room-book-confirm table tr td:last-child {
     text-align: center;
 }

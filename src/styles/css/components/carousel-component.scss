@@ -179,16 +179,14 @@ $media-expressions: (
 	position: relative;
 	.carousel-nav {
 		position: absolute;
-		bottom: 15px;
+		bottom: 30px;
 		left: 60%;
     display: flex;
     // display: none;
-    @include media(">=tablet") {
-			bottom: 30px;
+    @include media(">=phone") {
 			left: 75%;
 		}
 		@include media(">=desktop") {
-			bottom: 30px;
 			left: 58%;
 		}
 		&:before {
