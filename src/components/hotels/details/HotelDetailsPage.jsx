@@ -14,9 +14,6 @@ import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
 import '../../../styles/css/main.css';
 import '../../../styles/css/components/carousel-component.css';
-import left from './main-carousel-img02.jpg';
-import current from './main-carousel-img01.jpg';
-import right from './main-carousel-img03.jpg';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -601,19 +598,26 @@ class HotelDetailsPage extends React.Component {
                 </div>
               </div>
             </div> */}
-            <div className='sm-nonee'>
+            <div className='hotel-details-carousel'>
               <Slider
                 ref={c => (this.slider = c)}
                 {...settings}>
-                <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
+                {images && images.map((image, index) => {
+                  return (
+                    <div key={index}>
+                      <div className='slide' style={{ 'backgroundImage': 'url("' + image.src + '")' }}></div>
+                    </div>
+                  );
+                })}
+                {/* <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
                 <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
                 <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
                 <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
                 <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
-                <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div> */}
               </Slider>
             </div>
-            <div className="main-carousel sm-nonee">
+            <div className="main-carousel">
               <div className="carousel-nav">
                 <button className="prev icon-arrow-left" onClick={this.previous}></button>
                 <button className="next icon-arrow-right" onClick={this.next}></button>

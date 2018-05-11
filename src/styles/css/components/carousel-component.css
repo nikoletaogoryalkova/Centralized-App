@@ -233,17 +233,17 @@
       .main-carousel div.current:before {
         display: none; }
 
-.slide {
+.hotel-details-carousel .slide {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   padding-bottom: 100%; }
   @media (min-width: 480px) {
-    .slide {
+    .hotel-details-carousel .slide {
       padding-bottom: 60%; } }
   @media (min-width: 1024px) {
-    .slide {
+    .hotel-details-carousel .slide {
       margin-right: 10px; } }
 
-.slick-arrow {
+.hotel-details-carousel .slick-arrow {
   display: none !important; }

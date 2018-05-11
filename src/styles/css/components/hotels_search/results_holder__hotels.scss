@@ -1,0 +1,24 @@
+.result {
+  .result-images {
+    .slick-next {
+      top: 175px !important;
+      right: 0px !important;
+      background: none !important;
+    
+      &:before {
+        content: url('./right.png');
+      }
+    }
+    
+    .slick-prev {
+      top: 175px !important;
+      left: 0px !important;
+      z-index: 2;
+      background: none !important;
+    
+      &:before {
+        content: url('./left.png');
+      }
+    }
+  }
+}

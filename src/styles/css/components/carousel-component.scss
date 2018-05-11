@@ -290,20 +290,23 @@ $media-expressions: (
 	}
 }
 
-.slide {
-  // height: 400px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding-bottom: 100%;
-  @include media(">=phone") {
-    padding-bottom: 60%;
+.hotel-details-carousel {
+  .slide {
+    // height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding-bottom: 100%;
+    @include media(">=phone") {
+      padding-bottom: 60%;
+    }
+    @include media(">=desktop") {
+      margin-right: 10px;
+    }
   }
-  @include media(">=desktop") {
-    margin-right: 10px;
+  .slick-arrow {
+    display: none !important;
   }
 }
 
-.slick-arrow {
-  display: none !important;
-}
+
