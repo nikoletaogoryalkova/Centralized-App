@@ -23,10 +23,15 @@ body {
 	background: $moderate-red;
 	color: $white;
 	border-radius: 3px;
-	padding: 17px;
-	font-size: 18px;
-	font-weight: 400;
+	padding: 10px;
+	font-size: 14px;
+	font-weight: 200;
 	letter-spacing: -0.03em;
+	@include media(">=desktop") {
+		padding: 17px;
+		font-size: 18px;
+		font-weight: 400;
+	}
 	&:hover {
 		background: $light-cyan;
 	}
@@ -38,6 +43,36 @@ body {
 	}
 }
 
+.btn-block {
+	display: block;
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 15px;
+	background: $white;
+	box-shadow: 0px -3px 9px 0px rgba(0, 0, 0, 0.1);
+	@include media(">=desktop") {
+		display: none;
+	}
+	a {
+		font-size: 18px;
+		color: $white;
+		background: $moderate-red;
+		width: 100%;
+		display: block;
+		padding: 13px;
+		@include media(">=desktop") {
+			color: $moderate-red;
+			background: none;
+			font-weight: 400;
+		}
+		&:hover {
+			color: $light-cyan;
+		}
+	}
+}
 
 //default select
 select {
@@ -59,14 +94,18 @@ select {
 		content: "\e900";
 		font-family: 'icomoon' !important;
 		padding: 0 8px;
-		font-size: 6px;
-		right: 19px;
+		font-size: 3px;
+		right: 0;
 		top: 50%;
 		transform: translateY(-50%);
 		z-index: 1;
 		text-align: center;
 		pointer-events: none;
 		box-sizing: border-box;
+		@include media(">=desktop") {
+			right: 19px;
+			font-size: 8px;
+		}
 	}
 }
 
@@ -84,7 +123,9 @@ select {
 		}
 	}
 	.tab-content {
-		padding-bottom: 25px;
+		@include media(">=desktop") {
+			padding-bottom: 25px;
+		}
 		.tab {
 			margin-bottom: 10px;
 			display: flex;
@@ -116,17 +157,76 @@ select {
 //landing-page
 .get-started {
 	text-align: center;
-	font-size: 32px;
+	font-size: 16px;
+	@include media(">=desktop") {
+		font-size: 32px;
+	}
 	h2 {
 		font-family: $base-font-cursive;
 	}
 	.btn {
-		min-width: 250px;
-		margin-bottom: 56px;
+		min-width: 170px;
+		margin-bottom: 25px;
+		@include media(">=desktop") {
+			min-width: 250px;
+			margin-bottom: 56px;
+		}
 	}
 }
 
 
+.btn-close {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 25px;
+	height: 25px;
+	border-radius: 100%;
+	border: 2px solid $black;
+	.line {
+		width: 9px;
+		height: 2px;
+		background-color: $black;
+		display: block;
+		margin: 1px auto;
+		border-radius: 3px;
+		transition: all .3s ease-in-out;
+		&:nth-child(2){
+			width: 15px;
+		}
+		&:nth-child(1) {
+			transform: translateY(4px) rotate(45deg);
+		}
+		&:nth-child(2) {
+			opacity: 0;
+		}
+		&:nth-child(3) {
+			transform: translateY(-4px) rotate(-45deg);
+		}
+	}
+}
+
+.clear{
+	font-size: 12px;
+	a{
+		color: $text-black;
+	}
+}
+
+.header-dropdown{
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: $white;
+	margin-bottom: 35px;
+	border-bottom: 1px solid #ccc;
+	@include media(">=desktop") {
+		display: none;
+	}
+}
 
 /*++++++++++++++HELPER CLASSES++++++++++++++*/
 
@@ -142,4 +242,25 @@ select {
 
 .d-none {
 	display: none !important;
+}
+
+.sm-none {
+  @include media("<desktop") {
+    display: none;
+  }
+}
+
+.mb-none {
+	display: none !important;
+	@include media(">=desktop") {
+		display: inline-block !important;
+		vertical-align: middle;
+	}
+}
+
+.lg-none {
+	display: block !important;
+	@include media(">=desktop") {
+		display: none !important;
+	}
 }

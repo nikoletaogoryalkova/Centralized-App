@@ -30,7 +30,7 @@ $media-expressions: (
 .info {
 	display: flex;
 	flex-direction: column-reverse;
-	padding-top: 10px;
+	// padding-top: 10px;
 	@include media(">=desktop") {
 		padding-top: 0;
 		flex-direction: row;
@@ -235,11 +235,11 @@ $media-expressions: (
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 55px;
+      margin-right: 10px;
     }
     .select-children:hover {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      cursor: pointer;
     }
 	}
 	.check {

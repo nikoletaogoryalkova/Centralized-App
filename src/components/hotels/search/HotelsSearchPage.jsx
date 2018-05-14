@@ -553,7 +553,6 @@ class HotelsSearchPage extends React.Component {
           />
         </div>
 
-        <Breadcrumb />
         <section id="hotel-box">
           <div className="container">
             <div className="row">

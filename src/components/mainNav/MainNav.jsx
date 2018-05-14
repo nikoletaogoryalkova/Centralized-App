@@ -134,7 +134,7 @@ class MainNav extends React.Component {
       jsonFile: localStorage.walletJson,
       image: Config.getValue('basePath') + 'images/default.png'
     };
-    
+
     this.clearLocalStorage();
 
     register(user, captchaToken).then((res) => {
@@ -193,6 +193,10 @@ class MainNav extends React.Component {
                 NotificationManager.warning(errors[key].message);
               }
             }
+          }
+        }).catch(errors => {
+          for (var e in errors) {
+            NotificationManager.warning(errors[e].message);
           }
         });
       }

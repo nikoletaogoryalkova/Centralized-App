@@ -34,7 +34,7 @@ class NavLocalization extends Component {
     const { currency, locRate } = this.props.paymentInfo;
     const { locBalance, ethBalance, isLogged } = this.props.userInfo;
     if (!locRate) {
-      return <div className="loader"></div>;
+      return <div className="loader sm-none"></div>;
     }
 
     return (

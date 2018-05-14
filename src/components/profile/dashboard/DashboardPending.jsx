@@ -18,6 +18,7 @@ export default function DashboardPending(props) {
           <li><span>Price</span></li>
         </ul>
         {props.reservations.map(reservation => {
+          console.log(reservation);
           return (
             <ul key={reservation.id} className="profile-pending-list profile-pending-item">
               <li>

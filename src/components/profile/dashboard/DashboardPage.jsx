@@ -15,8 +15,8 @@ export default class DashboardPage extends React.Component {
   }
 
   componentDidMount() {
-    getMyReservations('?page=0', 5).then((dataReservations) => {
-      getMyTrips('?page=0', 5).then((dataTrips) => {
+    getMyReservations('?page=0').then((dataReservations) => {
+      getMyTrips('?page=0').then((dataTrips) => {
         this.setState({
           trips: dataTrips.content,
           loading: false,

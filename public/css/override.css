@@ -79,3 +79,6 @@ a.dropdown-toggle {
 .form-group {
   margin-bottom: 0 !important;
 }
+.Select-clear {
+  display: none !important;
+}

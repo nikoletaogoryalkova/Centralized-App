@@ -41,13 +41,18 @@ $media-expressions: (
 	}
 	.carousel {
 		padding-top: 22px;
-		border-top: 1px solid $gray;
+		@include media(">=desktop") {
+			border-top: 1px solid $gray;
+		}
 	}
 	.subtitle {
 		display: inline-block;
 		vertical-align: middle;
-		font-size: 18px;
-		margin-bottom: 13px;
+		font-size: 12px;
+		@include media(">=desktop") {
+			font-size: 18px;
+			margin-bottom: 13px;
+		}
 	}
 	.no-button {
 		position: relative;
@@ -85,20 +90,30 @@ $media-expressions: (
 }
 
 .carousel-wrap {
-	margin-bottom: 50px;
+	margin-bottom: 0px;
+	@include media(">=desktop") {
+		margin-bottom: 50px;
+	}
 	&.flex {
 		flex-wrap: wrap;
-		justify-content: flex-start;
+		justify-content: space-between;
+		@include media(">=desktop") {
+			justify-content: flex-start;
+		}
 		@include media(">=1440px") {
 			flex-wrap: nowrap;
 			justify-content: space-between;
 		}
 		.hotel-card,
 		.city-card {
-			margin-right: 15px;
 			margin-bottom: 15px;
-			&:last-child {
-				margin-right: 0;
+			width: 48%;
+			@include media(">=desktop") {
+				width: auto;
+				margin-right: 15px;
+				&:last-child {
+					margin-right: 0;
+				}
 			}
 			@include media(">=1440px") {
 				margin-right: 0;
@@ -116,21 +131,36 @@ $media-expressions: (
 			display: inline-block;
 			vertical-align: middle;
 			margin-right: 11px;
+			width: 100%;
+			@include media(">=desktop") {
+				width: auto
+			}
 			&:last-child {
 				margin-right: 0;
 			}
 		}
 		button {
 			@include animate(color background);
-			height: 40px;
-			min-width: 80px;
+			height: 47px;
+			min-width: 100%;
+			@include media(">=desktop") {
+				min-width: 80px;
+				height: 40px;
+			}
 		}
 		.btn {
-			min-width: 120px;
+			min-width: 100%;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			padding: 0;
+			@include media(">=tablet") {
+				min-width: 300px;
+				margin: 0 auto;
+			}
+			@include media(">=desktop") {
+				min-width: 120px;
+			}
 		}
 		.icon-arrow-right,
 		.icon-arrow-left {
@@ -149,12 +179,15 @@ $media-expressions: (
 	position: relative;
 	.carousel-nav {
 		position: absolute;
-		bottom: 15px;
-		left: 52%;
-		display: flex;
+		bottom: 30px;
+		left: 60%;
+    display: flex;
+    // display: none;
+    @include media(">=phone") {
+			left: 75%;
+		}
 		@include media(">=desktop") {
-			bottom: 30px;
-			left: 63%;
+			left: 58%;
 		}
 		&:before {
 			display: none;
@@ -162,7 +195,7 @@ $media-expressions: (
 		button {
 			@include animate(background color);
 			background: $white;
-			border-radius: 100%;
+      border-radius: 100%;
 			padding: 0;
 			width: 30px;
 			height: 30px;
@@ -170,11 +203,11 @@ $media-expressions: (
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			@include media(">=desktop") {
+			// @include media(">=desktop") {
 				font-size: 16px;
 				width: 50px;
 				height: 50px;
-			}
+			// }
 			&:hover {
 				background: $light-cyan;
 				color: $white;
@@ -186,8 +219,37 @@ $media-expressions: (
 	}
 	div {
 		position: relative;
-		margin-right: 10px;
 		flex: 0 1 auto;
+		@include media(">=desktop") {
+			margin-right: 10px;
+		}
+		.btn{
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+			@include media(">=desktop") {
+				display: none;
+			}
+		}
+		.sharing{
+			@extend %listreset;
+			position: absolute;
+			top: 20px;
+			right: 10px;
+			z-index: 2;
+			a{
+				color: $white;
+				font-size: 25px;
+			}
+			li{
+				display: inline-block;
+				vertical-align: middle;
+				margin-right: 10px;
+			}
+			@include media(">=desktop") {
+				display: none;
+			}
+		}
 		&:last-child {
 			margin-right: 0;
 		}
@@ -203,9 +265,50 @@ $media-expressions: (
 		}
 		&.current {
 			flex: 1 1 auto;
+			overflow: hidden;
+			height: 290px;
+			@include media(">=phone") {
+				height:  485px;
+			}
+			@include media(">=desktop") {
+				height: auto;
+			}
+			img{
+				height: 100%;
+				max-width: inherit;
+				@include media(">=tablet") {
+					min-width: 100%;
+					height: auto
+				}
+				@include media(">=desktop") {
+					height: auto;
+					max-width: 100%;
+				}
+			}
 			&:before {
 				display: none;
 			}
 		}
 	}
 }
+
+.hotel-details-carousel {
+  .slide {
+    // height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding-bottom: 100%;
+    @include media(">=phone") {
+      padding-bottom: 60%;
+    }
+    @include media(">=desktop") {
+      margin-right: 10px;
+    }
+  }
+  .slick-arrow {
+    display: none !important;
+  }
+}
+
+

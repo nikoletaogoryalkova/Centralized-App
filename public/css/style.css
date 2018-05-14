@@ -576,7 +576,6 @@ button.disabled:hover {
 #hotel-info .hotel-content {
     float: left;
     width: 55%;
-    padding-right: 30px;
 }
 
 #hotel-info #hotel-section {
@@ -2952,11 +2951,6 @@ td {
 #room-book-confirm table th {
     text-align: center;
     border-bottom: 1px solid #ccc;
-}
-
-#room-book-confirm .booking-price,
-.booking-for {
-    font-weight: bold;
 }
 
 #room-book-confirm table tr td:last-child {

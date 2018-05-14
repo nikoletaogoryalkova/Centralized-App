@@ -12,6 +12,12 @@ import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 
+import '../../../styles/css/main.css';
+import '../../../styles/css/components/carousel-component.css';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 import { getHotelById, getHotelRooms, getRegionNameById, getLocRateInUserSelectedCurrency, getCurrencyRates, testBook } from '../../../requester';
 
 class HotelDetailsPage extends React.Component {
@@ -72,6 +78,8 @@ class HotelDetailsPage extends React.Component {
     this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
     this.handleToggleChildren = this.handleToggleChildren.bind(this);
     this.handleBookRoom = this.handleBookRoom.bind(this);
+    this.next = this.next.bind(this);
+    this.previous = this.previous.bind(this);
   }
 
   componentDidMount() {
@@ -497,6 +505,13 @@ class HotelDetailsPage extends React.Component {
     });
   }
 
+  next() {
+    this.slider.slickNext();
+  }
+  previous() {
+    this.slider.slickPrev();
+  }
+
   render() {
     let loading, images;
     if (!this.state.data) {
@@ -510,9 +525,24 @@ class HotelDetailsPage extends React.Component {
       }
     }
 
+    const settings = {
+      infinite: true,
+      speed: 500,
+      slidesToShow:3,
+      slidesToScroll:1,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 1,
+          }
+        }
+      ]
+    };
+
     return (
       <div>
-        <div className="container">
+        <div className="container sm-none">
           <HotelsSearchBar
             startDate={this.state.startDate}
             endDate={this.state.endDate}
@@ -533,23 +563,66 @@ class HotelDetailsPage extends React.Component {
         {loading ?
           <div className="loader"></div> :
           <div>
-            <section className="hotel-gallery">
-              <div className="hotel-gallery-bgr" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
-                <div className="container">
-                  <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
-                  {images !== null && <Lightbox
-                    currentImage={this.state.currentImage}
-                    images={images}
-                    isOpen={this.state.lightboxIsOpen}
-                    onClickImage={this.handleClickImage}
-                    onClickNext={this.gotoNext}
-                    onClickPrev={this.gotoPrevious}
-                    onClickThumbnail={this.gotoImage}
-                    onClose={this.closeLightbox}
-                  />}
+            {/* <section className="hotel-gallery"> */}
+            {/* <div className="hotel-gallery-bgr lg-none" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
+              <div className="container">
+                <a onClick={(e => this.openLightbox(e))} className="btn btn-primary btn-gallery">Open Gallery</a>
+                {images !== null && <Lightbox
+                  currentImage={this.state.currentImage}
+                  images={images}
+                  isOpen={this.state.lightboxIsOpen}
+                  onClickImage={this.handleClickImage}
+                  onClickNext={this.gotoNext}
+                  onClickPrev={this.gotoPrevious}
+                  onClickThumbnail={this.gotoImage}
+                  onClose={this.closeLightbox}
+                />}
+              </div>
+            </div> */}
+            {/* </section> */}
+            {/* <div className="mb-none">
+              <div className="main-carousel">
+                <div className="mb-none"><img src={left} alt="image description" /></div>
+                <div className="current mb-none">
+                  <img src={current} alt="image description" />
+                  <ul className="sharing">
+                    <li><a href="#"><span className="icon-share"></span></a></li>
+                    <li><a href="#"><span className="icon-heart"></span></a></li>
+                  </ul>
+                  <a href="#" className="btn">View Gallery</a>
+                </div>
+                <div className="mb-none"><img src={right} alt="image description" /></div>
+                <div className="carousel-nav">
+                  <button className="prev icon-arrow-left"></button>
+                  <button className="next icon-arrow-right"></button>
                 </div>
               </div>
-            </section>
+            </div> */}
+            <div className='hotel-details-carousel'>
+              <Slider
+                ref={c => (this.slider = c)}
+                {...settings}>
+                {images && images.map((image, index) => {
+                  return (
+                    <div key={index}>
+                      <div className='slide' style={{ 'backgroundImage': 'url("' + image.src + '")' }}></div>
+                    </div>
+                  );
+                })}
+                {/* <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + right + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + left + '")' }}></div></div>
+                <div><div className='slide' style={{ 'backgroundImage': 'url("' + current + '")' }}></div></div> */}
+              </Slider>
+            </div>
+            <div className="main-carousel">
+              <div className="carousel-nav">
+                <button className="prev icon-arrow-left" onClick={this.previous}></button>
+                <button className="next icon-arrow-right" onClick={this.next}></button>
+              </div>
+            </div>
             <nav id="hotel-nav">
               <div className="container">
                 <ul className="nav navbar-nav">
