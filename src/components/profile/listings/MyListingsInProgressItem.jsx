@@ -132,7 +132,7 @@ export default class MyListingsInProgressItem extends React.Component {
       <div className="my-listings__progress-item">
         <div className="my-listings__progress-item__toggle"></div>
         <div className="my-listings__progress-item__picture">
-          {this.props.listing.pictures[0] && <img src={this.props.listing.pictures[0].thumbnail} alt="Thumbnail" />}
+          {this.props.listing.pictures[0] && <img src={`${Config.getValue('imgHost')}${this.props.listing.pictures[0].thumbnail}`} alt="Thumbnail" />}
         </div>
         <div className="my-listings__progress-item__content">
           <div className="my-listings__progress-item__content__row">

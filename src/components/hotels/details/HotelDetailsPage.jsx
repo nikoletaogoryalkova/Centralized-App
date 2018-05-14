@@ -517,11 +517,17 @@ class HotelDetailsPage extends React.Component {
     if (!this.state.data) {
       loading = true;
     } else {
-      images = null;
-      if (this.state.data.hotelPhotos !== undefined) {
+      images = [];
+      if (this.state.data.hotelPhotos) {
         images = this.state.data.hotelPhotos.map(x => {
           return { src: Config.getValue('imgHost') + x.url };
         });
+      }
+    }
+
+    if (images && images.length < 3) {
+      while (images.length < 3) {
+        images.push({ src: Config.getValue('imgHost') + '/listings/images/default.png' });
       }
     }
 

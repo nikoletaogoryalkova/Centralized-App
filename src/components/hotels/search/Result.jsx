@@ -39,6 +39,10 @@ function Result(props) {
 
   description = description.substr(0, 250);
 
+  if (pictures.length < 1) {
+    pictures.push({ thumbnail: `${Config.getValue('imgHost')}/listings/images/default.png` });
+  }
+
   const settings = {
     infinite: true,
     speed: 500,
