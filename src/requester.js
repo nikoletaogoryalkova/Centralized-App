@@ -60,9 +60,6 @@ async function sendRequest(endpoint, method, postObj = null, captchaToken = null
   return fetch(endpoint, requestHeaders)
     .then(res => {
       if (!res.ok) {
-        res.text().then(t => {
-          console.log(t)
-        })
         return {
           response: res.json().then(r => {
             if (r.errors && r.errors['ExpiredJwt']) {
