@@ -43,6 +43,7 @@ export default class ProfilePhotosPage extends React.Component {
 
   handleImageUpload(files) {
     files.forEach((file) => {
+      console.log(file)
       let upload = request.post(LOCKTRIP_UPLOAD_URL)
         .field('image', file)
         .set('Authorization', localStorage[Config.getValue('domainPrefix') + '.auth.locktrip']);
@@ -53,6 +54,7 @@ export default class ProfilePhotosPage extends React.Component {
           console.error(err);
         }
         else {
+          console.log(response.body.thumbnail)
           this.setState({
             uploadedFilesThumbUrls: [response.body.thumbnail]
           });
@@ -75,7 +77,7 @@ export default class ProfilePhotosPage extends React.Component {
             {this.state.uploadedFilesThumbUrls.length === 0 ? null :
               this.state.uploadedFilesThumbUrls.map((imageUrl, i) =>
                 <div key={i} className="uploaded-small-picture col-md-4">
-                  <img src={imageUrl} height={200} alt={`uploaded-${i}`} />
+                  <img src={`${Config.getValue('apiHost')}${imageUrl}`} height={200} alt={`uploaded-${i}`} />
                 </div>
               )
             }

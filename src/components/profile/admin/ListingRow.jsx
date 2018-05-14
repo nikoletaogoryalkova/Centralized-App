@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import filterListings from '../../../actions/filterListings';
+import { Config } from '../../../config';
 
 export default class ListingRow extends React.Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export default class ListingRow extends React.Component {
         <div className="col-md-12">
           <div className="col-md-1">
             <div className="reservation-image-box">
-              <span className="session-nav-user-thumb"><img src={this.props.listing.thumbnail}
+              <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${this.props.listing.thumbnail}`}
                 alt="listing-thumbnail" /></span>
             </div>
           </div>

@@ -18,7 +18,7 @@ function MessagesItem(props) {
       </div>
       <span onClick={handleClick} className="message-body">
         <div className="col-md-1 user-image">
-          <span className="session-nav-user-thumb"><img src={props.message.userInfo.image} alt="user-profile" /></span>
+          <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${props.message.userInfo.image}`} alt="user-profile" /></span>
         </div>
         <div className="col-md-2">
           <h4 className="bold">{props.message.userInfo.fullName}</h4>

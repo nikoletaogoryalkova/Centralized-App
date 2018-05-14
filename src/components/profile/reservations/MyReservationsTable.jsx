@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
+import { Config } from '../../../config';
 
 export default function MyReservationsTable(props) {
   return (
@@ -30,7 +31,7 @@ export default function MyReservationsTable(props) {
             <div className="col-md-12">
               <div className="col-md-1">
                 <div className="reservation-image-box">
-                  <span className="session-nav-user-thumb"><img src={reservation.userImage} alt="user-profile" /></span>
+                  <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${reservation.userImage}`} alt="user-profile" /></span>
                 </div>
               </div>
               <div className="col-md-2">

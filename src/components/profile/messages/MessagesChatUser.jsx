@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Config } from '../../../config';
 
 export default function MessagesChatUser(props) {
   return (
     <div id="card-user">
       <div className="top">
-        <div className="thump" style={{ backgroundImage: 'url(' + props.userInfo.image + ')' }}></div> {/* pls add style backgound-image the user's thumb */}
+        <div className="thump" style={{ backgroundImage: 'url(' + Config.getValue('imgHost') + props.userInfo.image + ')' }}></div> {/* pls add style backgound-image the user's thumb */}
         <h2>{props.userInfo.fullName}</h2>
         {/* <h3>London, England</h3> */}
       </div>

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
+import { Config } from '../../../config';
 
 export default function DashboardPending(props) {
   return (
@@ -20,7 +21,7 @@ export default function DashboardPending(props) {
           return (
             <ul key={reservation.id} className="profile-pending-list profile-pending-item">
               <li>
-                <span className="session-nav-user-thumb"><img src={reservation.userImage} alt="user-profile" /></span>
+                <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${reservation.userImage}`} alt="user-profile" /></span>
               </li>
               <li>
                 <span className="cnt block">
@@ -61,7 +62,7 @@ export default function DashboardPending(props) {
           return (
             <ul key={trip.id} className="profile-pending-list profile-pending-item">
               <li>
-                <span className="session-nav-user-thumb"><img src={trip.userImage} alt="user-profile" /></span>
+                <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${trip.userImage}`} alt="user-profile" /></span>
               </li>
               <li>
                 <span className="cnt block">
