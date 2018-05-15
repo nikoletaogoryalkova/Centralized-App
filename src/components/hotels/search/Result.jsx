@@ -3,7 +3,6 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../../../styles/css/components/search-result-component.css';
-import { React_Bootstrap_Carousel as ReactBootstrapCarousel } from 'react-bootstrap-carousel';
 import { Config } from '../../../config';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
 import ReactHtmlParser from 'react-html-parser';

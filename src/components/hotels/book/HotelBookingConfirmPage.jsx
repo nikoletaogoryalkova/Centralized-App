@@ -11,13 +11,9 @@ import { ENTER_WALLET_PASSWORD } from '../../../constants/modals.js';
 import { openModal, closeModal } from '../../../actions/modalsInfo.js';
 import { PROCESSING_TRANSACTION } from '../../../constants/infoMessages.js';
 
-import { TokenTransactions } from '../../../services/blockchain/tokenTransactions.js';
-
 import { testBook, getLocRateInUserSelectedCurrency, getCurrentlyLoggedUserJsonFile, confirmBooking, getCurrencyRates } from '../../../requester';
 
 import { HotelReservation } from '../../../services/blockchain/hotelReservation';
-
-import bigRat from 'big-rational';
 
 class HotelBookingConfirmPage extends React.Component {
   constructor(props) {
@@ -134,7 +130,7 @@ class HotelBookingConfirmPage extends React.Component {
     const booking = this.state.data.booking.hotelBooking;
     const startDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD');
     const endDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD').add(booking[0].nights, 'days');
-    const daysBeforeStartOfRefund = ['1'];
+    const daysBeforeStartOfRefund = ['0'];
     const refundPercentages = ['100'];
     const hotelId = this.props.match.params.id;
     const roomId = this.state.booking.quoteId;
@@ -158,7 +154,6 @@ class HotelBookingConfirmPage extends React.Component {
           roomId,
           numberOfTravelers.toString()
         ).then(transaction => {
-          console.log(transaction)
           const bookingConfirmObj = {
             bookingId: preparedBookingId,
             transactionHash: transaction.hash

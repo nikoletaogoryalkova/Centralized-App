@@ -12,10 +12,22 @@ export default class ListingRow extends React.Component {
     };
 
     this.filterListings = filterListings.bind(this);
+    this.renderThumbnail = this.renderThumbnail.bind(this);
   }
 
   componentWillReceiveProps() {
     this.setState({ isPublishing: false });
+  }
+
+  renderThumbnail() {
+    let thumbnailURL = this.props.listing.thumbnail;
+    if (thumbnailURL.indexOf('fantasian') === -1) {
+      thumbnailURL = `${Config.getValue('imgHost')}${this.props.listing.thumbnail}`;
+    }
+
+    return (
+      <span className="session-nav-user-thumb"><img src={thumbnailURL} alt="listing-thumbnail" /></span>
+    );
   }
 
   render() {
@@ -24,8 +36,7 @@ export default class ListingRow extends React.Component {
         <div className="col-md-12">
           <div className="col-md-1">
             <div className="reservation-image-box">
-              <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${this.props.listing.thumbnail}`}
-                alt="listing-thumbnail" /></span>
+              { this.renderThumbnail() }
             </div>
           </div>
           <div className="col-md-4">

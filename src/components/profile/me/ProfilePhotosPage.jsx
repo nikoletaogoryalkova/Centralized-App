@@ -43,7 +43,6 @@ export default class ProfilePhotosPage extends React.Component {
 
   handleImageUpload(files) {
     files.forEach((file) => {
-      console.log(file)
       let upload = request.post(LOCKTRIP_UPLOAD_URL)
         .field('image', file)
         .set('Authorization', localStorage[Config.getValue('domainPrefix') + '.auth.locktrip']);
@@ -54,7 +53,6 @@ export default class ProfilePhotosPage extends React.Component {
           console.error(err);
         }
         else {
-          console.log(response.body.thumbnail)
           this.setState({
             uploadedFilesThumbUrls: [response.body.thumbnail]
           });

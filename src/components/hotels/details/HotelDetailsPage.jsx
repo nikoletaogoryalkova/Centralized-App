@@ -1,7 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import { Config } from '../../../config';
-import Lightbox from 'react-images';
 import PropTypes from 'prop-types';
 import HotelDetailsInfoSection from './HotelDetailsInfoSection';
 import React from 'react';
