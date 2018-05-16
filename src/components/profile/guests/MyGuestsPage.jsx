@@ -1,14 +1,15 @@
-import { acceptReservation, cancelReservation, cancelTrip, getMyReservations } from '../../../requester';
+import { acceptReservation, cancelReservation, cancelTrip, getMyReservations, getMyListings } from '../../../requester';
 import { Config } from '../../../config';
 import CancellationModal from '../../common/modals/CancellationModal';
 import Pagination from '../../common/pagination/Pagination';
 import { Link } from 'react-router-dom';
-import MyReservationsTable from './MyReservationsTable';
+import MyGuestsTable from './MyGuestsTable';
 import { NotificationManager } from 'react-notifications';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class MyReservationsPage extends React.Component {
+class MyGuestsPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -37,6 +38,12 @@ export default class MyReservationsPage extends React.Component {
   componentDidMount() {
     getMyReservations('?page=0').then((data) => {
       this.setState({ reservations: data.content, totalReservations: data.totalElements, loading: false });
+    });
+
+    getMyListings().then((data) => {
+      if (data.totalElements === 0) {
+        this.props.history.push('/profile/listings/create/landing');
+      }
     });
   }
 
@@ -176,7 +183,7 @@ export default class MyReservationsPage extends React.Component {
           <div className="container">
             <h2>Upcoming Reservations ({this.state.totalReservations})</h2>
             <hr />
-            <MyReservationsTable
+            <MyGuestsTable
               reservations={this.state.reservations}
               onReservationAccept={this.onReservationAccept}
               onReservationCancel={this.onReservationCancel}
@@ -199,3 +206,5 @@ export default class MyReservationsPage extends React.Component {
     );
   }
 }
+
+export default withRouter(MyGuestsPage);

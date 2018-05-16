@@ -2,31 +2,24 @@ import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import NoEntriesMessage from '../common/NoEntriesMessage';
 import moment from 'moment';
 
 export default function HomeTripsTable(props) {
-  return (
-    <div>
-      <div className="table-header bold">
-        <div className="col-md-1">
-        </div>
-        <div className="col-md-2">
-          <span>Host</span>
-        </div>
-        <div className="col-md-2">
-          <span>Property</span>
-        </div>
-        <div className="col-md-3">
-          <span>Dates</span>
-        </div>
-        <div className="col-md-2">
-          <span>Actions</span>
-        </div>
-        <div className="col-md-2">
-          <span>Status</span>
-        </div>
-      </div>
-      {props.trips.map((trip, i) => {
+
+  const renderTrips = () => {
+    if (!props.trips) {
+      return;
+    }
+
+    if (props.trips.length === 0) {
+      return (
+        <NoEntriesMessage text="There are no upcoming trips. If you book any property, it will appear here." />
+      );
+    }
+
+    return (
+      props.trips.map((trip, i) => {
         return (
           <div key={i} style={trip.id === props.currentTripId ? { backgroundColor: '#e1e1e1' } : {}} className="row reservation-box">
             <div className="col-md-12">
@@ -68,7 +61,32 @@ export default function HomeTripsTable(props) {
             </div>
           </div>
         );
-      })}
+      })
+    );
+  };
+
+  return (
+    <div>
+      <div className="table-header bold">
+        <div className="col-md-1">
+        </div>
+        <div className="col-md-2">
+          <span>Host</span>
+        </div>
+        <div className="col-md-2">
+          <span>Property</span>
+        </div>
+        <div className="col-md-3">
+          <span>Dates</span>
+        </div>
+        <div className="col-md-2">
+          <span>Actions</span>
+        </div>
+        <div className="col-md-2">
+          <span>Status</span>
+        </div>
+      </div>
+      {renderTrips()}
     </div>
   );
 }

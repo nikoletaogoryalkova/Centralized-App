@@ -112,7 +112,7 @@ class MainNav extends React.Component {
     }
 
 
-    // this.messageListener();
+    this.messageListener();
   }
 
   onChange(e) {
@@ -211,9 +211,7 @@ class MainNav extends React.Component {
 
   setUserInfo() {
     getUserInfo().then(res => {
-      console.log(res.locAddress)
       Wallet.getBalance(res.locAddress).then(eth => {
-        console.log(eth)
         const ethBalance = eth / (Math.pow(10, 18));
         Wallet.getTokenBalance(res.locAddress).then(loc => {
           const locBalance = loc / (Math.pow(10, 18));
@@ -369,10 +367,12 @@ class MainNav extends React.Component {
                     </div>
                   </NavItem>
                   <NavDropdown title={localStorage[Config.getValue('domainPrefix') + '.auth.username']} id="main-nav-dropdown">
-                    <MenuItem componentClass={Link} className="header" href="/profile/dashboard" to="/profile/dashboard">View Profile<img src={Config.getValue('basePath') + 'images/icon-dropdown/icon-user.png'} alt="view profile" /></MenuItem>
-                    <MenuItem componentClass={Link} href="/profile/me/edit" to="/profile/me/edit">Edit Profile</MenuItem>
-                    <MenuItem componentClass={Link} href="/profile/dashboard/#profile-dashboard-reviews" to="/profile/dashboard/#profile-dashboard-reviews">Reviews</MenuItem>
-                    <MenuItem componentClass={Link} className="header" href="/" to="/" onClick={this.logout}>Logout<img src={Config.getValue('basePath') + 'images/icon-dropdown/icon-logout.png'} style={{ top: 25 + 'px' }} alt="logout" /></MenuItem>
+                    <MenuItem componentClass={Link} href="/profile/dashboard" to="/profile/dashboard">Dashboard</MenuItem>
+                    <MenuItem componentClass={Link} href="/profile/listings" to="/profile/listings">My Listings</MenuItem>
+                    <MenuItem componentClass={Link} href="/profile/trips" to="/profile/trips">My Trips</MenuItem>
+                    <MenuItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">My Guests</MenuItem>
+                    <MenuItem componentClass={Link} href="/profile/me/edit" to="/profile/me/edit">Profile</MenuItem>
+                    <MenuItem componentClass={Link} href="/" to="/" onClick={this.logout}>Logout<img src={Config.getValue('basePath') + 'images/icon-dropdown/icon-logout.png'} style={{ top: 25 + 'px' }} alt="logout" /></MenuItem>
                   </NavDropdown>
                 </Nav>
                 : <Nav pullRight={true}>

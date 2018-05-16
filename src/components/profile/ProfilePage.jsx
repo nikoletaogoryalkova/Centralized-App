@@ -6,7 +6,7 @@ import TripsRouter from './trips/TripsRouter';
 import DashboardPage from './dashboard/DashboardPage';
 import MyListingsPage from './listings/MyListingsPage';
 import CalendarPage from './calendar/CalendarPage';
-import MyReservationsPage from './reservations/MyReservationsPage';
+import MyGuestsPage from './guests/MyGuestsPage';
 import MessagesPage from './messages/MessagesPage';
 import MessagesChatPage from './messages/MessagesChatPage';
 import ProfileEditPage from './me/ProfileEditPage';
@@ -27,7 +27,7 @@ export default class ProfilePage extends React.Component {
           <Route exact path="/profile/messages" render={() => <MessagesPage />} />
           <Route exact path="/profile/messages/chat/:id" render={() => <MessagesChatPage />} />
           <Route path="/profile/trips" render={() => <TripsRouter location={this.props.location} />} />
-          <Route path="/profile/reservations" render={() => <MyReservationsPage />} />
+          <Route path="/profile/reservations" render={() => <MyGuestsPage />} />
           <Route path="/profile/me/edit" render={() => <ProfileEditPage />} />
           <Route path="/profile/wallet" render={() => <WalletPage />} />
           <Route path="/profile/admin" render={() => <ListingsAdminPage />} />

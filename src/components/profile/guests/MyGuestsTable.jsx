@@ -2,30 +2,22 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 import { Config } from '../../../config';
+import NoEntriesMessage from '../common/NoEntriesMessage';
 
-export default function MyReservationsTable(props) {
-  return (
-    <div className="container">
-      <div className="table-header bold">
-        <div className="col-md-1">
-        </div>
-        <div className="col-md-2">
-          <span>Guests</span>
-        </div>
-        <div className="col-md-3">
-          <span>Dates &amp; Location</span>
-        </div>
-        <div className="col-md-2">
-          <span>Price</span>
-        </div>
-        <div className="col-md-2">
-          <span>Actions</span>
-        </div>
-        <div className="col-md-2">
-          <span>Status</span>
-        </div>
-      </div>
-      {props.reservations.map(reservation => {
+export default function MyGuestsTable(props) {
+  const renderReservations = () => {
+    if (!props.reservations) {
+      return;
+    }
+
+    if (props.reservations.length === 0) {
+      return (
+        <NoEntriesMessage text="There are no reservation requests. If someone requests to book your property, it will appear here." />
+      );
+    }
+
+    return (
+      props.reservations.map(reservation => {
         return (
           <div key={reservation.id} className="row reservation-box">
             <div className="col-md-12">
@@ -59,12 +51,37 @@ export default function MyReservationsTable(props) {
             </div>
           </div>
         );
-      })}
+      })
+    );
+  };
+
+  return (
+    <div className="container">
+      <div className="table-header bold">
+        <div className="col-md-1">
+        </div>
+        <div className="col-md-2">
+          <span>Guests</span>
+        </div>
+        <div className="col-md-3">
+          <span>Dates &amp; Location</span>
+        </div>
+        <div className="col-md-2">
+          <span>Price</span>
+        </div>
+        <div className="col-md-2">
+          <span>Actions</span>
+        </div>
+        <div className="col-md-2">
+          <span>Status</span>
+        </div>
+      </div>
+      {renderReservations()}
     </div>
   );
 }
 
-MyReservationsTable.propTypes = {
+MyGuestsTable.propTypes = {
   reservations: PropTypes.array,
   onReservationAccept: PropTypes.func,
   onReservationCancel: PropTypes.func,

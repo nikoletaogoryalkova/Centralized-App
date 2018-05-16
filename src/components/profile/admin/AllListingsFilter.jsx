@@ -16,65 +16,67 @@ export default class AllListingsFilter extends React.Component {
       return { value: item.id, label: item.name };
     });
 
-    return <div className="row">
-      <div className="col-md-12">
-        <form onSubmit={this.props.onSearch}>
-          <div className="col-md-3">
-            <div className="form-group">
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                className="form-control"
-                value={this.props.name}
-                onChange={this.props.onChange} />
+    return (
+      <div className="row">
+        <div className="col-md-12">
+          <form onSubmit={this.props.onSearch}>
+            <div className="col-md-3">
+              <div className="form-group">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  className="form-control"
+                  value={this.props.name}
+                  onChange={this.props.onChange} />
+              </div>
             </div>
-          </div>
-          <div className="col-md-2">
-            <div className="form-group">
-              <input
-                type="text"
-                name="hostEmail"
-                placeholder="Host email"
-                className="form-control"
-                value={this.props.hostEmail}
-                onChange={this.props.onChange} />
+            <div className="col-md-2">
+              <div className="form-group">
+                <input
+                  type="text"
+                  name="hostEmail"
+                  placeholder="Host email"
+                  className="form-control"
+                  value={this.props.hostEmail}
+                  onChange={this.props.onChange} />
+              </div>
             </div>
-          </div>
-          <div className="col-md-2">
-            <div className="form-group">
-              <Select
-                name="country"
-                placeholder="Country"
-                className="form-control form-control-select"
-                style={{ border: 'none', boxShadow: 'none' }}
-                value={this.props.country}
-                onChange={this.props.updateCountry}
-                options={renderCountries}
-              />
+            <div className="col-md-2">
+              <div className="form-group">
+                <Select
+                  name="country"
+                  placeholder="Country"
+                  className="form-control form-control-select"
+                  style={{ border: 'none', boxShadow: 'none' }}
+                  value={this.props.country}
+                  onChange={this.props.updateCountry}
+                  options={renderCountries}
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-md-3">
-            <div className="form-group">
-              <Select
-                name="city"
-                placeholder="City"
-                className="form-control form-control-select"
-                style={{ border: 'none', boxShadow: 'none' }}
-                value={this.props.city}
-                onChange={option => this.props.onSelect('city', option)}
-                options={renderCities}
-              />
+            <div className="col-md-3">
+              <div className="form-group">
+                <Select
+                  name="city"
+                  placeholder="City"
+                  className="form-control form-control-select"
+                  style={{ border: 'none', boxShadow: 'none' }}
+                  value={this.props.city}
+                  onChange={option => this.props.onSelect('city', option)}
+                  options={renderCities}
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-md-2">
-            <div>
-              <button type="submit" className="btn btn-block btn-primary">Search</button>
+            <div className="col-md-2">
+              <div>
+                <button type="submit" className="btn btn-primary">Search</button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>;
+    );
   }
 }
 

@@ -135,7 +135,7 @@ export async function getListingsByFilter(searchTerms) {
 }
 
 export async function getMyConversations(searchTerm) {
-  return sendRequest(`${host}users/me/conversations${searchTerm !== null && searchTerm !== undefined ? `${searchTerm}&` : '?'}sort=id,desc`, RequestMethod.GET).then(res => {
+  return sendRequest(`${host}users/me/conversations${searchTerm ? `${searchTerm}&` : '?'}sort=id,desc`, RequestMethod.GET).then(res => {
     return res.response.json();
   });
 }
@@ -459,6 +459,12 @@ export async function testBook(bookingObj) {
 
 export async function confirmBooking(bookingObj) {
   return sendRequest(`${host}api/hotels/booking/confirm`, RequestMethod.POST, bookingObj).then(res => {
+    return res.response.json();
+  });
+}
+
+export async function cancelBooking(bookingObj) {
+  return sendRequest(`${host}api/hotels/booking/cancel`, RequestMethod.POST, bookingObj).then(res => {
     return res.response.json();
   });
 }

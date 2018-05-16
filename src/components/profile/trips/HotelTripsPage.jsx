@@ -1,4 +1,4 @@
-import { cancelTrip, getMyHotelBookings } from '../../../requester';
+import { cancelTrip, getMyHotelBookings, getCurrentlyLoggedUserJsonFile, cancelBooking } from '../../../requester';
 import { Config } from '../../../config';
 import CancellationModal from '../../common/modals/CancellationModal';
 import Pagination from '../../common/pagination/Pagination';
@@ -8,6 +8,11 @@ import { NotificationManager } from 'react-notifications';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
+import PasswordModal from '../../common/modals/PasswordModal';
+import { connect } from 'react-redux';
+import { PASSWORD_PROMPT } from '../../../constants/modals.js';
+import { openModal, closeModal } from '../../../actions/modalsInfo.js';
+import { HotelReservation } from '../../../services/blockchain/hotelReservation';
 
 import { withRouter } from 'react-router-dom';
 
@@ -15,22 +20,23 @@ class HotelTripsPage extends React.Component {
   constructor(props) {
     super(props);
 
+    this.captcha = null;
+
     this.state = {
       trips: [],
       loading: true,
       totalTrips: 0,
       currentPage: 1,
       currentTripId: null,
-      selectedTripId: 0,
-      cancellationText: '',
-      showCancelTripModal: false,
+      bookingPrepareId: 0,
+      password: '',
     };
 
     this.onPageChange = this.onPageChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.onTripCancel = this.onTripCancel.bind(this);
+    this.onTripCancel = this.handleCancelTrip.bind(this);
     this.onTripSelect = this.onTripSelect.bind(this);
   }
 
@@ -55,23 +61,51 @@ class HotelTripsPage extends React.Component {
     });
   }
 
-  onTripCancel() {
-    this.cancelCaptcha.execute();
+  openModal(modal, e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.dispatch(openModal(modal));
   }
 
-  cancelTrip(captchaToken) {
-    const id = this.state.selectedTripId;
-    const message = this.state.cancellationText;
-    let messageObj = { message: message };
-    cancelTrip(id, messageObj, captchaToken)
-      .then(response => {
-        if (response.success) {
-          this.componentDidMount();
-          NotificationManager.success(response.message, 'Reservation Operations');
-        } else {
-          NotificationManager.error(response.message, 'Reservation Operations');
-        }
+  closeModal(modal, e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.props.dispatch(closeModal(modal));
+  }
+
+  handleCancelTrip() {
+    getCurrentlyLoggedUserJsonFile().then((json) => {
+      console.log(json);
+      console.log(this.state.bookingPrepareId);
+      console.log(this.state.password);
+
+      cancelBooking().then(res => {
+        // TODO;
       });
+
+      NotificationManager.info('Your reservation is being cancelled...', 'Transactions', 10000);
+      this.closeModal(PASSWORD_PROMPT);
+
+      HotelReservation.cancelReservation(json.jsonFile, this.state.password, this.state.bookingPrepareId).then(response => {
+        console.log(response);
+      }).catch(error => {
+        if (error.hasOwnProperty('message')) {
+          NotificationManager.warning(error.message, 'Cancel Reservation');
+        } else if (error.hasOwnProperty('err') && error.err.hasOwnProperty('message')) {
+          NotificationManager.warning(error.err.message, 'Cancel Reservation');
+        } else if (typeof x === 'string') {
+          NotificationManager.warning(error, 'Cancel Reservation');
+        } else {
+          NotificationManager.warning(error);
+        }
+
+        this.closeModal(PASSWORD_PROMPT);
+      });
+    });
   }
 
   setTripIsAccepted(tripId, isAccepted) {
@@ -101,16 +135,8 @@ class HotelTripsPage extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  openModal(name) {
-    this.setState({ [name]: true });
-  }
-
-  closeModal(name) {
-    this.setState({ [name]: false });
-  }
-
-  onTripSelect(id) {
-    this.setState({ selectedTripId: id });
+  onTripSelect(bookingPrepareId) {
+    this.setState({ bookingPrepareId });
   }
 
   render() {
@@ -120,22 +146,6 @@ class HotelTripsPage extends React.Component {
 
     return (
       <div className="my-reservations">
-        <ReCAPTCHA
-          ref={el => this.cancelCaptcha = el}
-          size="invisible"
-          sitekey={Config.getValue('recaptchaKey')}
-          onChange={token => { this.cancelTrip(token); this.cancelCaptcha.reset(); }} />
-
-        <CancellationModal
-          name={'showCancelTripModal'}
-          value={this.state.cancellationText}
-          title={'Cancel Trip'}
-          text={'Tell your host why do you want to cancel your trip.'}
-          onChange={this.onChange}
-          isActive={this.state.showCancelTripModal}
-          onClose={this.closeModal}
-          onSubmit={this.onTripCancel} />
-
         <section id="profile-my-reservations">
           <div>
             <h2>Upcoming Trips ({this.state.totalTrips})</h2>
@@ -145,7 +155,7 @@ class HotelTripsPage extends React.Component {
               trips={this.state.trips}
               currentTripId={this.state.currentTripId}
               onTripSelect={this.onTripSelect}
-              onTripCancel={() => this.openModal('showCancelTripModal')}
+              handleCancelReservation={(e) => this.openModal(PASSWORD_PROMPT)}
               loading={this.state.loading}
             />
 
@@ -161,6 +171,26 @@ class HotelTripsPage extends React.Component {
             </div>
           </div>
         </section>
+
+        <PasswordModal
+          isActive={this.props.modalsInfo.modals.get(PASSWORD_PROMPT)}
+          text={'Enter your wallet password'}
+          placeholder={'Wallet password'}
+          handleSubmit={() => this.handleCancelTrip()}
+          closeModal={this.closeModal}
+          password={this.state.password}
+          onChange={this.onChange}
+        />
+
+        <ReCAPTCHA
+          ref={el => this.captcha = el}
+          size="invisible"
+          sitekey={Config.getValue('recaptchaKey')}
+          onChange={token => {
+            this.handleCancelTrip(token);
+            this.captcha.reset();
+          }}
+        />
       </div>
     );
   }
@@ -170,4 +200,11 @@ HotelTripsPage.propTypes = {
   location: PropTypes.object
 };
 
-export default withRouter(HotelTripsPage);
+function mapStateToProps(state) {
+  const { modalsInfo } = state;
+  return {
+    modalsInfo,
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(HotelTripsPage));

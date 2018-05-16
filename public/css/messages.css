@@ -45,7 +45,7 @@
 .unread-messages-box span {
   font-size: 10px;
   top: -2px;
-  right: 4px;
+  left: 25px;
   position: absolute;
   color: white;
   cursor: pointer;

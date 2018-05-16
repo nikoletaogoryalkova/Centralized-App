@@ -31,6 +31,7 @@ export default class MyListingsActiveItem extends React.Component {
   }
 
   onOpen(id, name) {
+    console.log(id, name)
     this.setState(
       {
         isDeleting: true,
@@ -47,7 +48,7 @@ export default class MyListingsActiveItem extends React.Component {
         <DeletionModal
           deletingName={this.state.deletingName}
           filterListings={this.props.filterListings}
-          isDeleting={this.state.isDeleting}
+          isActive={this.state.isDeleting}
           deletingId={this.state.deletingId}
           onHide={this.onHide}
           onOpen={this.onOpen}

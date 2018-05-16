@@ -10,6 +10,7 @@ import moment from 'moment';
 import { parse } from 'query-string';
 import ChildrenModal from '../modals/ChildrenModal';
 import { ROOMS_XML_CURRENCY } from '../../../constants/currencies.js';
+import Lightbox from 'react-images';
 
 import '../../../styles/css/main.css';
 import '../../../styles/css/components/carousel-component.css';
@@ -84,6 +85,7 @@ class HotelDetailsPage extends React.Component {
   componentDidMount() {
     const id = this.props.match.params.id;
     const search = this.props.location.search;
+    console.log(search);
     getHotelById(id, search).then((data) => {
       this.setState({ data: data, loading: false });
       const searchParams = this.getSearchParams(this.props.location.search);
@@ -265,10 +267,11 @@ class HotelDetailsPage extends React.Component {
     });
   }
 
-  openLightbox(event) {
+  openLightbox(event, index) {
     event.preventDefault();
     this.setState({
       lightboxIsOpen: true,
+      currentImage: index,
     });
   }
 
@@ -518,8 +521,8 @@ class HotelDetailsPage extends React.Component {
     } else {
       images = [];
       if (this.state.data.hotelPhotos) {
-        images = this.state.data.hotelPhotos.map(x => {
-          return { src: Config.getValue('imgHost') + x.url };
+        images = this.state.data.hotelPhotos.map((x, i) => {
+          return { src: Config.getValue('imgHost') + x.url, index: i };
         });
       }
     }
@@ -533,8 +536,8 @@ class HotelDetailsPage extends React.Component {
     const settings = {
       infinite: true,
       speed: 500,
-      slidesToShow:3,
-      slidesToScroll:1,
+      slidesToShow: 3,
+      slidesToScroll: 1,
       responsive: [
         {
           breakpoint: 1024,
@@ -568,6 +571,16 @@ class HotelDetailsPage extends React.Component {
         {loading ?
           <div className="loader"></div> :
           <div>
+            {images !== null && <Lightbox
+              currentImage={this.state.currentImage}
+              images={images}
+              isOpen={this.state.lightboxIsOpen}
+              // onClickImage={this.handleClickImage}
+              onClickNext={this.gotoNext}
+              onClickPrev={this.gotoPrevious}
+              onClickThumbnail={this.gotoImage}
+              onClose={this.closeLightbox}
+            />}
             {/* <section className="hotel-gallery"> */}
             {/* <div className="hotel-gallery-bgr lg-none" style={(images && images.length > 0) ? { 'backgroundImage': 'url("' + images[0].src + '")' } : { backgroundColor: '#AAA' }}>
               <div className="container">
@@ -585,31 +598,13 @@ class HotelDetailsPage extends React.Component {
               </div>
             </div> */}
             {/* </section> */}
-            {/* <div className="mb-none">
-              <div className="main-carousel">
-                <div className="mb-none"><img src={left} alt="image description" /></div>
-                <div className="current mb-none">
-                  <img src={current} alt="image description" />
-                  <ul className="sharing">
-                    <li><a href="#"><span className="icon-share"></span></a></li>
-                    <li><a href="#"><span className="icon-heart"></span></a></li>
-                  </ul>
-                  <a href="#" className="btn">View Gallery</a>
-                </div>
-                <div className="mb-none"><img src={right} alt="image description" /></div>
-                <div className="carousel-nav">
-                  <button className="prev icon-arrow-left"></button>
-                  <button className="next icon-arrow-right"></button>
-                </div>
-              </div>
-            </div> */}
             <div className='hotel-details-carousel'>
               <Slider
                 ref={c => (this.slider = c)}
                 {...settings}>
                 {images && images.map((image, index) => {
                   return (
-                    <div key={index}>
+                    <div key={index} onClick={(e) => this.openLightbox(e, image.index)}>
                       <div className='slide' style={{ 'backgroundImage': 'url("' + image.src + '")' }}></div>
                     </div>
                   );

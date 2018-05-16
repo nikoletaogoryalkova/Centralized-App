@@ -50,7 +50,7 @@ export default class DeletionModal extends React.Component {
                 e.preventDefault();
                 this.captcha.execute();
               }}>
-                <button type="submit" className="btn btn-danger">Yes, delete it!</button>
+                <button type="submit" className="btn btn-info">Yes, delete it!</button>
                 <button onClick={(e) => {e.preventDefault(); this.props.onHide(); }} className="btn btn-info">No, go back!</button>
               </form>
             }
@@ -70,7 +70,7 @@ export default class DeletionModal extends React.Component {
 }
 
 DeletionModal.propTypes = {
-  isDeleting: PropTypes.bool,
+  isActive: PropTypes.bool,
   deletingId: PropTypes.number,
   deletingName: PropTypes.string,
   onHide: PropTypes.func,

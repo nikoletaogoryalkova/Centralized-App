@@ -80,5 +80,6 @@ ListingRow.propTypes = {
   action: PropTypes.string,
   actionClass: PropTypes.string,
   contactHost: PropTypes.func,
-  openModal: PropTypes.func
+  openModal: PropTypes.func,
+  handleDeleteListing: PropTypes.func
 };
