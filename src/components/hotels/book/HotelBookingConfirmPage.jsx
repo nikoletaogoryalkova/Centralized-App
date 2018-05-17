@@ -168,7 +168,7 @@ class HotelBookingConfirmPage extends React.Component {
       cancellationFees[i] = percentageRefund;
     }
 
-    console.log(cancellationFees);
+    return cancellationFees;
   }
 
   tokensToWei(tokens) {
@@ -200,11 +200,19 @@ class HotelBookingConfirmPage extends React.Component {
     const booking = this.state.data.booking.hotelBooking;
     const startDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD');
     const endDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD').add(booking[0].nights, 'days');
-    const daysBeforeStartOfRefund = ['0'];
-    const refundPercentages = ['100'];
+    // const daysBeforeStartOfRefund = ['0'];
+    // const refundPercentages = ['100'];
     const hotelId = this.props.match.params.id;
     const roomId = this.state.booking.quoteId;
     const numberOfTravelers = this.getNumberOfTravelers();
+    
+    const cancellationFees = this.getCancellationFees();
+    const daysBeforeStartOfRefund = [];
+    const refundPercentages = [];
+    for (let key in cancellationFees) {
+      daysBeforeStartOfRefund.unshift(key.toString());
+      refundPercentages.unshift(cancellationFees[key].toString());
+    }
 
     NotificationManager.info(PROCESSING_TRANSACTION, 'Transactions', 20000);
     this.closeModal(PASSWORD_PROMPT);
@@ -417,7 +425,7 @@ class HotelBookingConfirmPage extends React.Component {
                   </div>
                 </div>
                 <button className="btn btn-primary btn-book" onClick={(e) => this.openModal(PASSWORD_PROMPT, e)}>Confirm and Pay</button>
-                <button className="btn btn-primary btn-book" onClick={() => this.getCancellationFees()}>Log Fees</button>
+                {/* <button className="btn btn-primary btn-book" onClick={() => this.getCancellationFees()}>Log Fees</button> */}
               </div>
               <PasswordModal
                 isActive={this.props.modalsInfo.modals.get(PASSWORD_PROMPT)}
