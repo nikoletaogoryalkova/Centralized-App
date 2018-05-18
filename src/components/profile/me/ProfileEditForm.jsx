@@ -272,7 +272,7 @@ export default class ProfileEditPage extends React.Component {
             onChange={token => { this.updateUser(token); this.captcha.reset(); }}
           />
 
-          <input type="submit" className="button save" value="Save" />
+          <button type="submit" className="btn">Save</button>
         </form>
       </div>
     );

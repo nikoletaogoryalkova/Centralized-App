@@ -21,13 +21,13 @@ function MessagesItem(props) {
           <span className="session-nav-user-thumb"><img src={`${Config.getValue('imgHost')}${props.message.userInfo.image}`} alt="user-profile" /></span>
         </div>
         <div className="col-md-2">
-          <h4 className="bold">{props.message.userInfo.fullName}</h4>
+          <h4>{props.message.userInfo.fullName}</h4>
         </div>
         <div className="col-md-7 message-content" >
           <p>{props.message.lastMessage.currentUserSender ? 'You: ' : props.message.userInfo.fullName + ': '}{props.message.lastMessage && props.message.lastMessage.message}</p>
         </div>
         <div className="col-md-2">
-          <p className="bold">{props.message.lastMessage && moment(props.message.lastMessage.createdAt, 'DD/MM/YYYY').format('DD MMM, YYYY')}</p>
+          <p>{props.message.lastMessage && moment(props.message.lastMessage.createdAt, 'DD/MM/YYYY').format('DD MMM, YYYY')}</p>
         </div>
       </span>
     </div>

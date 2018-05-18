@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
     font-family: 'FuturaStd-Light';
     src: url('../font_futura/FuturaStd-Light.eot');
     src: local('☺'), url('../font_futura/FuturaStd-Light.woff') format('woff'), url('../font_futura/FuturaStd-Light.ttf') format('truetype'), url('../font_futura/FuturaStd-Light.svg') format('svg');
@@ -21,18 +21,18 @@
 
 body {
     font-family: 'FuturaStd-Light', sans-serif;
-    /* background: #f0f1f3; */
+    background: #f0f1f3;
     font-size: 14px;
     font-weight: 300;
-}
+} */
 
-strong,
+/* strong,
 b {
     font-family: 'FuturaStd-Medium', sans-serif;
     font-weight: normal;
-}
+} */
 
-h1 {
+/* h1 {
     font-family: 'FuturaStd-Medium', sans-serif;
     font-size: 32px;
     font-weight: 400;
@@ -74,14 +74,14 @@ h5 {
     font-size: 14px;
     font-weight: 300;
     color: #898c8d;
-}
+} */
 
-p {
+/* p {
     font-family: 'FuturaStd-Light', sans-serif;
     font-size: 14px;
     font-weight: 300;
     color: #54575a;
-}
+} */
 
 ul {
     margin: 0;

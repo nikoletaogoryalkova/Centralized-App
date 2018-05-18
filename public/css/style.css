@@ -2,9 +2,9 @@
     display: block;
 }
 
-.bold {
+/* .bold {
     font-family: 'FuturaStd-Medium', sans-serif;
-}
+} */
 
 .caret {
     border: 0;
@@ -29,10 +29,10 @@
 }
 
 .btn {
-    font-family: 'FuturaStd-Light', sans-serif;
-    font-weight: 400;
+    /* font-family: 'FuturaStd-Light', sans-serif; */
+    /* font-weight: 400; */
     border-radius: 4px;
-    font-size: 18px;
+    /* font-size: 18px; */
     padding: 15px 25px;
     border: none;
 }
@@ -2084,7 +2084,7 @@ li.dropdown {
     float: right;
     margin-bottom: 25px;
     background-color: #a2c5bf;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 .my-reservations .reservation-box {
@@ -2123,8 +2123,8 @@ li.dropdown {
 
 .my-reservations .reservation-box button {
     padding-bottom: 10px;
-    font-weight: bold;
-    font-family: 'FuturaStd-Light', sans-serif;
+    /* font-weight: bold; */
+    /* font-family: 'FuturaStd-Light', sans-serif; */
     color: #E98B73;
     background: none;
     border: none;
@@ -2133,6 +2133,7 @@ li.dropdown {
 
 .my-reservations .reservation-box button:hover {
     cursor: pointer;
+    text-decoration: underline;
 }
 
 .reservation-image-box {
@@ -2906,7 +2907,7 @@ h3 {
 
 .hotel-content .room-group .btn {
     width: 200px;
-    font-family: 'FuturaStd-Light', sans-serif;
+    /* font-family: 'FuturaStd-Light', sans-serif; */
 }
 
 .success-reservation-alert h2 {
