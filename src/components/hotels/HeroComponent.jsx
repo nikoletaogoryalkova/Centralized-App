@@ -27,6 +27,8 @@ export default function HeroComponent(props) {
               handleDatePick={props.handleDatePick}
               handleSelectRegion={props.handleSelectRegion}
               handleToggleChildren={props.handleToggleChildren}
+              handleOpenSelect={props.handleOpenSelect}
+              handleCloseSelect={props.handleCloseSelect}
             />
           </div>
         </div>

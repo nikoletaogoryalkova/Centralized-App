@@ -38,12 +38,15 @@ class HotelsHomePage extends React.Component {
     this.handleDatePick = this.handleDatePick.bind(this);
 
     this.handleSelectRegion = this.handleSelectRegion.bind(this);
+    this.handleOpenSelect = this.handleOpenSelect.bind(this);
+    this.handleCloseSelect = this.handleCloseSelect.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.redirectToSearchPage = this.redirectToSearchPage.bind(this);
     this.handleToggleChildren = this.handleToggleChildren.bind(this);
 
     this.handleDestinationPick = this.handleDestinationPick.bind(this);
+    
   }
 
   componentDidMount() {
@@ -78,6 +81,19 @@ class HotelsHomePage extends React.Component {
 
   handleSelectRegion(value) {
     this.setState({ region: value });
+    console.log(value);
+  }
+
+  handleOpenSelect() {
+    if (!this.state.region) {
+      this.setState({ region: { query: '' } });
+    }
+  }
+
+  handleCloseSelect() {
+    if (this.state.region && this.state.region.query === '') {
+      this.setState({ region: null });
+    }
   }
 
   handleSearch(event) {
@@ -214,7 +230,9 @@ class HotelsHomePage extends React.Component {
           handleSearch={this.handleSearch}
           handleDatePick={this.handleDatePick}
           handleSelectRegion={this.handleSelectRegion}
-          handleToggleChildren={this.handleToggleChildren} 
+          handleToggleChildren={this.handleToggleChildren}
+          handleOpenSelect={this.handleOpenSelect}
+          handleCloseSelect={this.handleCloseSelect}
         />
         {/* <header id='main-nav' className="navbar home_page">
           <div className="container">

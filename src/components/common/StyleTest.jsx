@@ -1,17 +1,46 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 
-export default function StyleTest(props) {
+export default class StyleTest extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      selectedOption: null
+    };
 
-  const { selectedOption } = '';
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-  return (
-    <div className="container">
-      <div className="no-entries-message">
-        <h3 style={{ textAlign: 'center', padding: '20px' }}>
-          There are no reservation requests. If someone requests to book your property, it will appear here.
-        </h3>
+  handleChange(selectedOption) {
+    this.setState({ selectedOption });
+  }
+
+  render() {
+    const { selectedOption } = this.state;
+    return (
+      <div className="container">
+        <Select
+          style={{ zIndex: '100' }}
+          name="form-field-name"
+          value={selectedOption}
+          onChange={this.handleChange}
+          onClose={() => {
+            if (this.state.selectedOption && this.state.selectedOption.label === '') {
+              this.setState({ selectedOption: null });
+            }
+          }}
+          onOpen={() => {
+            if (!this.state.selectedOption) {
+              this.setState({ selectedOption: { label: '' } });
+            }
+          }}
+          options={[
+            { value: 'one', label: 'One' },
+            { value: 'two', label: 'Two' },
+          ]}
+        />
       </div>
-    </div>
-  );
+    );
+  }
 }

@@ -68,7 +68,7 @@ function SearchBar(props) {
   // }
 
   const { rooms } = props;
-
+  console.log(props.handleOpenSelect)
   return (
     <form className="source-panel"  onSubmit={props.handleSearch}>
       <div className="source-panel-select source-panel-item">
@@ -84,6 +84,8 @@ function SearchBar(props) {
           backspaceRemoves={true}
           arrowRenderer={null}
           onSelectResetsInput={false}
+          onOpen={props.handleOpenSelect}
+          onClose={props.handleCloseSelect}
         />
       </div>
 

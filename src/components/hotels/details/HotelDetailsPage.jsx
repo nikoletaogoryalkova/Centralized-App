@@ -80,6 +80,8 @@ class HotelDetailsPage extends React.Component {
     this.handleBookRoom = this.handleBookRoom.bind(this);
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
+    this.handleOpenSelect = this.handleOpenSelect.bind(this);
+    this.handleCloseSelect = this.handleCloseSelect.bind(this);
   }
 
   componentDidMount() {
@@ -323,6 +325,18 @@ class HotelDetailsPage extends React.Component {
     this.setState({ region: value });
   }
 
+  handleOpenSelect() {
+    if (!this.state.region) {
+      this.setState({ region: { query: '' } });
+    }
+  }
+
+  handleCloseSelect() {
+    if (this.state.region && this.state.region.query === '') {
+      this.setState({ region: null });
+    }
+  }
+
   handleRoomsChange(event) {
     let value = event.target.value;
     let rooms = this.state.rooms.slice();
@@ -535,6 +549,7 @@ class HotelDetailsPage extends React.Component {
 
     const settings = {
       infinite: true,
+      accessibility: false,
       speed: 500,
       slidesToShow: 3,
       slidesToScroll: 1,
@@ -565,6 +580,8 @@ class HotelDetailsPage extends React.Component {
             handleDatePick={this.handleDatePick}
             handleSelectRegion={this.handleSelectRegion}
             handleToggleChildren={this.handleToggleChildren}
+            handleOpenSelect={this.handleOpenSelect}
+            handleCloseSelect={this.handleCloseSelect}
           />
         </div>
 

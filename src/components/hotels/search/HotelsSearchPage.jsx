@@ -76,6 +76,8 @@ class HotelsSearchPage extends React.Component {
     this.applyFilters = this.applyFilters.bind(this);
     this.handleToggleStar = this.handleToggleStar.bind(this);
     this.toggleMap = this.toggleMap.bind(this);
+    this.handleOpenSelect = this.handleOpenSelect.bind(this);
+    this.handleCloseSelect = this.handleCloseSelect.bind(this);
   }
 
   componentDidMount() {
@@ -309,6 +311,18 @@ class HotelsSearchPage extends React.Component {
 
   handleSelectRegion(value) {
     this.setState({ region: value });
+  }
+
+  handleOpenSelect() {
+    if (!this.state.region) {
+      this.setState({ region: { query: '' } });
+    }
+  }
+
+  handleCloseSelect() {
+    if (this.state.region && this.state.region.query === '') {
+      this.setState({ region: null });
+    }
   }
 
   handleDatePick(event, picker) {
@@ -550,6 +564,8 @@ class HotelsSearchPage extends React.Component {
             handleDatePick={this.handleDatePick}
             handleSelectRegion={this.handleSelectRegion}
             handleToggleChildren={this.handleToggleChildren}
+            handleOpenSelect={this.handleOpenSelect}
+            handleCloseSelect={this.handleCloseSelect}
           />
         </div>
 

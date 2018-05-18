@@ -61,6 +61,12 @@ class MultiMarkerGoogleMap extends Component {
     if (hotels && hotels.length > 0) {
       from = from ? from : 0;
       to = to ? to : hotels.length;
+
+      // TODO: create a single info window to be displayed
+      // (function iife(info) {
+
+      // })(this.info);
+
       for (let i = from; i < to; i++) {
         const hotel = hotels[i];
         const marker = this.createMarker(hotel);

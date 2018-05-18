@@ -53,7 +53,7 @@ class App extends React.Component {
           <Route path="/hotels" render={() => <HotelsRouterPage />} />
           <Route path="/profile/listings/create" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <CreateListingPage />} />
           <Route path="/profile/" render={() => !this.isAuthenticated() ? <Redirect to="/" /> : <ProfilePage location={this.props.location} />} />
-          <Route path="/test" render={StyleTest} />
+          <Route path="/test" render={() => <StyleTest />} />
           <Route render={() => <HomeRouterPage />} />
         </Switch>
         <Footer />
