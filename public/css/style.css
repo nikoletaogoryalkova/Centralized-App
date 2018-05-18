@@ -1,18 +1,18 @@
-.block {
+/* .block {
     display: block;
-}
+} */
 
 /* .bold {
     font-family: 'FuturaStd-Medium', sans-serif;
 } */
 
-.caret {
+/* .caret {
     border: 0;
     background: url(../images/drop_arow.png) center no-repeat;
     width: 10px;
     height: 4px;
     margin-left: 10px;
-}
+} */
 
 .description {
     font-size: 12px;
@@ -734,7 +734,7 @@ button.disabled:hover {
     color: #fff;
 } */
 
-footer a {
+/* footer a {
     color: #fff;
 }
 
@@ -813,7 +813,7 @@ footer .currency-switcher {
     width: 100%;
     border-radius: 4px;
     outline: none;
-}
+} */
 
 @media (max-width: 991px) {
     footer .copyright {

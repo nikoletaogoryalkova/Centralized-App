@@ -88,24 +88,11 @@ ul {
     padding: 0;
 }
 
-a {
-    color: #1f2427;
+a, a:hover, a:focus {
     text-decoration: none;
 }
 
-a:hover {
-    color: #d87a61;
-    text-decoration: none;
-}
-
-a:focus {
-    outline: none;
-    background-color: transparent;
-    text-decoration: none;
-    color: #d87a61;
-}
-
-.btn-primary {
+/* .btn-primary {
     background: #d77961;
     color: #fff;
     outline: none;
@@ -119,7 +106,7 @@ a:focus {
 .btn-primary:hover {
     background-color: #e98b73;
     color: #fff;
-}
+} */
 
 /* select {
     background: url('../images/icon-arrow-dropdown.png') no-repeat 100% 50% #FFFFFF!important;
