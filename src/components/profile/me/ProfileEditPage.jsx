@@ -12,7 +12,7 @@ export default class ProfileEditPage extends React.Component {
         <section id="profile-edit">
           <div className="container">
             <div className="row">
-              <div className="after-header" />
+              <div style={{ height: '60px' }} />
               <div className="col-md-3">
                 <ProfileNav />
               </div>

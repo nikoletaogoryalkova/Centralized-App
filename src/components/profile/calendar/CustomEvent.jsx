@@ -19,7 +19,7 @@ export default class CustomEvent extends React.Component {
             </div>
           </div>
           <div className="col-md-12 event-popup-body">
-            <p><span className="cnt block"><span className="text-green">{moment(this.props.event.start).format('DD')}</span> {moment(this.props.event.start).format('MMM')}, {moment(this.props.event.start).format('YYYY')} → <span className="text-d87a61">{moment(this.props.event.end).format('DD')}</span> {moment(this.props.event.end).format('MMM')}, {moment(this.props.event.start).format('YYYY')}</span></p>
+            <p><span className="cnt block"><span>{moment(this.props.event.start).format('DD')}</span> {moment(this.props.event.start).format('MMM')}, {moment(this.props.event.start).format('YYYY')} → <span className="text-d87a61">{moment(this.props.event.end).format('DD')}</span> {moment(this.props.event.end).format('MMM')}, {moment(this.props.event.start).format('YYYY')}</span></p>
             <br />
             <p className="text-align-left">{moment(this.props.event.end).diff(moment(this.props.event.start), 'days')} nights, {this.props.event.guests} guests</p>
             <p className="text-align-left price">{this.props.event.price} <span>payout</span></p>

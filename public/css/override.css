@@ -60,9 +60,9 @@ a.dropdown-toggle {
 }
 
 /* TODO: This block is just for migration purposes. Should be deleted... */
-#search-bar [class^="icon-"], [class*=" icon-"] {
+/* #search-bar [class^="icon-"], [class*=" icon-"] {
   font-family: 'FuturaStd-Light', sans-serif !important;
-}
+} */
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
   background-color: #fff;
 }

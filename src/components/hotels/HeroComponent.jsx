@@ -13,6 +13,7 @@ export default function HeroComponent(props) {
           <h2>Browse for homes &amp; hotels worldwide</h2>
           <div className="source-data">
             <ListingTypeNav />
+            
             <SearchBar
               startDate={props.startDate}
               endDate={props.endDate}

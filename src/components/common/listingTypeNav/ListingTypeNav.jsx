@@ -1,18 +1,12 @@
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 
-function ListingTypeNav() {
+function ListingTypeNav(props) {
   return (
-    <div>
-      <nav id="second-nav">
-        <div className="container">
-          <ul>
-            <li><NavLink to='/hotels' activeClassName="active">HOTELS</NavLink></li>
-            <li><NavLink to='/homes' activeClassName="active">HOMES</NavLink></li>
-          </ul>
-        </div>
-      </nav>
-    </div>
+    <ul className="tabset">
+      <li className={props.location.pathname.indexOf('/hotels') !== -1 ? 'active' : ''}><NavLink to='/hotels' activeClassName="active">HOTELS</NavLink></li>
+      <li className={props.location.pathname.indexOf('/homes') !== -1 ? 'active' : ''}><NavLink to='/homes' activeClassName="active">HOMES</NavLink></li>
+    </ul>
   );
 }
 

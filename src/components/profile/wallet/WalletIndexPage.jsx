@@ -80,7 +80,7 @@ export default class WalletIndexPage extends React.Component {
         <section id="wallet-index">
           <div className="container">
             <div className="row">
-              <div className="after-header" />
+              <div style={{ height: '60px' }} />
               <div className="col-md-11">
                 <div id="profile-edit-form">
                   <h2>Withdraw LOC</h2>
