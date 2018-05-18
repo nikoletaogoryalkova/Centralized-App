@@ -40,7 +40,7 @@ class Footer extends React.Component {
                 <li>
                   <ul>
                     <li>
-                      <h5>LockChain</h5>
+                      <h5>LockTrip</h5>
                     </li>
                     <li><a href="#">Help</a></li>
                     <li><a href="#">Terms and Conditions</a></li>
