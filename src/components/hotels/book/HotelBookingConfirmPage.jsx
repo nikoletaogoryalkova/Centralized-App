@@ -119,19 +119,19 @@ class HotelBookingConfirmPage extends React.Component {
         return x.from >= y.from ? 1 : -1; // sort ascending by 'from date'
       });
 
-      const arrivalDate = moment(hotelBooking[i].arrivalDate, 'YYYY-MM-DD').startOf('day');
-      console.log(arrivalDate.format())
-      const earliestDate = moment(earliestToLatestRoomCancellationFees[0].from).startOf('day');
-      console.log(earliestDate.format())
+      const arrivalDate = moment(hotelBooking[i].arrivalDate, 'YYYY-MM-DD');
+      // console.log(arrivalDate.format())
+      const earliestDate = moment(earliestToLatestRoomCancellationFees[0].from);
+      // console.log(earliestDate.format())
 
       const roomMaxDaysBefore = moment(arrivalDate).diff(earliestDate, 'days');
       if (roomMaxDaysBefore > maxDaysBefore) {
         maxDaysBefore = roomMaxDaysBefore;
       }
-      console.log(roomMaxDaysBefore)
+      // console.log(roomMaxDaysBefore)
 
       const roomFeesByDaysBefore = Array(roomMaxDaysBefore + 1).fill(0);
-      console.log(roomFeesByDaysBefore)
+      // console.log(roomFeesByDaysBefore)
 
       // roomCancellationFees.forEach(x => {
       //   console.log(moment(x.from).format())
@@ -139,9 +139,9 @@ class HotelBookingConfirmPage extends React.Component {
 
       for (let j = 0; j < earliestToLatestRoomCancellationFees.length; j++) {
         const cancellation = earliestToLatestRoomCancellationFees[j];
-        const fromDate = moment(cancellation.from).startOf('day');
+        const fromDate = moment(cancellation.from);
         const daysBefore = moment(arrivalDate).diff(fromDate, 'days');
-        console.log(daysBefore)
+        // console.log(daysBefore)
 
         const locPrice = cancellation.locPrice;
 
@@ -151,7 +151,7 @@ class HotelBookingConfirmPage extends React.Component {
       feeTable.push(roomFeesByDaysBefore);
     }
 
-    console.log(feeTable);
+    // console.log(feeTable);
 
     for (let i = 0; i < maxDaysBefore + 1; i++) {
       let fee = 0;
@@ -161,8 +161,8 @@ class HotelBookingConfirmPage extends React.Component {
         }
       }
 
-      console.log(fee);
-      console.log(totalPrice)
+      // console.log(fee);
+      // console.log(totalPrice)
 
       const percentageRefund = (((totalPrice - fee) / totalPrice) * 100).toFixed().toString();
       cancellationFees[i] = percentageRefund;
@@ -194,9 +194,9 @@ class HotelBookingConfirmPage extends React.Component {
   handleSubmit(token) {
     const password = this.state.password;
     const preparedBookingId = this.state.data.preparedBookingId;
-    console.log(preparedBookingId);
+    // console.log(preparedBookingId);
     const wei = (this.tokensToWei(this.state.data.locPrice.toString()));
-    console.log(wei);
+    // console.log(wei);
     const booking = this.state.data.booking.hotelBooking;
     const startDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD');
     const endDate = moment(booking[0].arrivalDate, 'YYYY-MM-DD').add(booking[0].nights, 'days');
@@ -214,11 +214,14 @@ class HotelBookingConfirmPage extends React.Component {
       refundPercentages.unshift(cancellationFees[key].toString());
     }
 
+    console.log(daysBeforeStartOfRefund)
+    console.log(refundPercentages)
+
     NotificationManager.info(PROCESSING_TRANSACTION, 'Transactions', 20000);
     this.closeModal(PASSWORD_PROMPT);
 
     getCurrentlyLoggedUserJsonFile().then((json) => {
-      console.log(json);
+      // console.log(json);
       setTimeout(() => {
         HotelReservation.createReservation(
           json.jsonFile,
