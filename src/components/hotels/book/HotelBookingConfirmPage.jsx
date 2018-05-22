@@ -124,7 +124,7 @@ class HotelBookingConfirmPage extends React.Component {
       const earliestDate = moment(earliestToLatestRoomCancellationFees[0].from);
       // console.log(earliestDate.format())
 
-      const roomMaxDaysBefore = moment(arrivalDate).diff(earliestDate, 'days');
+      const roomMaxDaysBefore = Math.abs(moment(arrivalDate).diff(earliestDate, 'days'));
       if (roomMaxDaysBefore > maxDaysBefore) {
         maxDaysBefore = roomMaxDaysBefore;
       }
@@ -161,12 +161,16 @@ class HotelBookingConfirmPage extends React.Component {
         }
       }
 
-      // console.log(fee);
-      // console.log(totalPrice)
+      // console.log('fee: ', fee);
+      // console.log('total price: ', totalPrice)
 
-      const percentageRefund = (((totalPrice - fee) / totalPrice) * 100).toFixed().toString();
+      const percentageRefund = (parseInt(Math.abs((totalPrice - fee) / totalPrice) * 100)).toString();
+      // console.log('percentage refund: ', percentageRefund)
       cancellationFees[i] = percentageRefund;
     }
+
+    // console.log(feeTable)
+    // console.log(cancellationFees)
 
     return cancellationFees;
   }
@@ -207,6 +211,7 @@ class HotelBookingConfirmPage extends React.Component {
     const numberOfTravelers = this.getNumberOfTravelers();
     
     const cancellationFees = this.getCancellationFees();
+    console.log(cancellationFees);
     const daysBeforeStartOfRefund = [];
     const refundPercentages = [];
     for (let key in cancellationFees) {
