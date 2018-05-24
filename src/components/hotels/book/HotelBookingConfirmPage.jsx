@@ -1,5 +1,4 @@
 import {withRouter} from 'react-router-dom';
-import {getCancellationFees} from "../../../requester";
 import {NotificationManager} from 'react-notifications';
 import PasswordModal from '../../common/modals/PasswordModal';
 import {Config} from '../../../config';
@@ -18,7 +17,8 @@ import {
   getLocRateInUserSelectedCurrency,
   getCurrentlyLoggedUserJsonFile,
   confirmBooking,
-  getCurrencyRates
+  getCurrencyRates,
+  getCancellationFees
 } from '../../../requester';
 
 import {HotelReservation} from '../../../services/blockchain/hotelReservation';
@@ -204,7 +204,6 @@ class HotelBookingConfirmPage extends React.Component {
 
   handleSubmit(token) {
     getCancellationFees(this.state.data.preparedBookingId).then((json) => {
-      console.log(json);
       const password = this.state.password;
       const preparedBookingId = this.state.data.preparedBookingId;
       // console.log(preparedBookingId);
@@ -218,7 +217,7 @@ class HotelBookingConfirmPage extends React.Component {
       const hotelId = this.props.match.params.id;
       const roomId = this.state.booking.quoteId;
       const numberOfTravelers = this.getNumberOfTravelers();
-
+      console.log(json);
       const cancellationFees = json;
       console.log(cancellationFees);
       const daysBeforeStartOfRefund = [];
@@ -307,8 +306,8 @@ class HotelBookingConfirmPage extends React.Component {
       //   }, 1000);
       // });
 
-    })
-  };
+    });
+  }
 
 
   openModal(modal, e) {
