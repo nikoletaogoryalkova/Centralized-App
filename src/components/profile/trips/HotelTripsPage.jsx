@@ -1,20 +1,20 @@
-import { cancelTrip, getMyHotelBookings, getCurrentlyLoggedUserJsonFile, cancelBooking } from '../../../requester';
-import { Config } from '../../../config';
+import {cancelTrip, getMyHotelBookings, getCurrentlyLoggedUserJsonFile, cancelBooking} from '../../../requester';
+import {Config} from '../../../config';
 import CancellationModal from '../../common/modals/CancellationModal';
 import Pagination from '../../common/pagination/Pagination';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import HotelTripsTable from './HotelTripsTable';
-import { NotificationManager } from 'react-notifications';
+import {NotificationManager} from 'react-notifications';
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
 import React from 'react';
 import PasswordModal from '../../common/modals/PasswordModal';
-import { connect } from 'react-redux';
-import { PASSWORD_PROMPT } from '../../../constants/modals.js';
-import { openModal, closeModal } from '../../../actions/modalsInfo.js';
-import { HotelReservation } from '../../../services/blockchain/hotelReservation';
+import {connect} from 'react-redux';
+import {PASSWORD_PROMPT} from '../../../constants/modals.js';
+import {openModal, closeModal} from '../../../actions/modalsInfo.js';
+import {HotelReservation} from '../../../services/blockchain/hotelReservation';
 
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 class HotelTripsPage extends React.Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class HotelTripsPage extends React.Component {
       }
     }
     getMyHotelBookings('?page=0').then((data) => {
-      this.setState({ trips: data.content, totalTrips: data.totalElements, loading: false, currentTripId: id });
+      this.setState({trips: data.content, totalTrips: data.totalElements, loading: false, currentTripId: id});
       if (id) {
         NotificationManager.success('Booking Request Sent Successfully, your host will get back to you with additional questions.', 'Reservation Operations');
       }
@@ -78,33 +78,41 @@ class HotelTripsPage extends React.Component {
   }
 
   handleCancelTrip() {
-    getCurrentlyLoggedUserJsonFile().then((json) => {
-      console.log(json);
-      console.log(this.state.bookingPrepareId);
-      console.log(this.state.password);
+    let bookingForCancellation = {};
+    bookingForCancellation.bookingId = this.state.bookingPrepareId;
+    console.log(bookingForCancellation);
+    cancelBooking(bookingForCancellation).then(res => {
+      console.log(res);
+      if (res.success === true) {
+        getCurrentlyLoggedUserJsonFile().then((json) => {
+          // console.log(json);
+          console.log(this.state.bookingPrepareId);
+          // console.log(this.state.password);
 
-      cancelBooking().then(res => {
-        // TODO;
-      });
 
-      NotificationManager.info('Your reservation is being cancelled...', 'Transactions', 10000);
-      this.closeModal(PASSWORD_PROMPT);
+          NotificationManager.info('Your reservation is being cancelled...', 'Transactions', 10000);
+          this.closeModal(PASSWORD_PROMPT);
 
-      HotelReservation.cancelReservation(json.jsonFile, this.state.password, this.state.bookingPrepareId).then(response => {
-        console.log(response);
-      }).catch(error => {
-        if (error.hasOwnProperty('message')) {
-          NotificationManager.warning(error.message, 'Cancel Reservation');
-        } else if (error.hasOwnProperty('err') && error.err.hasOwnProperty('message')) {
-          NotificationManager.warning(error.err.message, 'Cancel Reservation');
-        } else if (typeof x === 'string') {
-          NotificationManager.warning(error, 'Cancel Reservation');
-        } else {
-          NotificationManager.warning(error);
-        }
+          HotelReservation.cancelReservation(json.jsonFile, this.state.password, this.state.bookingPrepareId.toString()).then(response => {
+            // console.log(response);
+          }).catch(error => {
+            if (error.hasOwnProperty('message')) {
+              NotificationManager.warning(error.message, 'Cancel Reservation');
+            } else if (error.hasOwnProperty('err') && error.err.hasOwnProperty('message')) {
+              NotificationManager.warning(error.err.message, 'Cancel Reservation');
+            } else if (typeof x === 'string') {
+              NotificationManager.warning(error, 'Cancel Reservation');
+            } else {
+              NotificationManager.warning(error);
+            }
 
+            this.closeModal(PASSWORD_PROMPT);
+          });
+        });
+      } else {
+        NotificationManager.warning('We cannot cancel your reservation');
         this.closeModal(PASSWORD_PROMPT);
-      });
+      }
     });
   }
 
@@ -115,12 +123,12 @@ class HotelTripsPage extends React.Component {
       }
       return trip;
     });
-    this.setState({ trips: trips });
+    this.setState({trips: trips});
   }
 
   onPageChange(page) {
     window.scrollTo(0, 0);
-    this.setState({ currentPage: page, loading: true }, () => {
+    this.setState({currentPage: page, loading: true}, () => {
       getMyHotelBookings(`?page=${page - 1}`).then(data => {
         this.setState({
           trips: data.content,
@@ -132,11 +140,11 @@ class HotelTripsPage extends React.Component {
   }
 
   onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({[e.target.name]: e.target.value});
   }
 
   onTripSelect(bookingPrepareId) {
-    this.setState({ bookingPrepareId });
+    this.setState({bookingPrepareId});
   }
 
   render() {
@@ -149,7 +157,7 @@ class HotelTripsPage extends React.Component {
         <section id="profile-my-reservations">
           <div>
             <h2>Upcoming Trips ({this.state.totalTrips})</h2>
-            <hr />
+            <hr/>
 
             <HotelTripsTable
               trips={this.state.trips}
@@ -201,7 +209,7 @@ HotelTripsPage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { modalsInfo } = state;
+  const {modalsInfo} = state;
   return {
     modalsInfo,
   };
