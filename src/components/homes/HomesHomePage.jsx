@@ -3,9 +3,7 @@ import { getListings, getCountries } from '../../requester';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-import HomesSearchBar from './search/HomesSearchBar';
 import PopularListingsCarousel from '../common/listing/PopularListingsCarousel';
-import ListingTypeNav from '../common/listingTypeNav/ListingTypeNav';
 import PropTypes from 'prop-types';
 import HomesHeroComponent from './HomesHeroComponent';
 

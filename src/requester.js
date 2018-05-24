@@ -381,6 +381,7 @@ export async function postRecoveryEmail(email, captchaToken) {
  *
  * @param {String} token
  */
+// eslint-disable-next-line linebreak-style
 export async function sendRecoveryToken(token) {
   return sendRequest(`${host}users/resetPassword/confirm?token=${token}`, RequestMethod.GET).then(res => {
     return {
@@ -390,7 +391,7 @@ export async function sendRecoveryToken(token) {
 }
 
 /**
- * 
+ *
  * Object should contain password and token
  * @param {obj} postObj
  */
@@ -520,6 +521,11 @@ export async function getUserAirdropInfo() {
 
 export async function verifyUserAirdropInfo(token) {
   return sendRequest(`${host}airdrop/participate/${token}`, RequestMethod.POST).then(res => {
+    return res.response.json();
+  });
+}
+export async function getCancellationFees(bookingId) {
+  return sendRequest(`${host}api/hotels/booking/${bookingId}/cancellationFee`, RequestMethod.GET).then(res => {
     return res.response.json();
   });
 }
