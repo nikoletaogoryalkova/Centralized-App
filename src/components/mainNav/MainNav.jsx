@@ -17,6 +17,7 @@ import { Config } from '../../config';
 import { Wallet } from '../../services/blockchain/wallet.js';
 import { setIsLogged, setUserInfo } from '../../actions/userInfo';
 import { openModal, closeModal } from '../../actions/modalsInfo';
+import { setAirdropInfo } from '../../actions/airdropInfo';
 
 import {
   getCountOfUnreadMessages,
@@ -26,6 +27,9 @@ import {
   register,
   getUserInfo,
   sendRecoveryToken,
+  getUserAirdropInfo,
+  verifyUserAirdropInfo,
+  checkIfAirdropUserExists
 } from '../../requester';
 
 import {
@@ -176,6 +180,10 @@ class MainNav extends React.Component {
 
           this.setUserInfo();
           this.closeModal(LOGIN);
+
+          if (this.props.location.pathname.indexOf('/airdrop') !== -1) {
+            this.handleAirdropUser();
+          }
         });
       } else {
         res.response.then(res => {
@@ -201,6 +209,45 @@ class MainNav extends React.Component {
         });
       }
     });
+  }
+
+  handleAirdropUser() {
+    getUserAirdropInfo().then(json => {
+      console.log(json)
+      if (json.participates) {
+        this.dispatchAirdropInfo(json);
+      } else {
+        console.log('user not yet moved from temp to main')
+        const token = this.props.location.search.split('=')[1];
+        checkIfAirdropUserExists(token).then(user => {
+          const currentEmail = localStorage[Config.getValue('domainPrefix') + '.auth.username'];
+          if (user.email === currentEmail && user.exists) {
+            console.log('users match')
+            verifyUserAirdropInfo(token).then(() => {
+              console.log('user moved from temp to main')
+              getUserAirdropInfo().then(json => {
+                this.dispatchAirdropInfo(json);
+              });
+            });
+          } else {
+            console.log('users dont match', user.email, currentEmail)
+          }
+        });
+      }
+    }).catch(e => {
+      NotificationManager.warning('No airdrop information about this profile');
+      this.props.history.push('/airdrop');
+    });
+  }
+
+  dispatchAirdropInfo(info) {
+    const email = info.user;
+    const facebookProfile = info.facebookProfile;
+    const telegramProfile = info.telegramProfile;
+    const twitterProfile = info.twitterProfile;
+    const redditProfile = info.redditProfile;
+    this.props.dispatch(setAirdropInfo(email, facebookProfile, telegramProfile, twitterProfile, redditProfile));
+    console.log('user info dispatched')
   }
 
   clearLocalStorage() {
@@ -391,10 +438,11 @@ class MainNav extends React.Component {
 export default withRouter(connect(mapStateToProps)(MainNav));
 
 function mapStateToProps(state) {
-  const { userInfo, modalsInfo } = state;
+  const { userInfo, modalsInfo, airdropInfo } = state;
   return {
     userInfo,
-    modalsInfo
+    modalsInfo,
+    airdropInfo
   };
 }
 

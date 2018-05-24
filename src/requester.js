@@ -505,3 +505,21 @@ export async function getMyHotelBookings(searchTerm, size = 10) {
     return res.response.json();
   });
 }
+
+export async function checkIfAirdropUserExists(token) {
+  return sendRequest(`${host}userExists/${token}`, RequestMethod.GET).then(res => {
+    return res.response.json();
+  });
+}
+
+export async function getUserAirdropInfo() {
+  return sendRequest(`${host}airdrop`, RequestMethod.GET).then(res => {
+    return res.response.json();
+  });
+}
+
+export async function verifyUserAirdropInfo(token) {
+  return sendRequest(`${host}airdrop/participate/${token}`, RequestMethod.POST).then(res => {
+    return res.response.json();
+  });
+}

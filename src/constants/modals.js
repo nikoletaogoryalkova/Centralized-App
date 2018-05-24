@@ -1,4 +1,5 @@
 export const LOGIN = 'SHOW_LOGIN';
+export const AIRDROP_LOGIN = 'SHOW_AIRDROP_LOGIN';
 export const REGISTER = 'SHOW_REGISTER';
 export const CREATE_WALLET = 'SHOW_CREATE_WALLET';
 export const SAVE_WALLET = 'SHOW_SAVE_WALLET';

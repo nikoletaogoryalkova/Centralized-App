@@ -16,3 +16,8 @@ export const modalsInfo = {
   OPEN_MODAL: 'OPEN_MODAL',
   CLOSE_MODAL: 'CLOSE_MODAL',
 };
+
+// airdrop action
+export const airdropInfo = {
+  SET_AIRDROP_INFO: 'SET_AIRDROP_INFO'
+};

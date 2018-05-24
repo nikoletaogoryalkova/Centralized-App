@@ -52,7 +52,7 @@ function HotelTripsTable(props) {
               <div className="col-md-2" >
                 {/* {trip.accepted ? */}
                 {/* <div style={{ display: 'none' }} >Reservation is accepted and can&#39;t be undone</div> : */}
-                {/* <div><button type="submit" onClick={e => { e.preventDefault(); props.onTripSelect(trip.id); props.handleCancelReservation(); }}>Cancel Trip</button></div> */}
+                <div><button type="submit" onClick={e => { e.preventDefault(); props.onTripSelect(trip.id); props.handleCancelReservation(); }}>Cancel Trip</button></div>
                 {/* } */}
               </div>
               <div className="col-md-2">
