@@ -7,6 +7,9 @@ import { openModal, closeModal } from '../../../actions/modalsInfo';
 import { Config } from '../../../config';
 import { setAirdropInfo } from '../../../actions/airdropInfo';
 import { NotificationManager } from 'react-notifications';
+import NavProfile from '../NavProfile';
+
+import '../../../styles/css/components/profile/airdrop-page.css';
 
 import {
   LOGIN,
@@ -164,20 +167,60 @@ class AirdropPage extends Component {
 
     return (
       <div>
-        <div>
-          Email: {this.props.airdropInfo.email}
-        </div>
-        <div>
-          Facebook: {this.props.airdropInfo.facebookProfile}
-        </div>
-        <div>
-          Twitter: {this.props.airdropInfo.twitterProfile}
-        </div>
-        <div>
-          Reddit: {this.props.airdropInfo.redditProfile}
-        </div>
-        <div>
-          telegram: {this.props.airdropInfo.telegramProfile}
+        <NavProfile />
+        <div className="container">
+          <div id="airdrop-main">
+            <h4>Personal Dashboard</h4>
+            <p>You can view your current status, the number of people you have referred, as well as your unique Referral Link.</p>
+            <p>Every Person who joins our airdrop via your unique referral link, will generate $5 for you! <span className="emphasized-text">Make sure you refer as much friends and family as you can!</span></p>
+
+            <div className="balance-info">
+              <div className="balance-row">
+                <div className="balance-row__label"><span className="emphasized-text">Current Balance</span></div>
+                <div className="balance-row__content">$515</div>
+              </div>
+
+              <div className="balance-row">
+                <div className="balance-row__label"><span className="emphasized-text">Your Referral URL</span></div>
+                <div className="balance-row__content"><span className="referral-url">https://locktrip.com/airdrop/562418</span></div>
+                <button className="referral-url-copy">Copy to Clipboard</button>
+              </div>
+
+              <div className="balance-row">
+                <div className="balance-row__label"><span className="emphasized-text">Number of Referred People</span></div>
+                <div className="balance-row__content">101</div>
+              </div>
+            </div>
+
+            <div className="airdrop-info">
+              <div className="airdrop-info__header">Airdrop Program</div>
+              <div className="airdrop-info__content">
+                <div className="airdrop-row email"><span className="step-check checked"></span><span className="airdrop-row__heading">Email Signup - Completed</span></div>
+                <hr/>
+                <div className="airdrop-row"><span className="step-check checked"></span><span className="airdrop-row__heading">Telegram Join</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this thep to be eligible to claim your tokens.</div>
+                <div className="airdrop-row"><span className="step-check checked"></span><span className="airdrop-row__heading">Twitter Follow</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this thep to be eligible to claim your tokens.</div>
+                <div className="airdrop-row"><span className="step-check unchecked"></span><span className="airdrop-row__heading">Twitter Share</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this thep to be eligible to claim your tokens.</div>
+                <hr/>
+                <div className="airdrop-row final"><span className="step-check unchecked"></span><span className="airdrop-row__heading">Final Step</span></div>
+              </div>
+            </div>
+
+            {/* <div>
+              Email: {this.props.airdropInfo.email}
+            </div>
+            <div>
+              Facebook: {this.props.airdropInfo.facebookProfile}
+            </div>
+            <div>
+              Twitter: {this.props.airdropInfo.twitterProfile}
+            </div>
+            <div>
+              Reddit: {this.props.airdropInfo.redditProfile}
+            </div>
+            <div>
+              telegram: {this.props.airdropInfo.telegramProfile}
+            </div> */}
+          </div>
         </div>
       </div>
     );

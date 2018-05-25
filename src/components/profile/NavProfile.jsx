@@ -38,6 +38,7 @@ export default class NavProfile extends React.Component {
             <li><NavLink activeClassName="active" to="/profile/messages">Messages</NavLink></li>
             <li><NavLink activeClassName="active" to="/profile/me/edit">Profile</NavLink></li>
             <li><NavLink activeClassName="active" to="/profile/wallet">Wallet</NavLink></li>
+            <li><NavLink activeClassName="active" to="/airdrop">Airdrop</NavLink></li>
             {this.isAdmin() && <li><NavLink activeClassName="active" to="/profile/admin/listings">All Listings</NavLink></li>}
           </ul>
         </div>
