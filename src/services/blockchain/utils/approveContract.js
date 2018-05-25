@@ -16,5 +16,6 @@ export async function approveContract(
 		gasPrice: gasPrice
 	};
 	const approve = await locContract.approve(contractAddressToApprove, amount, overrideOptions);
-	return approve;
+
+	return wallet.provider.waitForTransaction(approve.hash);
 }
