@@ -17,5 +17,5 @@ export async function approveContract(
 	};
 	const approve = await locContract.approve(contractAddressToApprove, amount, overrideOptions);
 
-	return wallet.provider.waitForTransaction(approve.hash);
+	return await wallet.provider.waitForTransaction(approve.hash);
 }
