@@ -91,6 +91,10 @@ $padding-sm: 15px 10px;
         border-radius: 3px;
         color: $white;
         background: $light-cyan;
+
+        // @include media(">=desktop") {
+        //   right: 30px;
+        // }
       }
     }
   }
@@ -119,61 +123,92 @@ $padding-sm: 15px 10px;
       .airdrop-row {
         padding: 10px 0;
         position: relative;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
 
-        .airdrop-row__heading {
-          font-size: 1.2em;
-          font-weight: 400;
+        .description {
+          font-size: 1em;
+          padding: 5px 0;
+
+          .airdrop-row__heading {
+            font-size: 1.2em;
+            font-weight: 400;
+          }
+  
+          .step-check {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            position: relative;
+            background: $moderate-red;
+            border-radius: 50%;
+            margin-right: 10px;
+            top: 6px;
+          }
+  
+          .step-check.checked:before {
+            font-size: 0.5em;
+            padding: 5px;
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            font-family: FontAwesome;
+            color: $white;
+            content: "\f00c";
+          }
+  
+          .step-check.unchecked {
+            opacity: 0.5;
+          }
+  
+          .step-check.unchecked:before {
+            font-size: 0.5em;
+            padding: 5px;
+            position: absolute;
+            left: 7px;
+            top: 6px;
+            font-family: FontAwesome;
+            color: $white;
+            content: "\f00d";
+          }
+  
+          .icon-arrow-right {
+            font-size: 0.7em;
+          }
+  
+          a {
+            color: $moderate-red;
+          }
         }
 
-        .step-check {
-          width: 30px;
-          height: 30px;
-          display: inline-block;
-          position: relative;
-          background: $moderate-red;
-          border-radius: 50%;
-          margin-right: 10px;
-          top: 6px;
+        .airdrop-profile-edit {
+          padding-top: 10px;
+          display: flex;
+          flex-grow: 2;
+          justify-content: space-between;
+
+          @include media(">=tablet") {
+            display: inline-flex;
+            flex: 0 0 300px;
+          }
+
+          input {
+            flex-grow: 2;
+          }
+
+          button {
+            flex-grow: 1;
+            font-size: 1em;
+            padding: 5px 20px;
+            margin-left: 10px;
+          }
         }
 
-        .step-check.checked:before {
-          font-size: 0.5em;
-          padding: 5px;
-          position: absolute;
-          left: 6px;
-          top: 6px;
-          font-family: FontAwesome;
-          color: $white;
-          content: "\f00c";
+        .email, .final {
+          padding: 0;
+          padding-bottom: 10px;
         }
-
-        .step-check.unchecked {
-          opacity: 0.5;
-        }
-
-        .step-check.unchecked:before {
-          font-size: 0.5em;
-          padding: 5px;
-          position: absolute;
-          left: 6px;
-          top: 6px;
-          font-family: FontAwesome;
-          color: $white;
-          content: "\f00d";
-        }
-
-        .icon-arrow-right {
-          font-size: 0.7em;
-        }
-
-        a {
-          color: $moderate-red;
-        }
-      }
-
-      .email, .final {
-        padding: 0;
-        padding-bottom: 10px;
       }
     }
   }

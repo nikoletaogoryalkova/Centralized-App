@@ -8,6 +8,7 @@ import { Config } from '../../../config';
 import { setAirdropInfo } from '../../../actions/airdropInfo';
 import { NotificationManager } from 'react-notifications';
 import NavProfile from '../NavProfile';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import '../../../styles/css/components/profile/airdrop-page.css';
 
@@ -32,6 +33,8 @@ class AirdropPage extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.isUserLogged = this.isUserLogged.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -160,6 +163,15 @@ class AirdropPage extends Component {
     this.props.dispatch(setAirdropInfo(email, facebookProfile, telegramProfile, twitterProfile, redditProfile));
   }
 
+  handleEdit(media, e) {
+    e.preventDefault();
+    this.setState({ [media + 'Edit']: true });
+  }
+
+  handleEditSubmit(media) {
+    this.setState({ [media + 'Edit']: false });
+  }
+
   render() {
     if (!this.isUserLogged()) {
       return (<div>You must be logged to view this page</div>);
@@ -183,7 +195,7 @@ class AirdropPage extends Component {
               <div className="balance-row">
                 <div className="balance-row__label"><span className="emphasized-text">Your Referral URL</span></div>
                 <div className="balance-row__content"><span className="referral-url">https://locktrip.com/airdrop/562418</span></div>
-                <button className="referral-url-copy">Copy to Clipboard</button>
+                <CopyToClipboard text={'fasdf'} onCopy={() => { NotificationManager.info('Copied to clipboard'); }}><button className="referral-url-copy">Copy to Clipboard</button></CopyToClipboard>
               </div>
 
               <div className="balance-row">
@@ -195,13 +207,54 @@ class AirdropPage extends Component {
             <div className="airdrop-info">
               <div className="airdrop-info__header">Airdrop Program</div>
               <div className="airdrop-info__content">
-                <div className="airdrop-row email"><span className="step-check checked"></span><span className="airdrop-row__heading">Email Signup - Completed</span></div>
-                <hr/>
-                <div className="airdrop-row"><span className="step-check checked"></span><span className="airdrop-row__heading">Telegram Join</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this thep to be eligible to claim your tokens.</div>
-                <div className="airdrop-row"><span className="step-check checked"></span><span className="airdrop-row__heading">Twitter Follow</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this thep to be eligible to claim your tokens.</div>
-                <div className="airdrop-row"><span className="step-check unchecked"></span><span className="airdrop-row__heading">Twitter Share</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this thep to be eligible to claim your tokens.</div>
-                <hr/>
-                <div className="airdrop-row final"><span className="step-check unchecked"></span><span className="airdrop-row__heading">Final Step</span></div>
+                <div className="airdrop-row email">
+                  <div className="description">
+                    <span className="step-check checked"></span><span className="airdrop-row__heading">Email Signup - Completed</span>
+                  </div>
+                </div>
+                <hr />
+                <div className="airdrop-row">
+                  <div className="description">
+                    <span className="step-check checked"></span>
+                    <span className="airdrop-row__heading">Telegram Join</span>&nbsp;
+                    <span className="icon-arrow-right"></span> Please click <a href="#" onClick={(e) => { this.handleEdit('telegram', e); }}>here</a> to complete this step to be eligible to claim your tokens.
+                  </div>
+                  {this.state.telegramEdit &&
+                    <div className="airdrop-profile-edit">
+                      <input type="text" placeholder="Telegram Profile" />
+                      <button className="btn" onClick={() => this.handleEditSubmit('telegram')}>Submit</button>
+                    </div>
+                  }
+                </div>
+                <div className="airdrop-row">
+                  <div className="description">
+                    <span className="step-check checked"></span><span className="airdrop-row__heading">Twitter Follow</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this step to be eligible to claim your tokens.
+                  </div>
+                  <div className="airdrop-profile-edit">
+                    <input type="text" placeholder="Twitter Profile" />
+                    <button className="btn">Submit</button>
+                  </div>
+                </div>
+                <div className="airdrop-row">
+                  <div className="description">
+                    <span className="step-check unchecked"></span><span className="airdrop-row__heading">Twitter Share</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this step to be eligible to claim your tokens.
+                  </div>
+                </div>
+                <div className="airdrop-row">
+                  <div className="description">
+                    <span className="step-check unchecked"></span><span className="airdrop-row__heading">Facebook Like</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this step to be eligible to claim your tokens.
+                  </div>
+                  <div className="airdrop-profile-edit">
+                    <input type="text" placeholder="Facebook Profile" />
+                    <button className="btn">Submit</button>
+                  </div>
+                </div>
+                <hr />
+                <div className="airdrop-row final">
+                  <div className="description">
+                    <span className="step-check unchecked"></span><span className="airdrop-row__heading">Final Step</span>
+                  </div>
+                </div>
               </div>
             </div>
 
