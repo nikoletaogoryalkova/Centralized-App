@@ -256,7 +256,7 @@ class HotelBookingConfirmPage extends React.Component {
 
             console.log(bookingConfirmObj);
             confirmBooking(bookingConfirmObj).then(() => {
-              NotificationManager.success('You will receive a confirmation message');
+              NotificationManager.success('LOC Payment has been initiated. We will send you a confirmation message once it has been processed by the Blockchain.');
               setTimeout(() => {
                 this.props.history.push('/profile/trips/hotels');
               }, 2000);
@@ -285,7 +285,7 @@ class HotelBookingConfirmPage extends React.Component {
 
       //       console.log(bookingConfirmObj);
       //       confirmBooking(bookingConfirmObj).then(() => {
-      //         NotificationManager.success('You will receive a confirmation message');
+      //         NotificationManager.success('LOC Payment has been initiated. We will send you a confirmation message once it has been processed by the Blockchain.');
       //         setTimeout(() => {
       //           this.props.history.push('/profile/trips/hotels');
       //         }, 2000);
