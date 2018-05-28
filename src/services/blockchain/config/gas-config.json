@@ -33,7 +33,7 @@
   "owner": {
     "setMaxBookingPeriod": 57000
   },
-  "MIN_TIMES_GAS_AMOUNT": 2,
-  "TIMES_GAS_AMOUNT": 5
+  "MIN_TIMES_GAS_AMOUNT": 1,
+  "TIMES_GAS_AMOUNT": 1
 
 }
