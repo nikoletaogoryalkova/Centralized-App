@@ -6,6 +6,7 @@ const initialState = {
   telegramProfile: null,
   twitterProfile: null,
   redditProfile: null,
+  participates: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -18,6 +19,9 @@ export default function reducer(state = initialState, action) {
         telegramProfile: action.telegramProfile,
         twitterProfile: action.twitterProfile,
         redditProfile: action.redditProfile,
+        refLink: action.refLink,
+        participates: action.participates,
+        isVerifyEmail: action.isVerifyEmail
       };
     default:
       return state;

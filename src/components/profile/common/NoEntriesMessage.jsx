@@ -6,6 +6,7 @@ export default function NoEntriesMessage(props) {
   return (
     <div className="no-entries-message">
       <h4>{props.text}</h4>
+      {props.children}
     </div>
   );
 }

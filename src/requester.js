@@ -524,8 +524,21 @@ export async function verifyUserAirdropInfo(token) {
     return res.response.json();
   });
 }
+
 export async function getCancellationFees(bookingId) {
   return sendRequest(`${host}api/hotels/booking/${bookingId}/cancellationFee`, RequestMethod.GET).then(res => {
+    return res.response.json();
+  });
+}
+
+export async function saveAirdropSocialProfile(media, profile) {
+  return sendRequest(`${host}me/social/${media}`, RequestMethod.POST, profile).then(res => {
+    return res.response.json();
+  });
+}
+
+export async function verifyUserEmail(search) {
+  return sendRequest(`${host}airdrop/verifyEmail${search}`, RequestMethod.GET).then(res => {
     return res.response.json();
   });
 }

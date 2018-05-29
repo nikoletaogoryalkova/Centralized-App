@@ -246,7 +246,10 @@ class MainNav extends React.Component {
     const telegramProfile = info.telegramProfile;
     const twitterProfile = info.twitterProfile;
     const redditProfile = info.redditProfile;
-    this.props.dispatch(setAirdropInfo(email, facebookProfile, telegramProfile, twitterProfile, redditProfile));
+    const refLink = info.refLink;
+    const participates = info.participates;
+    const isVerifyEmail = info.isVerifyEmail;
+    this.props.dispatch(setAirdropInfo(email, facebookProfile, telegramProfile, twitterProfile, redditProfile, refLink, participates, isVerifyEmail));
     console.log('user info dispatched')
   }
 
@@ -419,7 +422,8 @@ class MainNav extends React.Component {
                     <MenuItem componentClass={Link} href="/profile/trips" to="/profile/trips">My Trips</MenuItem>
                     <MenuItem componentClass={Link} href="/profile/reservations" to="/profile/reservations">My Guests</MenuItem>
                     <MenuItem componentClass={Link} href="/profile/me/edit" to="/profile/me/edit">Profile</MenuItem>
-                    <MenuItem componentClass={Link} href="/" to="/" onClick={this.logout}>Logout<img src={Config.getValue('basePath') + 'images/icon-dropdown/icon-logout.png'} style={{ top: 25 + 'px' }} alt="logout" /></MenuItem>
+                    <MenuItem componentClass={Link} href="/airdrop" to="/airdrop">Airdrop</MenuItem>
+                    <MenuItem componentClass={Link} href="/" to="/" onClick={this.logout}>Logout</MenuItem>
                   </NavDropdown>
                 </Nav>
                 : <Nav pullRight={true}>

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { checkIfAirdropUserExists, getUserAirdropInfo, verifyUserAirdropInfo } from '../../../requester';
+import { 
+  checkIfAirdropUserExists, 
+  getUserAirdropInfo, 
+  verifyUserAirdropInfo, 
+  saveAirdropSocialProfile,
+  verifyUserEmail
+} from '../../../requester';
 import { connect } from 'react-redux';
 import { setIsLogged } from '../../../actions/userInfo';
 import { openModal, closeModal } from '../../../actions/modalsInfo';
@@ -9,6 +15,7 @@ import { setAirdropInfo } from '../../../actions/airdropInfo';
 import { NotificationManager } from 'react-notifications';
 import NavProfile from '../NavProfile';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import NoEntriesMessage from '../common/NoEntriesMessage';
 
 import '../../../styles/css/components/profile/airdrop-page.css';
 
@@ -27,7 +34,9 @@ class AirdropPage extends Component {
       didPostUserInfo: false,
       loginEmail: '',
       loginPassword: '',
-      token: null
+      token: null,
+      userParticipates: false,
+      loading: true,
     };
 
     this.openModal = this.openModal.bind(this);
@@ -35,16 +44,32 @@ class AirdropPage extends Component {
     this.isUserLogged = this.isUserLogged.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    if (this.props.location.search) {
+  componentWillMount() {
+    if (this.props.location.search && this.props.location.search.indexOf('emailtoken') !== -1) {
+      console.log(this.props.location.search)
+      verifyUserEmail(this.props.location.search).then(() => {
+        getUserAirdropInfo().then(json => {
+          this.dispatchAirdropInfo(json);
+        });
+      });
+    } else if (this.props.location.search && this.props.location.search.indexOf('airdroptoken') !== -1) {
       const token = this.props.location.search.split('=')[1];
       this.handleAirdropUser(token);
     } else if (this.isUserLogged()) {
       getUserAirdropInfo().then(json => {
         this.dispatchAirdropInfo(json);
       });
+    } else {
+      this.setState({ loading: false });
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.airdropInfo.participates) {
+      this.setState({ userParticipates: true });
     }
   }
 
@@ -160,21 +185,74 @@ class AirdropPage extends Component {
     const telegramProfile = info.telegramProfile;
     const twitterProfile = info.twitterProfile;
     const redditProfile = info.redditProfile;
-    this.props.dispatch(setAirdropInfo(email, facebookProfile, telegramProfile, twitterProfile, redditProfile));
+    const refLink = info.refLink;
+    const participates = info.participates;
+    const isVerifyEmail = info.isVerifyEmail;
+    this.props.dispatch(setAirdropInfo(email, facebookProfile, telegramProfile, twitterProfile, redditProfile, refLink, participates, isVerifyEmail));
+    this.setState({ loading: false });
   }
 
   handleEdit(media, e) {
     e.preventDefault();
-    this.setState({ [media + 'Edit']: true });
+    this.setState({ 
+      [media + 'Edit']: true,
+      [media + 'Profile']: this.props.airdropInfo[media + 'Profile'] 
+    });
   }
 
   handleEditSubmit(media) {
-    this.setState({ [media + 'Edit']: false });
+    this.setState({ [media + 'Edit']: false }, () => {
+      const profileName = this.state[media + 'Profile'];
+      if (profileName) {
+        const profile = { social: profileName };
+        saveAirdropSocialProfile(media, profile).then(() => {
+          getUserAirdropInfo().then(json => {
+            this.dispatchAirdropInfo(json);
+          });
+        });
+        NotificationManager.info('Profile saved.');
+      } else {
+        NotificationManager.info('Profile cannot be empty.');
+      }
+    });
   }
 
+  handleResendVerificationEmail(e) {
+    e.preventDefault();
+    NotificationManager.info('Verification email has been sent.');
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  } 
+
   render() {
+    // if (this.state.loading) {
+    //   return <div className="loader"></div>;
+    // }
+
     if (!this.isUserLogged()) {
-      return (<div>You must be logged to view this page</div>);
+      return (
+        <div className="container">
+          <NoEntriesMessage text='Log in or participate in our airdrop campaign.'>
+            <a href="#" className="btn" onClick={(e) => this.openModal(LOGIN, e)}>Log in</a>
+            <a href="https://locktrip.com/airdrop" className="btn">Participate</a>
+          </NoEntriesMessage>
+        </div>
+      );
+    }
+
+    if (!this.props.airdropInfo.participates) {
+      return (
+        <div>
+          <NavProfile />
+          <div className="container">
+            <NoEntriesMessage text='Participate in our airdrop campaign.'>
+              <a href="https://locktrip.com/airdrop" className="btn">Participate</a>
+            </NoEntriesMessage>
+          </div>
+        </div>
+      );
     }
 
     return (
@@ -184,24 +262,24 @@ class AirdropPage extends Component {
           <div id="airdrop-main">
             <h4>Personal Dashboard</h4>
             <p>You can view your current status, the number of people you have referred, as well as your unique Referral Link.</p>
-            <p>Every Person who joins our airdrop via your unique referral link, will generate $5 for you! <span className="emphasized-text">Make sure you refer as much friends and family as you can!</span></p>
+            <p>Every Person who completes our airdrop via your unique referral link, will generate $5 for you! <span className="emphasized-text">Make sure you refer as much friends and family as you can!</span></p>
 
             <div className="balance-info">
               <div className="balance-row">
                 <div className="balance-row__label"><span className="emphasized-text">Current Balance</span></div>
-                <div className="balance-row__content">$515</div>
+                <div className="balance-row__content">$0</div>
               </div>
 
               <div className="balance-row">
                 <div className="balance-row__label"><span className="emphasized-text">Your Referral URL</span></div>
-                <div className="balance-row__content"><span className="referral-url">https://locktrip.com/airdrop/562418</span></div>
-                <CopyToClipboard text={'fasdf'} onCopy={() => { NotificationManager.info('Copied to clipboard'); }}><button className="referral-url-copy">Copy to Clipboard</button></CopyToClipboard>
+                <div className="balance-row__content"><span className="referral-url">{this.props.airdropInfo.refLink}</span></div>
+                <CopyToClipboard text={this.props.airdropInfo.refLink} onCopy={() => { NotificationManager.info('Copied to clipboard.'); }}><button className="referral-url-copy">Copy to Clipboard</button></CopyToClipboard>
               </div>
 
-              <div className="balance-row">
+              {/* <div className="balance-row">
                 <div className="balance-row__label"><span className="emphasized-text">Number of Referred People</span></div>
                 <div className="balance-row__content">101</div>
-              </div>
+              </div> */}
             </div>
 
             <div className="airdrop-info">
@@ -209,45 +287,74 @@ class AirdropPage extends Component {
               <div className="airdrop-info__content">
                 <div className="airdrop-row email">
                   <div className="description">
-                    <span className="step-check checked"></span><span className="airdrop-row__heading">Email Signup - Completed</span>
+                    {this.props.airdropInfo.isVerifyEmail 
+                      ? <div><span className="step-check checked"></span><span className="airdrop-row__heading">Email Signup - Completed</span></div>
+                      : <div><span className="step-check unchecked"></span><span className="airdrop-row__heading">Email Signup - Not yet verified. <a href="#" onClick={this.handleResendVerificationEmail}>Resend verification email</a>.</span></div>
+                    }
                   </div>
                 </div>
                 <hr />
                 <div className="airdrop-row">
                   <div className="description">
-                    <span className="step-check checked"></span>
+                    <span className="step-check unchecked"></span>
                     <span className="airdrop-row__heading">Telegram Join</span>&nbsp;
-                    <span className="icon-arrow-right"></span> Please click <a href="#" onClick={(e) => { this.handleEdit('telegram', e); }}>here</a> to complete this step to be eligible to claim your tokens.
+                    <span className="icon-arrow-right"></span>&nbsp;
+                    {this.props.airdropInfo.telegramProfile
+                      ? <span>Social media activity for <span className="profile-name">{this.props.airdropInfo.telegramProfile}</span> is being verified. You can still <a href="#" onClick={(e) => { this.handleEdit('telegram', e); }}>change</a> your profile.</span>
+                      : <span>Please click <a href="#" onClick={(e) => { this.handleEdit('telegram', e); }}>here</a> to complete this step and be eligible to claim your tokens.</span>
+                    }
                   </div>
                   {this.state.telegramEdit &&
                     <div className="airdrop-profile-edit">
-                      <input type="text" placeholder="Telegram Profile" />
-                      <button className="btn" onClick={() => this.handleEditSubmit('telegram')}>Submit</button>
+                      <input type="text" placeholder="Telegram Profile" name="telegramProfile" value={this.state.telegramProfile} onChange={this.onChange} />
+                      <button className="btn" onClick={() => this.handleEditSubmit('telegram')}>Save</button>
                     </div>
                   }
                 </div>
                 <div className="airdrop-row">
                   <div className="description">
-                    <span className="step-check checked"></span><span className="airdrop-row__heading">Twitter Follow</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this step to be eligible to claim your tokens.
+                    <span className="step-check unchecked"></span>
+                    <span className="airdrop-row__heading">Twitter Follow</span>&nbsp;
+                    <span className="icon-arrow-right"></span>&nbsp;
+                    {this.props.airdropInfo.twitterProfile
+                      ? <span>Social media activity for <span className="profile-name">{this.props.airdropInfo.twitterProfile}</span> is being verified. You can still <a href="#" onClick={(e) => { this.handleEdit('twitter', e); }}>change</a> your profile.</span>
+                      : <span>Please click <a href="#" onClick={(e) => { this.handleEdit('twitter', e); }}>here</a> to complete this step and be eligible to claim your tokens.</span>
+                    }
                   </div>
-                  <div className="airdrop-profile-edit">
-                    <input type="text" placeholder="Twitter Profile" />
-                    <button className="btn">Submit</button>
+                  {this.state.twitterEdit &&
+                    <div className="airdrop-profile-edit">
+                      <input type="text" placeholder="Twitter Profile" name="twitterProfile" value={this.state.twitterProfile} onChange={this.onChange} />
+                      <button className="btn" onClick={() => this.handleEditSubmit('twitter')}>Save</button>
+                    </div>
+                  }
+                </div>
+                <div className="airdrop-row">
+                  <div className="description">
+                    <span className="step-check unchecked"></span>
+                    <span className="airdrop-row__heading">Twitter Share</span>&nbsp;
+                    <span className="icon-arrow-right"></span>&nbsp;
+                    {this.props.airdropInfo.twitterProfile
+                      ? <span>Social media activity for <span className="profile-name">{this.props.airdropInfo.twitterProfile}</span> is being verified. You can still <a href="#" onClick={(e) => { this.handleEdit('twitter', e); }}>change</a> your profile.</span>
+                      : <span>Please click <a href="#" onClick={(e) => { this.handleEdit('twitter', e); }}>here</a> to complete this step and be eligible to claim your tokens.</span>
+                    }
                   </div>
                 </div>
                 <div className="airdrop-row">
                   <div className="description">
-                    <span className="step-check unchecked"></span><span className="airdrop-row__heading">Twitter Share</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this step to be eligible to claim your tokens.
+                    <span className="step-check unchecked"></span>
+                    <span className="airdrop-row__heading">Facebook Like</span>&nbsp;
+                    <span className="icon-arrow-right"></span>&nbsp;
+                    {this.props.airdropInfo.facebookProfile
+                      ? <span>Social media activity for <span className="profile-name">{this.props.airdropInfo.facebookProfile}</span> is being verified. You can still <a href="#" onClick={(e) => { this.handleEdit('facebook', e); }}>change</a> your profile.</span>
+                      : <span>Please click <a href="#" onClick={(e) => { this.handleEdit('facebook', e); }}>here</a> to complete this step and be eligible to claim your tokens.</span>
+                    }
                   </div>
-                </div>
-                <div className="airdrop-row">
-                  <div className="description">
-                    <span className="step-check unchecked"></span><span className="airdrop-row__heading">Facebook Like</span> <span className="icon-arrow-right"></span> Please click <a href="#">here</a> to complete this step to be eligible to claim your tokens.
-                  </div>
-                  <div className="airdrop-profile-edit">
-                    <input type="text" placeholder="Facebook Profile" />
-                    <button className="btn">Submit</button>
-                  </div>
+                  {this.state.facebookEdit &&
+                    <div className="airdrop-profile-edit">
+                      <input type="text" placeholder="Facebook Profile" name="facebookProfile" value={this.state.facebookProfile} onChange={this.onChange} />
+                      <button className="btn" onClick={() => this.handleEditSubmit('facebook')}>Save</button>
+                    </div>
+                  }
                 </div>
                 <hr />
                 <div className="airdrop-row final">

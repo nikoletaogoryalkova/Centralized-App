@@ -1,6 +1,6 @@
 .no-entries-message {
   text-align: center;
-  margin-top: 10px;
+  margin: 10px 0;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -8,5 +8,10 @@
   h4 {
     margin: 0;
     padding: 0;
+  }
+
+  a.btn {
+    margin: 10px 10px 0 0;
+    width: 115px;
   }
 }
