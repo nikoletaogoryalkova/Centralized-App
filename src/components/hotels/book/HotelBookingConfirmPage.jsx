@@ -37,6 +37,8 @@ class HotelBookingConfirmPage extends React.Component {
       password: ''
     };
 
+    this.timeout = null;
+
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -75,6 +77,15 @@ class HotelBookingConfirmPage extends React.Component {
         });
       }
     });
+
+    this.timeout = setTimeout(() => {
+      NotificationManager.info('Your search has expired.', '', 600000);
+      this.props.history.push('/hotels');
+    }, 600000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   getSearchParams() {

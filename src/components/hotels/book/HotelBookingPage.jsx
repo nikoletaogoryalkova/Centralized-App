@@ -21,6 +21,7 @@ class HotelBookingPage extends React.Component {
       loading: true,
     };
 
+    this.timeout = null;
     this.handleAdultChange = this.handleAdultChange.bind(this);
     this.handleChildAgeChange = this.handleChildAgeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -59,6 +60,15 @@ class HotelBookingPage extends React.Component {
     getCurrencyRates().then((json) => {
       this.setState({ rates: json });
     });
+
+    this.timeout = setTimeout(() => {
+      NotificationManager.info('Your search has expired.', '', 600000);
+      this.props.history.push('/hotels');
+    }, 600000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   getLocRate() {
