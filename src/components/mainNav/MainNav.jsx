@@ -225,6 +225,7 @@ class MainNav extends React.Component {
             console.log('users match')
             verifyUserAirdropInfo(token).then(() => {
               console.log('user moved from temp to main')
+              NotificationManager.info('Verification email has been sent. Please follow the link to confirm your email.');
               getUserAirdropInfo().then(json => {
                 this.dispatchAirdropInfo(json);
               });

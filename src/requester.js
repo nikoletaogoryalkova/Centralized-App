@@ -542,3 +542,9 @@ export async function verifyUserEmail(search) {
     return res.response.json();
   });
 }
+
+export async function resendConfirmationEmail() {
+  return sendRequest(`${host}airdrop/sendVerifyEmailLink`, RequestMethod.GET).then(res => {
+    return res.response.json();
+  });
+}

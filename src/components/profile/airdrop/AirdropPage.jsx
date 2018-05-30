@@ -5,7 +5,8 @@ import {
   getUserAirdropInfo, 
   verifyUserAirdropInfo, 
   saveAirdropSocialProfile,
-  verifyUserEmail
+  verifyUserEmail,
+  resendConfirmationEmail
 } from '../../../requester';
 import { connect } from 'react-redux';
 import { setIsLogged } from '../../../actions/userInfo';
@@ -49,11 +50,15 @@ class AirdropPage extends Component {
 
   componentWillMount() {
     if (this.props.location.search && this.props.location.search.indexOf('emailtoken') !== -1) {
-      console.log(this.props.location.search)
+      console.log('email token received', this.props.location.search)
       verifyUserEmail(this.props.location.search).then(() => {
-        getUserAirdropInfo().then(json => {
-          this.dispatchAirdropInfo(json);
-        });
+        console.log('verifying user email');
+        if (this.isUserLogged()) {
+          getUserAirdropInfo().then(json => {
+            console.log('dispatching user info');
+            this.dispatchAirdropInfo(json);
+          });
+        }
       });
     } else if (this.props.location.search && this.props.location.search.indexOf('airdroptoken') !== -1) {
       const token = this.props.location.search.split('=')[1];
@@ -155,6 +160,7 @@ class AirdropPage extends Component {
                   getUserAirdropInfo().then(json => {
                     this.dispatchAirdropInfo(json);
                     console.log('user info dispatched')
+                    NotificationManager.info('Verification email has been sent. Please follow the link to confirm your email.');
                   });
                 });
               }
@@ -219,7 +225,9 @@ class AirdropPage extends Component {
 
   handleResendVerificationEmail(e) {
     e.preventDefault();
-    NotificationManager.info('Verification email has been sent.');
+    resendConfirmationEmail().then(() => {
+      NotificationManager.info('Verification email has been sent.');
+    });
   }
 
   onChange(e) {
