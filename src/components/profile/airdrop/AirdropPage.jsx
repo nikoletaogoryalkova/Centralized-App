@@ -53,6 +53,7 @@ class AirdropPage extends Component {
       console.log('email token received', this.props.location.search)
       verifyUserEmail(this.props.location.search).then(() => {
         console.log('verifying user email');
+        NotificationManager.info('Email verified.');
         if (this.isUserLogged()) {
           getUserAirdropInfo().then(json => {
             console.log('dispatching user info');
