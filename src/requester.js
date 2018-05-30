@@ -544,7 +544,11 @@ export async function verifyUserEmail(search) {
 }
 
 export async function resendConfirmationEmail() {
-  return sendRequest(`${host}airdrop/sendVerifyEmailLink`, RequestMethod.GET).then(res => {
+  const json = sendRequest(`${host}airdrop/sendVerifyEmailLink`, RequestMethod.GET).then(res => {
     return res.response.json();
+  }).catch(error => {
+    console.log(error);
   });
+
+  return json;
 }

@@ -459,7 +459,6 @@ class HotelsSearchPage extends React.Component {
   }
 
   sendInitialWebsocketRequest() {
-    console.log('Sending initial web socket request');
     let query = '';
     query += 'region=' + this.state.region.id;
     query += '&currency=' + this.props.paymentInfo.currency;
@@ -472,18 +471,13 @@ class HotelsSearchPage extends React.Component {
       uuid: localStorage.getItem('uuid')
     };
 
-    console.log('message:', msg);
-
     const searchParams = this.getSearchParams(query);
     function addElement(value, key) {
       msg[key] = value;
     }
 
-    console.log('search params:', searchParams);
-
     searchParams.forEach(addElement);
     if (this.clientRef) {
-      console.log('sending message to:', `/app/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`);
       this.clientRef.sendMessage(`/app/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`, JSON.stringify(msg));
     }
   }
@@ -548,9 +542,6 @@ class HotelsSearchPage extends React.Component {
   }
 
   render() {
-    console.log('url:', Config.getValue('apiHost') + 'handler');
-    console.log('topics:', `/topic/all/${localStorage.getItem('uuid')}${window.btoa(this.props.location.search)}`);
-
     let listings = this.state.isFiltered ? this.state.filteredListings : this.state.listings;
 
     const totalElements = listings.length;
