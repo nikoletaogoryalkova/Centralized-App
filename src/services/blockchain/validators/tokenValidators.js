@@ -9,9 +9,7 @@ import {
 
 const ERROR = require('./../config/errors.json');
 const gasConfig = require('./../config/gas-config.json');
-const {
-  TIMES_GAS_AMOUNT
-} = require('../config/constants.json');
+
 
 export class TokenValidators {
 
@@ -21,7 +19,7 @@ export class TokenValidators {
     const totalGas = gasAmountApprove.add(gasAmountAction);
 
     const totalGasLoc = (await gasToLoc(totalGas));
-    const locAmountGasToValidate = totalGasLoc.mul(TIMES_GAS_AMOUNT);
+    const locAmountGasToValidate = totalGasLoc.mul(gasConfig.TIMES_GAS_AMOUNT);
     const locAmountToValidate = locAmountGasToValidate.add(locAmount);
 
     let balance = await LOCTokenContract.balanceOf(account);

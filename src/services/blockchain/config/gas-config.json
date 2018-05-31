@@ -26,7 +26,7 @@
     "setPrices": 600000
   },
   "hotelReservation": {
-    "create": 950000,
+    "create": 650000,
     "cancel": 140000,
     "dispute": 120000
   },
