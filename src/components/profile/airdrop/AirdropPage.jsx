@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { 
-  checkIfAirdropUserExists, 
-  getUserAirdropInfo, 
-  verifyUserAirdropInfo, 
+import {
+  checkIfAirdropUserExists,
+  getUserAirdropInfo,
+  verifyUserAirdropInfo,
   saveAirdropSocialProfile,
   verifyUserEmail,
   resendConfirmationEmail
@@ -201,9 +201,9 @@ class AirdropPage extends Component {
 
   handleEdit(media, e) {
     e.preventDefault();
-    this.setState({ 
+    this.setState({
       [media + 'Edit']: true,
-      [media + 'Profile']: this.props.airdropInfo[media + 'Profile'] 
+      [media + 'Profile']: this.props.airdropInfo[media + 'Profile']
     });
   }
 
@@ -233,7 +233,7 @@ class AirdropPage extends Component {
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-  } 
+  }
 
   render() {
     // if (this.state.loading) {
@@ -245,7 +245,7 @@ class AirdropPage extends Component {
         <div className="container">
           <NoEntriesMessage text='Log in or participate in our airdrop campaign.'>
             <a href="#" className="btn" onClick={(e) => this.openModal(LOGIN, e)}>Log in</a>
-            <a href="https://locktrip.com/airdrop" className="btn">Participate</a>
+            <a href="https://locktrip.com/airdrop/" className="btn">Participate</a>
           </NoEntriesMessage>
         </div>
       );
@@ -257,7 +257,7 @@ class AirdropPage extends Component {
           <NavProfile />
           <div className="container">
             <NoEntriesMessage text='Participate in our airdrop campaign.'>
-              <a href="https://locktrip.com/airdrop" className="btn">Participate</a>
+              <a href="https://locktrip.com/airdrop/" className="btn">Participate</a>
             </NoEntriesMessage>
           </div>
         </div>
@@ -296,7 +296,7 @@ class AirdropPage extends Component {
               <div className="airdrop-info__content">
                 <div className="airdrop-row email">
                   <div className="description">
-                    {this.props.airdropInfo.isVerifyEmail 
+                    {this.props.airdropInfo.isVerifyEmail
                       ? <div><span className="step-check checked"></span><span className="airdrop-row__heading">Email Signup - Completed</span></div>
                       : <div><span className="step-check unchecked"></span><span className="airdrop-row__heading">Email Signup - Not yet verified. <a href="#" onClick={this.handleResendVerificationEmail}>Resend verification email</a>.</span></div>
                     }

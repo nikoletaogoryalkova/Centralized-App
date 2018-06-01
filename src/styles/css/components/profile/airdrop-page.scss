@@ -31,7 +31,7 @@ $padding-sm: 15px 10px;
   margin: 40px 0;
 
   h4 {
-    padding-bottom: 10px; 
+    padding-bottom: 10px;
     font-weight: 400;
     border-bottom: 1px solid $gray;
   }
@@ -55,20 +55,20 @@ $padding-sm: 15px 10px;
       @include media(">=tablet") {
         flex-direction: row;
       }
-  
+
       &__label {
         padding: $padding-sm;
 
         @include media(">=phone") {
           padding: $padding-lg;
         }
-        
+
         @include media(">=tablet") {
           flex: 0 0 270px;
           border-right: 1px solid $gray;
         }
       }
-  
+
       &__content {
         flex-grow: 10;
         padding: $padding-sm;
@@ -139,18 +139,18 @@ $padding-sm: 15px 10px;
           .profile-name {
             font-weight: 400;
           }
-  
+
           .step-check {
             width: 30px;
             height: 30px;
             display: inline-block;
             position: relative;
-            background: $moderate-red;
+            background: $light-cyan;
             border-radius: 50%;
             margin-right: 10px;
             top: 6px;
           }
-  
+
           .step-check.checked:before {
             font-size: 0.5em;
             padding: 5px;
@@ -161,11 +161,12 @@ $padding-sm: 15px 10px;
             color: $white;
             content: "\f00c";
           }
-  
+
           .step-check.unchecked {
             opacity: 0.5;
+            background: $moderate-red;
           }
-  
+
           .step-check.unchecked:before {
             font-size: 0.5em;
             padding: 5px;
@@ -176,11 +177,11 @@ $padding-sm: 15px 10px;
             color: $white;
             content: "\f00d";
           }
-  
+
           .icon-arrow-right {
             font-size: 0.7em;
           }
-  
+
           a {
             color: $moderate-red;
           }
