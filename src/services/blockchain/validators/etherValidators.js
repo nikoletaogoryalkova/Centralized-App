@@ -2,6 +2,9 @@ import ethers from 'ethers';
 import {
   getGasPrice
 } from "../utils/ethFuncs"
+import {
+  getNodeProvider
+} from '../config/contracts-config';
 
 const ERROR = require('./../config/errors.json');
 const gasConfig = require('./../config/gas-config.json');
@@ -20,14 +23,16 @@ export class EtherValidators {
 
   static async validateEthBalance(wallet, actionGas = 0) {
 
-    let customerBallance = wallet.getBalance();
+
+    const nodeProvider = getNodeProvider();
+    const customerBalance = await nodeProvider.getBalance(wallet.address);
     const gasPrice = await getGasPrice();
 
     const gasAmountApprove = gasPrice.mul(gasConfig.approve);
     const gasAmountAction = gasPrice.mul(actionGas);
     const gasAmountNeeded = gasAmountApprove.add(gasAmountAction);
 
-    if (gasAmountNeeded.gt(customerBallance)) {
+    if (gasAmountNeeded.gt(customerBalance)) {
       throw new Error(ERROR.INSUFFICIENT_AMOUNT_ETH);
     }
 
