@@ -268,30 +268,27 @@ class AirdropPage extends Component {
       );
     }
 
-    console.log("info");
-    console.log(this.props);
-
     return (
       <div>
         <NavProfile />
         <div className="container">
           <div id="airdrop-main">
             <h4>Personal Dashboard</h4>
-            <p>You can view your current status, the number of people you have referred, as well as your unique Referral Link.</p>
+            <p>You can view your current balance, as well as your unique Referral Link.</p>
             <p>Every Person who completes our airdrop via your unique referral link, will generate $5 for you! <span className="emphasized-text">Make sure you refer as much friends and family as you can!</span></p>
 
             <div className="balance-info">
               <div className="balance-row">
-                <div className="balance-row__label"><span className="emphasized-text">Current Balance</span></div>
-                <div className="balance-row__content">{this.props.airdropInfo.isCampaignSuccessfullyCompleted ? this.props.airdropInfo.referralCount * 5 + 10 : this.props.airdropInfo.referralCount * 5 }</div>
+                <div className="balance-row__label"><span className="emphasized-text">Unverified Balance</span></div>
+                <div className="balance-row__content">${this.props.airdropInfo.isCampaignSuccessfullyCompleted ? this.props.airdropInfo.referralCount * 5 + 10 : this.props.airdropInfo.referralCount * 5 }</div>
 
 
               </div>
 
               <div className="balance-row">
                 <div className="balance-row__label"><span className="emphasized-text">Your Referral URL</span></div>
-                <div className="balance-row__content"><span className="referral-url">{this.props.airdropInfo.refLink}</span></div>
-                <CopyToClipboard text={this.props.airdropInfo.refLink} onCopy={() => { NotificationManager.info('Copied to clipboard.'); }}><button className="referral-url-copy">Copy to Clipboard</button></CopyToClipboard>
+                <div className="balance-row__content"><span className="referral-url">{this.props.airdropInfo.refLink.toString().replace('alpha.','')}</span></div>
+                <CopyToClipboard text={this.props.airdropInfo.refLink.toString().replace('alpha.','')} onCopy={() => { NotificationManager.info('Copied to clipboard.'); }}><button className="referral-url-copy">Copy to Clipboard</button></CopyToClipboard>
               </div>
 
               {/* <div className="balance-row">
@@ -351,8 +348,8 @@ class AirdropPage extends Component {
                 <div className="airdrop-row">
                   <div className="description">
                     {this.props.airdropInfo.facebookProfile
-                      ? <div><span className="step-check checked"></span><span className="airdrop-row__heading">Facebook Like</span>&nbsp;<span className="icon-arrow-right"></span>&nbsp;<span>Social media activity for <span className="profile-name">{this.props.airdropInfo.facebookProfile}</span> is being verified. You can still <a href="#" onClick={(e) => { this.handleEdit('facebook', e); }}>change</a> your profile.</span></div>
-                      : <div><span className="step-check unchecked"></span><span className="airdrop-row__heading">Facebook Like</span>&nbsp;<span>Please click <a href="#" onClick={(e) => { this.handleEdit('facebook', e); }}>here</a> to complete this step and be eligible to claim your tokens.</span></div>
+                      ? <div><span className="step-check checked"></span><span className="airdrop-row__heading">Facebook Follow</span>&nbsp;<span className="icon-arrow-right"></span>&nbsp;<span>Social media activity for <span className="profile-name">{this.props.airdropInfo.facebookProfile}</span> is being verified. You can still <a href="#" onClick={(e) => { this.handleEdit('facebook', e); }}>change</a> your profile.</span></div>
+                      : <div><span className="step-check unchecked"></span><span className="airdrop-row__heading">Facebook Follow</span>&nbsp;<span>Please click <a href="#" onClick={(e) => { this.handleEdit('facebook', e); }}>here</a> to enter your Facebook Username and be eligible to claim your tokens.</span></div>
                     }
                   </div>
                   {this.state.facebookEdit &&
@@ -363,11 +360,11 @@ class AirdropPage extends Component {
                   }
                 </div>
                 <hr />
-                <div className="airdrop-row final">
-                  <div className="description">
-                    <span className="step-check unchecked"></span><span className="airdrop-row__heading">Final Step</span>
-                  </div>
-                </div>
+                {/*<div className="airdrop-row final">*/}
+                  {/*<div className="description">*/}
+                    {/*<span className="step-check unchecked"></span><span className="airdrop-row__heading">Final Step</span>*/}
+                  {/*</div>*/}
+                {/*</div>*/}
               </div>
             </div>
 
